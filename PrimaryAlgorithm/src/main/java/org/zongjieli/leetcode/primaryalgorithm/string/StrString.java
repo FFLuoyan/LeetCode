@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.primaryalgorithm.string;
 
+import java.util.Arrays;
+
 /**
  * @ClassName: StrString
  * @Description: KMP to strString
@@ -36,10 +38,11 @@ public class StrString {
             //  if match fail,the compareIndex is -1,the kmp value should be 0
             kmpArr[i] = ++compareIndex;
         }
+        System.out.println(Arrays.toString(kmpArr));
         int hIndex = 0, nIndex = 0;
-        for (;haystackArr.length - hIndex >= needleArr.length - nIndex && nIndex < needleArr.length;hIndex ++,nIndex ++){
+        for (; haystackArr.length - hIndex >= needleArr.length - nIndex && nIndex < needleArr.length; hIndex++, nIndex++) {
             //  if remain check length less than the remain needle length,the loop should break
-            while (haystackArr[hIndex] != needleArr[nIndex] && nIndex-- > 0){
+            while (haystackArr[hIndex] != needleArr[nIndex] && nIndex-- > 0) {
                 nIndex = kmpArr[nIndex];
             }
         }
@@ -48,6 +51,6 @@ public class StrString {
     }
 
     public static void main(String[] args) {
-        System.out.println(strStr("abaacabaab", "abaab"));
+        System.out.println(strStr("acabcabdcabcabca", "cabcabdcabcabca"));
     }
 }
