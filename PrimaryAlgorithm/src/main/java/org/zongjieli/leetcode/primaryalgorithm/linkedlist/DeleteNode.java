@@ -9,12 +9,8 @@ package org.zongjieli.leetcode.primaryalgorithm.linkedlist;
  **/
 public class DeleteNode {
     public static void deleteNode(ListNode node) {
-        while (node.next.next != null) {
-            node.val = node.next.val;
-            node = node.next;
-        }
         node.val = node.next.val;
-        node.next = null;
+        node.next = node.next.next;
     }
 
     public static void main(String[] args) {
