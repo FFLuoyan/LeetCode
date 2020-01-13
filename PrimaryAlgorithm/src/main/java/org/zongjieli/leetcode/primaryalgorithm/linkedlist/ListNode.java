@@ -22,13 +22,28 @@ public class ListNode {
         }
     }
 
-    public static ListNode tenSingleListNode(){
+    public static ListNode tenSingleListNode() {
         ListNode head = new ListNode(0);
         ListNode currentNode = head;
         for (int i = 1; i < 10; i++) {
             currentNode.next = new ListNode(i);
             currentNode = currentNode.next;
         }
+        return head;
+    }
+
+    public static ListNode palindromeList() {
+        ListNode head = new ListNode(0);
+        ListNode next = head;
+        for (int i = 0; i <= 10; i++) {
+            next.next = new ListNode(i);
+            next = next.next;
+        }
+        for (int i = 10; i >= 0; i--) {
+            next.next = new ListNode(i);
+            next = next.next;
+        }
+        next.next = new ListNode(0);
         return head;
     }
 }
