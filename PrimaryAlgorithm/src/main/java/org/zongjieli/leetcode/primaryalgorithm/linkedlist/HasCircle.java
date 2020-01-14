@@ -40,7 +40,7 @@ public class HasCircle {
         ListNode slow = head;
         ListNode fast = head.next.next;
         while (fast != null && fast.next != null) {
-            if (fast == slow){
+            if (fast == slow) {
                 return true;
             }
             fast = fast.next.next;
@@ -49,19 +49,10 @@ public class HasCircle {
         return false;
     }
 
-    public static ListNode cycleListNode() {
-        ListNode head = new ListNode(0);
-        head.next = new ListNode(1);
-        head.next.next = new ListNode(2);
-        head.next.next.next = new ListNode(3);
-        head.next.next.next.next = head.next;
-        return head;
-    }
-
     public static void main(String[] args) {
 
-        System.out.println(hasCycleByForce(cycleListNode()));
-        System.out.println(hasCycleByNew(cycleListNode()));
-        System.out.println(hasCycleByDoublePointer(cycleListNode()));
+        System.out.println(hasCycleByForce(ListNode.cycleListNode()));
+        System.out.println(hasCycleByNew(ListNode.cycleListNode()));
+        System.out.println(hasCycleByDoublePointer(ListNode.cycleListNode()));
     }
 }

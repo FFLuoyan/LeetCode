@@ -46,4 +46,13 @@ public class ListNode {
         next.next = new ListNode(0);
         return head;
     }
+
+    public static ListNode cycleListNode() {
+        ListNode head = new ListNode(0);
+        head.next = new ListNode(1);
+        head.next.next = new ListNode(2);
+        head.next.next.next = new ListNode(3);
+        head.next.next.next.next = head.next;
+        return head;
+    }
 }
