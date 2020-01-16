@@ -26,4 +26,15 @@ public class TreeNode {
         root.right.right = new TreeNode(6);
         return root;
     }
+
+    public static TreeNode binarySearchTree(){
+        TreeNode root = new TreeNode(10);
+        root.left = new TreeNode(5);
+        root.left.left = new TreeNode(2);
+        root.left.right = new TreeNode(6);
+        root.right = new TreeNode(15);
+        root.right.left = new TreeNode(12);
+        root.right.right = new TreeNode(18);
+        return root;
+    }
 }
