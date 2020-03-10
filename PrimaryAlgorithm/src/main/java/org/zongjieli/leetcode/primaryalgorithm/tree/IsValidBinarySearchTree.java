@@ -55,12 +55,10 @@ public class IsValidBinarySearchTree {
     }
 
     public boolean isValidBstByInorderTraversal(TreeNode root) {
-        // 放入阶段,每次遍历,如果左节点不为空,则下一次遍历的为左节点,并将当前节点放入 List 中
-        // 如果左节点为空,则不进行任何操作
-        // 取出阶段,取出节点的值为最小值,如果当前节点的右节点不为空,则对右节点进行循环遍历放入操作
-        // 直至右节点数中的最小值被发现,对右节点最小值与当前最小值进行比较,右节点最小值应为整个树的最小值
-        // 如果不是,则返回false
-        // 如果是,则继续取出 List 中的节点进行循环遍历
+        // 每次遍历,如果左节点不为空,则下一次遍历的为左节点,并将当前节点放入 List 中
+        // 如果左节点为空,此时当前节点为最小节点,对当前节点进行数值判断,然后对右节点进行遍历
+        // 如果右节点存在,则对此节点为根节点的子树进行遍历(找到该节点的最左节点,为此时最小节点)
+        // 如果右节点不存在,则从 List 中取出节点,依次判断数值,与右节点数据
         Integer minValue = null;
         LinkedList<TreeNode> nodeList = new LinkedList();
         while (root != null) {
