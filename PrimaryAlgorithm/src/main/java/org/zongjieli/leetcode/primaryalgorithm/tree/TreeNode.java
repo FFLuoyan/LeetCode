@@ -12,7 +12,7 @@ public class TreeNode {
     TreeNode left;
     TreeNode right;
 
-    public TreeNode(int val) {
+    public TreeNode(Integer val) {
         this.val = val;
     }
 
@@ -35,6 +35,17 @@ public class TreeNode {
         root.right = new TreeNode(15);
         root.right.left = new TreeNode(12);
         root.right.right = new TreeNode(18);
+        return root;
+    }
+
+    public static TreeNode testSearchTree(){
+        TreeNode root = new TreeNode(5);
+        root.left = new TreeNode(1);
+        root.left.left = null;
+        root.left.right = null;
+        root.right = new TreeNode(4);
+        root.right.left = new TreeNode(3);
+        root.right.right = new TreeNode(6);
         return root;
     }
 }
