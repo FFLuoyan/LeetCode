@@ -57,7 +57,9 @@ public class IsSymmetricTree {
 
     public boolean isSymmetricTreeByRecursion(TreeNode left, TreeNode right) {
         if (left == null) {
-            return right == null;
+            if (right == null){
+                return true;
+            }
         } else if (right != null) {
              if (left.val == right.val){
                  return isSymmetricTreeByRecursion(left.left,right.right) && isSymmetricTreeByRecursion(left.right,right.left);
