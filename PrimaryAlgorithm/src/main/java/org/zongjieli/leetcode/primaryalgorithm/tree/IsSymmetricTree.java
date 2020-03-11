@@ -1,9 +1,6 @@
 package org.zongjieli.leetcode.primaryalgorithm.tree;
 
-import org.zongjieli.leetcode.primaryalgorithm.linkedlist.ListNode;
-
 import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * @ClassName: IsSymmetricTree
