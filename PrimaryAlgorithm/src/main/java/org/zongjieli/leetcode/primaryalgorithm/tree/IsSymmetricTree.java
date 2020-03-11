@@ -48,11 +48,32 @@ public class IsSymmetricTree {
         return true;
     }
 
+    public boolean isSymmetricTreeByRecursion(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isSymmetricTreeByRecursion(root.left, root.right);
+    }
+
+    public boolean isSymmetricTreeByRecursion(TreeNode left, TreeNode right) {
+        if (left == null) {
+            return right == null;
+        } else if (right != null) {
+             if (left.val == right.val){
+                 return isSymmetricTreeByRecursion(left.left,right.right) && isSymmetricTreeByRecursion(left.right,right.left);
+             }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         IsSymmetricTree isSymmetricTree = new IsSymmetricTree();
-        System.out.println(isSymmetricTree.isSymmetric(TreeNode.symmetricTree()));
-        System.out.println(isSymmetricTree.isSymmetric(TreeNode.binarySearchTree()));
-        System.out.println(isSymmetricTree.isSymmetric(TreeNode.normalTreeNode()));
+//        System.out.println(isSymmetricTree.isSymmetric(TreeNode.symmetricTree()));
+//        System.out.println(isSymmetricTree.isSymmetric(TreeNode.binarySearchTree()));
+//        System.out.println(isSymmetricTree.isSymmetric(TreeNode.normalTreeNode()));
+        System.out.println(isSymmetricTree.isSymmetricTreeByRecursion(TreeNode.symmetricTree()));
+        System.out.println(isSymmetricTree.isSymmetricTreeByRecursion(TreeNode.binarySearchTree()));
+        System.out.println(isSymmetricTree.isSymmetricTreeByRecursion(TreeNode.normalTreeNode()));
     }
 
 }
