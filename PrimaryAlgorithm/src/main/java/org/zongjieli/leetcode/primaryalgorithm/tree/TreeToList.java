@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * @ClassName: TreeToList
- * @Description: TODO
+ * @Description: 二叉树的层次解法
  * @Author: Zongjie.Li
  * @Date: 2020/3/11
  * @Version: 1.0
