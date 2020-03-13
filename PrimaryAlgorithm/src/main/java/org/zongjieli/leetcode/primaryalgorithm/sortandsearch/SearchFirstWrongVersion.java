@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.primaryalgorithm.sortandsearch;
 
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 /**
  * @ClassName: SearchFirstWrongVersion
  * @Description: Search First Wrong Version
@@ -16,7 +14,7 @@ public class SearchFirstWrongVersion {
     }
 
     public int firstBadVersion(int n){
-        return badVersionBySection(0,n);
+        return badVersionBySection(1,n);
     }
 
     public int badVersionBySection(int start,int end){
