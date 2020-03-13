@@ -11,28 +11,44 @@ public class SearchFirstWrongVersion {
     public static void main(String[] args) {
         SearchFirstWrongVersion searchFirstWrongVersion = new SearchFirstWrongVersion();
         System.out.println(searchFirstWrongVersion.firstBadVersion(15));
+        System.out.println(searchFirstWrongVersion.firstBadVersionByLoop(15));
     }
 
-    public int firstBadVersion(int n){
-        return badVersionBySection(1,n);
+    public int firstBadVersion(int n) {
+        return badVersionBySection(1, n);
     }
 
-    public int badVersionBySection(int start,int end){
-        if (start >= end){
+    public int badVersionBySection(int start, int end) {
+        if (start > end) {
             return start;
         }
-        int middle = (end - start)/2 + start;
-        if (isBadVersion(middle)){
-            return badVersionBySection(start,middle);
+        int middle = (end - start) / 2 + start;
+        if (isBadVersion(middle)) {
+            return badVersionBySection(start, middle - 1);
         } else {
-            return badVersionBySection(middle + 1,end);
+            return badVersionBySection(middle + 1, end);
         }
     }
 
-    public boolean isBadVersion(int version){
-        if (version > 14){
+    public boolean isBadVersion(int version) {
+        if (version > 7) {
             return true;
         }
         return false;
+    }
+
+
+    public int firstBadVersionByLoop(int n) {
+        int left = 1;
+        int right = n - 1;
+        while (left <= right) {
+            int middle = (right - left) / 2 + left;
+            if (isBadVersion(middle)) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
+            }
+        }
+        return left;
     }
 }
