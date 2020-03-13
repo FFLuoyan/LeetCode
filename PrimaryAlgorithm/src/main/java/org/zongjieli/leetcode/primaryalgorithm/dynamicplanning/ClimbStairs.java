@@ -31,4 +31,18 @@ public class ClimbStairs {
         }
         return num;
     }
+
+    public int climbStairsByArray(int n){
+        if (n == 1){
+            return 1;
+        }
+        int[] stairs = new int[n];
+        stairs[0] = 1;
+        stairs[1] = 2;
+        n = 2;
+        while (n < stairs.length){
+            stairs[n] = stairs[n - 2] + stairs[n++ - 1];
+        }
+        return stairs[stairs.length - 1];
+    }
 }
