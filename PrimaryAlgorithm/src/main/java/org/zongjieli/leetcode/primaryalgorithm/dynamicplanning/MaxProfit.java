@@ -22,14 +22,11 @@ public class MaxProfit {
         }
         int profit = 0;
         int min = prices[0];
-        int max = prices[0];
         for (int i = 1;i<prices.length ;i++){
             if (prices[i] < min){
                 min = prices[i];
-                max = min + profit;
-            } else if (prices[i] > max){
-                max = prices[i];
-                profit = max - min;
+            } else if (prices[i] - min > profit){
+                profit = prices[i] - min;
             }
         }
         return profit;
