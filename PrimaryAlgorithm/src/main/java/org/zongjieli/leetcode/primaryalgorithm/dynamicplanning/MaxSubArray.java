@@ -16,15 +16,11 @@ public class MaxSubArray {
 
     public int maxSubArray(int[] nums) {
         int maxValue = nums[0];
-        for (int index = 1 ; index < nums.length ; index++){
-            int countValue = 0;
-            for (int countIndex = index ; countIndex >=0 ;countIndex--){
-                countValue += nums[countIndex];
-                if (countValue > maxValue){
-                    maxValue = countValue;
-                }
-            }
+        for (int index = 1; index < nums.length; index++) {
+            nums[index] = nums[index - 1] > 0 ? nums[index - 1] + nums [index] : nums[index];
+            maxValue = nums[index] < maxValue ? maxValue : nums[index];
         }
         return maxValue;
     }
+
 }
