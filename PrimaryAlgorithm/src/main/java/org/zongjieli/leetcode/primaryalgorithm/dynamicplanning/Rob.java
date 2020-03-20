@@ -21,7 +21,19 @@ public class Rob {
     }
 
     public int rob(int[] nums) {
-        return subRob(nums, 0);
+        if (nums.length < 1){
+            return 0;
+        }
+        if (nums.length == 1){
+            return nums[0];
+        }
+        nums[1] = nums[1] > nums[0] ? nums[1] : nums[0];
+        for (int index = 2;index < nums.length;index++){
+            int compare = nums[index - 2] + nums[index];
+            nums[index] = compare > nums[index - 1] ? compare : nums[index - 1];
+        }
+        return nums[nums.length - 1];
+//        return subRob(nums, 0);
     }
 
     public int subRob(int[] nums, int index) {
