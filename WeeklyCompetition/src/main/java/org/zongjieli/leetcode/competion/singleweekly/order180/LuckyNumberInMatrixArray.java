@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.weeklycompetition.weekly180;
+package org.zongjieli.leetcode.competion.singleweekly.order180;
 
 import java.util.ArrayList;
 import java.util.List;

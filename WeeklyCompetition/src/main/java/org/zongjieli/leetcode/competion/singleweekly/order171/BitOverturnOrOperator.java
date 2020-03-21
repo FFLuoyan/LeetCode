@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.weeklycompetition.weekly171;
+package org.zongjieli.leetcode.competion.singleweekly.order171;
 
 /**
  * @ClassName: BitOverturnOrOperator
