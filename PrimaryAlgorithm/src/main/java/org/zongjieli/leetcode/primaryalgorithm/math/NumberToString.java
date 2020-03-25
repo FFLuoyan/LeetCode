@@ -10,6 +10,9 @@ import java.util.List;
  *              如果为 5 的倍数,则为 Buzz
  *              如果即为 3 的倍数,又为 5 的倍数,则为 FizzBuzz
  *              如果没有,则为当前数字的字符串
+ *
+ *              该方法可以使用 Map 进行映射,然后对 String 进行想加,可以实现针对多个映射的通用解法
+ *
  * @Author: Zongjie.Li
  * @Date: 2020/3/25
  * @Version: 1.0
