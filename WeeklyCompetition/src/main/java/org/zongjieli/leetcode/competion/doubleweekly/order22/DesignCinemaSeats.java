@@ -11,6 +11,7 @@ import java.util.Map;
  * 入参表示已经被占用的位置的坐标int[][] List
  * 第二个数字表示的是坐标
  * n 表示该电影院总共有多少行座位
+ * https://leetcode-cn.com/contest/biweekly-contest-22/problems/cinema-seat-allocation/
  * @Author: Zongjie.Li
  * @Date: 2020/3/21
  * @Version: 1.0
