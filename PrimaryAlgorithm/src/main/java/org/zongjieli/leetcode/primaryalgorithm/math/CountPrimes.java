@@ -9,18 +9,33 @@ package org.zongjieli.leetcode.primaryalgorithm.math;
  **/
 public class CountPrimes {
     public int countPrimes(int n){
-        int[] primeArray = new int[n];
+//        int[] primeArray = new int[n];
+//        int primeSize = 0;
+//        for (int checkNumber = 2; checkNumber < n ;checkNumber++){
+//            boolean isPrime = true;
+//            for (int primeNumberIndex = 0 ; primeNumberIndex < primeSize ; primeNumberIndex ++){
+//                if (checkNumber % primeArray[primeNumberIndex] == 0){
+//                    isPrime = false;
+//                    break;
+//                }
+//            }
+//            if (isPrime){
+//                primeArray[primeSize++] = checkNumber;
+//            }
+//        }
+//        return primeSize;
+        boolean[] primeArray = new boolean[n];
         int primeSize = 0;
-        for (int checkNumber = 2; checkNumber < n ;checkNumber++){
-            boolean isPrime = true;
-            for (int primeNumberIndex = 0 ; primeNumberIndex < primeSize ; primeNumberIndex ++){
-                if (checkNumber % primeArray[primeNumberIndex] == 0){
-                    isPrime = false;
-                    break;
+        for (int checkNumber = 2 ; checkNumber < n ; checkNumber++){
+            // checkNumber 表示需要校验的数字
+            if (!primeArray[checkNumber]){
+                // 每一个校验过得数字都设置为 1 ,未被校验的数字则为 0;
+                primeSize ++;
+                // 没找到一个未被校验过的数字,则说明该数字为质数
+                // 针对每个被校验的数字,均会被前面的数字校验一遍,如果前面的数字的校验均通过,说明为质数
+                for (int compositeNumber = checkNumber + checkNumber; compositeNumber < n ;compositeNumber += checkNumber){
+                    primeArray[compositeNumber] = true;
                 }
-            }
-            if (isPrime){
-                primeArray[primeSize++] = checkNumber;
             }
         }
         return primeSize;
@@ -29,5 +44,6 @@ public class CountPrimes {
     public static void main(String[] args) {
         CountPrimes countPrimes = new CountPrimes();
         System.out.println(countPrimes.countPrimes(500000));
+        // 超时方法 45138
     }
 }
