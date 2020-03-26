@@ -24,17 +24,17 @@ public class CountPrimes {
 //            }
 //        }
 //        return primeSize;
-        boolean[] primeArray = new boolean[n];
+        boolean[] compositeArray = new boolean[n];
         int primeSize = 0;
         for (int checkNumber = 2 ; checkNumber < n ; checkNumber++){
             // checkNumber 表示需要校验的数字
-            if (!primeArray[checkNumber]){
-                // 每一个校验过得数字都设置为 1 ,未被校验的数字则为 0;
+            if (!compositeArray[checkNumber]){
+                // 每一个校验过得数字都设置为 true,说明不是质数,未被校验的数字则为默认值 false
                 primeSize ++;
                 // 没找到一个未被校验过的数字,则说明该数字为质数
                 // 针对每个被校验的数字,均会被前面的数字校验一遍,如果前面的数字的校验均通过,说明为质数
                 for (int compositeNumber = checkNumber + checkNumber; compositeNumber < n ;compositeNumber += checkNumber){
-                    primeArray[compositeNumber] = true;
+                    compositeArray[compositeNumber] = true;
                 }
             }
         }
