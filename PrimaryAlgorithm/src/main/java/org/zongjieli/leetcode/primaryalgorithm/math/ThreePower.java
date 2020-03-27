@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.primaryalgorithm.math;
 
+import java.util.Arrays;
+
 /**
  * @ClassName: ThreePower
  * @Description: 判断一个数是不是 3 的整数次幂
@@ -40,7 +42,7 @@ public class ThreePower {
         if (threeRadix.contains("2")){
             return false;
         }
-        if (threeRadix.substring(1).contains("1")){
+        if (threeRadix.indexOf("1",1) > -1){
             return false;
         }
         return true;
