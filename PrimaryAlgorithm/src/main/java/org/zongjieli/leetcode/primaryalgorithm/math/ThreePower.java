@@ -30,6 +30,22 @@ public class ThreePower {
         return ((Math.log10(n) % Math.log10(3)) % 1) == 0;
     }
 
+    public boolean isPowerOfThreeBinarySystem(int n){
+        if (n == 0){
+            return false;
+        }
+        // 通过将数字转换相应的进制,计算该数是否为整倍数
+        String threeRadix = Integer.toString(n,3);
+        // radix 基数
+        if (threeRadix.contains("2")){
+            return false;
+        }
+        if (threeRadix.substring(1).contains("1")){
+            return false;
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
 
     }
