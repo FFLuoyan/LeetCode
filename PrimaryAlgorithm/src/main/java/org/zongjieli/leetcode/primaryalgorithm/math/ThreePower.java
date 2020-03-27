@@ -25,12 +25,12 @@ public class ThreePower {
         return false;
     }
 
+    public boolean isPowerOfThreeByLog (int n){
+        // 猜测,自然对数为底的对数函数,由于底较小,容易出现精度的问题,导致计算错误
+        return ((Math.log10(n) % Math.log10(3)) % 1) == 0;
+    }
+
     public static void main(String[] args) {
-        ThreePower threePower = new ThreePower();
-        System.out.println(threePower.isPowerOfThree(0));
-        System.out.println(threePower.isPowerOfThree(1));
-//        System.out.println(threePower.isPowerOfThree(3));
-//        System.out.println(threePower.isPowerOfThree(100));
-//        System.out.println(threePower.isPowerOfThree(81));
+
     }
 }
