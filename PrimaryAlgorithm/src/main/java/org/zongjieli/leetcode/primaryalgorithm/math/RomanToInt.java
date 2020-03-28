@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.primaryalgorithm.math;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @ClassName: RomanToInt
  * @Description: 将罗马字符转化为 Int
@@ -39,12 +36,15 @@ public class RomanToInt {
                 count += intValue[valueIndex];
                 index++;
             } else if (stringChar == charValue[valueIndex - 1]) {
+                // 如果为 4
                 count += ((intValue[valueIndex] << 1) + intValue[valueIndex]);
                 index++;
             } else if (stringChar == charValue[valueIndex - 2]) {
+                // 如果为 10
                 count += (intValue[valueIndex] << 3);
                 index++;
             } else {
+                // 无法匹配,则对匹配数组进行遍历
                 valueIndex++;
             }
         }
