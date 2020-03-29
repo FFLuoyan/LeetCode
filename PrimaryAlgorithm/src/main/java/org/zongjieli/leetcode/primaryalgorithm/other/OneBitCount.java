@@ -16,6 +16,15 @@ public class OneBitCount {
         return count;
     }
 
+    public int hammingWeightDecrease(int n) {
+        int count = 0;
+        while (n != 0){
+            count++;
+            n &= (n - 1);
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         OneBitCount oneBitCount = new OneBitCount();
         System.out.println(oneBitCount.hammingWeight(11));
