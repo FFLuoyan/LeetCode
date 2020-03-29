@@ -9,13 +9,9 @@ package org.zongjieli.leetcode.primaryalgorithm.other;
  **/
 public class OneBitCount {
     public int hammingWeight(int n) {
-        int match = 1;
-        int count = 0;
-        for (int time = 0;time <32;time++){
-            if ((n&match) == match){
-                count ++;
-            }
-            match <<= 1;
+        int count = n & 1;
+        while (n != 0){
+            count += ((n >>>= 1) & 1);
         }
         return count;
     }
