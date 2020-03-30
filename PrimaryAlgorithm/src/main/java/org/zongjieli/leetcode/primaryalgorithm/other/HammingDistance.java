@@ -19,4 +19,9 @@ public class HammingDistance {
         }
         return count;
     }
+
+    public int hammingDistanceInner(int x, int y) {
+        return Integer.bitCount(x ^ y);
+    }
+
 }
