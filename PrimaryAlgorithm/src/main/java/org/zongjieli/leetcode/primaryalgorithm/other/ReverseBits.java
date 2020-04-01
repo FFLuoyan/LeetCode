@@ -24,4 +24,15 @@ public class ReverseBits {
         return Integer.valueOf(stringBuilder.toString(), 2);
     }
 
+    public int reverseBitsByInteger(int n){
+        return Integer.reverse(n);
+        //        i = (i & 0x55555555) << 1 | (i >>> 1) & 0x55555555;
+        //        i = (i & 0x33333333) << 2 | (i >>> 2) & 0x33333333;
+        //        i = (i & 0x0f0f0f0f) << 4 | (i >>> 4) & 0x0f0f0f0f;
+        // 代码解析,第一步的操作是将 奇数位与偶数位交换
+        // 然后在 2 位 2 位 的进行交换,接着 4 位
+        // 至此,每一个 Byte (8位) 均颠倒
+        // 然后执行 reverseByByte() 原理类似
+    }
+
 }
