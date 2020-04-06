@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.competion.singleweekly.order180;
 
-import org.zongjieli.leetcode.primaryalgorithm.tree.TreeNode;
-
+import org.zongjieli.leetcode.algorithm.primary.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -15,4 +15,12 @@
     <name>WeeklyCompetition</name>
     <description>Weekly Competition</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.zongjieli.leetcode</groupId>
+            <artifactId>primary-algorithm</artifactId>
+            <version>${primary-algorthm.vertion}</version>
+        </dependency>
+    </dependencies>
+
 </project>
