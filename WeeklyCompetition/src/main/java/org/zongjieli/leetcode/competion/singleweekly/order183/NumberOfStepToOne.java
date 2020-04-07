@@ -12,6 +12,7 @@ package org.zongjieli.leetcode.competion.singleweekly.order183;
  **/
 public class NumberOfStepToOne {
     public int numSteps(String s) {
+        // WTF 这算法是啥意思我自己都不清楚,但是竟然跑通了
         int count = 0;
         boolean doubleCount = false;
         for (int i = s.length() - 1;i > 0; i--){
