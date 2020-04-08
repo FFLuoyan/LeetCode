@@ -2,9 +2,7 @@ package org.zongjieli.leetcode.algorthm.intermediate.arrayandstring;
 
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName: NumOfThreeNumber
@@ -21,24 +19,38 @@ public class NumOfThreeNumber {
             return combinationList;
         }
         Arrays.sort(nums);
+        Map<Integer,Map<Integer,Integer>> numberMap = new HashMap<>();
         for (int firstNumberIndex = 0;firstNumberIndex < nums.length - 2; firstNumberIndex++){
-//            if (firstNumberIndex != nums.length - 3 && nums[firstNumberIndex] == nums[firstNumberIndex + 1]){
-//                continue;
-//            }
+            Map<Integer,Integer> firstNumberMap = numberMap.get(nums[firstNumberIndex]);
+            if (firstNumberMap != null){
+                continue;
+            }
+            if (nums[firstNumberIndex] > 0){
+                break;
+            }
+            firstNumberMap = new HashMap<>();
+            numberMap.put(nums[firstNumberIndex],firstNumberMap);
+
             for (int secondNumberIndex = firstNumberIndex + 1;secondNumberIndex < nums.length - 1;secondNumberIndex++){
-                if (secondNumberIndex != nums.length - 2 && nums[secondNumberIndex] == nums[secondNumberIndex + 1]){
+                if (firstNumberMap.get(nums[secondNumberIndex]) != null){
                     continue;
                 }
+                int numberThird = -nums[firstNumberIndex] - nums[secondNumberIndex];
+                if (numberThird < 0){
+                    break;
+                }
                 for (int thirdNumberIndex = secondNumberIndex + 1;thirdNumberIndex < nums.length;thirdNumberIndex ++){
-                    if (thirdNumberIndex != nums.length - 1 && nums[thirdNumberIndex] == nums[thirdNumberIndex + 1]){
-                        continue;
+                    if (nums[thirdNumberIndex] > numberThird){
+                        break;
                     }
-                    if (nums[firstNumberIndex] + nums[secondNumberIndex] + nums[thirdNumberIndex] == 0){
-                        List<Integer> combination = new ArrayList<>();
-                        combination.add(nums[firstNumberIndex]);
-                        combination.add(nums[secondNumberIndex]);
-                        combination.add(nums[thirdNumberIndex]);
-                        combinationList.add(combination);
+                    if (nums[thirdNumberIndex] == numberThird){
+                        firstNumberMap.put(nums[secondNumberIndex],numberThird);
+                        List<Integer> numberCombination = new ArrayList<>();
+                        numberCombination.add(nums[firstNumberIndex]);
+                        numberCombination.add(nums[secondNumberIndex]);
+                        numberCombination.add(numberThird);
+                        combinationList.add(numberCombination);
+                        break;
                     }
                 }
             }
@@ -47,6 +59,9 @@ public class NumOfThreeNumber {
     }
 
     public static void main(String[] args) {
-        System.out.println(StringUtils.isEmpty(null));
+       NumOfThreeNumber numOfThreeNumber = new NumOfThreeNumber();
+       numOfThreeNumber.threeSum(new int[]{0,1,5,-5,6,8,4,-7,8,-5,-3,-1,0,0,0,-4,2,3,9,7,1,5}).forEach(list ->{
+           System.out.println(list);
+       });
     }
 }
