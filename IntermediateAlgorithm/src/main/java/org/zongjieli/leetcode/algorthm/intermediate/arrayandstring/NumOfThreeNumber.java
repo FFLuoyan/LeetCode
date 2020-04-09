@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.algorthm.intermediate.arrayandstring;
 
-import org.springframework.util.StringUtils;
-
 import java.util.*;
 
 /**
@@ -30,7 +28,7 @@ public class NumOfThreeNumber {
             }
             firstNumberMap = new HashMap<>();
             numberMap.put(nums[firstNumberIndex],firstNumberMap);
-
+            int thirdNumberIndexStart = nums.length - 1;
             for (int secondNumberIndex = firstNumberIndex + 1;secondNumberIndex < nums.length - 1;secondNumberIndex++){
                 if (firstNumberMap.get(nums[secondNumberIndex]) != null){
                     continue;
@@ -39,8 +37,9 @@ public class NumOfThreeNumber {
                 if (numberThird < 0){
                     break;
                 }
-                for (int thirdNumberIndex = secondNumberIndex + 1;thirdNumberIndex < nums.length;thirdNumberIndex ++){
-                    if (nums[thirdNumberIndex] > numberThird){
+                for (int thirdNumberIndex = thirdNumberIndexStart;thirdNumberIndex > secondNumberIndex;thirdNumberIndex --){
+                    if (nums[thirdNumberIndex] < numberThird){
+                        thirdNumberIndexStart = thirdNumberIndex;
                         break;
                     }
                     if (nums[thirdNumberIndex] == numberThird){
