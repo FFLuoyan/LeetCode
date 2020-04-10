@@ -17,33 +17,34 @@ public class NumOfThreeNumber {
             return combinationList;
         }
         Arrays.sort(nums);
-        Map<Integer,Map<Integer,Integer>> numberMap = new HashMap<>();
+//        int count = 0;
         for (int firstNumberIndex = 0;firstNumberIndex < nums.length - 2; firstNumberIndex++){
-            Map<Integer,Integer> firstNumberMap = numberMap.get(nums[firstNumberIndex]);
-            if (firstNumberMap != null){
+            if(firstNumberIndex != 0&& nums[firstNumberIndex] == nums[firstNumberIndex - 1]){
                 continue;
             }
             if (nums[firstNumberIndex] > 0){
                 break;
             }
-            firstNumberMap = new HashMap<>();
-            numberMap.put(nums[firstNumberIndex],firstNumberMap);
             int thirdNumberIndexStart = nums.length - 1;
-            for (int secondNumberIndex = firstNumberIndex + 1;secondNumberIndex < nums.length - 1;secondNumberIndex++){
-                if (firstNumberMap.get(nums[secondNumberIndex]) != null){
+            int secondNumberIndexStart = firstNumberIndex + 1;
+            for (int secondNumberIndex = secondNumberIndexStart;secondNumberIndex < nums.length - 1;secondNumberIndex++){
+                if (secondNumberIndex != secondNumberIndexStart && nums[secondNumberIndex] == nums[secondNumberIndex - 1]){
                     continue;
                 }
                 int numberThird = -nums[firstNumberIndex] - nums[secondNumberIndex];
                 if (numberThird < 0){
                     break;
                 }
+                if (numberThird > nums[nums.length - 1]){
+                    continue;
+                }
                 for (int thirdNumberIndex = thirdNumberIndexStart;thirdNumberIndex > secondNumberIndex;thirdNumberIndex --){
+//                    count++;
                     if (nums[thirdNumberIndex] < numberThird){
                         thirdNumberIndexStart = thirdNumberIndex;
                         break;
                     }
                     if (nums[thirdNumberIndex] == numberThird){
-                        firstNumberMap.put(nums[secondNumberIndex],numberThird);
                         List<Integer> numberCombination = new ArrayList<>();
                         numberCombination.add(nums[firstNumberIndex]);
                         numberCombination.add(nums[secondNumberIndex]);
@@ -54,6 +55,7 @@ public class NumOfThreeNumber {
                 }
             }
         }
+//        System.out.println("Count: " + count);
         return combinationList;
     }
 
