@@ -257,8 +257,30 @@ public class MeshColor {
         return count;
     }
 
+    public int numOfWaysByMath(int n) {
+        if (n == 1){
+            return 12;
+        }
+        int remainNumber = 1000000007;
+        long doubleNumber = 6;
+        long ThreeNumber = 6;
+        for (int i = 1 ; i < n;i++){
+            if (doubleNumber > remainNumber){
+                doubleNumber %= remainNumber;
+            }
+            if (ThreeNumber > remainNumber){
+                ThreeNumber %= remainNumber;
+            }
+            long nextDoubleNumber = (doubleNumber << 1) + (ThreeNumber << 1) + doubleNumber;
+            long nextThreeNumber = (doubleNumber << 1) + (ThreeNumber << 1);
+            doubleNumber = nextDoubleNumber;
+            ThreeNumber = nextThreeNumber;
+        }
+        return Long.valueOf((doubleNumber + ThreeNumber) % remainNumber).intValue();
+    }
+
     public static void main(String[] args) {
         MeshColor meshColor = new MeshColor();
-        System.out.println(meshColor.numOfWays(11));
+        System.out.println(meshColor.numOfWaysByMath(5000));
     }
 }
