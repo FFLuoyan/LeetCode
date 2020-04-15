@@ -20,7 +20,7 @@ public class MeshColor {
      * @Date 2020/4/13
      * @Version 1.0
      */
-    public int numOfWays(int n) {
+    public int numOfWaysByRecursion(int n) {
         if (n == 1) {
             return 12;
         }
@@ -47,8 +47,8 @@ public class MeshColor {
                         count++;
                     }
                 }
-                if (count > 1000000007){
-                    return  count - 1000000007;
+                if (count > 1000000007) {
+                    return count - 1000000007;
                 }
                 return count;
             } else if (position == 1) {
@@ -125,7 +125,7 @@ public class MeshColor {
             } else {
                 // 第一个位置,不需要判断
                 for (int color = 0; color < 3; color++) {
-                    if (grids[row - 1][position] != color){
+                    if (grids[row - 1][position] != color) {
                         grids[row][position] = color;
                         count = setColor(grids, row, 1, count);
                     }
@@ -133,10 +133,132 @@ public class MeshColor {
                 return count;
             }
         }
-}
+    }
+
+    public int numOfWays(int n) {
+        if (n == 1) {
+            return 12;
+        }
+        int[] grids = new int[n * 3];
+        int count = 0;
+        for (int index = 0; index < grids.length; ) {
+            if (index == grids.length - 1) {
+                // 说明是最后一个
+                for (int color = 1; color < 4; color++) {
+                    if (grids[index - 1] != color && grids[index - 3] != color) {
+                        count++;
+                        if (count > 1000000007) {
+                            count -= 1000000007;
+                        }
+                    }
+                }
+                // 继续从上一个节点开始循环
+                index--;
+            } else if (index == 0) {
+                if (grids[0] == 3) {
+                    // 如果回溯至第一个节点,说明此时遍历完毕,则终止循环
+                    break;
+                } else {
+                    grids[0]++;
+                    index++;
+                }
+            } else if (index < 3) {
+                // 第一行的节点,只需要与自己前一个节点进行比较
+                if (grids[index] == 0) {
+                    // 如果为 -1 说明前移过,此时应该从 0 开始计算
+                    for (int color = 1; color < 4; color++) {
+                        if (grids[index - 1] != color) {
+                            grids[index] = color;
+                            index++;
+                            break;
+                        }
+                    }
+                } else {
+                    // 此时遍历是从前往后,应该在原数据基础上进行加减
+                    boolean valueChange = false;
+                    for (int color = grids[index] + 1; color < 4; color++) {
+                        if (color != grids[index - 1]) {
+                            grids[index] = color;
+                            valueChange = true;
+                            break;
+                        }
+                    }
+                    if (valueChange) {
+                        // 颜色的值进行了更改
+                        index++;
+                    } else {
+                        // 没有合适的值,返回上一个节点
+                        grids[index] = 0;
+                        index--;
+                    }
+                }
+            } else if (index % 3 == 0) {
+                // 为首位节点,只需要比较 index -3 的位置即可
+                if (grids[index] == 0) {
+                    // 如果为 -1 说明前移过,此时应该从 0 开始计算
+                    for (int color = 1; color < 4; color++) {
+                        if (grids[index - 3] != color) {
+                            grids[index] = color;
+                            index++;
+                            break;
+                        }
+                    }
+                } else {
+                    // 此时遍历是从后往前,应该在原数据基础上进行加减
+                    boolean valueChange = false;
+                    for (int color = grids[index] + 1; color < 4; color++) {
+                        if (color != grids[index - 3]) {
+                            grids[index] = color;
+                            valueChange = true;
+                            break;
+                        }
+                    }
+                    if (valueChange) {
+                        // 颜色的值进行了更改
+                        index++;
+                    } else {
+                        // 没有合适的值,返回上一个节点
+                        grids[index] = 0;
+                        index--;
+                    }
+                }
+            } else {
+                // 此时为非第一行的非首个节点,需要比较前一个节点,与上一行同一个位置的节点
+                if (grids[index] == 0) {
+                    // 如果为 -1 说明前移过,此时应该从 0 开始计算
+                    for (int color = 1; color < 4; color++) {
+                        if (grids[index - 3] != color && grids[index - 1] != color) {
+                            grids[index] = color;
+                            index++;
+                            break;
+                        }
+                    }
+                } else {
+                    // 此时遍历是从前往后,应该在原数据基础上进行加减
+                    boolean valueChange = false;
+                    for (int color = grids[index] + 1; color < 4; color++) {
+                        if (color != grids[index - 3] && grids[index - 1] != color) {
+                            grids[index] = color;
+                            valueChange = true;
+                            break;
+                        }
+                    }
+                    if (valueChange) {
+                        // 颜色的值进行了更改
+                        index++;
+                    } else {
+                        // 没有合适的值,返回上一个节点
+                        grids[index] = 0;
+                        index--;
+                    }
+                }
+            }
+        }
+        return count;
+    }
 
     public static void main(String[] args) {
         MeshColor meshColor = new MeshColor();
-        System.out.println(meshColor.numOfWays(5000));
+        System.out.println(meshColor.numOfWays(11));
     }
 }
