@@ -29,4 +29,30 @@ public class DifferPositionWords {
         }
         return wordGroup;
     }
+    public List<List<String>> groupAnagramsByCount(String[] strs) {
+        Map<String,List<String>> stringMap = new HashMap<>();
+        for (String s : strs){
+            int[] numberCount = new int[26];
+            for (int index = 0; index < s.length() ; index++){
+                numberCount[s.charAt(index) - 97] ++;
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0 ; i < numberCount.length ; i++){
+                stringBuilder.append(numberCount[i]);
+                stringBuilder.append("#");
+            }
+            String stringOrder = stringBuilder.toString();
+            List<String> differPositionWords = stringMap.get(stringOrder);
+            if (differPositionWords == null){
+                differPositionWords = new ArrayList<>();
+                stringMap.put(stringOrder,differPositionWords);
+            }
+            differPositionWords.add(s);
+        }
+        List<List<String>> wordGroup = new ArrayList<>(stringMap.size());
+        for (List<String> entry : stringMap.values()){
+            wordGroup.add(entry);
+        }
+        return wordGroup;
+    }
 }
