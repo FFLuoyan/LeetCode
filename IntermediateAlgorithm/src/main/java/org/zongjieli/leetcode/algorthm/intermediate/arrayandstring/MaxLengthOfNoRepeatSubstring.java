@@ -43,4 +43,34 @@ public class MaxLengthOfNoRepeatSubstring {
         }
         return maxLength;
     }
+    public int lengthOfLongestSubstringByIndex(String s) {
+        // 用索引记录位置,再检索时不再需要每一个进行比较
+        int[] valueIndex = new int[128];
+        int maxLength = 0;
+        int startStringIndex = 0;
+        for (int i = 0 ; i < s.length() ; i++){
+            // 对于每一个字符,进行重复性判断
+            int value = s.charAt(i);
+            // 获取字符在数值表中的下标
+            if (valueIndex[value] > startStringIndex){
+                // 如果该字符已经存在了,则从当前连续的字符串中进行查找
+                // 直到查找出来了重复的字符
+                // 开始下一轮重复数据的积累
+                startStringIndex = valueIndex[value];
+                valueIndex[value] = i + 1;
+                // 排除下标为 0 的影响
+            } else {
+                // 记录当前值的下标
+                valueIndex[value] = i + 1;
+                int length = i - startStringIndex + 1;
+                maxLength = length > maxLength ? length : maxLength;
+            }
+        }
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        MaxLengthOfNoRepeatSubstring substring = new MaxLengthOfNoRepeatSubstring();
+        System.out.println(substring.lengthOfLongestSubstringByIndex("tmmuasaw"));
+    }
 }
