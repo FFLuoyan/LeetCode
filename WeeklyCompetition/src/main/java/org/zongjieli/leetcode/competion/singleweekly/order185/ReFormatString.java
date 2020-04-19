@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.competion.singleweekly.order185;
 
+import org.springframework.core.annotation.Order;
+
 import java.awt.*;
 import java.util.Arrays;
 
@@ -11,6 +13,7 @@ import java.util.Arrays;
  * @Date: 2020/4/19
  * @Version: 1.0
  **/
+
 public class ReFormatString {
     public String reformat(String s) {
         if (s.length() < 2){
