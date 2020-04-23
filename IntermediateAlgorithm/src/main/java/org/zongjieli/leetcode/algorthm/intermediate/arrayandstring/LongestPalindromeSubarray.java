@@ -35,7 +35,6 @@ public class LongestPalindromeSubarray {
                         if (charIndex + 1 - canIndex > endIndex - startIndex){
                             startIndex = canIndex;
                             endIndex = charIndex + 1;
-                            System.out.println(s.substring(startIndex,endIndex));
                         }
                     } else {
                         if (canIndex > 0){
