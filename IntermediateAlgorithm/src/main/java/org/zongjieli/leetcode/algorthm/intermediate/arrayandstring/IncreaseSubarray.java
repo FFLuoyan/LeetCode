@@ -13,36 +13,14 @@ public class IncreaseSubarray {
             return false;
         }
         int firstNumber = nums[0];
-        int secondNumber = nums[0];
-        int temp = nums[0];
-        boolean check = false;
-        for (int index = 1;index < nums.length;index++){
-            if (check){
-                if (nums[index] > secondNumber){
-                    return true;
-                }else if (nums[index] < secondNumber){
-                    if (nums[index] > firstNumber){
-                        secondNumber = nums[index];
-                    } else if (nums[index] < firstNumber){
-                        if (temp < firstNumber){
-                            // temp nums[index] 均小于firstNumber,可以刷新 secondNumber
-                            if (nums[index] > temp){
-                                firstNumber = temp;
-                                secondNumber = nums[index];
-                                temp = secondNumber;
-                            }
-                        }else {
-                            temp = nums[index];
-                        }
-                    }
-                }
-            } else {
-                if (nums[index] > firstNumber){
-                    secondNumber = nums[index];
-                    check = true;
-                }else {
-                    firstNumber = nums[index];
-                }
+        int secondNumber = Integer.MAX_VALUE;
+        for (int index = 1;index < nums.length;index++) {
+            if (nums[index] > secondNumber){
+                return true;
+            }else if (nums[index] <= firstNumber){
+                firstNumber = nums[index];
+            }else {
+                secondNumber = nums[index];
             }
         }
         return false;
