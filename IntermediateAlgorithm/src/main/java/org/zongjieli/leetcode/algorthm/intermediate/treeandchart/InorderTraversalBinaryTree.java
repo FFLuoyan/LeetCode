@@ -3,6 +3,7 @@ package org.zongjieli.leetcode.algorthm.intermediate.treeandchart;
 import org.zongjieli.leetcode.algorithm.primary.tree.TreeNode;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -30,6 +31,27 @@ public class InorderTraversalBinaryTree {
             list.add(root.val);
             inorderTraversalByRecursion(list,root.right);
         }
+    }
+
+    public List<Integer> inorderTraversalByIterator(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        if (root == null){
+            return list;
+        }
+        LinkedList<TreeNode> nodes = new LinkedList<>();
+        nodes.add(root);
+        TreeNode searchNode = root.left;
+        while (nodes.size() > 0 || searchNode != null){
+            if (searchNode != null){
+                nodes.addLast(searchNode);
+                searchNode = searchNode.left;
+            }else {
+                searchNode = nodes.removeLast();
+                list.add(searchNode.val);
+                searchNode = searchNode.right;
+            }
+        }
+        return list;
     }
 
 }
