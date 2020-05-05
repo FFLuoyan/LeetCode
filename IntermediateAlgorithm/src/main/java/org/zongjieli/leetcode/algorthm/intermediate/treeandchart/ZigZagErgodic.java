@@ -52,4 +52,45 @@ public class ZigZagErgodic {
         }
         return result;
     }
+
+    public List<List<Integer>> zigzagLevelOrderByTwoList(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null){
+            return result;
+        }
+        boolean leftToRight = true;
+        LinkedList<TreeNode> currentNodes = new LinkedList<>();
+        LinkedList<TreeNode> waitNodes = new LinkedList<>();
+        currentNodes.add(root);
+        while (currentNodes.size() != 0){
+            LinkedList<Integer> currentList = new LinkedList<>();
+            while (currentNodes.size() > 0){
+                TreeNode currentNode = currentNodes.pollFirst();
+                currentList.addLast(currentNode.val);
+                if (leftToRight){
+                    // 如果当前循环为从左至右,则下一轮循环为从右至左
+                    // 最左的节点放在最后
+                    if (currentNode.left != null){
+                        waitNodes.addFirst(currentNode.left);
+                    }
+                    if (currentNode.right != null){
+                        waitNodes.addFirst(currentNode.right);
+                    }
+                } else {
+                    if (currentNode.right != null){
+                        waitNodes.addFirst(currentNode.right);
+                    }
+                    if (currentNode.left != null){
+                        waitNodes.addFirst(currentNode.left);
+                    }
+                }
+            }
+            LinkedList<TreeNode> temp = currentNodes;
+            currentNodes = waitNodes;
+            waitNodes = temp;
+            result.add(currentList);
+            leftToRight = leftToRight ? false : true;
+        }
+        return result;
+    }
 }
