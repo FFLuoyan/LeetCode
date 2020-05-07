@@ -19,9 +19,6 @@ public class ConstructBinaryTree {
 
 
     public TreeNode buildTree(int[] preorder, int[] inorder,int preStart,int preEnd,int inStart,int inEnd){
-        if (preStart > preEnd){
-            return null;
-        }
         TreeNode root = new TreeNode(inorder[inStart]);
         int middleNodeIndex = preStart;
         while (preorder[middleNodeIndex] != inorder[inStart]){
@@ -30,8 +27,12 @@ public class ConstructBinaryTree {
         }
         // 此时 inorder[inStart] == preOrder[middleNodeIndex]
         // middleNodeIndex 节点的位置即为前序遍历中中点的位置
-        root.left = buildTree(preorder,inorder,preStart,middleNodeIndex - 1,inStart + 1,inStart + middleNodeIndex - preStart);
-        root.right = buildTree(preorder,inorder,middleNodeIndex + 1,preEnd,inEnd - preEnd + middleNodeIndex + 1,inEnd);
+        if (preStart <= middleNodeIndex - 1){
+            root.left = buildTree(preorder,inorder,preStart,middleNodeIndex - 1,inStart + 1,inStart + middleNodeIndex - preStart);
+        }
+        if (middleNodeIndex + 1 <= preEnd){
+            root.right = buildTree(preorder,inorder,middleNodeIndex + 1,preEnd,inEnd - preEnd + middleNodeIndex + 1,inEnd);
+        }
         return root;
     }
 
