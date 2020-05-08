@@ -2,6 +2,9 @@ package org.zongjieli.leetcode.algorthm.intermediate.treeandchart;
 
 import org.zongjieli.leetcode.algorithm.primary.tree.TreeNode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @ClassName: ConstructBinaryTree
  * @Description: 根据中序遍历以及前序遍历构建二叉树(没有重复元素)
@@ -10,28 +13,29 @@ import org.zongjieli.leetcode.algorithm.primary.tree.TreeNode;
  * @Version: 1.0
  **/
 public class ConstructBinaryTree {
+
+    private Map<Integer,Integer> valueIndex = new HashMap<>();
+
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         if (preorder == null || inorder == null || preorder.length ==0 || inorder.length == 0){
             return null;
         }
-        return buildTree(inorder,preorder,0,preorder.length - 1,0,inorder.length - 1);
+        for (int i = 0 ; i < inorder.length ; i++){
+            valueIndex.put(inorder[i],i);
+        }
+        return buildTree(preorder,0,inorder.length - 1,0,preorder.length - 1);
     }
 
 
-    public TreeNode buildTree(int[] preorder, int[] inorder,int preStart,int preEnd,int inStart,int inEnd){
-        TreeNode root = new TreeNode(inorder[inStart]);
-        int middleNodeIndex = preStart;
-        while (preorder[middleNodeIndex] != inorder[inStart]){
-            // 如果前序遍历节点值不等于中序遍历的中点值,说明子树位置没有改变
-            middleNodeIndex++;
+    public TreeNode buildTree( int[] preorder,int inStart,int inEnd,int preStart,int preEnd){
+        TreeNode root = new TreeNode(preorder[preStart]);
+        int middleNodeIndex = valueIndex.get(preorder[preStart]);
+
+        if (inStart <= middleNodeIndex - 1){
+            root.left  = buildTree(preorder,inStart,middleNodeIndex - 1,preStart + 1,preStart + middleNodeIndex - inStart);
         }
-        // 此时 inorder[inStart] == preOrder[middleNodeIndex]
-        // middleNodeIndex 节点的位置即为前序遍历中中点的位置
-        if (preStart <= middleNodeIndex - 1){
-            root.left = buildTree(preorder,inorder,preStart,middleNodeIndex - 1,inStart + 1,inStart + middleNodeIndex - preStart);
-        }
-        if (middleNodeIndex + 1 <= preEnd){
-            root.right = buildTree(preorder,inorder,middleNodeIndex + 1,preEnd,inEnd - preEnd + middleNodeIndex + 1,inEnd);
+        if (middleNodeIndex + 1 <= inEnd){
+            root.right = buildTree(preorder,middleNodeIndex + 1,inEnd,preEnd - inEnd + middleNodeIndex + 1,preEnd);
         }
         return root;
     }
