@@ -40,6 +40,12 @@ public class ConstructBinaryTree {
         return root;
     }
 
+    public TreeNode buildTreeByAnotherRecursion(int[] preorder){
+        TreeNode root = new TreeNode(preorder[0]);
+
+        return root;
+    }
+
     public static void main(String[] args) {
         ConstructBinaryTree constructBinaryTree = new ConstructBinaryTree();
         TreeNode root = constructBinaryTree.buildTree(new int[]{3,9,20,15,7},new int[]{9,3,15,20,7});
