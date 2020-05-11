@@ -14,6 +14,7 @@ import java.util.Map;
  **/
 public class ConstructBinaryTree {
 
+    private int recursionPreIndex = 0;
     private Map<Integer,Integer> valueIndex = new HashMap<>();
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
@@ -23,7 +24,8 @@ public class ConstructBinaryTree {
         for (int i = 0 ; i < inorder.length ; i++){
             valueIndex.put(inorder[i],i);
         }
-        return buildTree(preorder,0,inorder.length - 1,0,preorder.length - 1);
+//        return buildTree(preorder,0,inorder.length - 1,0,preorder.length - 1);
+        return buildTreeByAnotherRecursion(preorder,Integer.MAX_VALUE);
     }
 
 
@@ -40,9 +42,19 @@ public class ConstructBinaryTree {
         return root;
     }
 
-    public TreeNode buildTreeByAnotherRecursion(int[] preorder){
-        TreeNode root = new TreeNode(preorder[0]);
-
+    public TreeNode buildTreeByAnotherRecursion(int[] preorder,int maxIndex){
+        if (recursionPreIndex == preorder.length){
+            return null;
+        }
+        int valueInIndex = valueIndex.get(preorder[recursionPreIndex]);
+        // 下一个节点值大于上一个节点的包含范围,则直接返回 null
+        if (valueInIndex > maxIndex){
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[recursionPreIndex]);
+        recursionPreIndex ++;
+        root.left = buildTreeByAnotherRecursion(preorder,valueInIndex);
+        root.right = buildTreeByAnotherRecursion(preorder,maxIndex);
         return root;
     }
 
