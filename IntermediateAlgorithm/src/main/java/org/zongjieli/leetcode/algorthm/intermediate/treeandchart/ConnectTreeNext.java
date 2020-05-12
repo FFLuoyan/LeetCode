@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.algorthm.intermediate.treeandchart;
 
 import org.zongjieli.leetcode.algorithm.primary.tree.TreeNextNode;
-import org.zongjieli.leetcode.algorithm.primary.tree.TreeNode;
 
 /**
  * @ClassName: ConnectTreeNext
@@ -34,10 +33,8 @@ public class ConnectTreeNext {
                 }
                 // 此时 current 不为空,但是 current.next 为 null
                 current.left.next = current.right;
-                first = first.left;
-            }else {
-                break;
             }
+            first = first.left;
         }
         return root;
     }

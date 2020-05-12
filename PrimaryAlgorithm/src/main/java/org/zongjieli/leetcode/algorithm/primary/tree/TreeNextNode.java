@@ -2,7 +2,7 @@ package org.zongjieli.leetcode.algorithm.primary.tree;
 
 /**
  * @ClassName: TreeNextNode
- * @Description: TODO
+ * @Description: 含有同一行中下一个节点的指针的树节点
  * @Author: Zongjie.Li
  * @Date: 2020/5/12
  * @Version: 1.0
