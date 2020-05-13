@@ -39,5 +39,22 @@ public class ConnectTreeNext {
         return root;
     }
 
+    public TreeNextNode connectByRecursion(TreeNextNode root) {
+        connectByRecursion(root,null);
+        return root;
+    }
+
+    public void connectByRecursion(TreeNextNode left,TreeNextNode right) {
+        if (left != null){
+            left.next = right;
+            connectByRecursion(left.left,left.right);
+            if (right != null){
+                connectByRecursion(left.right,right.left);
+                connectByRecursion(right.left,right.right);
+            }
+        }
+    }
+
+    // 递归尝试
 
 }
