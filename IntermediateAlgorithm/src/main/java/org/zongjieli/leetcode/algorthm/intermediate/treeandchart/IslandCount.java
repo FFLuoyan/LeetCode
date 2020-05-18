@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.algorthm.intermediate.treeandchart;
 
+import java.util.LinkedList;
+
 /**
  * @ClassName: IslandCount
  * @Description: 根据给定的二维数组,计算出数组中岛屿的数量
@@ -12,6 +14,48 @@ package org.zongjieli.leetcode.algorthm.intermediate.treeandchart;
  **/
 public class IslandCount {
     public int numIslands(char[][] grid) {
-        return 0;
+        if (grid.length == 0 || grid[0].length == 0){
+            return 0;
+        }
+        boolean[][] checkedGrid = new boolean[grid.length][grid[0].length];
+        LinkedList<Integer> checkRowIndex = new LinkedList<>();
+        LinkedList<Integer> checkColumnIndex = new LinkedList<>();
+        int count = 0;
+        for (int i = 0;i < grid.length;i++){
+            for (int j = 0 ; j < grid[i].length ; j++){
+                if (check(i,j,grid,checkedGrid,checkRowIndex,checkColumnIndex)){
+                    count ++;
+                }
+                while (checkRowIndex.size() != 0){
+                    int rowIndex = checkRowIndex.poll();
+                    int columnIndex = checkColumnIndex.poll();
+                    if (rowIndex > 0){
+                        check(rowIndex - 1,columnIndex,grid,checkedGrid,checkRowIndex,checkColumnIndex);
+                    }
+                    if (columnIndex > 0){
+                        check(rowIndex,columnIndex - 1,grid,checkedGrid,checkRowIndex,checkColumnIndex);
+                    }
+                    if (rowIndex < grid.length - 1){
+                        check(rowIndex + 1,columnIndex,grid,checkedGrid,checkRowIndex,checkColumnIndex);
+                    }
+                    if (columnIndex < grid[rowIndex].length - 1){
+                        check(rowIndex,columnIndex + 1,grid,checkedGrid,checkRowIndex,checkColumnIndex);
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public boolean check(int rowIndex,int columnIndex,char[][] grid,boolean[][] checkedGrid,LinkedList<Integer> checkRowIndex,LinkedList<Integer> checkColumnIndex){
+        if (!checkedGrid[rowIndex][columnIndex]){
+            checkedGrid[rowIndex][columnIndex] = true;
+            if (grid[rowIndex][columnIndex] == '1'){
+                checkRowIndex.addLast(rowIndex);
+                checkColumnIndex.addLast(columnIndex);
+                return true;
+            }
+        }
+        return false;
     }
 }
