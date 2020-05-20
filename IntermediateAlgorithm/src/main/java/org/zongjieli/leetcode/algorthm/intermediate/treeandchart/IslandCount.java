@@ -80,16 +80,11 @@ public class IslandCount {
         for (int i = 1; i < grid[0].length; i++) {
             // 遍历第一行,每一个数只需要和前一个数进行比较
             if (grid[0][i] == '1') {
-                if (unionSets.size() == 0) {
-                    // 此为第一个发现的小岛
-                    Set<Integer> firstSet = new HashSet<>();
-                    firstSet.add(i);
-                    unionSets.addLast(firstSet);
-                } else if (grid[0][i - 1] == '1') {
+                if (unionSets.size() != 0 && grid[0][i - 1] == '1') {
                     // 如果上一个数不为 '1',则直接加入最后一个 Set 中
                     unionSets.getLast().add(i);
                 } else {
-                    // 上一个数为 '0',则该小岛应为一个新的小岛
+                    // 上一个数为 '0',或者当前没有小岛,则该小岛应为一个新的小岛
                     Set<Integer> newSet = new HashSet<>();
                     newSet.add(i);
                     unionSets.addLast(newSet);
@@ -100,8 +95,7 @@ public class IslandCount {
         for (int i = 1; i < grid.length; i++) {
             // 遍历每一行
             if (grid[i][0] == '1') {
-                // 遍历第一个节点
-                // 将该节点放入 Set 中
+                // 遍历第一个节点,将该节点放入 Set 中
                 if (unionSets.size() > 0 && grid[i - 1][0] == '1') {
                     // 存在有一个 Set 可以包含当前节点
                     int index = (i - 1) * grid[i].length;
@@ -124,35 +118,69 @@ public class IslandCount {
             for (int j = 1; j < grid[i].length; j++) {
                 if (grid[i][j] == '1') {
                     int currentIndex = i * grid[i].length + j;
-                    if (unionSets.size() == 0 || (grid[i - 1][j] == '0' && grid[i][j - 1] == '0')) {
-                        Set<Integer> firstSet = new HashSet<>();
-                        firstSet.add(currentIndex);
-                        unionSets.addLast(firstSet);
-                    } else {
-                        int leftIndex = currentIndex - 1;
-                        int upperIndex = currentIndex - grid[i].length;
-                        Set<Integer> leftSet = null;
-                        Set<Integer> upperSet = null;
+                    int leftIndex = currentIndex - 1;
+                    int upperIndex = currentIndex - grid[i].length;
+                    if (unionSets.size() == 0) {
+                        // 当前小岛为独立的小岛
+                        Set<Integer> newSet = new HashSet<>();
+                        newSet.add(currentIndex);
+                        unionSets.addLast(newSet);
+                    } else if (grid[i - 1][j] == '0'){
+                        // 上节点为海,则只用判断 left 节点
+                        if (grid[i][j - 1] == '0'){
+                            // Left 节点为海,新建一个小岛
+                            Set<Integer> newSet = new HashSet<>();
+                            newSet.add(currentIndex);
+                            unionSets.addLast(newSet);
+                        } else {
+                            // 只存在 Left 节点为连接点
+                            Iterator<Set<Integer>> setIterator = unionSets.iterator();
+                            while (setIterator.hasNext()) {
+                                Set<Integer> set = setIterator.next();
+                                if (set.contains(leftIndex)) {
+                                    set.add(currentIndex);
+                                    break;
+                                }
+                            }
+                        }
+                    }else if (grid[i][j - 1] == '0'){
+                        // 上节点为连接点,左节点为海
                         Iterator<Set<Integer>> setIterator = unionSets.iterator();
                         while (setIterator.hasNext()) {
                             Set<Integer> set = setIterator.next();
-                            if (set.contains(leftIndex)) {
+                            if (set.contains(upperIndex)) {
+                                set.add(currentIndex);
+                                break;
+                            }
+                        }
+                    } else {
+                        // 左右两个均为连接点
+                        Set<Integer> leftSet = null;
+                        Set<Integer> upperSet = null;
+                        Iterator<Set<Integer>> setIterator = unionSets.iterator();
+                        while ((leftSet == null || upperSet == null) && setIterator.hasNext()) {
+                            Set<Integer> set = setIterator.next();
+                            if (leftSet == null && set.contains(leftIndex)) {
                                 leftSet = set;
                             }
-                            if (set.contains(upperIndex)) {
+                            if (upperSet == null && set.contains(upperIndex)) {
                                 upperSet = set;
                             }
                         }
-                        if (leftSet == null) {
-                            upperSet.add(currentIndex);
-                        } else if (upperSet == null) {
-                            leftSet.add(currentIndex);
-                        } else if (leftSet == upperSet) {
+                        // 两个 Set 均有值
+                        if (leftSet == upperSet){
                             leftSet.add(currentIndex);
                         } else {
-                            leftSet.addAll(upperSet);
-                            leftSet.add(currentIndex);
-                            unionSets.remove(upperSet);
+                            // 两个 Set 不一样,则合并
+                            if (upperSet.size() > leftSet.size()){
+                                upperSet.add(currentIndex);
+                                upperSet.addAll(leftSet);
+                                unionSets.remove(leftSet);
+                            } else {
+                                leftSet.add(currentIndex);
+                                leftSet.addAll(upperSet);
+                                unionSets.remove(upperSet);
+                            }
                         }
                     }
                 }
