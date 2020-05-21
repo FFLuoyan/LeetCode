@@ -125,9 +125,9 @@ public class IslandCount {
                         Set<Integer> newSet = new HashSet<>();
                         newSet.add(currentIndex);
                         unionSets.addLast(newSet);
-                    } else if (grid[i - 1][j] == '0'){
+                    } else if (grid[i - 1][j] == '0') {
                         // 上节点为海,则只用判断 left 节点
-                        if (grid[i][j - 1] == '0'){
+                        if (grid[i][j - 1] == '0') {
                             // Left 节点为海,新建一个小岛
                             Set<Integer> newSet = new HashSet<>();
                             newSet.add(currentIndex);
@@ -143,7 +143,7 @@ public class IslandCount {
                                 }
                             }
                         }
-                    }else if (grid[i][j - 1] == '0'){
+                    } else if (grid[i][j - 1] == '0') {
                         // 上节点为连接点,左节点为海
                         Iterator<Set<Integer>> setIterator = unionSets.iterator();
                         while (setIterator.hasNext()) {
@@ -168,11 +168,11 @@ public class IslandCount {
                             }
                         }
                         // 两个 Set 均有值
-                        if (leftSet == upperSet){
+                        if (leftSet == upperSet) {
                             leftSet.add(currentIndex);
                         } else {
                             // 两个 Set 不一样,则合并
-                            if (upperSet.size() > leftSet.size()){
+                            if (upperSet.size() > leftSet.size()) {
                                 upperSet.add(currentIndex);
                                 upperSet.addAll(leftSet);
                                 unionSets.remove(leftSet);
@@ -189,11 +189,129 @@ public class IslandCount {
         return unionSets.size();
     }
 
+    /**
+     * 并查集算法的数组实现
+     *
+     * @param grid Param Description
+     * @return int
+     * @Author Zongjie.Li
+     * @Date 2020/5/20
+     * @Version 1.0
+     */
+    public int numIslandsByUnionFindSetsByArray(char[][] grid) {
+        // 获取每个元素的下标为 rowIndex * columnLength + columnIndex
+        if (grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        LinkedList<Set<Integer>> unionSets = new LinkedList<>();
+        int setCount = 1;
+        int[][] gridSet = new int[grid.length][grid[0].length];
+
+        // 计算第一行第一个节点
+        if (grid[0][0] == '1') {
+            Set set = new HashSet();
+            set.add(setCount);
+            unionSets.addFirst(set);
+            gridSet[0][0] = setCount;
+            setCount++;
+        }
+
+        // 计算第一行的剩余节点
+        for (int i = 1; i < grid[0].length; i++) {
+            if (grid[0][i] == '1') {
+                // 此时需要判断前一个节点是否为陆地,如果为陆地则为同一个
+                if (gridSet[0][i - 1] != 0) {
+                    gridSet[0][i] = gridSet[0][i - 1];
+                } else {
+                    // 构建一个新的小岛
+                    Set set = new HashSet();
+                    set.add(setCount);
+                    unionSets.addFirst(set);
+                    gridSet[0][i] = setCount;
+                    setCount++;
+                }
+            }
+        }
+
+        // 计算第二行至最后一行
+        for (int i = 1; i < grid.length; i++) {
+            if (grid[i][0] == '1') {
+                // 计算第一个节点
+                if (gridSet[i - 1][0] != 0) {
+                    gridSet[i][0] = gridSet[i - 1][0];
+                } else {
+                    // 独立小岛
+                    Set set = new HashSet();
+                    set.add(setCount);
+                    unionSets.addFirst(set);
+                    gridSet[i][0] = setCount;
+                    setCount++;
+                }
+            }
+
+            // 计算第二行起的每行的剩余节点
+            for (int j = 1; j < grid[i].length; j++) {
+                if (grid[i][j] == '1') {
+                    // 如果左节点有值
+                    int leftSet = gridSet[i][j - 1];
+                    int upperSet = gridSet[i - 1][j];
+                    if (leftSet != 0) {
+                        if (upperSet != 0) {
+                            // 如果上节点也有值
+                            gridSet[i][j] = leftSet;
+                            if (leftSet != upperSet) {
+                                // 两个节点值不相等
+                                Set<Integer> leftGroup = null;
+                                Set<Integer> upperGroup = null;
+                                Iterator<Set<Integer>> iterator = unionSets.iterator();
+                                while (iterator.hasNext() && (leftGroup == null || upperGroup == null)) {
+                                    Set<Integer> set = iterator.next();
+                                    if (leftGroup == null && set.contains(leftSet)) {
+                                        leftGroup = set;
+                                    }
+                                    if (upperGroup == null && set.contains(upperSet)) {
+                                        upperGroup = set;
+                                    }
+                                }
+                                if (leftGroup == upperGroup) {
+                                    gridSet[i][j] = leftSet;
+                                } else {
+                                    if (leftGroup.size() > upperGroup.size()) {
+                                        leftGroup.addAll(upperGroup);
+                                        unionSets.remove(upperGroup);
+                                    } else {
+                                        upperGroup.addAll(leftGroup);
+                                        unionSets.remove(leftGroup);
+                                    }
+                                }
+                            }
+                        } else {
+                            // 左节点有值,上节点无值
+                            gridSet[i][j] = leftSet;
+                        }
+                    } else if (upperSet != 0) {
+                        // 左节点无值,上节点有值
+                        gridSet[i][j] = upperSet;
+                    } else {
+                        // 左右节点都无值,构建新的小岛
+                        Set set = new HashSet();
+                        set.add(setCount);
+                        unionSets.addFirst(set);
+                        gridSet[i][j] = setCount;
+                        setCount++;
+                    }
+
+                }
+            }
+        }
+        return unionSets.size();
+    }
+
 
     public static void main(String[] args) {
         IslandCount islandCount = new IslandCount();
-//        char[][] island = new char[][]{{'1', '1', '0', '0', '0'}, {'1', '1', '0', '0', '0'}, {'0', '0', '1', '0', '0'}, {'0', '0', '0', '1', '1'}};
+        //char[][] island = new char[][]{{'1', '1', '0', '0', '0'}, {'1', '1', '0', '0', '0'}, {'0', '0', '1', '0', '0'}, {'0', '0', '0', '1', '1'}};
         char[][] island = new char[][]{{'1', '1', '1'}, {'0', '1', '0'}, {'1', '1', '1'}};
-        System.out.println(islandCount.numIslandsByUnionFindSets(island));
+        System.out.println(islandCount.numIslandsByUnionFindSetsByArray(island));
     }
 }
