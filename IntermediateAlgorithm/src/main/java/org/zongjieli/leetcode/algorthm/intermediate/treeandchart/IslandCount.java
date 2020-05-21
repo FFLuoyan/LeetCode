@@ -55,6 +55,38 @@ public class IslandCount {
         return false;
     }
 
+    public int numIslandsByRecursion(char[][] grid) {
+        if (grid.length == 0 || grid[0].length == 0) {
+            return 0;
+        }
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                    recursion(grid,i,j);
+                }
+            }
+        }
+        return count;
+    }
+
+    public void recursion(char[][] grid, int rowIndex, int columnIndex) {
+        grid[rowIndex][columnIndex] = '0';
+        if (rowIndex > 0 && grid[rowIndex - 1][columnIndex] == '1') {
+            recursion(grid, rowIndex - 1, columnIndex);
+        }
+        if (rowIndex < grid.length - 1 && grid[rowIndex + 1][columnIndex] == '1') {
+            recursion(grid, rowIndex + 1, columnIndex);
+        }
+        if (columnIndex > 0 && grid[rowIndex][columnIndex - 1] == '1') {
+            recursion(grid, rowIndex, columnIndex - 1);
+        }
+        if (columnIndex < grid[rowIndex].length - 1 && grid[rowIndex][columnIndex + 1] == '1') {
+            recursion(grid, rowIndex, columnIndex + 1);
+        }
+    }
+
 
     /**
      * 并查集的算法
@@ -312,6 +344,6 @@ public class IslandCount {
         IslandCount islandCount = new IslandCount();
         //char[][] island = new char[][]{{'1', '1', '0', '0', '0'}, {'1', '1', '0', '0', '0'}, {'0', '0', '1', '0', '0'}, {'0', '0', '0', '1', '1'}};
         char[][] island = new char[][]{{'1', '1', '1'}, {'0', '1', '0'}, {'1', '1', '1'}};
-        System.out.println(islandCount.numIslandsByUnionFindSetsByArray(island));
+        System.out.println(islandCount.numIslandsByRecursion(island));
     }
 }
