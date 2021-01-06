@@ -64,44 +64,38 @@ public class Rotate {
     }
 
     public void rotateByLoop(int[] nums, int k) {
-        int rightChange = k % nums.length;
-        if (rightChange == 0){
+        int leftChange = nums.length - (k % nums.length);
+        if (leftChange == 0){
             return;
         }
-        // change 表示向右移动的位数
-        // 从 0 开始移动,至下一个
+
         int count = 0;
-        int refresh = 0;
-        int changeIndex = rightChange;
-
-        int save = nums[0];
-        int change = nums[changeIndex];
-
-        for (;count < nums.length; count++){
-            nums[changeIndex] = save;
-            save = change;
-            changeIndex += rightChange;
-            changeIndex = changeIndex >= nums.length ? changeIndex - nums.length : changeIndex;
-            if (changeIndex == refresh){
-                nums[refresh] = save;
+        for (int startIndex = 0 ; count < nums.length; startIndex++){
+            int index = startIndex;
+            int tempSave = nums[index];
+            for (;;){
                 count++;
-                if (count >= nums.length - 1){
-                    break;
+                int changeIndex = index + leftChange;
+                if (changeIndex >= nums.length){
+                    changeIndex = changeIndex - nums.length;
+                    if (changeIndex == startIndex){
+                        nums[index] = tempSave;
+                        break;
+                    }
                 }
-                refresh++;
-                save = nums[refresh];
-                changeIndex = refresh + rightChange;
+                nums[index] = nums[changeIndex];
+                index = changeIndex;
             }
-            change = nums[changeIndex];
-
         }
 
     }
 
+
+
     public static void main(String[] args) {
         Rotate rotate = new Rotate();
-//        int[] test = new int[]{1,2,3,4,5,6,7};
-        int[] test = new int[]{1,2};
+        int[] test = new int[]{1,2,3,4,5,6,7,8};
+//        int[] test = new int[]{1,2};
         System.out.println(Arrays.toString(test));
 //        rotate.rotate(test,6);
         rotate.rotateByLoop(test,3);
