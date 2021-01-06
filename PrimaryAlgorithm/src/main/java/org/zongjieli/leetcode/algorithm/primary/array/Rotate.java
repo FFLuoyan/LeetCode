@@ -68,26 +68,19 @@ public class Rotate {
         if (leftChange == 0){
             return;
         }
-
         int count = 0;
         for (int startIndex = 0 ; count < nums.length; startIndex++){
-            int index = startIndex;
-            int tempSave = nums[index];
-            for (;;){
+            for (int index = startIndex,tempSave = nums[index];;){
                 count++;
-                int changeIndex = index + leftChange;
-                if (changeIndex >= nums.length){
-                    changeIndex = changeIndex - nums.length;
-                    if (changeIndex == startIndex){
-                        nums[index] = tempSave;
-                        break;
-                    }
+                int changeIndex = (index + leftChange) % nums.length;
+                if (changeIndex == startIndex){
+                    nums[index] = tempSave;
+                    break;
                 }
                 nums[index] = nums[changeIndex];
                 index = changeIndex;
             }
         }
-
     }
 
 
