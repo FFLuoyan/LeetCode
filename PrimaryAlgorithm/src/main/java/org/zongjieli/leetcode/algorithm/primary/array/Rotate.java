@@ -83,6 +83,24 @@ public class Rotate {
         }
     }
 
+    public void rotateByReverse(int[] nums, int k) {
+        int rightChange = k % nums.length;
+        if (rightChange == 0){
+            return;
+        }
+
+        reverse(nums,0,nums.length - 1);
+        reverse(nums,0,rightChange - 1);
+        reverse(nums,rightChange,nums.length - 1);
+    }
+
+    public void reverse(int[] nums,int startIndex,int endIndex){
+        for (;startIndex < endIndex ; startIndex++,endIndex--){
+            int temp = nums[startIndex];
+            nums[startIndex] = nums[endIndex];
+            nums[endIndex] = temp;
+        }
+    }
 
 
     public static void main(String[] args) {
@@ -91,7 +109,7 @@ public class Rotate {
 //        int[] test = new int[]{1,2};
         System.out.println(Arrays.toString(test));
 //        rotate.rotate(test,6);
-        rotate.rotateByLoop(test,3);
+        rotate.rotateByReverse(test,3);
         System.out.println(Arrays.toString(test));
     }
 }
