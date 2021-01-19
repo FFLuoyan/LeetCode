@@ -18,8 +18,8 @@
     <dependencies>
         <dependency>
             <groupId>org.zongjieli.leetcode</groupId>
-            <artifactId>primary-algorithm</artifactId>
-            <version>${primary-algorthm.vertion}</version>
+            <artifactId>base</artifactId>
+            <version>${base.vertion}</version>
         </dependency>
     </dependencies>
 

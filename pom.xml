@@ -7,6 +7,9 @@
         <module>IntermediateAlgorithm</module>
         <module>PrimaryAlgorithm</module>
         <module>WeeklyCompetition</module>
+        <module>Daily</module>
+        <module>DailyQuestion</module>
+        <module>Base</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -22,6 +25,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <base.vertion>1.0.0</base.vertion>
+        <daily-question.vertion>1.0.0</daily-question.vertion>
         <primary-algorthm.vertion>1.0.0</primary-algorthm.vertion>
         <intermediate-algorthm.vertion>1.0.0</intermediate-algorthm.vertion>
         <weekly-competition.vertion>1.0.0</weekly-competition.vertion>

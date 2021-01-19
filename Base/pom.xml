@@ -9,18 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>intermediate-algorithm</artifactId>
+    <artifactId>base</artifactId>
 
-    <version>${intermediate-algorthm.vertion}</version>
-    <name>IntermediateAlgorithm</name>
-    <description>Intermediate Algorithm</description>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.zongjieli.leetcode</groupId>
-            <artifactId>base</artifactId>
-            <version>${base.vertion}</version>
-        </dependency>
-    </dependencies>
+    <version>${base.vertion}</version>
+    <name>Base</name>
+    <description>Base</description>
 
 </project>
