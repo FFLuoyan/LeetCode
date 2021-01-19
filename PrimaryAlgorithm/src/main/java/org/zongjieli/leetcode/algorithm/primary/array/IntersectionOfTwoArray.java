@@ -1,10 +1,6 @@
 package org.zongjieli.leetcode.algorithm.primary.array;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 给定两个数组,编写一个函数来计算他们的交集
@@ -36,4 +32,10 @@ public class IntersectionOfTwoArray {
         return result;
     }
 
+    public static void main(String[] args) {
+        IntersectionOfTwoArray intersection = new IntersectionOfTwoArray();
+        int[] nums1 = new int[]{1,5,8,2,0,3,6,5,2,2,2,2,4,7};
+        int[] nums2 = new int[]{0,0,0,8,5,4,7,7,7,8,5,5,5,5,2,3,6};
+        System.out.println(Arrays.toString(intersection.intersect(nums1,nums2)));
+    }
 }
