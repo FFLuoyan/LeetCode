@@ -1,6 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2021.month1;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,10 +49,25 @@ public class ArrayAdd {
         return result;
     }
 
+    public List<Integer> addToArrayFormByReverse(int[] A, int K) {
+        List<Integer> result = new ArrayList<>(A.length > 5 ? A.length + 1 : 6);
+        int addIndex = A.length - 1;
+        while (addIndex >= 0 || K > 0){
+            if (addIndex >= 0){
+                K += A[addIndex --];
+            }
+            result.add(K % 10);
+            K /= 10;
+        }
+        Collections.reverse(result);
+        return result;
+    }
+
     public static void main(String[] args) {
         ArrayAdd arrayAdd = new ArrayAdd();
         System.out.println(arrayAdd.addToArrayForm(new int[]{8,7},782));
         System.out.println(arrayAdd.addToArrayFormByArray(new int[]{ 8,7},782));
+        System.out.println(arrayAdd.addToArrayFormByReverse(new int[]{ 8,7},782));
     }
 
 }
