@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2021.month1;
 
-import java.util.*;
-
 /**
  * 在由 1×1 方格组成的 N×N 网格 grid 中
  * 每个 1×1 方格由 "/"、"\" 或空格 " " 构成
@@ -16,140 +14,67 @@ import java.util.*;
  */
 public class DivideAreas {
 
+    int count = 0;
+
     public int regionsBySlashes(String[] grid) {
-        int number = 0;
-        Map<Integer, Set<Integer>> map = new HashMap<>();
-        List<Set<Integer>> list = new ArrayList<>();
-        int[][] areas = new int[grid.length][grid.length * 4];
-        for (int lineIndex = 0;lineIndex < grid.length ; lineIndex ++){
-            for (int areaIndex = 0 ; areaIndex < grid.length;areaIndex++){
-                char gridChar = grid[lineIndex].charAt(areaIndex);
-                if (gridChar == '/'){
-                    if (lineIndex == 0){
-                        if (areaIndex == 0){
-                            // 左上角
-                            createNewSet(0,map,list);
-                            areas[0][0] = number;
-                            areas[0][3] = number;
-                            createNewSet(++number,map,list);
-                            areas[0][1] = number;
-                            areas[0][2] = number;
-                        } else {
-                            // 第一行非首位
-                            extendValue(true,0,areaIndex,areas,0,3);
-                            createNewSet(++number,map,list);
-                            areas[0][4 * areaIndex + 1] = number;
-                            areas[0][4 * areaIndex + 2] = number;
-                        }
-                    } else {
-                        if (areaIndex == 0){
-                            // 非首行首位
-                            extendValue(false,lineIndex,0,areas,0,3);
-                            createNewSet(++number,map,list);
-                            areas[lineIndex][1] = number;
-                            areas[lineIndex][2] = number;
-                        } else {
-                            // 非首行、非首位
-                            extendValue(true,lineIndex,areaIndex,areas,0,3);
-                            checkValue(lineIndex,areaIndex,map,list,areas);
-                            createNewSet(++number,map,list);
-                            areas[lineIndex][4 * areaIndex + 1] = number;
-                            areas[lineIndex][4 * areaIndex + 2] = number;
-                        }
-                    }
-                } else if (gridChar == ' '){
-                    if (lineIndex == 0){
-                        if (areaIndex == 0){
-                            // 首行首位
-                            areas[0][0] = 0;
-                            areas[0][1] = 0;
-                            areas[0][2] = 0;
-                            areas[0][3] = 0;
-                            createNewSet(0,map,list);
-                        } else {
-                            // 首行非首位
-                            extendValue(true,0,areaIndex,areas,0,1,2,3);
-                        }
-                    } else {
-                        if (areaIndex == 0){
-                            // 非首行首位
-                            extendValue(false,lineIndex,0,areas,0,1,2,3);
-                        } else {
-                            // 非首行、非首位
-                            extendValue(false,lineIndex,areaIndex,areas,0,1,2,3);
-                            checkValue(lineIndex,areaIndex,map,list,areas);
-                        }
-                    }
+        // 将区域划分成为一个个的节点
+        int[] areas = new int[4 * grid.length * grid.length];
+        // 未遍历时,区域数为节点总数
+        count = areas.length;
+        for (int i = 0 ; i < areas.length ; i++){
+            areas[i] = i;
+        }
+
+        for (int lineIndex = 0 ; lineIndex < grid.length ; lineIndex++){
+            String line = grid[lineIndex];
+            for (int areaIndex = 0 ; areaIndex < grid.length ; areaIndex++){
+                char gridValue = line.charAt(areaIndex);
+                int index = 4 * lineIndex * grid.length + 4 * areaIndex;
+                if (gridValue == '/'){
+                    mix(areas,index,index + 3);
+                    mix(areas,index + 1,index + 2);
+                } else if (gridValue == ' '){
+                    mix(areas,index,index + 1);
+                    mix(areas,index,index + 2);
+                    mix(areas,index,index + 3);
                 } else {
-                    // '\'
-                    if (lineIndex == 0){
-                        if (areaIndex == 0){
-                            // 首行首位
-                            createNewSet(0,map,list);
-                            areas[0][0] = number;
-                            areas[0][1] = number;
-                            createNewSet(++number,map,list);
-                            areas[0][2] = number;
-                            areas[0][3] = number;
-                        }else {
-                            // 首行非首位
-                            extendValue(true,0,areaIndex,areas,2,3);
-                            createNewSet(++number,map,list);
-                            areas[0][4 * areaIndex] = number;
-                            areas[0][4 * areaIndex + 1] = number;
-                        }
-                    } else {
-                        if (areaIndex == 0){
-                            // 非首行首位
-                            extendValue(false,lineIndex,0,areas,0,1);
-                            createNewSet(++number,map,list);
-                            areas[lineIndex][2] = number;
-                            areas[lineIndex][3] = number;
-                        } else {
-                            // 非首行非首位
-                            extendValue(false,lineIndex,areaIndex,areas,0,1);
-                            extendValue(true,lineIndex,areaIndex,areas,2,3);
-                        }
-                    }
+                    // \
+                    mix(areas,index,index + 1);
+                    mix(areas,index + 2,index + 3);
                 }
+                if (lineIndex != grid.length - 1){
+                    // 合并下一行
+                    mix(areas,index + 2,index + 4 * grid.length);
+                }
+
+                if (areaIndex != grid.length - 1){
+                    // 合并右边
+                    mix(areas,index + 1,index + 7);
+                }
+
             }
         }
-        return list.size();
+        return count;
     }
 
-    public void extendValue(boolean left,int lineIndex,int areaIndex,int[][] areas,int... indexes){
-        for (int index : indexes){
-            areas[lineIndex][4 * areaIndex + index] = areas[lineIndex + (left ? 0 : -1)][4 * areaIndex + (left ? -3 : 2)];
+    public void mix(int[] areas,int first,int second){
+        int rootFirst = areas[first];
+        while (rootFirst != areas[rootFirst]){
+            rootFirst = areas[rootFirst];
         }
-    }
 
-    public void createNewSet(int number,Map<Integer, Set<Integer>> map,List<Set<Integer>> list){
-        Set<Integer> set = new HashSet<>();
-        set.add(number);
-        map.put(number,set);
-        list.add(set);
-    }
-
-    public void checkValue(int lineIndex,int areaIndex,Map<Integer,Set<Integer>> map,List<Set<Integer>> list,int[][] areas){
-        int leftValue = areas[lineIndex][4 * areaIndex - 3];
-        int upValue = areas[lineIndex - 1][4 * areaIndex + 2];
-        if (leftValue != upValue){
-            Set<Integer> leftSet = map.get(leftValue);
-            Set<Integer> upSet = map.get(upValue);
-            if (leftSet != upSet){
-                upSet.addAll(leftSet);
-                upSet.forEach(value -> map.put(value,upSet));
-                int removeIndex = 0;
-                for (int setIndex = 0 ; setIndex < list.size() ; setIndex ++){
-                    if (list.get(setIndex) == leftSet){
-                        removeIndex = setIndex;
-                        break;
-                    }
-                }
-                list.remove(removeIndex);
-            }
+        int rootSecond = areas[second];
+        while (rootSecond != areas[rootSecond]){
+            rootSecond = areas[rootSecond];
         }
+
+        if (rootSecond != rootFirst){
+            areas[rootSecond] = rootFirst;
+            count --;
+        }
+
     }
+
 
     public static void main(String[] args) {
         DivideAreas divideAreas = new DivideAreas();
