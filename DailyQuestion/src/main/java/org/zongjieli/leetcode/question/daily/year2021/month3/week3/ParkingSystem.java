@@ -19,37 +19,16 @@ package org.zongjieli.leetcode.question.daily.year2021.month3.week3;
  */
 public class ParkingSystem {
 
-    private int bigRemain;
-    private int middleRemain;
-    private int smallRemain;
+    private final int[] park;
 
     public ParkingSystem(int big, int medium, int small) {
-        this.bigRemain = big;
-        this.middleRemain = medium;
-        this.smallRemain = small;
+        this.park = new int[]{0,big,medium,small};
     }
 
     public boolean addCar(int carType) {
-        if (carType == 1){
-            if (bigRemain > 0){
-                bigRemain--;
-                return true;
-            }
-            return false;
-        }
-        if (carType == 2){
-            if (middleRemain > 0){
-                middleRemain --;
-                return true;
-            }
-            return false;
-        }
-        if (carType == 3){
-            if (smallRemain > 0){
-                smallRemain --;
-                return true;
-            }
-            return false;
+        if (park[carType] > 0){
+            park[carType] --;
+            return true;
         }
         return false;
     }
