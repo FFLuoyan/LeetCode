@@ -17,38 +17,50 @@ import java.util.Stack;
  */
 public class ReversePolishNotation {
     public int evalRPN(String[] tokens) {
-        Stack<Integer> store = new Stack<>();
+        int[] store = new int[tokens.length / 2 + 1];
+        int storeIndex = 0;
         for (String value : tokens){
+            char firstChar = value.charAt(0);
             if (value.length() > 1){
-                store.push(Integer.valueOf(value));
+                // 大于 1 的肯定为数字
+                boolean isPositive = true;
+                int valueIndex = 0;
+                if (firstChar == '-') {
+                    isPositive = false;
+                    valueIndex ++;
+                }
+                int number = Character.digit(value.charAt(valueIndex++),10);
+                while (valueIndex < value.length()){
+                    number = 10 * number + Character.digit(value.charAt(valueIndex++),10);
+                }
+                if (!isPositive){
+                    number = number * (-1);
+                }
+                store[storeIndex++] = number;
                 continue;
             }
-            switch (value.charAt(0)){
-                case '/':
-                    int secondValue = store.pop();
-                    int firstValue = store.pop();
-                    store.push(firstValue / secondValue);
-                    break;
-                case '*':
-                    secondValue = store.pop();
-                    firstValue = store.pop();
-                    store.push(firstValue * secondValue);
-                    break;
+            switch (firstChar){
                 case '+':
-                    secondValue = store.pop();
-                    firstValue = store.pop();
-                    store.push(firstValue + secondValue);
+                    storeIndex--;
+                    store[storeIndex - 1] = store[storeIndex - 1] + store[storeIndex];
                     break;
                 case '-':
-                    secondValue = store.pop();
-                    firstValue = store.pop();
-                    store.push(firstValue - secondValue);
+                    storeIndex--;
+                    store[storeIndex - 1] = store[storeIndex - 1] - store[storeIndex];
+                    break;
+                case '*':
+                    storeIndex--;
+                    store[storeIndex - 1] = store[storeIndex - 1] * store[storeIndex];
+                    break;
+                case '/':
+                    storeIndex--;
+                    store[storeIndex - 1] = store[storeIndex - 1] / store[storeIndex];
                     break;
                 default:
-                    store.push(Integer.valueOf(value));
+                    store[storeIndex++] = Character.digit(firstChar,10);
             }
         }
-        return store.pop();
+        return store[0];
     }
 
     public static void main(String[] args) {
