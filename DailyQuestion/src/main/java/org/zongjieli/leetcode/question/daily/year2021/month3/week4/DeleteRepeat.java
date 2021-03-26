@@ -15,14 +15,12 @@ public class DeleteRepeat {
             return null;
         }
         ListNode before = head;
-        ListNode after = before.next;
-        while (after != null){
+        while (before.next != null){
+            ListNode after = before.next;
             if (after.val == before.val){
-                after = after.next;
-                before.next = after;
+                before.next = after.next;
             } else {
                 before = after;
-                after = after.next;
             }
         }
         return head;
