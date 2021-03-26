@@ -3,7 +3,11 @@ package org.zongjieli.leetcode.question.daily.year2021.month3.week4;
 import org.zongjieli.leetcode.base.ListNode;
 
 /**
- * Class Description: TODO
+ * 存在一个按照升序排列的链表
+ * 给定这个链表的表头 head
+ * 请删除所有重复的元素
+ * 使每个元素只出现一次
+ * 返回同样按照升序排列
  *
  * @author   Zongjie.Li
  * @date     2021/3/26
