@@ -21,15 +21,12 @@ public class RotateListNode {
             size++;
             loop = loop.next;
         }
-        int right = k % size;
-        if (right == 0){
+        int right = size - k % size;
+        if (right == size){
             return head;
         }
         loop.next = head;
-        int nextNull = size - right;
-        loop = head;
-        while (nextNull > 1){
-            nextNull--;
+        while (right-- > 0){
             loop = loop.next;
         }
         head = loop.next;
