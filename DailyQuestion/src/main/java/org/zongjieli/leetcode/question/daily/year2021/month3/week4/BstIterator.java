@@ -44,4 +44,27 @@ public class BstIterator {
     public boolean hasNext() {
         return !list.isEmpty();
     }
+
+//    public BstIterator(TreeNode root) {
+//        list = new LinkedList<>();
+//        while (root != null){
+//            list.addFirst(root);
+//            root = root.left;
+//        }
+//    }
+//
+//    public int next() {
+//        TreeNode node = list.poll();
+//        int val = node.val;
+//        node = node.right;
+//        while (node != null){
+//            list.addFirst(node);
+//            node = node.left;
+//        }
+//        return val;
+//    }
+//
+//    public boolean hasNext() {
+//        return !list.isEmpty();
+//    }
 }
