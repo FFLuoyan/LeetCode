@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.base;
 
-import lombok.Data;
-
 /**
  * 单链表
  *
