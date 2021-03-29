@@ -9,6 +9,7 @@ package org.zongjieli.leetcode.question.daily.year2021.month3.week4;
  */
 public class HammingWeight {
     public int hammingWeight(int n) {
+//        return Integer.bitCount(n);
         int count = 0;
         while (n != 0){
             n &= n - 1;
