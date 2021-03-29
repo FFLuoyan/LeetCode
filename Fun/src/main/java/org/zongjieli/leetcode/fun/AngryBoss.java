@@ -29,17 +29,14 @@ public class AngryBoss {
         int customerAmount = 0;
         // 当前可挽留客户(当前分钟前 X 分钟(不包括当前))
         int currentSave = 0;
-        // 流失客户数
-        int[] lose = new int[customers.length];
         for (int i = 0 ; i < customers.length ; i++){
             if (grumpy[i] == 0){
                 customerAmount += customers[i];
             } else {
-                lose[i] = customers[i];
+                currentSave += customers[i];
             }
-            currentSave += lose[i];
-            if (i >= X){
-                currentSave -= lose[i - X];
+            if (i >= X && grumpy[i - X] == 1){
+                currentSave -= customers[i - X];
             }
             max = Math.max(max,currentSave);
         }
