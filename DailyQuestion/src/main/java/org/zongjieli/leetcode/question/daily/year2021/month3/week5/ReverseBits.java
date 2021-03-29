@@ -9,15 +9,13 @@ package org.zongjieli.leetcode.question.daily.year2021.month3.week5;
  */
 public class ReverseBits {
     public int reverseBits(int n) {
+//        return Integer.reverse(n);
         int reverse = 0;
-        int remainZero = 32;
-        while (n != 0){
+        for (int i = 0 ; i < 32 ; i++){
             reverse <<= 1;
             reverse += (n & 1);
             n >>>= 1;
-            remainZero --;
         }
-        reverse <<= remainZero;
         return reverse;
     }
 }
