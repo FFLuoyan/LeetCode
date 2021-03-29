@@ -18,26 +18,17 @@ public class DeleteDuplicates {
         }
         ListNode returnNext = new ListNode(0,head);
         ListNode last = returnNext;
-        ListNode first = last.next;
 
-        while (first != null){
-            ListNode second = first.next;
-            if (second == null){
-                break;
-            }
-            if (second.val != first.val){
-                last = first;
-                first = second;
+        while (last.next != null && last.next.next != null){
+            if (last.next.next.val != last.next.val){
+                last = last.next;
                 continue;
             }
-            while (second.next != null){
-                if (second.next.val != first.val){
-                    break;
-                }
-                second = second.next;
+            int value = last.next.val;
+            last.next = last.next.next.next;
+            while (last.next != null && last.next.val == value){
+                last.next = last.next.next;
             }
-            last.next = second.next;
-            first = second.next;
         }
         return returnNext.next;
     }
