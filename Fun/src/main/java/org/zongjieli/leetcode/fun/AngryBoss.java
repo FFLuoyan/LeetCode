@@ -19,34 +19,30 @@ package org.zongjieli.leetcode.fun;
  */
 public class AngryBoss {
     /**
-     * 该方法的主要思路是,计算出客户的总量
-     * 以及客户不满意的数量
-     * 根据客户不满意的数量,计算老板可以挽留的最大数量
-     * 客户数量 - 客户不满意的数量 + 老板可以挽留的最大数量
-     * 就是最大客户满意数量
+     * 客户的满意数量
+     * 等于客户本就满意的数量 + 老板克制后的挽留数量
      */
     public int maxSatisfied(int[] customers, int[] grumpy, int X) {
         // 最大挽留客户数
         int max = 0;
-        // 客户不满意的数组
-        int[] lose = new int[customers.length];
-        int loseAmount = 0;
         // 客户总数
         int customerAmount = 0;
         // 当前可挽留客户(当前分钟前 X 分钟(不包括当前))
-        int current = 0;
+        int currentSave = 0;
+        // 流失客户数
+        int[] lose = new int[customers.length];
         for (int i = 0 ; i < customers.length ; i++){
-            customerAmount += customers[i];
-            lose[i] = customers[i] * grumpy[i];
-            loseAmount += lose[i];
-            if (i < X){
-                current += lose[i];
-                max = current;
+            if (grumpy[i] == 0){
+                customerAmount += customers[i];
             } else {
-                current = current + lose[i] - lose[i - X];
-                max = Math.max(max,current);
+                lose[i] = customers[i];
             }
+            currentSave += lose[i];
+            if (i >= X){
+                currentSave -= lose[i - X];
+            }
+            max = Math.max(max,currentSave);
         }
-        return customerAmount - loseAmount + max;
+        return customerAmount + max;
     }
 }

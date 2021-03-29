@@ -2,7 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2021.month3.week5;
 /**
  * 颠倒给定的 32 位无符号整数的二进制位
  *
- *
  * @author   Zongjie.Li
  * @date     2021/3/29
  * @version  1.0
