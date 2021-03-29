@@ -13,31 +13,31 @@ import org.zongjieli.leetcode.base.ListNode;
  */
 public class DeleteDuplicates {
     public ListNode deleteDuplicates(ListNode head) {
+        if (head == null){
+            return null;
+        }
         ListNode returnNext = new ListNode(0,head);
-        ListNode check = returnNext;
-        ListNode first = check.next;
+        ListNode last = returnNext;
+        ListNode first = last.next;
+
         while (first != null){
             ListNode second = first.next;
             if (second == null){
-                return returnNext.next;
+                break;
             }
-            if (first.val != second.val){
-                check = first;
+            if (second.val != first.val){
+                last = first;
                 first = second;
-            } else {
-                while (second != null){
-                    if (second.val == first.val){
-                        check.next = second.next;
-                        second = second.next;
-                    } else {
-                        first = second;
-                        break;
-                    }
-                }
-                if (second == null){
+                continue;
+            }
+            while (second.next != null){
+                if (second.next.val != first.val){
                     break;
                 }
+                second = second.next;
             }
+            last.next = second.next;
+            first = second.next;
         }
         return returnNext.next;
     }
