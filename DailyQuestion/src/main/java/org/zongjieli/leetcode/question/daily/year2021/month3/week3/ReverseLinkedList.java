@@ -17,33 +17,31 @@ public class ReverseLinkedList {
         if (left == right){
             return head;
         }
-        if (left == 1){
-            return reversNode(head,right - left + 1);
+        ListNode returnNext = new ListNode(0,head);
+        ListNode reverseNext = returnNext;
+        int reverseIndex = 1;
+        // reverseIndex 指向 reverseNext.next
+        while (reverseIndex++ < left){
+            // 如果 reverseIndex 在 left 之前,则遍历下一个
+            reverseNext = reverseNext.next;
         }
-        int count = 1;
-        ListNode temp = head;
-        while (count + 1 < left){
-            temp = temp.next;
-            count++;
+        // 此时 reverseNext 的 next 节点就是需要翻转的起始节点(left)
+        // 此时 reverseIndex = left + 1
+        // reverseStart 指向 left
+        ListNode reverseStart = reverseNext.next;
+        ListNode reverseBefore = reverseStart;
+        // reverseIndex 指向 current
+        ListNode reverseCurrent = reverseBefore.next;
+        while (reverseIndex++ <= right){
+            ListNode temp = reverseCurrent.next;
+            reverseCurrent.next = reverseBefore;
+            reverseBefore = reverseCurrent;
+            reverseCurrent = temp;
         }
-        // 此时 index = left - 1
-        temp.next = reversNode(temp.next,right - left + 1);
-        return head;
-    }
-
-    private ListNode reversNode(ListNode firstReverseNode,int count){
-        int currentCount = 1;
-        ListNode changeFirstNode = firstReverseNode;
-        ListNode waitChangeNode = firstReverseNode.next;
-        while (currentCount < count){
-            ListNode temp = waitChangeNode;
-            waitChangeNode = waitChangeNode.next;
-            temp.next = changeFirstNode;
-            changeFirstNode = temp;
-            currentCount++;
-        }
-        firstReverseNode.next = waitChangeNode;
-        return changeFirstNode;
+        // reverseCurrent 指向 right.next
+        reverseStart.next = reverseCurrent;
+        reverseNext.next = reverseBefore;
+        return returnNext.next;
     }
 
     public static void main(String[] args) {
@@ -55,15 +53,15 @@ public class ReverseLinkedList {
             newNode = newNode.next;
         }
         newNode = head;
-        System.out.println("Before Reverse: ");
+        System.out.println("\nBefore Reverse: ");
         while (newNode != null){
-            System.out.println(newNode.val);
+            System.out.print(newNode.val + "\t");
             newNode = newNode.next;
         }
-        System.out.println("After Reverse: ");
+        System.out.println("\nAfter Reverse: ");
         newNode = linkedList.reverseBetween(head,3,8);
         while (newNode != null){
-            System.out.println(newNode.val);
+            System.out.print(newNode.val + "\t");
             newNode = newNode.next;
         }
     }

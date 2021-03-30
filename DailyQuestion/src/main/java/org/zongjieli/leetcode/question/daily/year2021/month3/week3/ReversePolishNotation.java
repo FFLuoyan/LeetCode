@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2021.month3.week3;
 
-import java.util.Stack;
-
 /**
  * 逆波兰表达式求值
  *
