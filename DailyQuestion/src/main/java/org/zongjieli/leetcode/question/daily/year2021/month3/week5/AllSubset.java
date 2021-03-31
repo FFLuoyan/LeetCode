@@ -17,36 +17,35 @@ import java.util.List;
 public class AllSubset {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         Arrays.sort(nums);
-        List<List<Integer>> result = new ArrayList<>();
-        int startIndex = 0;
-        while (startIndex < nums.length){
-            int endIndex = startIndex + 1;
+        List<List<Integer>> result = new ArrayList<>(2 << (nums.length + 1));
+        int index = 0;
+        while (index < nums.length){
+            int value = nums[index];
             int count = 1;
-            while (endIndex < nums.length){
-                if (nums[endIndex] == nums[startIndex]){
-                    endIndex++;
-                    count++;
-                } else {
-                    break;
-                }
+            while (++index < nums.length && nums[index] == value){
+                count++;
             }
             int existSize = result.size();
             for (int i = 0 ; i < count ; i++){
                 List<Integer> repeatList = new ArrayList<>(2 * count);
                 for (int j = 0 ; j <= i ; j++){
-                    repeatList.add(nums[startIndex]);
+                    repeatList.add(value);
                 }
                 result.add(repeatList);
             }
             for (int i = 0 ; i < existSize ; i++){
+                // existSize 内未当前已存在的数组
+                // 将当前已存在的数组与当前 index 数的重复数字数组一一组合
+                // 即为新组合数组
                 for (int j = existSize;j < existSize + count ; j++){
                     // result[j] 为当前循环的列表
-                    List<Integer> repeatList = new ArrayList<>(result.get(i));
+                    List<Integer> leftList = result.get(i);
+                    List<Integer> repeatList = new ArrayList<>(2 * leftList.size());
+                    repeatList.addAll(leftList);
                     repeatList.addAll(result.get(j));
                     result.add(repeatList);
                 }
             }
-            startIndex = endIndex;
         }
         result.add(new ArrayList<>());
         return result;
