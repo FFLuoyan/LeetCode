@@ -18,35 +18,34 @@ package org.zongjieli.leetcode.question.daily.year2021.month3.week5;
  */
 public class StupidFactorial {
     public int clumsy(int N) {
-        if (N > 4){
-            int result = N-- * N-- / N-- + N--;
-            while (N > 3){
-                result = result - (N-- * N-- / N--) + N--;
-            }
-            switch (N){
-                case 1:return result - 1;
-                case 2:return result - 2;
-                case 3:return result - 6;
-                default:return result;
-            }
-        } else {
-            switch (N){
-                case 1:return 1;
-                case 2:return 2;
-                case 3:return 6;
-                default:return 7;
-            }
+        // 1:1
+        // 2:2
+        // 3:6
+        // 4:7
+        // ...0:n+1
+        // ...1:n+2
+        // ...2:n+2
+        // ...3:n-1
+        if (N < 3){
+            return N;
         }
+        if (N < 5){
+            return N+3;
+        }
+        int remain = N % 4;
+        if (remain < 2){
+            return N + 1 + remain;
+        }
+        if (remain == 2){
+            return N+2;
+        }
+        return N-1;
     }
 
     public static void main(String[] args) {
         StupidFactorial stupidFactorial = new StupidFactorial();
-        System.out.println(stupidFactorial.clumsy(1));
-        System.out.println(stupidFactorial.clumsy(2));
-        System.out.println(stupidFactorial.clumsy(3));
-        System.out.println(stupidFactorial.clumsy(4));
-        System.out.println(stupidFactorial.clumsy(5));
-        System.out.println(stupidFactorial.clumsy(6));
-        System.out.println(stupidFactorial.clumsy(10));
+        for (int i = 1;i<100;i++){
+            System.out.println(i + ":" + stupidFactorial.clumsy(i));
+        }
     }
 }
