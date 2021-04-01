@@ -1,4 +1,9 @@
 package org.zongjieli.leetcode.question.daily.year2021.month3.week5;
+
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Stack;
+
 /**
  * 通常,正整数 n 的阶乘是所有小于或等于 n 的正整数的乘积
  * 我们设计了一个笨阶乘 clumsy:
@@ -26,20 +31,43 @@ public class StupidFactorial {
         // ...1:n+2
         // ...2:n+2
         // ...3:n-1
-        if (N < 3){
-            return N;
+//        if (N < 3){
+//            return N;
+//        }
+//        if (N < 5){
+//            return N+3;
+//        }
+//        int remain = N % 4;
+//        if (remain < 2){
+//            return N + 1 + remain;
+//        }
+//        if (remain == 2){
+//            return N+2;
+//        }
+//        return N-1;
+        Deque<Integer> stack = new LinkedList<Integer>();
+        stack.push(N--);
+        int operate = 0;
+        while (N > 0){
+            if (operate == 0){
+                operate++;
+                stack.push(stack.poll() * N--);
+            } else if (operate == 1){
+                operate++;
+                stack.push(stack.poll() / N--);
+            } else if (operate == 2){
+                operate++;
+                stack.push(N--);
+            } else {
+                operate = 0;
+                stack.push((-1) * N--);
+            }
         }
-        if (N < 5){
-            return N+3;
+        int sum = 0;
+        while (!stack.isEmpty()){
+            sum += stack.poll();
         }
-        int remain = N % 4;
-        if (remain < 2){
-            return N + 1 + remain;
-        }
-        if (remain == 2){
-            return N+2;
-        }
-        return N-1;
+        return sum;
     }
 
     public static void main(String[] args) {
