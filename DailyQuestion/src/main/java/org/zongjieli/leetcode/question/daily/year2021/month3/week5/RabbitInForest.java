@@ -15,15 +15,15 @@ import java.util.Map;
  */
 public class RabbitInForest {
     public int numRabbits(int[] answers) {
-        Map<Integer,Integer> color = new HashMap<>(2 * answers.length);
+        int[] counts = new int[1000];
+        int sum = 0;
         for (int answer : answers) {
-            color.compute(answer,(k,v) -> v == null ? 1 : v + 1);
+            counts[answer]--;
+            if (counts[answer] < 0){
+                sum += (answer + 1);
+                counts[answer] += (answer + 1);
+            }
         }
-        return color.entrySet().stream().mapToInt(entity -> {
-            int group = entity.getKey() + 1;
-            int number = entity.getValue();
-            int remain = number % group;
-            return ((remain > 0 ? 1 : 0) +number / group) * group;
-        }).sum();
+        return sum;
     }
 }
