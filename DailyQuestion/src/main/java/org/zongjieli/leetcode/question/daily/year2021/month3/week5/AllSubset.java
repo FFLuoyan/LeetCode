@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2021.month3.week5;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,43 +15,28 @@ import java.util.List;
  */
 public class AllSubset {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        Arrays.sort(nums);
         List<List<Integer>> result = new ArrayList<>(2 << (nums.length + 1));
-        int index = 0;
-        while (index < nums.length){
-            int value = nums[index];
-            int count = 1;
-            while (++index < nums.length && nums[index] == value){
-                count++;
-            }
+        result.add(new ArrayList<>());
+        for (int num : nums) {
             int existSize = result.size();
-            for (int i = 0 ; i < count ; i++){
-                List<Integer> repeatList = new ArrayList<>(2 * count);
-                for (int j = 0 ; j <= i ; j++){
-                    repeatList.add(value);
-                }
-                result.add(repeatList);
-            }
             for (int i = 0 ; i < existSize ; i++){
-                // existSize 内未当前已存在的数组
-                // 将当前已存在的数组与当前 index 数的重复数字数组一一组合
-                // 即为新组合数组
-                for (int j = existSize;j < existSize + count ; j++){
-                    // result[j] 为当前循环的列表
-                    List<Integer> leftList = result.get(i);
-                    List<Integer> repeatList = new ArrayList<>(2 * leftList.size());
-                    repeatList.addAll(leftList);
-                    repeatList.addAll(result.get(j));
-                    result.add(repeatList);
+                new ArrayList<>().addAll(new ArrayList<>());
+                List<Integer> current = result.get(i);
+                if (current.contains(num)){
+                    current.add(num);
+                } else {
+                    List<Integer> newList = new ArrayList<>(current);
+                    newList.add(num);
+                    result.add(newList);
                 }
             }
         }
-        result.add(new ArrayList<>());
         return result;
     }
 
     public static void main(String[] args) {
         AllSubset allSubset = new AllSubset();
-        allSubset.subsetsWithDup(new int[]{1,2,2});
+        allSubset.subsetsWithDup(new int[]{1,2,2}).forEach(System.out::println);
+
     }
 }
