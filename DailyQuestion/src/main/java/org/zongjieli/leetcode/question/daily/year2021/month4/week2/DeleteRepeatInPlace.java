@@ -10,21 +10,21 @@ package org.zongjieli.leetcode.question.daily.year2021.month4.week2;
  */
 public class DeleteRepeatInPlace {
     public int removeDuplicates(int[] nums) {
-        if (nums.length <= 2) {
+        if (nums.length <= 1){
             return nums.length;
         }
-        int size = 2;
-        for (int i = 2 ; i < nums.length ; i++){
-            if (nums[i] == nums[size - 1] && nums[i] == nums[size - 2]){
-                continue;
+        int size = 1;
+        for (int i = 1 ; i < nums.length ;){
+            nums[size++] = nums[i++];
+            while (i < nums.length && nums[i] == nums[size - 2]){
+                i++;
             }
-            nums[size ++] = nums[i];
         }
         return size;
     }
 
     public static void main(String[] args) {
         DeleteRepeatInPlace delete = new DeleteRepeatInPlace();
-        delete.removeDuplicates(new int[]{1,1,1,2,2,3});
+        System.out.println(delete.removeDuplicates(new int[]{1,1,1,1,3,3}));
     }
 }
