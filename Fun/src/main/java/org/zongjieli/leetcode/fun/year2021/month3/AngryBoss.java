@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.fun;
+package org.zongjieli.leetcode.fun.year2021.month3;
 /**
  * 今天,书店老板有一家店打算试营业 customer.length 分钟
  * 每分钟都有一些顾客 (customer[i]) 会进入书店
