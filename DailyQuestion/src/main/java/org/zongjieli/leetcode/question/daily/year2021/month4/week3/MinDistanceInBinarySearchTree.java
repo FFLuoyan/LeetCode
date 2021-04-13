@@ -14,6 +14,25 @@ import java.util.LinkedList;
  */
 public class MinDistanceInBinarySearchTree {
 
+    int min = Integer.MAX_VALUE;
+    int temp = Integer.MIN_VALUE;
+
+    public int minDiffInBSTByRecursion(TreeNode root) {
+        if (root.left != null){
+            minDiffInBST(root.left);
+        }
+        if (temp == Integer.MIN_VALUE){
+            temp = root.val;
+        } else {
+            min = Math.min(min,root.val - temp);
+            temp = root.val;
+        }
+        if (root.right != null){
+            minDiffInBST(root.right);
+        }
+        return min;
+    }
+
     public int minDiffInBST(TreeNode root) {
         TreeNode fiction = new TreeNode(Integer.MIN_VALUE,null,root);
         LinkedList<TreeNode> list = new LinkedList<>();
