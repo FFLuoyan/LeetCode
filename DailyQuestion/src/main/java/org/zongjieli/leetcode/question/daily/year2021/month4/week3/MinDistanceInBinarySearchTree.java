@@ -15,15 +15,11 @@ import java.util.LinkedList;
 public class MinDistanceInBinarySearchTree {
 
     public int minDiffInBST(TreeNode root) {
+        TreeNode fiction = new TreeNode(Integer.MIN_VALUE,null,root);
         LinkedList<TreeNode> list = new LinkedList<>();
-        list.addFirst(root);
-        root = root.left;
-        while (root != null){
-            list.addFirst(root);
-            root = root.left;
-        }
+        list.addFirst(fiction);
         long min = Integer.MAX_VALUE;
-        long temp = Integer.MIN_VALUE;
+        long temp = 2L * Integer.MIN_VALUE;
         while (!list.isEmpty()){
             TreeNode minNode = list.poll();
             min = Math.min(min,minNode.val - temp);

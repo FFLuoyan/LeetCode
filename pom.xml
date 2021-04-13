@@ -6,6 +6,7 @@
     <modules>
         <module>Base</module>
         <module>Fun</module>
+        <module>Origin</module>
         <module>DailyQuestion</module>
         <module>IntermediateAlgorithm</module>
         <module>PrimaryAlgorithm</module>
@@ -27,6 +28,7 @@
         <java.version>1.8</java.version>
         <base.vertion>1.0.0</base.vertion>
         <fun.vertion>1.0.0</fun.vertion>
+        <origin.vertion>1.0.0</origin.vertion>
         <daily-question.vertion>1.0.0</daily-question.vertion>
         <primary-algorthm.vertion>1.0.0</primary-algorthm.vertion>
         <intermediate-algorthm.vertion>1.0.0</intermediate-algorthm.vertion>
