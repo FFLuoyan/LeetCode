@@ -25,43 +25,59 @@ import java.util.Map;
  */
 public class Trie {
 
-    private Map<Object,Map> storage;
+    private Object[] storage;
 
     /** Initialize your data structure here. */
     public Trie() {
-        storage = new HashMap<>(32);
+        storage = new Object[27];
     }
 
     /** Inserts a word into the trie. */
     public void insert(String word) {
-        Map<Object,Map> search = storage;
+        Object[] search = storage;
         for (int index = 0 ; index < word.length() ; index++){
-            search = search.computeIfAbsent(word.charAt(index), f -> new HashMap<>(32));
+            int searchIndex = word.charAt(index) - 'a';
+            if (search[searchIndex] == null){
+                search[searchIndex] = new Object[27];
+            }
+            search = (Object[]) search[searchIndex];
         }
-        search.put(Boolean.TRUE, Collections.emptyMap());
+        search[26] = true;
     }
 
     /** Returns if the word is in the trie. */
     public boolean search(String word) {
-        Map<Object,Map> search = storage;
+        Object[] search = storage;
         for (int index = 0 ; index < word.length() ; index++){
-            search = search.get(word.charAt(index));
-            if (search == null){
+            int searchIndex = word.charAt(index) - 'a';
+            if (search[searchIndex] == null){
                 return false;
             }
+            search = (Object[]) search[searchIndex];
         }
-        return search.containsKey(Boolean.TRUE);
+        return search[26] != null;
     }
 
     /** Returns if there is any word in the trie that starts with the given prefix. */
     public boolean startsWith(String prefix) {
-        Map<Object,Map> search = storage;
+        Object[] search = storage;
         for (int index = 0 ; index < prefix.length() ; index++){
-            search = search.get(prefix.charAt(index));
-            if (search == null){
+            int searchIndex = prefix.charAt(index) - 'a';
+            if (search[searchIndex] == null){
                 return false;
             }
+            search = (Object[]) search[searchIndex];
         }
         return true;
+    }
+
+    public static void main(String[] args) {
+        Trie trie = new Trie();
+        trie.insert("apple");
+        System.out.println(trie.search("apple"));
+        System.out.println(trie.search("app"));
+        System.out.println(trie.startsWith("app"));
+        trie.insert("app");
+        System.out.println(trie.search("app"));
     }
 }
