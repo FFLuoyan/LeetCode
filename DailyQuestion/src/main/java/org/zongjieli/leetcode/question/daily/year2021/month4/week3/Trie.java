@@ -1,9 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2021.month4.week3;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Trie:前缀树,一种树形数据结构
  * 用于高效地存储和检索字符串数据集中的键
@@ -23,52 +19,105 @@ import java.util.Map;
  * @date     2021/4/14
  * @version  1.0
  */
+//public class Trie {
+//
+//    private Object[] storage;
+//
+//    /** Initialize your data structure here. */
+//    public Trie() {
+//        storage = new Object[27];
+//    }
+//
+//    /** Inserts a word into the trie. */
+//    public void insert(String word) {
+//        Object[] search = storage;
+//        for (int index = 0 ; index < word.length() ; index++){
+//            int searchIndex = word.charAt(index) - 'a';
+//            if (search[searchIndex] == null){
+//                search[searchIndex] = new Object[27];
+//            }
+//            search = (Object[]) search[searchIndex];
+//        }
+//        search[26] = true;
+//    }
+//
+//    /** Returns if the word is in the trie. */
+//    public boolean search(String word) {
+//        Object[] search = storage;
+//        for (int index = 0 ; index < word.length() ; index++){
+//            int searchIndex = word.charAt(index) - 'a';
+//            if (search[searchIndex] == null){
+//                return false;
+//            }
+//            search = (Object[]) search[searchIndex];
+//        }
+//        return search[26] != null;
+//    }
+//
+//    /** Returns if there is any word in the trie that starts with the given prefix. */
+//    public boolean startsWith(String prefix) {
+//        Object[] search = storage;
+//        for (int index = 0 ; index < prefix.length() ; index++){
+//            int searchIndex = prefix.charAt(index) - 'a';
+//            if (search[searchIndex] == null){
+//                return false;
+//            }
+//            search = (Object[]) search[searchIndex];
+//        }
+//        return true;
+//    }
+//
+//}
+
+
 public class Trie {
 
-    private Object[] storage;
+    private Trie[] storage;
+    private boolean end;
 
     /** Initialize your data structure here. */
     public Trie() {
-        storage = new Object[27];
+        storage = new Trie[26];
+        end = false;
     }
 
     /** Inserts a word into the trie. */
     public void insert(String word) {
-        Object[] search = storage;
+        Trie search = this;
         for (int index = 0 ; index < word.length() ; index++){
             int searchIndex = word.charAt(index) - 'a';
-            if (search[searchIndex] == null){
-                search[searchIndex] = new Object[27];
+            if (search.storage[searchIndex] == null){
+                search.storage[searchIndex] = new Trie();
             }
-            search = (Object[]) search[searchIndex];
+            search = search.storage[searchIndex];
         }
-        search[26] = true;
+        search.end = true;
     }
 
     /** Returns if the word is in the trie. */
     public boolean search(String word) {
-        Object[] search = storage;
+        Trie search = this;
         for (int index = 0 ; index < word.length() ; index++){
             int searchIndex = word.charAt(index) - 'a';
-            if (search[searchIndex] == null){
+            if (search.storage[searchIndex] == null){
                 return false;
             }
-            search = (Object[]) search[searchIndex];
+            search = search.storage[searchIndex];
         }
-        return search[26] != null;
+        return search != null && search.end;
     }
 
     /** Returns if there is any word in the trie that starts with the given prefix. */
     public boolean startsWith(String prefix) {
-        Object[] search = storage;
+        Trie search = this;
         for (int index = 0 ; index < prefix.length() ; index++){
             int searchIndex = prefix.charAt(index) - 'a';
-            if (search[searchIndex] == null){
+            if (search.storage[searchIndex] == null){
                 return false;
             }
-            search = (Object[]) search[searchIndex];
+            search = search.storage[searchIndex];
         }
-        return true;
+        return search != null;
     }
 
     public static void main(String[] args) {
