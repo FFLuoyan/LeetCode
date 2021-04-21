@@ -30,34 +30,26 @@ package org.zongjieli.leetcode.question.daily.year2021.month4.week4;
  */
 public class NumberDecode {
     public int numDecoding(String s) {
-        int index = 0;
-        char loopChar = s.charAt(index);
-        if (loopChar == '0'){
-            return 0;
-        }
-
         int num = 1;
         int fibonacciCount = 0;
-
+        int index = 0;
         while (index < s.length()){
-            loopChar = s.charAt(index);
+            char loopChar = s.charAt(index);
             if (loopChar == '1' || loopChar == '2'){
                 fibonacciCount++;
             } else if (loopChar == '0'){
                 if (fibonacciCount == 0){
                     return 0;
                 }
-                if (fibonacciCount != 1){
+                if (fibonacciCount > 1){
                     num *= fibonacci(fibonacciCount - 1);
                 }
                 fibonacciCount = 0;
-            } else if (loopChar <= '6'){
-                if (fibonacciCount != 0){
-                    num *= fibonacci(fibonacciCount + 1);
-                    fibonacciCount = 0;
-                }
             } else if (fibonacciCount != 0){
-                num *= s.charAt(index - 1) == '2' ? fibonacci(fibonacciCount) : fibonacci(fibonacciCount + 1);
+                if (s.charAt(index - 1) != '2' || loopChar <= '6' ){
+                    fibonacciCount++;
+                }
+                num *= fibonacci(fibonacciCount);
                 fibonacciCount = 0;
             }
             index++;
