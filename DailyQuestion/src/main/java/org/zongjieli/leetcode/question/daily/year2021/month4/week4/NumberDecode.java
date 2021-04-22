@@ -62,39 +62,47 @@ public class NumberDecode {
         return fibonacciCount == 0 ? num : num * fibonacci[fibonacciCount];
     }
 
+    /**
+     * 动态规划解法的精髓在于,每次遍历当前字符
+     * 假设计算当前下标的字符串总共有 f(x) 种解法
+     * 则根据当前字符与前一个字符的组成关系判断当前 f(x) 与原有解法的关系
+     *
+     * 1. 如果当前字符为 0,则有 00,30,40...90 为非法解码
+     * 2. 如果当前字符不为 0,则当前字符可以单独存在,有 f(x) = f(x - 1) + T
+     * 3. 如果当前字符与前一个字符可以组合(组合成 10-26) 则 T = f(x - 2),否则,T = 0
+     */
     public int numDecodingByDp(String s) {
         if (s.charAt(0) == '0'){
             return 0;
         }
-        int[] result = new int[s.length() + 2];
+        int [] result = new int[s.length() + 1];
         result[0] = 1;
         result[1] = 1;
-        result[2] = 1;
-        int index = 1;
-
-        while (index < s.length()){
+        int index = 0;
+        while (++index < s.length()){
             char loopChar = s.charAt(index);
             char preChar = s.charAt(index - 1);
-            if (loopChar == '0'){
-                if (preChar > '2' || preChar == '0'){
-                    return 0;
-                }
-                result[index + 2] = result[index];
-            } else if (preChar == '0'){
-                result[index + 2] = result[index + 1];
-            } else if ((preChar - '0') * 10 + loopChar - '0' <= 26){
-                result[index + 2] = result[index + 1] + result[index];
-            } else {
-                result[index + 2] = result[index + 1];
+            // 00,30,40...90 均为非法解码
+            if (loopChar == '0' && (preChar != '1' && preChar != '2')){
+                return 0;
             }
-            index++;
+            // 当前字符不为 0,则字符可以单独存在
+            if (loopChar != '0'){
+                result[index + 1] += result[index];
+            }
+            // 当前字符可以与前一个字符组合
+            if (preChar == '1' || (preChar == '2' && loopChar <= '6')){
+                result[index + 1] += result[index - 1];
+            }
         }
-        return result[s.length() + 1];
+
+        return result[index];
     }
 
 
     public static void main(String[] args) {
         NumberDecode decode = new NumberDecode();
+        System.out.println(decode.numDecodingByDp("1200111"));
         System.out.println(decode.numDecoding("1234"));
         System.out.println(decode.numDecodingByDp("1234"));
         System.out.println(decode.numDecoding("1204"));
