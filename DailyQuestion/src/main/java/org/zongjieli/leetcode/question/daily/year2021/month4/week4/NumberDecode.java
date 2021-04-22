@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2021.month4.week4;
 
-import java.util.Arrays;
-
 /**
  * 一条包含字母 A-Z 的消息通过以下映射进行了编码
  *
@@ -64,10 +62,44 @@ public class NumberDecode {
         return fibonacciCount == 0 ? num : num * fibonacci[fibonacciCount];
     }
 
+    public int numDecodingByDp(String s) {
+        if (s.charAt(0) == '0'){
+            return 0;
+        }
+        int[] result = new int[s.length() + 2];
+        result[0] = 1;
+        result[1] = 1;
+        result[2] = 1;
+        int index = 1;
+
+        while (index < s.length()){
+            char loopChar = s.charAt(index);
+            char preChar = s.charAt(index - 1);
+            if (loopChar == '0'){
+                if (preChar > '2' || preChar == '0'){
+                    return 0;
+                }
+                result[index + 2] = result[index];
+            } else if (preChar == '0'){
+                result[index + 2] = result[index + 1];
+            } else if ((preChar - '0') * 10 + loopChar - '0' <= 26){
+                result[index + 2] = result[index + 1] + result[index];
+            } else {
+                result[index + 2] = result[index + 1];
+            }
+            index++;
+        }
+        return result[s.length() + 1];
+    }
+
+
     public static void main(String[] args) {
         NumberDecode decode = new NumberDecode();
         System.out.println(decode.numDecoding("1234"));
+        System.out.println(decode.numDecodingByDp("1234"));
         System.out.println(decode.numDecoding("1204"));
+        System.out.println(decode.numDecodingByDp("1204"));
         System.out.println(decode.numDecoding("1304"));
+        System.out.println(decode.numDecodingByDp("1304"));
     }
 }
