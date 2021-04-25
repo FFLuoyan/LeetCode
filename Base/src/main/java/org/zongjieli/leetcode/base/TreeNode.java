@@ -20,4 +20,38 @@ public class TreeNode {
         this.right = right;
     }
 
+    public static final TreeNode BST = new TreeNode(
+            10
+            ,new TreeNode(
+                    5
+                    ,new TreeNode(2)
+                    ,new TreeNode(7))
+            ,new TreeNode(
+                    15
+                    ,new TreeNode(13)
+                    ,new TreeNode(18)));
+    public static final TreeNode TEST1 = new TreeNode(
+            5
+            ,new TreeNode(
+                    3
+                    ,new TreeNode(
+                            2
+                            ,new TreeNode(1)
+                            ,null)
+                    ,new TreeNode(4))
+            ,new TreeNode(
+                    6
+                    ,null
+                    ,new TreeNode(
+                            8
+                            ,new TreeNode(7)
+                            ,new TreeNode(9))));
+    public static final TreeNode TEST2 = new TreeNode(
+            2
+            ,new TreeNode(1)
+            ,new TreeNode(
+                4
+                ,new TreeNode(3)
+                ,null));
+
 }
