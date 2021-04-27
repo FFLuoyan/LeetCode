@@ -20,9 +20,13 @@ public class RangeSumBst {
         if (root == null){
             return 0;
         }
-        int left = root.val < low ? 0 : rangeSumBST(root.left,low,high);
-        int right = root.val > high ? 0 : rangeSumBST(root.right, low, high);
-        return left + right + ((root.val <= high && root.val >= low) ? root.val : 0);
+        if (root.val < low){
+            return rangeSumBST(root.right,low,high);
+        }
+        if (root.val > high){
+            return rangeSumBST(root.left, low, high);
+        }
+        return root.val + rangeSumBST(root.left,low,high) + rangeSumBST(root.right, low, high);
     }
 
     public static void main(String[] args) {
