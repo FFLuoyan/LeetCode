@@ -2,9 +2,9 @@ package org.zongjieli.leetcode.question.daily.year2021.month5.week1;
 
 import org.zongjieli.leetcode.base.Employee;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 给定一个保存员工信息的数据结构,它包含了员工唯一的 id,重要度和直系下属的 id
@@ -26,20 +26,20 @@ import java.util.stream.Collectors;
  */
 public class EmployeeImportance {
     public int getImportance(List<Employee> employees, int id) {
-        Map<Integer,Employee> map = employees.stream().collect(Collectors.toMap(k -> k.id,v -> v));
-        return importanceCount(map,id);
+        Map<Integer,Employee> map = new HashMap<>(2 * employees.size());
+        for (Employee employee : employees) {
+            map.put(employee.id,employee);
+        }
+        int[] value = new int[1];
+        importanceCount(map,id,value);
+        return value[0];
     }
 
-    public int importanceCount(Map<Integer,Employee> map,int id){
+    public void importanceCount(Map<Integer,Employee> map,int id,int[] value){
         Employee employee = map.get(id);
-        if (employee == null){
-            return 0;
+        value[0] += employee.importance;
+        for (Integer subId : employee.subordinates) {
+            importanceCount(map, subId, value);
         }
-        int[] count = new int[]{employee.importance};
-        if (employee.subordinates == null || employee.subordinates.isEmpty()){
-            return count[0];
-        }
-        employee.subordinates.forEach(subId -> count[0] += importanceCount(map,subId));
-        return count[0];
     }
 }
