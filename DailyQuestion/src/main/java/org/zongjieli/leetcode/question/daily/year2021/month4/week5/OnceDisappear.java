@@ -29,22 +29,49 @@ public class OnceDisappear {
         return count.firstKey();
     }
 
+    /**
+     * 位计数法的原理在于
+     * 每一个整数都由 32 位的比特构成
+     * 而要在目标数组中找出目标数字则意味着
+     * 所有出现 3 次的数字,在某一个比特位上则出现了 3 次
+     * 统计每一个比特位上数字出现的总次数
+     * 除以 3 的余数就是目标数字在当前比特位的值
+     * 就可以得到目标数字
+     *
+     * 我们用两个数 a,b 统计目标位的比特值
+     * 遍历数组中的所有比特值并放入 a,b 中
+     * 首先将值放入 a 中
+     * 如果 a 中比特位已经有值,则放入 b 中
+     * 如果 b 的比特位也有值,说明该位的值已经出现了三次
+     * 将 a,b 中该位的值删除
+     */
     public int singleNumberByByteCount(int[] nums) {
-        int[] sum = new int[32];
+        if (nums.length == 1){
+            return nums[0];
+        }
+        int a = 0;
+        int b = 0;
         for (int num : nums) {
-            int index = 31;
-            while (num != 0){
-                sum[index--] += num % 2;
-                num >>>= 1;
-            }
+            // num 中的 0 位均为无效位,无需考虑
+            // 有效位可分为几个部分
+            // a 中没有的
+            //   放入 a 中
+            // a 中有的,b 中没有的
+            //   放入 b 中
+            // a 中有的,b 中也有的
+            //   从 a,b 中删除
+            int aDiff = num ^ a;
+            int aZero = aDiff & num;
+            a += aZero;
+            num -= aZero;
+            int bDiff = num ^ b;
+            int bZero = bDiff & num;
+            b += bZero;
+            num -= bZero;
+            a -= num;
+            b -= num;
         }
-        int count = 0;
-        for (int i : sum) {
-            count <<= 1;
-            i %= 3;
-            count += i;
-        }
-        return count;
+        return a;
     }
 
     public static void main(String[] args) {
