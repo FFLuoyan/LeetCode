@@ -14,7 +14,7 @@ import java.util.TreeMap;
  * @version  1.0
  */
 public class OnceDisappear {
-    public int singleNumber(int[] nums) {
+    public int singleNumberByMap(int[] nums) {
         TreeMap<Integer,Boolean> count = new TreeMap<>();
         for (int num : nums) {
             Boolean canDelete = count.get(num);
@@ -27,5 +27,30 @@ public class OnceDisappear {
             }
         }
         return count.firstKey();
+    }
+
+    public int singleNumberByByteCount(int[] nums) {
+        int[] sum = new int[32];
+        for (int num : nums) {
+            int index = 31;
+            while (num != 0){
+                sum[index--] += num % 2;
+                num >>>= 1;
+            }
+        }
+        int count = 0;
+        for (int i : sum) {
+            count <<= 1;
+            i %= 3;
+            count += i;
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        OnceDisappear test = new OnceDisappear();
+        System.out.println(test.singleNumberByByteCount(new int[]{2,2,23,2}));
+        System.out.println(test.singleNumberByByteCount(new int[]{-2,-2,1,1,4,1,4,4,-4,-2}));
+
     }
 }
