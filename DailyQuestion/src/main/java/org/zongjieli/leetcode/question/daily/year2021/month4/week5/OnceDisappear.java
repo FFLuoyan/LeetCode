@@ -44,6 +44,9 @@ public class OnceDisappear {
      * 如果 a 中比特位已经有值,则放入 b 中
      * 如果 b 的比特位也有值,说明该位的值已经出现了三次
      * 将 a,b 中该位的值删除
+     *
+     * IMP:
+     * 如果将值注入 b 的同时删除 a 的值
      */
     public int singleNumberByByteCount(int[] nums) {
         if (nums.length == 1){
@@ -52,24 +55,9 @@ public class OnceDisappear {
         int a = 0;
         int b = 0;
         for (int num : nums) {
-            // num 中的 0 位均为无效位,无需考虑
-            // 有效位可分为几个部分
-            // a 中没有的
-            //   放入 a 中
-            // a 中有的,b 中没有的
-            //   放入 b 中
-            // a 中有的,b 中也有的
-            //   从 a,b 中删除
-            int aDiff = num ^ a;
-            int aZero = aDiff & num;
-            a += aZero;
-            num -= aZero;
-            int bDiff = num ^ b;
-            int bZero = bDiff & num;
-            b += bZero;
-            num -= bZero;
-            a -= num;
-            b -= num;
+            int temp = b;
+            b = (b & (~num)) | ((~b) & a & num);
+            a = (a & (~num)) | ((~a) & (~temp) & num);
         }
         return a;
     }
