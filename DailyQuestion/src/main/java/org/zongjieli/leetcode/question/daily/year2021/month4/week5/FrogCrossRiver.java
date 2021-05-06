@@ -24,27 +24,32 @@ import java.util.*;
  */
 public class FrogCrossRiver {
     public boolean canCross(int[] stones) {
-        HashMap<Integer, List<Integer>> nextStoneStep = new HashMap<>();
-        List<Integer> firstStep = new ArrayList<>();
-        firstStep.add(1);
-        nextStoneStep.put(1,firstStep);
-        for (int stoneIndex = 1 ; stoneIndex < stones.length ; stoneIndex++){
-            int nextStone = stones[stoneIndex];
-            List<Integer> stoneStep = nextStoneStep.get(nextStone);
-            if (stoneStep != null && !stoneStep.isEmpty()){
-                for (int step : stoneStep) {
-                    for (int addStep = step + 1; addStep >= step - 1 && addStep > 0; addStep--) {
-                        int canStone = nextStone + addStep;
-                        List<Integer> saveStoneStep = nextStoneStep.computeIfAbsent(canStone, k -> new ArrayList<>());
-                        if (!saveStoneStep.contains(addStep)){
-                            saveStoneStep.add(addStep);
-                        }
+        TreeMap<Integer,HashSet<Integer>> stonesStep = new TreeMap<>();
+        for (int stone : stones) {
+            stonesStep.put(stone,new HashSet<>());
+        }
+        HashSet<Integer> firstStone = stonesStep.get(1);
+        if (firstStone == null){
+            return false;
+        }
+        firstStone.add(1);
+        int lastStone = stones[stones.length - 1];
+        for (int i = 1; i < stones.length; i++) {
+            int stone = stones[i];
+            HashSet<Integer> currentStep = stonesStep.get(stone);
+            currentStep.forEach(step -> {
+                for (int j = step + 1 ; j > Math.max(0,step - 2) ; j--){
+                    HashSet<Integer> steps = stonesStep.get(stone + j);
+                    if (steps != null){
+                        steps.add(j);
                     }
                 }
+            });
+            if (!stonesStep.get(lastStone).isEmpty()){
+                return true;
             }
-            nextStoneStep.entrySet().removeIf(entry -> entry.getKey() < nextStone);
         }
-        return nextStoneStep.get(stones[stones.length - 1]) != null;
+        return false;
     }
 
     public static void main(String[] args) {
