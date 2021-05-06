@@ -47,17 +47,18 @@ public class OnceDisappear {
      *
      * IMP:
      * 如果将值注入 b 的同时删除 a 的值
+     * 即 00 -> 10 -> 01 -> 00 构成的循环则可以更简便,同时更合理
+     * 在进行运算处理的时候,一般情况下,有 a,b -> a 和 a,b -> b 两种映射
+     * 两种映射均基于 a,b 的当前值
+     * 改变某一个数的值的时候,另一个数的映射方式会有所改变
+     * 从而可以产生更简便的运算函数
      */
     public int singleNumberByByteCount(int[] nums) {
-        if (nums.length == 1){
-            return nums[0];
-        }
         int a = 0;
         int b = 0;
         for (int num : nums) {
-            int temp = b;
-            b = (b & (~num)) | ((~b) & a & num);
-            a = (a & (~num)) | ((~a) & (~temp) & num);
+            a = ~b & (a ^ num);
+            b = ~a & (b ^ num);
         }
         return a;
     }
