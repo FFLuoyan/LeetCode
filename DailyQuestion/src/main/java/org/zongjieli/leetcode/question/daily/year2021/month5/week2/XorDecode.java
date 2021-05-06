@@ -24,10 +24,8 @@ public class XorDecode {
     public int[] decode(int[] encoded, int first) {
         int[] result = new int[encoded.length + 1];
         result[0] = first;
-        int index = 1;
-        for (int i : encoded) {
-            result[index] = result[index - 1] ^ i;
-            index++;
+        for (int i = 1 ; i < result.length ; i++){
+            result[i] = encoded[i - 1] ^ result[i - 1];
         }
         return result;
     }
