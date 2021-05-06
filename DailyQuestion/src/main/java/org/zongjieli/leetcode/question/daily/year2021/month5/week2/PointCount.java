@@ -17,6 +17,8 @@ package org.zongjieli.leetcode.question.daily.year2021.month5.week2;
  */
 public class PointCount {
     public int deleteAndEarn(int[] nums) {
+        // 空间换时间,经过测试,treeMap 的代码效率会低很多(2s - 12s)
+        // 官方的解法还有分段,懒得写了,效率也不会更高
         int[] save = new int[1001];
         for (int num : nums) {
             save[num] += num;
