@@ -19,28 +19,27 @@ import org.zongjieli.leetcode.base.TreeNode;
  */
 public class LeafLikeTree {
     public boolean leafSimilar(TreeNode root1, TreeNode root2) {
-        int[] values = new int[200];
-        int[] index = new int[]{0};
-        puValue(root1,values,index);
-        index[0]--;
-        return checkValue(root2,values,index) && index[0] == -1;
+        int[] values = new int[201];
+        putValue(root1,values);
+        values[200]--;
+        return checkValue(root2,values) && values[200] == -1;
     }
-    public void puValue(TreeNode root,int[] values,int[] index){
+    public void putValue(TreeNode root,int[] values){
         if (root != null){
             if (root.left == null && root.right == null){
-                values[index[0]++] = root.val;
+                values[values[200]++] = root.val;
             } else {
-                puValue(root.left,values,index);
-                puValue(root.right,values,index);
+                putValue(root.left,values);
+                putValue(root.right,values);
             }
         }
     }
-    public boolean checkValue(TreeNode root,int[] values,int[] index){
+    public boolean checkValue(TreeNode root,int[] values){
         if (root != null){
             if (root.right != null || root.left != null){
-                return checkValue(root.right,values,index) && checkValue(root.left, values, index);
+                return checkValue(root.right,values) && checkValue(root.left, values);
             } else {
-                return values[index[0]--] == root.val;
+                return values[values[200]--] == root.val;
             }
         }
         return true;
