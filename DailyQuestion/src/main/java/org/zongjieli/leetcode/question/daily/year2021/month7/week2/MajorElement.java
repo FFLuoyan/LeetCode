@@ -31,8 +31,45 @@ public class MajorElement {
         return num[0];
     }
 
+    /**
+     * 摩尔多数投票算法
+     *
+     * @param  nums Param Description
+     * @return  int
+     * @author  Zongjie.Li
+     * @date    2021/7/9
+     * @since   1.0
+     */
+    public int majorityElementByBoyerMooreMajorityVotingAlgorithm(int[] nums) {
+        int count = 0;
+        int compare = -1;
+        for (int num : nums) {
+            if (count == 0){
+                compare = num;
+            }
+            if (num == compare){
+                count++;
+            } else {
+                count--;
+            }
+        }
+        if (count > 0){
+            count = 0;
+            for (int num : nums) {
+                if (num == compare){
+                    count++;
+                }
+            }
+            if (count > (nums.length / 2)){
+                return compare;
+            }
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         MajorElement test = new MajorElement();
-        System.out.println(test.majorityElement(new int[]{1,1,1,2,3,4}));
+        System.out.println(test.majorityElement(new int[]{1,1,1,1,3,4,5,6}));
+        System.out.println(test.majorityElementByBoyerMooreMajorityVotingAlgorithm(new int[]{1,1,1,1,3,4,5,6}));
     }
 }
