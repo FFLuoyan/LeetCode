@@ -20,8 +20,30 @@ public class HighCitationIndex {
         return count;
     }
 
+    public int hIndexByBinarySearch(int[] citations) {
+        int startIndex = 0;
+        int endIndex = citations.length - 1;
+        int count = 0;
+        while (startIndex <= endIndex){
+            int middleIndex = (startIndex + endIndex) / 2;
+            int temp = citations.length - middleIndex;
+            if (citations[middleIndex] < temp){
+                startIndex = middleIndex + 1;
+            } else {
+                count = temp;
+                endIndex = middleIndex - 1;
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         HighCitationIndex test = new HighCitationIndex();
-        System.out.println(test.hIndex(new int[]{1}));
+//        System.out.println(test.hIndex(new int[]{1}));
+        System.out.println(test.hIndexByBinarySearch(new int[]{0}));
+        System.out.println(test.hIndexByBinarySearch(new int[]{1}));
+        System.out.println(test.hIndexByBinarySearch(new int[]{1,1}));
+        System.out.println(test.hIndexByBinarySearch(new int[]{2,2}));
+        System.out.println(test.hIndexByBinarySearch(new int[]{2,2,3,8,9}));
     }
 }
