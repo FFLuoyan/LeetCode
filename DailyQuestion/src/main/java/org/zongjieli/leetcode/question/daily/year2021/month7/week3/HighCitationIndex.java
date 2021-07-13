@@ -23,18 +23,16 @@ public class HighCitationIndex {
     public int hIndexByBinarySearch(int[] citations) {
         int startIndex = 0;
         int endIndex = citations.length - 1;
-        int count = 0;
         while (startIndex <= endIndex){
             int middleIndex = (startIndex + endIndex) / 2;
             int temp = citations.length - middleIndex;
             if (citations[middleIndex] < temp){
                 startIndex = middleIndex + 1;
             } else {
-                count = temp;
                 endIndex = middleIndex - 1;
             }
         }
-        return count;
+        return citations.length - startIndex;
     }
 
     public static void main(String[] args) {
