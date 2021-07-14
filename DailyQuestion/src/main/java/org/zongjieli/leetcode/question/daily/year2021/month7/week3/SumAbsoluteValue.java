@@ -27,9 +27,9 @@ import java.util.*;
  */
 public class SumAbsoluteValue {
     public int minAbsoluteSumDiff(int[] nums1, int[] nums2) {
-        TreeSet<Integer> nums1Set = new TreeSet<>();
+        boolean[] numsExist = new boolean[100001];
         for (int value : nums1) {
-            nums1Set.add(value);
+            numsExist[value] = true;
         }
         int max = 0;
         long result = 0;
@@ -38,13 +38,19 @@ public class SumAbsoluteValue {
             result += abs;
             if (abs > max){
                 int maxDiff = abs - max;
-                int start = nums2[i] - maxDiff;
-                int end = nums2[i] + maxDiff;
-                Integer loopKey = nums1Set.ceiling(start);
-                while (loopKey != null && loopKey < end) {
-                    int updateAbs = Math.abs(nums2[i] - loopKey);
-                    max = Math.max(max, abs - updateAbs);
-                    loopKey = nums1Set.higher(loopKey);
+                for (int j = nums2[i] ; j < nums2[i] + maxDiff && j <= 100000 ; j++){
+                    if (numsExist[j]){
+                        maxDiff = j - nums2[i];
+                        max = abs - maxDiff;
+                        break;
+                    }
+                }
+                for (int j = nums2[i] ; j > nums2[i] - maxDiff && j >= 0 ; j--){
+                    if (numsExist[j]){
+                        maxDiff = nums2[i] - j;
+                        max = abs - maxDiff;
+                        break;
+                    }
                 }
             }
         }
