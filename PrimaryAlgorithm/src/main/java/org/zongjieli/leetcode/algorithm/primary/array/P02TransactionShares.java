@@ -1,15 +1,15 @@
 package org.zongjieli.leetcode.algorithm.primary.array;
 
 /**
- * @ClassName: BestTimeToTransactionShares
- * @Description:    给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
- *                  设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
- *                  注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
- * @Author: Zongjie.Li
- * @Date: 2020/11/11
- * @Version: 1.0
+ * 给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
+ * 设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
+ * 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+ *
+ * @author Zongjie.Li
+ * @date 2020/11/11
+ * @version 1.0
  **/
-public class BestTimeToTransactionShares {
+public class P02TransactionShares {
 
     /**
      * 该算法通过贪心算法来实现,贪心算法是动态规划法的一个特例
@@ -48,8 +48,8 @@ public class BestTimeToTransactionShares {
     }
 
     public static void main(String[] args) {
-        BestTimeToTransactionShares shares = new BestTimeToTransactionShares();
-        System.out.println(shares.maxProfit(new int[]{1, 5, 1, 0, 3, 2, 6, 5, 7, 8, 5, 4, 1, 0, 2}));
-        System.out.println(shares.maxProfitByDp(new int[]{1, 5, 1, 0, 3, 2, 6, 5, 7, 8, 5, 4, 1, 0, 2}));
+        P02TransactionShares test = new P02TransactionShares();
+        System.out.println(test.maxProfit(new int[]{1, 5, 1, 0, 3, 2, 6, 5, 7, 8, 5, 4, 1, 0, 2}));
+        System.out.println(test.maxProfitByDp(new int[]{1, 5, 1, 0, 3, 2, 6, 5, 7, 8, 5, 4, 1, 0, 2}));
     }
 }

@@ -3,13 +3,13 @@ package org.zongjieli.leetcode.algorithm.primary.array;
 import java.util.Arrays;
 
 /**
- * @ClassName: Rotate
- * @Description: 给定一个数组,将数组中的元素向右移动 k 个位置,其中 k 是非负数。
- * @Author: Zongjie.Li
- * @Date: 2020/11/12
- * @Version: 1.0
+ * 给定一个数组,将数组中的元素向右移动 k 个位置,其中 k 是非负数
+ *
+ * @author Zongjie.Li
+ * @date 2020/11/12
+ * @version 1.0
  **/
-public class Rotate {
+public class P03Rotate {
 
     /**
      * 解题思路
@@ -104,12 +104,12 @@ public class Rotate {
 
 
     public static void main(String[] args) {
-        Rotate rotate = new Rotate();
-        int[] test = new int[]{1,2,3,4,5,6,7,8};
-//        int[] test = new int[]{1,2};
-        System.out.println(Arrays.toString(test));
-//        rotate.rotate(test,6);
-        rotate.rotateByReverse(test,3);
-        System.out.println(Arrays.toString(test));
+        P03Rotate test = new P03Rotate();
+        int[] array = new int[]{1,2,3,4,5,6,7,8};
+//        int[] array = new int[]{1,2};
+        System.out.println(Arrays.toString(array));
+//        test.rotate(array,6);
+        test.rotateByReverse(array,3);
+        System.out.println(Arrays.toString(array));
     }
 }

@@ -4,14 +4,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Class Description:
  * 给定一个数组,判断数组中是否存在重复元素,如果存在某一个值在数组中至少出现两次,则返回 false
  *
  * @author   Zongjie.Li
  * @date     2021/1/7
  * @version  1.0
  */
-public class RepeatNumber {
+public class P04ContainRepeat {
 
     public boolean containDuplicate(int[] nums){
 //        return repeatBySort(nums);
@@ -92,7 +91,7 @@ public class RepeatNumber {
 
     public static void main(String[] args) {
         int[] nums = new int[]{1,2,3,5,8,7,4,0,6};
-        RepeatNumber repeatNumber = new RepeatNumber();
-        System.out.println(repeatNumber.containDuplicate(nums));
+        P04ContainRepeat test = new P04ContainRepeat();
+        System.out.println(test.containDuplicate(nums));
     }
 }

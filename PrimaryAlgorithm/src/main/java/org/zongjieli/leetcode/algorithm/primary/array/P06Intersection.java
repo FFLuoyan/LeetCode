@@ -9,7 +9,7 @@ import java.util.*;
  * @date     2021/1/11
  * @version  1.0
  */
-public class IntersectionOfTwoArray {
+public class P06Intersection {
 
     public int[] intersect(int[] nums1, int[] nums2) {
         Arrays.sort(nums1);
@@ -33,9 +33,9 @@ public class IntersectionOfTwoArray {
     }
 
     public static void main(String[] args) {
-        IntersectionOfTwoArray intersection = new IntersectionOfTwoArray();
+        P06Intersection test = new P06Intersection();
         int[] nums1 = new int[]{1,5,8,2,0,3,6,5,2,2,2,2,4,7};
         int[] nums2 = new int[]{0,0,0,8,5,4,7,7,7,8,5,5,5,5,2,3,6};
-        System.out.println(Arrays.toString(intersection.intersect(nums1,nums2)));
+        System.out.println(Arrays.toString(test.intersect(nums1,nums2)));
     }
 }

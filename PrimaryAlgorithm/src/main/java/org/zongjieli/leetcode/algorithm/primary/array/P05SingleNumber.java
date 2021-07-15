@@ -7,7 +7,7 @@ package org.zongjieli.leetcode.algorithm.primary.array;
  * @date     2021/1/7
  * @version  1.0
  */
-public class SingleNumber {
+public class P05SingleNumber {
     public int singleNumber(int[] nums){
         int temp = 0;
         for (int num : nums){
@@ -17,8 +17,8 @@ public class SingleNumber {
     }
 
     public static void main(String[] args) {
-        SingleNumber singleNumber = new SingleNumber();
+        P05SingleNumber test = new P05SingleNumber();
         int[] singleNums = new int[]{1,2,5,5,2,1,9};
-        System.out.println(singleNumber.singleNumber(singleNums));
+        System.out.println(test.singleNumber(singleNums));
     }
 }
