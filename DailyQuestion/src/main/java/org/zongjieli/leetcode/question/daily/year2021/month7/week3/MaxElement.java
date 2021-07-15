@@ -24,6 +24,19 @@ import java.util.Arrays;
  */
 public class MaxElement {
     public int maximumElementAfterDecrementingAndRearranging(int[] arr) {
+        int[] count = new int[arr.length + 1];
+        for (int i : arr) {
+            count[Math.min(i,arr.length)]++;
+        }
+        int max = 0;
+        for (int i = 1; i < count.length; i++) {
+            if (count[i] > 0){
+                max += Math.min(i - max,count[i]);
+            }
+        }
+        return max;
+    }
+    public int maximumElementAfterDecrementingAndRearrangingBySort(int[] arr) {
         Arrays.sort(arr);
         arr[0] = 1;
         for (int i = 1 ; i < arr.length ; i++){
@@ -32,5 +45,11 @@ public class MaxElement {
             }
         }
         return arr[arr.length - 1];
+    }
+
+    public static void main(String[] args) {
+        MaxElement test = new MaxElement();
+        System.out.println(test.maximumElementAfterDecrementingAndRearranging(new int[]{2,2,2,1,1,1,8}));
+        System.out.println(test.maximumElementAfterDecrementingAndRearranging(new int[]{2,2,1,2,1}));
     }
 }
