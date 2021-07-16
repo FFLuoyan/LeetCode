@@ -22,7 +22,7 @@ import java.util.Arrays;
  * @date     2021/7/15
  * @version  1.0
  */
-public class MaxElement {
+public class Z4MaxElement {
     public int maximumElementAfterDecrementingAndRearranging(int[] arr) {
         int[] count = new int[arr.length + 1];
         for (int i : arr) {
@@ -48,7 +48,7 @@ public class MaxElement {
     }
 
     public static void main(String[] args) {
-        MaxElement test = new MaxElement();
+        Z4MaxElement test = new Z4MaxElement();
         System.out.println(test.maximumElementAfterDecrementingAndRearranging(new int[]{2,2,2,1,1,1,8}));
         System.out.println(test.maximumElementAfterDecrementingAndRearranging(new int[]{2,2,1,2,1}));
     }

@@ -23,7 +23,7 @@ package org.zongjieli.leetcode.question.daily.year2021.month7.week3;
  * @date     2021/7/14
  * @version  1.0
  */
-public class SumAbsoluteValue {
+public class Z3SumAbsoluteValue {
     public int minAbsoluteSumDiff(int[] nums1, int[] nums2) {
         boolean[] numsExist = new boolean[100001];
         for (int value : nums1) {
@@ -56,7 +56,7 @@ public class SumAbsoluteValue {
     }
 
     public static void main(String[] args) {
-        SumAbsoluteValue test = new SumAbsoluteValue();
+        Z3SumAbsoluteValue test = new Z3SumAbsoluteValue();
 //        int[] nums1 = new int[]{1,2,3};
 //        int[] nums2 = new int[]{2,3,4};
 //        int[] nums1 = new int[]{1,7,5};

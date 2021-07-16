@@ -11,7 +11,7 @@ package org.zongjieli.leetcode.question.daily.year2021.month7.week3;
  * @date     2021/7/12
  * @version  1.0
  */
-public class HighCitationIndex {
+public class Z1HighCitationIndex {
     public int hIndex(int[] citations) {
         int count = 0;
         while (count < citations.length && citations[citations.length - count - 1] > count){
@@ -36,7 +36,7 @@ public class HighCitationIndex {
     }
 
     public static void main(String[] args) {
-        HighCitationIndex test = new HighCitationIndex();
+        Z1HighCitationIndex test = new Z1HighCitationIndex();
 //        System.out.println(test.hIndex(new int[]{1}));
         System.out.println(test.hIndexByBinarySearch(new int[]{0}));
         System.out.println(test.hIndexByBinarySearch(new int[]{1}));

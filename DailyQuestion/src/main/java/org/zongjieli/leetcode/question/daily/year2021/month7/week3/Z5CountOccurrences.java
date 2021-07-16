@@ -8,7 +8,7 @@ package org.zongjieli.leetcode.question.daily.year2021.month7.week3;
  * @date     2021/7/16
  * @version  1.0
  */
-public class CountOccurrences {
+public class Z5CountOccurrences {
     public int search(int[] nums, int target) {
         int count = 0;
         int index = -1;
