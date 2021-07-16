@@ -18,12 +18,12 @@ package org.zongjieli.leetcode.question.daily.year2021.month7.week3;
  * 1 <= n <= 10^5
  * 1 <= nums1[i], nums2[i] <= 10^5
  *
- *
  * @author   Zongjie.Li
  * @date     2021/7/14
  * @version  1.0
  */
 public class Z3SumAbsoluteValue {
+
     public int minAbsoluteSumDiff(int[] nums1, int[] nums2) {
         boolean[] numsExist = new boolean[100001];
         for (int value : nums1) {

@@ -9,16 +9,40 @@ package org.zongjieli.leetcode.question.daily.year2021.month7.week3;
  * @version  1.0
  */
 public class Z5CountOccurrences {
+
     public int search(int[] nums, int target) {
-        int count = 0;
-        int index = -1;
-        while (++index < nums.length){
-            if (nums[index] == target){
-                count++;
-            } else if (nums[index] > target){
-                break;
+        int leftLeft = 0;
+        int rightLeft = 0;
+        int rightRight = nums.length - 1;
+        int leftRight = nums.length - 1;
+
+        while (leftLeft <= leftRight){
+            int middle = (leftLeft + leftRight) / 2;
+            if (nums[middle] < target){
+                leftLeft = middle + 1;
+            } else if (nums[middle] == target){
+                leftRight = middle - 1;
+                if (rightLeft == 0){
+                    rightLeft = middle;
+                }
+            } else {
+                leftRight = middle - 1;
+                rightRight = middle;
             }
         }
-        return count;
+        while (rightLeft <= rightRight){
+            int middle = (rightLeft + rightRight) / 2;
+            if (nums[middle] > target){
+                rightRight = middle - 1;
+            } else {
+                rightLeft = middle + 1;
+            }
+        }
+        return rightLeft - leftLeft;
+    }
+
+    public static void main(String[] args) {
+        Z5CountOccurrences test = new Z5CountOccurrences();
+        System.out.println(test.search(new int[]{1,3,3,3,5,6,8,8,9,10},6));
     }
 }
