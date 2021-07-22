@@ -17,11 +17,7 @@ public class Z6MaxSumSubarray {
         int max = nums[0];
         int temp = 0;
         for (int num : nums) {
-            temp += num;
-            if (temp < 0){
-                temp = 0;
-            }
-            max = Math.max(max,temp > 0 ? temp : num);
+            max = Math.max(max,temp = temp > 0 ? temp + num : num);
         }
         return max;
     }
