@@ -54,4 +54,12 @@ public class TreeNode {
                 ,new TreeNode(3)
                 ,null));
 
+    public static final TreeNode MIN_TREE = new TreeNode(
+            2
+            ,new TreeNode(2)
+            ,new TreeNode(
+            5
+            ,new TreeNode(5)
+            ,new TreeNode(7)));
+
 }
