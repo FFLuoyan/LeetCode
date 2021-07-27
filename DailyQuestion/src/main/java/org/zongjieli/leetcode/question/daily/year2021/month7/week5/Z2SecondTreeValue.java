@@ -2,8 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2021.month7.week5;
 
 import org.zongjieli.leetcode.base.TreeNode;
 
-import java.util.Arrays;
-
 /**
  * 给定一个非空特殊的二叉树,每个节点都是正数,并且每个节点的子节点数量只能为 2 或 0
  * 如果一个节点有两个子节点的话,那么该节点的值等于两个子节点中较小的一个
@@ -22,27 +20,19 @@ import java.util.Arrays;
  */
 public class Z2SecondTreeValue {
     public int findSecondMinimumValue(TreeNode root) {
-        int[] values = new int[26];
-        saveValue(root,values);
-        int index = 26 - values[25];
-        values[25] = 0;
-        Arrays.sort(values);
-        int min = values[index];
-        while (index < values.length){
-            if (values[index] != min){
-                return values[index];
-            }
-            index++;
-        }
-        return  -1;
+        return minGreaterThanValue(root,root.val);
     }
 
-    public void saveValue(TreeNode root,int[] values){
-        if (root != null){
-            values[values[25]++] = root.val;
-            saveValue(root.left,values);
-            saveValue(root.right,values);
+    public int minGreaterThanValue(TreeNode root,int value){
+        if (root == null){
+            return -1;
         }
+        if (root.val > value){
+            return root.val;
+        }
+        int left = minGreaterThanValue(root.left,value);
+        int right = minGreaterThanValue(root.right,value);
+        return left == -1 ? right : (right == -1 ? left : Math.min(left,right));
     }
 
     public static void main(String[] args) {
