@@ -71,18 +71,20 @@ public class Z3StudentAttendanceRecord {
      * record[5] = record[4]
      */
     public int checkRecord(int n) {
-        long[] record = new long[]{1,1,0,1,0,0};
+        int[] record = new int[]{1,1,0,1,0,0};
         for (int i = 1 ; i < n ; i++){
             long temp = record[2];
-            record[2] = record[1] % 1000000007;
-            record[1] = record[0] % 1000000007;
-            record[0] = (temp + record[1] + record[2]) % 1000000007;
+            record[2] = record[1];
+            record[1] = record[0];
+            record[0] = (int) ((temp + record[1] + record[2]) % 1000000007);
             temp = record[5];
-            record[5] = record[4] % 1000000007;
-            record[4] = record[3] % 1000000007;
-            record[3] = (record[0] + record[4] + record[5] + temp) % 1000000007;
+            record[5] = record[4];
+            record[4] = record[3];
+            record[3] = (int) ((temp + record[0] + record[4] + record[5]) % 1000000007);
         }
-        return (int) ((record[0] + record[1] + record[2] + record[3] + record[4] + record[5]) % 1000000007);
+        long temp = record[0];
+        temp = temp + record[1] + record[2] + record[3] + record[4] + record[5];
+        return (int) (temp % 1000000007);
     }
 
     public static void main(String[] args) {
