@@ -35,32 +35,44 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week1;
  */
 public class Z3CompareVersion {
     public int compareVersion(String version1, String version2) {
-        String[] v1 = version1.split("\\.");
-        String[] v2 = version2.split("\\.");
-        int index = 0;
-        while (index < v1.length && index < v2.length){
-            int r1 = Integer.parseInt(v1[index]);
-            int r2 = Integer.parseInt(v2[index]);
-            if (r1 > r2){
+        int v1 = 0;
+        int v2 = 0;
+        int vL1 = version1.length();
+        int vL2 = version2.length();
+        while (v1 < vL1 || v2 < vL2){
+            int value1 = 0;
+            int value2 = 0;
+
+            while (v1 < vL1){
+                char c = version1.charAt(v1++);
+                if (c == '.'){
+                    break;
+                }
+                value1 = value1 * 10 + c - '0';
+            }
+
+            while (v2 < vL2){
+                char c = version2.charAt(v2++);
+                if (c == '.'){
+                    break;
+                }
+                value2 = value2 * 10 + c - '0';
+            }
+
+            if (value1 > value2){
                 return 1;
-            } else if (r1 < r2){
+            }
+
+            if (value1 < value2){
                 return -1;
             }
-            index++;
-        }
-        if (v1.length == v2.length){
-            return 0;
-        }
-        int result = 1;
-        if (v1.length < v2.length){
-            result = -1;
-            v1 = v2;
-        }
-        for (;index < v1.length ;index++){
-            if (Integer.parseInt(v1[index]) > 0){
-                return result;
-            }
+
         }
         return 0;
+    }
+
+    public static void main(String[] args) {
+        Z3CompareVersion test = new Z3CompareVersion();
+        System.out.println(test.compareVersion("1.01","1.001"));
     }
 }
