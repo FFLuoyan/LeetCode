@@ -34,6 +34,42 @@ public class Z6Fibonacci {
         return result[n];
     }
 
+    /**
+     * 矩阵快速幂解法
+     * @param n 序号
+     * @return  结果
+     */
+    public int matrixFastPower(int n){
+        if (n <= 1){
+            return n;
+        }
+        n--;
+        long[] matrix = new long[]{1,1,1,0};
+        long[] result = new long[]{1,0,0,1};
+        while (true){
+            long temp = result[0];
+            if ((n & 1) == 1){
+                result[0] = (temp * matrix[0] + result[1] * matrix[2]) % 1000000007;
+                result[1] = (temp * matrix[1] + result[1] * matrix[3]) % 1000000007;
+                temp = result[2];
+                result[2] = (temp * matrix[0] + result[3] * matrix[2]) % 1000000007;
+                result[3] = (temp * matrix[1] + result[3] * matrix[3]) % 1000000007;
+            }
+            n >>= 1;
+            if (n == 0){
+                break;
+            }
+            temp = matrix[0];
+            long temp1 = matrix[1];
+            long temp2 = matrix[2];
+            matrix[0] = (temp * temp + temp1 * temp2) % 1000000007;
+            matrix[1] = (temp * temp1 + temp1 * matrix[3]) % 1000000007;
+            matrix[2] = (temp2 * temp + matrix[3] * temp2) % 1000000007;
+            matrix[3] = (temp2 * temp1 + matrix[3] * matrix[3]) % 1000000007;
+        }
+        return (int) result[0];
+    }
+
     public static void main(String[] args) {
         Z6Fibonacci test = new Z6Fibonacci();
         test.fib(100);
