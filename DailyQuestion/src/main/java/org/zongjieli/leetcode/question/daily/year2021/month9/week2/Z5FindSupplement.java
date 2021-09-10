@@ -30,10 +30,7 @@ public class Z5FindSupplement {
             }
             sum += chalk[i];
         }
-        while (k >= 0){
-            k -= sum;
-        }
-        k += sum;
+        k = k % sum;
         int i = -1;
         while (k >= 0){
             k -= chalk[++i];
