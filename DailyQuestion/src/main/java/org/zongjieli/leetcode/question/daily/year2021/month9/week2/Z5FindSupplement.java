@@ -22,24 +22,24 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week2;
  */
 public class Z5FindSupplement {
     public int chalkReplacer(int[] chalk, int k) {
-        int sum = 0;
-        for (int i = 0 ; i < chalk.length ; i++){
-            k -= chalk[i];
-            if (k < 0){
+        if (k < chalk[0]){
+            return 0;
+        }
+        int i = 0;
+        while (++i < chalk.length){
+            if ((chalk[i] += chalk[i - 1]) > k){
                 return i;
             }
-            sum += chalk[i];
         }
-        k = k % sum;
-        int i = -1;
-        while (k >= 0){
-            k -= chalk[++i];
-        }
+        k %= chalk[chalk.length - 1];
+        i = -1;
+        while (k >= chalk[++i]){ }
         return i;
     }
 
     public static void main(String[] args) {
         Z5FindSupplement test = new Z5FindSupplement();
         System.out.println(test.chalkReplacer(new int[]{5,1,5},22));
+        System.out.println(test.chalkReplacer(new int[]{3,4,1,2},25));
     }
 }
