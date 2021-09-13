@@ -22,9 +22,13 @@ import java.util.Map;
  */
 public class Z1BoomerangNumber {
     public int numberOfBoomerangs(int[][] points) {
-        Map<Integer,Map<Integer,Integer>> pointLength = new HashMap<>(2 * points.length);
+        Map<Integer,Integer>[] pointLength = new Map[points.length];
+        for (int i = 0 ; i < pointLength.length ; i++){
+            pointLength[i] = new HashMap<>(2 * points.length);
+        }
+
         for (int pointIndex = 0 ; pointIndex < points.length ; pointIndex++){
-            Map<Integer,Integer> lengthCount = pointLength.computeIfAbsent(pointIndex,k -> new HashMap<>(2 * points.length));
+            Map<Integer,Integer> lengthCount = pointLength[pointIndex];
             int[] point = points[pointIndex];
             for (int lengthIndex = pointIndex + 1 ; lengthIndex < points.length ; lengthIndex++){
                 int[] lengthPoint = points[lengthIndex];
@@ -32,11 +36,13 @@ public class Z1BoomerangNumber {
                 int yLength = lengthPoint[1] - point[1];
                 int length = xLength * xLength + yLength * yLength;
                 lengthCount.merge(length, 1, Integer::sum);
-                pointLength.computeIfAbsent(lengthIndex, k -> new HashMap<>(2 * points.length)).merge(length, 1, Integer::sum);
+                pointLength[lengthIndex].merge(length, 1, Integer::sum);
             }
         }
         int[] result = new int[]{0};
-        pointLength.forEach((index,countMap) -> countMap.forEach((length, count) -> result[0] += (count) * (count - 1)));
+        for (Map<Integer, Integer> countMap : pointLength) {
+            countMap.values().forEach(count -> result[0] += (count) * (count - 1));
+        }
         return result[0];
     }
 
