@@ -17,11 +17,20 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week3;
  */
 public class Z3FindPeak {
     public int findPeakElement(int[] nums) {
-        for (int i = 1 ; i < nums.length ; i++){
-            if (nums[i] < nums[i - 1]){
-                return i - 1;
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right - 2){
+            int middle = (left + right) / 2;
+            if (nums[middle - 1] < nums[middle]){
+                if (nums[middle + 1] < nums[middle]){
+                    return middle;
+                }
+                left = middle + 1;
+            } else {
+                right = middle - 1;
             }
+
         }
-        return nums.length - 1;
+        return nums[right] > nums[left] ? right : left;
     }
 }
