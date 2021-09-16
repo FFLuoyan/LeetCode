@@ -17,40 +17,33 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week2;
  */
 public class Z7EffectString {
     public boolean checkValidString(String s) {
-        // 分别校验左括号与右括号
-        int brackets = 0;
-        int asterisk = 0;
+        int max = 0;
+        int min = 0;
         for (int i = 0 ; i < s.length() ; i++){
             char currentChar = s.charAt(i);
             if (currentChar == '('){
-                brackets++;
+                max++;
+                min++;
             } else if (currentChar == '*'){
-                asterisk++;
-            } else if (brackets > 0){
-                brackets--;
-            } else if (asterisk > 0){
-                asterisk--;
-            } else {
+                max++;
+                if (min > 0){
+                    min--;
+                }
+            } else if (max <= 0){
                 return false;
+            } else {
+                max--;
+                if (min > 0){
+                    min--;
+                }
             }
         }
-        brackets = 0;
-        asterisk = 0;
-        for (int i = s.length() - 1 ; i >= 0 ; i--){
-            char currentChar = s.charAt(i);
-            if (currentChar == ')'){
-                brackets++;
-            } else if (currentChar == '*'){
-                asterisk++;
-            } else if (brackets > 0){
-                brackets--;
-            } else if (asterisk > 0){
-                asterisk--;
-            } else {
-                return false;
-            }
-        }
+        return min <= 0 && max >= 0;
+    }
 
-        return true;
+    public static void main(String[] args) {
+        Z7EffectString test = new Z7EffectString();
+        System.out.println(test.checkValidString("(((((*(()((((*((**(((()()*)()()()*((((**)())*)*)))))))(())(()))())((*()()(((()((()*(())*(()**)()(())"));
+//        System.out.println(test.checkValidString("(((((*(*********((*(((((****"));
     }
 }
