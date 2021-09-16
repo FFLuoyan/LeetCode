@@ -27,6 +27,7 @@ public class Z1BoomerangNumber {
             pointLength[i] = new HashMap<>(2 * points.length);
         }
 
+        int result = 0;
         for (int pointIndex = 0 ; pointIndex < points.length ; pointIndex++){
             Map<Integer,Integer> lengthCount = pointLength[pointIndex];
             int[] point = points[pointIndex];
@@ -35,19 +36,16 @@ public class Z1BoomerangNumber {
                 int xLength = lengthPoint[0] - point[0];
                 int yLength = lengthPoint[1] - point[1];
                 int length = xLength * xLength + yLength * yLength;
-                lengthCount.merge(length, 1, Integer::sum);
-                pointLength[lengthIndex].merge(length, 1, Integer::sum);
+                result += 2 * (lengthCount.merge(length, 1, Integer::sum) - 1);
+                result += 2 * (pointLength[lengthIndex].merge(length, 1, Integer::sum) - 1);
             }
         }
-        int[] result = new int[]{0};
-        for (Map<Integer, Integer> countMap : pointLength) {
-            countMap.values().forEach(count -> result[0] += (count) * (count - 1));
-        }
-        return result[0];
+
+        return result;
     }
 
     public static void main(String[] args) {
         Z1BoomerangNumber test = new Z1BoomerangNumber();
-        test.numberOfBoomerangs(new int[][]{new int[]{0,0},new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}}); // 20
+        System.out.println(test.numberOfBoomerangs(new int[][]{new int[]{0,0},new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}}));; // 20
     }
 }
