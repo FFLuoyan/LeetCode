@@ -22,26 +22,27 @@ import java.util.Map;
  */
 public class Z1BoomerangNumber {
     public int numberOfBoomerangs(int[][] points) {
-        Map<Integer,Integer>[] pointLength = new Map[points.length];
-        for (int i = 0 ; i < pointLength.length ; i++){
-            pointLength[i] = new HashMap<>(2 * points.length);
-        }
-
-        int result = 0;
-        for (int pointIndex = 0 ; pointIndex < points.length ; pointIndex++){
-            Map<Integer,Integer> lengthCount = pointLength[pointIndex];
-            int[] point = points[pointIndex];
-            for (int lengthIndex = pointIndex + 1 ; lengthIndex < points.length ; lengthIndex++){
-                int[] lengthPoint = points[lengthIndex];
-                int xLength = lengthPoint[0] - point[0];
-                int yLength = lengthPoint[1] - point[1];
-                int length = xLength * xLength + yLength * yLength;
-                result += 2 * (lengthCount.merge(length, 1, Integer::sum) - 1);
-                result += 2 * (pointLength[lengthIndex].merge(length, 1, Integer::sum) - 1);
+        int[][] length = new int[points.length][points.length];
+        for (int firstPoint = 0 ; firstPoint < points.length ; firstPoint++){
+            for (int secondPoint = 1 ; secondPoint < points.length ; secondPoint++){
+                int xL = points[firstPoint][0] - points[secondPoint][0];
+                int yL = points[firstPoint][1] - points[secondPoint][1];
+                int lengthPower = xL * xL + yL * yL;
+                length[firstPoint][secondPoint] = lengthPower;
+                length[secondPoint][firstPoint] = lengthPower;
             }
         }
 
-        return result;
+        int result = 0;
+        Map<Integer,Integer> count = new HashMap<>(2 * points.length);
+        for (int[] lengths : length) {
+            for (int i : lengths) {
+                result += (count.merge(i,1,Integer::sum) - 1);
+            }
+            count.clear();
+        }
+
+        return 2 * result;
     }
 
     public static void main(String[] args) {
