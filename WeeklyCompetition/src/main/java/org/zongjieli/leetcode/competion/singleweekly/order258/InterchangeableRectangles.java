@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.competion.singleweekly.order258;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,12 +24,22 @@ import java.util.Map;
 public class InterchangeableRectangles {
 
     public long interchangeableRectangles(int[][] rectangles) {
-        Map<String, Integer> save = new HashMap<>(2 * rectangles.length);
-        long count = 0;
+        // width:height:number
+        long result = 0;
+        Map<Integer, Map<Integer,Integer>> save = new HashMap<>();
         for (int[] rectangle : rectangles) {
-            String value = new BigDecimal(rectangle[0]).divide(new BigDecimal(rectangle[1]),8, RoundingMode.HALF_UP).toString();
-            count += (save.merge(value,1,Integer::sum) - 1);
+            int gcd = greatestCommonDivisor(rectangle[0],rectangle[1]);
+            Map<Integer,Integer> countMap = save.computeIfAbsent(rectangle[0] / gcd,k -> new HashMap<>());
+            result += (countMap.merge(rectangle[1] / gcd,1,Integer::sum) - 1);
         }
-        return count;
+        return result;
+    }
+
+    private int greatestCommonDivisor(int a, int b){
+        int remain = a % b;
+        if (remain == 0){
+            return b;
+        }
+        return greatestCommonDivisor(b,remain);
     }
 }
