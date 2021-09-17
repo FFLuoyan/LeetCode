@@ -17,32 +17,45 @@ public class Z5MostKthSmall {
         if (k == 0 || arr.length == 0){
             return new int[0];
         }
-
-        TreeMap<Integer,Integer> resultMap = new TreeMap<>();
-        for (int i = 0 ; i < k ; i++){
-            resultMap.merge(arr[i], 1, Integer::sum);
-        }
-        for (int i = k ; i < arr.length ; i++){
-            Map.Entry<Integer,Integer> entry = resultMap.lastEntry();
-            if (arr[i] < entry.getKey()){
-                resultMap.merge(arr[i], 1, Integer::sum);
-                resultMap.computeIfPresent(entry.getKey(),(key,o) -> o == 1 ? null : o - 1);
+        int startIndex = 0;
+        int endIndex = arr.length - 1;
+        int sortedIndex;
+        while ((sortedIndex = fastSort(arr,startIndex, endIndex)) != k){
+            if (sortedIndex < k){
+                startIndex = sortedIndex + 1;
+            } else {
+                endIndex = sortedIndex - 1;
             }
         }
+        return Arrays.copyOf(arr, k);
+    }
 
-        int[] result = new int[k];
-        int[] index = new int[]{0};
-        resultMap.forEach((key,value) -> {
-            for (int i = 1 ; i <= value ; i++){
-                result[index[0]++] = key;
+    public int fastSort(int[] arr, int startIndex, int endIndex){
+        int base = arr[startIndex];
+        while (startIndex < endIndex){
+            while (startIndex < endIndex){
+                if (arr[endIndex] < base){
+                    arr[startIndex++] = arr[endIndex];
+                    break;
+                }
+                endIndex--;
             }
-        });
-
-        return result;
+            while (startIndex < endIndex){
+                if (arr[startIndex] >= base){
+                    arr[endIndex--] = arr[startIndex];
+                    break;
+                }
+                startIndex++;
+            }
+        }
+        arr[startIndex] = base;
+        return startIndex;
     }
 
     public static void main(String[] args) {
         Z5MostKthSmall test = new Z5MostKthSmall();
-        System.out.println(Arrays.toString(test.smallestK(new int[]{7, 7, 7, 7, 2, 4, 6, 8, 1 , 1}, 4)));
+//        System.out.println(Arrays.toString(test.smallestK(new int[]{7, 7, 7, 7, 2, 4, 6, 8, 1 , 1}, 4)));
+//        System.out.println(Arrays.toString(test.smallestK(new int[]{}, 0)));
+        System.out.println(Arrays.toString(test.smallestK(new int[]{1}, 1)));
     }
 }
