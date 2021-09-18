@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.algorithm.primary.string;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 /**
  * 给定一个字符串,找到它的第一个不重复的字符,并返回它的索引
@@ -15,20 +14,18 @@ import java.util.Map;
  */
 public class P03FirstUniqueChar {
     public int firstUniqChar(String s) {
-        boolean[] charExist = new boolean[26];
-        Map<Character,Integer> unique = new HashMap<>(26);
+        int[] indexSave = new int[26];
+        Arrays.fill(indexSave, -1);
         for (int i = 0 ; i < s.length() ; i++){
-            char currentChar = s.charAt(i);
-            if (!charExist[currentChar - 'a']){
-                unique.put(currentChar,i);
-                charExist[currentChar - 'a'] = true;
-            } else {
-                unique.remove(currentChar);
+            int index = s.charAt(i) - 'a';
+            indexSave[index] = indexSave[index] == -1 ? i : -2;
+        }
+        int min = s.length();
+        for (int i : indexSave) {
+            if (i > -1){
+                min = Math.min(min,i);
             }
         }
-        if (unique.size() == 0){
-            return -1;
-        }
-        return unique.values().stream().min(Integer::compareTo).get();
+        return min == s.length() ? -1 : min;
     }
 }
