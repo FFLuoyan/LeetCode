@@ -15,20 +15,16 @@ package org.zongjieli.leetcode.question.daily.year2021.month8.week5;
  */
 public class Z7SumSubarrayLengthOdd {
     public int sumOddLengthSubarray(int[] arr) {
-        int result = arr[0];
-        int add = arr[0];
-        // 奇数位置和
-        int oddSum = arr[0];
-        int arrayCount = 1;
-        for (int i = 1 ; i < arr.length ; i++){
-            if ((i & 1) == 1){
-                // 奇数,奇数下标为偶数位置
-                add += (arrayCount * arr[i] - oddSum);
-            } else {
-                // 偶数,偶数下标为奇数位置
-                add += (arrayCount++ * arr[i] + (oddSum += arr[i]));
-            }
-            result += add;
+        int result = 0;
+        for (int i = 0 ; i < arr.length ; i++){
+            // 计算前后各有几种组成子数组的方式
+            // 前置(包含自己)如果为奇数,则后置(不包含自己),应该为偶数
+            // 前置(包含自己)如果为偶数,则后置(不包含自己),应该为奇数
+            int leftOdd = i / 2 + 1;
+            int leftEven = (i + 1) / 2;
+            int rightEven = (arr.length - i + 1) / 2;
+            int rightOdd = (arr.length - i) / 2;
+            result += (leftOdd * rightEven + leftEven * rightOdd) * arr[i];
         }
         return result;
     }
