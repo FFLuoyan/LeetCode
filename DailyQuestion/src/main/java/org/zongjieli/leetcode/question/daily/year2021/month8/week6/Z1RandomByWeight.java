@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2021.month8.week6;
 
 import java.util.Random;
-import java.util.TreeMap;
 
 /**
  * 给定一个正整数数组 w,其中 w[i] 代表下标 i 的权重(下标从 0 开始)
@@ -22,27 +21,35 @@ import java.util.TreeMap;
  */
 public class Z1RandomByWeight {
 
-    private TreeMap<Integer,Integer> map;
-    private int sum;
+    private int[] value;
     private Random random = new Random();
 
     public Z1RandomByWeight(int[] w) {
-        map = new TreeMap<>();
-        for (int i = 0; i < w.length; i++) {
-            map.put(sum,i);
-            sum += w[i];
+        value = w;
+        for (int i = 1; i < w.length; i++) {
+            value[i] += value[i - 1];
         }
     }
 
     public int pickIndex() {
-        int v = random.nextInt(sum);
-        return map.floorEntry(v).getValue();
+        int left = 0;
+        int right = value.length - 1;
+        int v = random.nextInt(value[right]) + 1;
+        while (left < right){
+            int middle = (left + right) / 2;
+            if (value[middle] >= v){
+                right = middle;
+            } else {
+                left = middle + 1;
+            }
+        }
+        return left;
     }
 
     public static void main(String[] args) {
         Z1RandomByWeight test = new Z1RandomByWeight(new int[]{1,2,3});
-        for (int i = 0 ; i < 10 ; i++){
-            test.pickIndex();
+        for (int i = 1 ; i <= 6 ; i++){
+            System.out.println(test.pickIndex());
         }
     }
 }
