@@ -18,12 +18,8 @@ public class P02ReverseInteger {
             result = 10 * result + remain;
             x /= 10;
         }
-        int max = Integer.MAX_VALUE / 10;
-        if (result > max || (result == max && x > Integer.MAX_VALUE % 10)){
-            return 0;
-        }
-        int min = Integer.MIN_VALUE / 10;
-        if (result < min || (result == min && x < Integer.MIN_VALUE % 10)){
+        if (result > Integer.MAX_VALUE / 10 || result < Integer.MIN_VALUE / 10){
+            // 相等,个位数更大的情况不需要考虑,因为不可能存在
             return 0;
         }
         return 10 * result + x;
