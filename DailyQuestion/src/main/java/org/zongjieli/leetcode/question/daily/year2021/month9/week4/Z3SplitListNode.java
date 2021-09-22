@@ -25,12 +25,9 @@ import org.zongjieli.leetcode.base.ListNode;
 public class Z3SplitListNode {
     public ListNode[] splitListToParts(ListNode head, int k) {
         ListNode[] result = new ListNode[k];
-        if (head == null){
-            return result;
-        }
-        int count = 1;
+        int count = 0;
         ListNode temp = head;
-        while (temp.next != null){
+        while (temp != null){
             temp = temp.next;
             count++;
         }
