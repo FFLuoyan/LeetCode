@@ -14,12 +14,8 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week4;
  */
 public class Z4PowerOfThree {
     public boolean isPowerOfThree(int n) {
-        if (n == 0){
-            return false;
-        }
-        while (n % 3 == 0){
-            n /= 3;
-        }
-        return n == 1;
+        // 3 的整数次幂肯定大于 0,求出 3 的幂的最大值 X
+        // 则符合条件的所有数均为 X 的约数
+        return n > 0 && 1162261467 % n == 0;
     }
 }
