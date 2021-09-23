@@ -14,12 +14,19 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week4;
  */
 public class Z2LastWordLength {
     public int lengthOfLastWord(String s) {
-        String[] split = s.split(" ");
-        return split[split.length - 1].length();
+        int index = s.length() - 1;
+        while (s.charAt(index) == ' '){
+            index--;
+        }
+        int start = index;
+        while (--index >= 0 && s.charAt(index) != ' '){}
+        return start - index;
     }
 
     public static void main(String[] args) {
         Z2LastWordLength test = new Z2LastWordLength();
         System.out.println(test.lengthOfLastWord("asd"));
+        System.out.println(test.lengthOfLastWord(" asd "));
+        System.out.println(test.lengthOfLastWord(" asd y"));
     }
 }
