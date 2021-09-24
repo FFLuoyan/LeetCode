@@ -19,24 +19,26 @@ import org.zongjieli.leetcode.base.Node;
  */
 public class Z5FlattenNode {
     public Node flatten(Node head) {
-        if (head == null){
-            return null;
-        }
         getLastNode(head);
         return head;
     }
 
     public Node getLastNode(Node head){
-        while (head.next != null || head.child != null){
-            if (head.child == null){
-                head = head.next;
+        Node last = head;
+        while (head != null){
+            Node next = head.next;
+            Node child = head.child;
+
+            if (child == null){
+                last = head;
+                head = next;
                 continue;
             }
-            Node childLast = getLastNode(head.child);
 
-            Node next = head.next;
-            head.next = head.child;
-            head.next.prev = head;
+            Node childLast = getLastNode(child);
+
+            head.next = child;
+            child.prev = head;
             head.child = null;
 
             if (next == null){
@@ -47,6 +49,6 @@ public class Z5FlattenNode {
             next.prev = childLast;
             head = next;
         }
-        return head;
+        return last;
     }
 }
