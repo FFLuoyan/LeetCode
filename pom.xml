@@ -19,7 +19,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.zongjieli.leetcode</groupId>
-    <artifactId>leetcodeanswer</artifactId>
+    <artifactId>answer</artifactId>
     <version>1.0.0</version>
     <name>LeetCodeAnswer</name>
     <description>The Answer Of LeetCode</description>
@@ -29,10 +29,10 @@
         <base.vertion>1.0.0</base.vertion>
         <fun.vertion>1.0.0</fun.vertion>
         <origin.vertion>1.0.0</origin.vertion>
-        <daily-question.vertion>1.0.0</daily-question.vertion>
-        <primary-algorthm.vertion>1.0.0</primary-algorthm.vertion>
-        <intermediate-algorthm.vertion>1.0.0</intermediate-algorthm.vertion>
-        <weekly-competition.vertion>1.0.0</weekly-competition.vertion>
+        <daily.vertion>1.0.0</daily.vertion>
+        <primary.vertion>1.0.0</primary.vertion>
+        <intermediate.vertion>1.0.0</intermediate.vertion>
+        <competition.vertion>1.0.0</competition.vertion>
     </properties>
 
     <dependencies>
