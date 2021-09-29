@@ -2,9 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week5;
 
 import org.zongjieli.leetcode.base.TreeNode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * 给定一个二叉树的根节点 root,和一个整数 targetSum
@@ -25,41 +22,32 @@ import java.util.List;
  */
 public class Z2PathSum {
     public int pathSum(TreeNode root, int targetSum) {
+        return pathCount(root,true,0,targetSum);
+    }
+
+    public int pathCount(TreeNode root, boolean isStart, int before, int target){
         if (root == null){
             return 0;
         }
-        int[] result = new int[1];
-        path(root,result,targetSum);
-        return result[0];
+        int result = 0;
+        int val = root.val;
+        if (isStart){
+            result += pathCount(root.left,true,0,target);
+            result += pathCount(root.right,true,0,target);
+        } else {
+            val += before;
+        }
+        if (val == target){
+            result++;
+        }
+        result += pathCount(root.left,false,val,target);
+        result += pathCount(root.right,false,val,target);
+        return result;
     }
 
-    private List<Long> path(TreeNode root, int[] result, long target){
-        long current = root.val;
-        if (current == target){
-            result[0]++;
-        }
-        List<Long> possible = new ArrayList<>();
-        possible.add(current);
-        if (root.left != null){
-            List<Long> left = path(root.left,result,target);
-            left.forEach(node -> {
-                long v = node + current;
-                if (v == target){
-                    result[0]++;
-                }
-                possible.add(v);
-            });
-        }
-        if (root.right != null){
-            List<Long> right = path(root.right,result,target);
-            right.forEach(node -> {
-                long v = node + current;
-                if (v == target){
-                    result[0]++;
-                }
-                possible.add(v);
-            });
-        }
-        return possible;
+    public static void main(String[] args) {
+        Z2PathSum test = new Z2PathSum();
+        // 2
+        System.out.println(test.pathSum(new TreeNode(1, null, new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4, null, new TreeNode(5))))),3));
     }
 }
