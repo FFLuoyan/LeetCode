@@ -13,19 +13,25 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week5;
  */
 public class Z4RectangleArea {
     public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
-        int aXLength = ax2 - ax1;
-        int aYLength = ay2 - ay1;
-        int bXLength = bx2 - bx1;
-        int bYLength = by2 - by1;
-        int areaA = aXLength * aYLength;
-        int areaB = bXLength * bYLength;
-        if (bx1 >= ax2 || bx2 <= ax1 || ay2 <= by1 || ay1 >= by2){
+        int aX = ax2 - ax1;
+        int aY = ay2 - ay1;
+        int bX = bx2 - bx1;
+        int bY = by2 - by1;
+        int xB = ax2 - bx1;
+        int xA = bx2 - ax1;
+        int yB = by2 - ay1;
+        int yA = ay2 - by1;
+        int areaA = aX * aY;
+        int areaB = bX * bY;
+
+        if (xB <= 0 || xA <= 0|| yB <= 0 || yA <= 0){
             // 矩形无相交区域
             return areaA + areaB;
         }
         // 相加区域 x 长度
-        int xLength = bx1 > ax1 ? (bx2 > ax2 ? ax2 - bx1 : bXLength) : (bx2 > ax2 ? aXLength : bx2 - ax1);
-        int yLength = by1 > ay1 ? (by2 > ay2 ? ay2 - by1 : bYLength) : (by2 > ay2 ? aYLength : by2 - ay1);
+
+        int xLength = bx1 > ax1 ? (bx2 > ax2 ? xB : bX) : (bx2 > ax2 ? aX : xA);
+        int yLength = by1 > ay1 ? (by2 > ay2 ? yA : bY) : (by2 > ay2 ? aY : yB);
 
         return areaA + areaB - xLength * yLength;
     }
