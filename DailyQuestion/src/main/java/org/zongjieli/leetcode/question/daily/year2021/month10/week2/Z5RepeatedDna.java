@@ -20,35 +20,36 @@ import java.util.List;
 public class Z5RepeatedDna {
     public List<String> findRepeatedDnaSequences(String s) {
         List<String> result = new ArrayList<>(2 * s.length());
-        if (s.length() <= 10){
+        int base = 10;
+        if (s.length() <= base){
             return result;
         }
         int[] charToBin = new int['U'];
-        char[] binToChar = new char[4];
+        byte[] binToByte = new byte[4];
         charToBin['A'] = 0;
-        binToChar[0] = 'A';
+        binToByte[0] = 'A';
         charToBin['C'] = 1;
-        binToChar[1] = 'C';
+        binToByte[1] = 'C';
         charToBin['G'] = 2;
-        binToChar[2] = 'G';
+        binToByte[2] = 'G';
         charToBin['T'] = 3;
-        binToChar[3] = 'T';
+        binToByte[3] = 'T';
 
         short[] count = new short[1048576];
         int value = 0;
-        for (int i = 0 ; i < 10 ; i++){
+        for (int i = 0 ; i < base ; i++){
             value = (value << 2) | charToBin[s.charAt(i)];
         }
         count[value]++;
 
-        char[] subS = new char[10];
-        for (int i = 10 ; i < s.length() ; i++){
+        byte[] subS = new byte[base];
+        for (int i = base ; i < s.length() ; i++){
             value = ((value << 2) | charToBin[s.charAt(i)]) & 1048575;
             count[value]++;
             if (count[value] == 2){
                 int temp = value;
                 for (int j = 9 ; j >= 0 ; j--){
-                    subS[j] = binToChar[temp & 3];
+                    subS[j] = binToByte[temp & 3];
                     temp >>= 2;
                 }
                 result.add(new String(subS));
