@@ -23,33 +23,37 @@ public class Z5RepeatedDna {
         if (s.length() <= 10){
             return result;
         }
+        int[] charToBin = new int['U'];
+        char[] binToChar = new char[4];
+        charToBin['A'] = 0;
+        binToChar[0] = 'A';
+        charToBin['C'] = 1;
+        binToChar[1] = 'C';
+        charToBin['G'] = 2;
+        binToChar[2] = 'G';
+        charToBin['T'] = 3;
+        binToChar[3] = 'T';
+
         short[] count = new short[1048576];
         int value = 0;
         for (int i = 0 ; i < 10 ; i++){
-            char c = s.charAt(i);
-            int cI = c == 'A' ? 0 : (c == 'C' ? 1 : (c == 'G' ? 2 : 3));
-            value = value << 2;
-            value += cI;
+            value = (value << 2) | charToBin[s.charAt(i)];
         }
         count[value]++;
 
-        char[] temp = new char[10];
+        char[] subS = new char[10];
         for (int i = 10 ; i < s.length() ; i++){
-            char c = s.charAt(i);
-            int cI = c == 'A' ? 0 : (c == 'C' ? 1 : (c == 'G' ? 2 : 3));
-            value = (((value << 2) + cI) & 1048575);
+            value = ((value << 2) | charToBin[s.charAt(i)]) & 1048575;
             count[value]++;
             if (count[value] == 2){
-                int a = value;
+                int temp = value;
                 for (int j = 9 ; j >= 0 ; j--){
-                    int last = a & 3;
-                    temp[j] = last == 0 ? 'A' : (last == 1 ? 'C' : (last == 2 ? 'G' : 'T'));
-                    a = a >> 2;
+                    subS[j] = binToChar[temp & 3];
+                    temp >>= 2;
                 }
-                result.add(new String(temp));
+                result.add(new String(subS));
             }
         }
-
         return result;
     }
 
