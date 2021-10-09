@@ -10,17 +10,15 @@ package org.zongjieli.leetcode.question.daily.year2021.month10.week2;
 public class Z4WordsCount {
     public int countSegments(String s) {
         int result = 0;
-        boolean newWord = false;
+        boolean newWord = true;
         for (int i = 0 ; i < s.length() ; i++){
             if (s.charAt(i) == ' '){
-                if (newWord){
-                    newWord = false;
-                    result++;
-                }
-            } else {
                 newWord = true;
+            } else if (newWord){
+                result++;
+                newWord = false;
             }
         }
-        return newWord ? result + 1 : result;
+        return result;
     }
 }
