@@ -12,11 +12,12 @@ package org.zongjieli.leetcode.question.daily.year2021.month10.week2;
  */
 public class Z7ArrangeCoins {
     public int arrangeCoins(int n) {
-        long result = (long) Math.sqrt(2L * n);
-        if (result * result + result <= 2L * n){
-            return (int) result;
-        }
-        return (int) (result - 1);
+        /*
+            设可以排列成 x 行,有 x * (x + 1) / 2 = n
+            x 的解的最大正整数即为答案
+            x=(√(8n+1)-1)/2
+         */
+        return (int) ((Math.sqrt(8L * n + 1) - 1) / 2);
     }
 
     public static void main(String[] args) {
