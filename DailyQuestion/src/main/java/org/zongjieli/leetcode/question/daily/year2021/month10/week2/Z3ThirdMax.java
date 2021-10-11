@@ -1,5 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2021.month10.week2;
 
+import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -17,22 +18,22 @@ import java.util.TreeSet;
 public class Z3ThirdMax {
 
     public int thirdMax(int[] nums) {
-        TreeSet<Integer> save = new TreeSet<>();
-        for (int num : nums) {
-            save.add(num);
-        }
-        Integer max = save.last();
-        if (max == null){
-            return 0;
-        }
-        Integer second = save.lower(max);
-        if (second == null){
+        Arrays.sort(nums);
+        int index = nums.length - 1;
+        int max = nums[index];
+        while (--index > 0 && nums[index] == max){ }
+        if (index <= 0){
             return max;
         }
-        Integer third = save.lower(second);
-        if (third == null){
-            return max;
-        }
-        return third;
+        int temp = nums[index];
+        while (--index >= 0 && nums[index] == temp){ }
+        return index < 0 ? max : nums[index];
+    }
+
+    public static void main(String[] args) {
+        Z3ThirdMax test = new Z3ThirdMax();
+//        System.out.println(test.thirdMax(new int[]{2,2,3,1}));
+//        System.out.println(test.thirdMax(new int[]{2,2,1}));
+        System.out.println(test.thirdMax(new int[]{2,1,1}));
     }
 }
