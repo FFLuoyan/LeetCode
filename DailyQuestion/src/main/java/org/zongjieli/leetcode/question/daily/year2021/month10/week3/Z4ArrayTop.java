@@ -18,14 +18,17 @@ package org.zongjieli.leetcode.question.daily.year2021.month10.week3;
  */
 public class Z4ArrayTop {
     public int peakIndexInMountainArray(int[] arr) {
-        int index = 0;
-        for (int i = 1 ; i < arr.length ; i++){
-            if (arr[i] < arr[index]){
-                break;
+        int left = 0;
+        int right = arr.length - 1;
+        while (left < right){
+            int middle = (left + right) / 2;
+            if (arr[middle] < arr[middle + 1]){
+                left = middle + 1;
+            } else {
+                right = middle;
             }
-            index = i;
         }
-        return index;
+        return right;
     }
 
     public static void main(String[] args) {
