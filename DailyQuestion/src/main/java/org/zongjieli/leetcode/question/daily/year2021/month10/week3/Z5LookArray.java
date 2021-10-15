@@ -34,30 +34,31 @@ package org.zongjieli.leetcode.question.daily.year2021.month10.week3;
  */
 public class Z5LookArray {
 
+    private char[] value = new char[]{'1','2','3'};
+
     public String countAndSay(int n) {
-        String result = "1";
-        char[] value = new char[]{'1','2','3'};
-        for (int i = 2 ; i <= n ; i++){
-            char[] charArray = new char[2 * result.length()];
-            int index = 0;
-            int count = 0;
-            char currentChar = result.charAt(0);
-            for (int j = 1 ; j < result.length() ; j++){
-                char nextChar = result.charAt(j);
-                if (nextChar == currentChar){
-                    count++;
-                } else {
-                    charArray[index++] = value[count];
-                    charArray[index++] = currentChar;
-                    currentChar = nextChar;
-                    count = 0;
-                }
-            }
-            charArray[index++] = value[count];
-            charArray[index++] = currentChar;
-            result = new String(charArray,0,index);
+        if (n == 1){
+            return "1";
         }
-        return result;
+        String result = countAndSay(n - 1);
+        char[] charArray = new char[2 * result.length()];
+        int index = 0;
+        int count = 0;
+        char currentChar = result.charAt(0);
+        for (int j = 1 ; j < result.length() ; j++){
+            char nextChar = result.charAt(j);
+            if (nextChar == currentChar){
+                count++;
+            } else {
+                charArray[index++] = value[count];
+                charArray[index++] = currentChar;
+                currentChar = nextChar;
+                count = 0;
+            }
+        }
+        charArray[index++] = value[count];
+        charArray[index++] = currentChar;
+        return new String(charArray,0,index);
     }
 
     public static void main(String[] args) {
