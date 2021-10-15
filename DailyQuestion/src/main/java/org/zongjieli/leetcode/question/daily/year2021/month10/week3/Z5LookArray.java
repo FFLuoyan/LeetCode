@@ -37,22 +37,22 @@ public class Z5LookArray {
     public String countAndSay(int n) {
         String result = "1";
         for (int i = 2 ; i <= n ; i++){
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder(2 * result.length());
             int count = 1;
-            int currentChar = result.charAt(0);
+            char currentChar = result.charAt(0);
             for (int j = 1 ; j < result.length() ; j++){
                 char nextChar = result.charAt(j);
                 if (nextChar == currentChar){
                     count++;
                 } else {
                     stringBuilder.append(count);
-                    stringBuilder.append(currentChar - '0');
+                    stringBuilder.append(currentChar);
                     currentChar = nextChar;
                     count = 1;
                 }
             }
             stringBuilder.append(count);
-            stringBuilder.append(currentChar - '0');
+            stringBuilder.append(currentChar);
             result = stringBuilder.toString();
         }
         return result;
