@@ -23,43 +23,22 @@ public class Z2DivideNumber {
         if (dividend == 0){
             return 0;
         }
-        if (dividend > 0){
-            if (divisor > dividend || divisor < -dividend){
-                return 0;
-            }
-            int signal = divisor < 0 ? -1 : 1;
-            divisor = divisor * signal;
-            int multiple = 1;
-            while (divisor < dividend && divisor <= Integer.MAX_VALUE / 2){
-                multiple <<= 1;
-                divisor <<= 1;
-            }
 
-            int result = 0;
-            while (multiple >= 1){
-                if (dividend >= divisor){
-                    dividend -= divisor;
-                    result += multiple;
-                }
-                divisor >>= 1;
-                multiple >>= 1;
-            }
-            return signal * result;
-        }
+        int negativeSignal = Integer.MIN_VALUE;
+        int signal = (dividend & negativeSignal) ^ (divisor & negativeSignal);
 
-        if (dividend == Integer.MIN_VALUE){
-            if (divisor == -1){
-                return Integer.MAX_VALUE;
-            }
-            if (divisor == 1){
-                return Integer.MIN_VALUE;
-            }
-        }
-        if (divisor < dividend || -divisor < dividend){
+        signal = signal == negativeSignal ? -1 : 1;
+        dividend = dividend > 0 ? -dividend : dividend;
+        divisor = divisor > 0 ? -divisor : divisor;
+
+        if (divisor < dividend){
             return 0;
         }
-        int signal = divisor < 0 ? 1 : -1;
-        divisor *= signal;
+
+        if (dividend == Integer.MIN_VALUE && divisor == -1){
+            return signal == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+
         int multiple = 1;
         while (divisor > dividend && divisor >= Integer.MIN_VALUE / 2){
             multiple <<= 1;
@@ -67,13 +46,13 @@ public class Z2DivideNumber {
         }
 
         int result = 0;
-        while (multiple >= 1){
+        while (multiple != 0){
             if (dividend <= divisor){
                 dividend -= divisor;
                 result += multiple;
             }
             divisor >>= 1;
-            multiple >>= 1;
+            multiple >>>= 1;
         }
         return signal * result;
     }
@@ -85,6 +64,9 @@ public class Z2DivideNumber {
 //        System.out.println(test.divide(10,-3));
 //        System.out.println(test.divide(-10,-3));
 //        System.out.println(test.divide(1,1));
-        System.out.println(test.divide(Integer.MIN_VALUE,2));
+//        System.out.println(test.divide(Integer.MIN_VALUE,2));
+//        System.out.println(test.divide(Integer.MIN_VALUE, -1));
+        System.out.println(test.divide(Integer.MAX_VALUE, 1));
+//        System.out.println(test.divide(Integer.MIN_VALUE, 1));
     }
 }
