@@ -19,24 +19,17 @@ import java.util.LinkedList;
 public class Z7KthSmallest {
     public int kthSmallest(TreeNode root, int k) {
         LinkedList<TreeNode> pool = new LinkedList<>();
-        while (root != null){
-            pool.addLast(root);
-            root = root.left;
-        }
-        int count = 0;
-        while (pool.size() != 0){
-            TreeNode current = pool.pollLast();
-            count++;
-            if (count == k){
-                return current.val;
+        while (true){
+            while (root != null){
+                pool.addLast(root);
+                root = root.left;
             }
-            current = current.right;
-            while (current != null){
-                pool.addLast(current);
-                current = current.left;
+            root = pool.pollLast();
+            if (--k == 0){
+                break;
             }
-
+            root = root.right;
         }
-        return 0;
+        return root.val;
     }
 }
