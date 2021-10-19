@@ -1,9 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2021.month10.week4;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-
 /**
  * 请设计一个数据结构,支持添加新单词和查找字符串是否与任何先前添加的字符串匹配
  *
@@ -25,57 +21,56 @@ import java.util.Map;
  */
 public class Z2AddAndSearch {
 
-    private Map<Character, Map> dict;
+    private static final Z2AddAndSearch FIX = new Z2AddAndSearch();
+
+    private Z2AddAndSearch[] values = new Z2AddAndSearch[27];
 
     public Z2AddAndSearch() {
-        this.dict = new HashMap<>();
+    }
+
+    public void addWord(String word, int index) {
+        if (index == word.length()){
+            values[26] = FIX;
+            return;
+        }
+        char currentChar = word.charAt(index);
+        int valueIndex = currentChar - 'a';
+        if (values[valueIndex] == null){
+            values[valueIndex] = new Z2AddAndSearch();
+        }
+        values[valueIndex].addWord(word, index + 1);
     }
 
     public void addWord(String word) {
-        Map<Character, Map> letter = dict;
-        for (int i = 0 ; i < word.length() ; i++){
-            char currentChar = word.charAt(i);
-            letter = letter.computeIfAbsent(currentChar, k -> new HashMap<>());
-        }
-        letter.put('.',null);
+        addWord(word,0);
     }
 
-    public boolean search(String word) {
-        LinkedList<Map<Character, Map>> search = new LinkedList<>();
-        search.add(dict);
-        for (int i = 0 ; i < word.length() ; i++){
-            int length = search.size();
-            if (length == 0){
+    public boolean search(String word, int index){
+        if (index == word.length()){
+            return values[26] != null;
+        }
+        char currentChar = word.charAt(index);
+
+        if (currentChar != '.'){
+            int valueIndex = currentChar - 'a';
+            if (values[valueIndex] == null){
                 return false;
             }
-            char currentChar = word.charAt(i);
-            if (currentChar != '.'){
-                for (int j = 0 ; j < length ; j++){
-                    Map<Character, Map> temp = search.pollFirst();
-                    Map<Character, Map> next = temp.get(currentChar);
-                    if (next != null){
-                        search.addLast(next);
-                    }
-                }
-            } else {
-                for (int j = 0 ; j < length ; j++){
-                    Map<Character, Map> temp = search.pollFirst();
-                    temp.forEach((k,v) -> {
-                        if (k != '.'){
-                            search.addLast(v);
-                        }
-                    });
-                }
-            }
+            return values[valueIndex].search(word, index + 1);
         }
-
-        for (Map<Character, Map> map : search){
-            if (map.containsKey('.')){
+        for (int i = 0 ; i < 26 ; i++){
+            if (values[i] == null){
+                continue;
+            }
+            if (values[i].search(word, index + 1)){
                 return true;
             }
         }
-
         return false;
+    }
+
+    public boolean search(String word) {
+        return search(word,0);
     }
 
     public static void main(String[] args) {
@@ -84,5 +79,11 @@ public class Z2AddAndSearch {
         System.out.println(test.search("..a"));
         System.out.println(test.search("a.c"));
         System.out.println(test.search("ab."));
+
+        test.addWord("a");
+        test.addWord("a");
+        System.out.println(test.search(".a"));
+        System.out.println(test.search("a."));
+        System.out.println(test.search("..a"));
     }
 }
