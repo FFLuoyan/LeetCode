@@ -21,16 +21,16 @@ package org.zongjieli.leetcode.question.daily.year2021.month10.week4;
  */
 public class Z2AddAndSearch {
 
-    private static final Z2AddAndSearch FIX = new Z2AddAndSearch();
+    private boolean isEnd = false;
 
-    private Z2AddAndSearch[] values = new Z2AddAndSearch[27];
+    private Z2AddAndSearch[] values = new Z2AddAndSearch[26];
 
     public Z2AddAndSearch() {
     }
 
     public void addWord(String word, int index) {
         if (index == word.length()){
-            values[26] = FIX;
+            isEnd = true;
             return;
         }
         char currentChar = word.charAt(index);
@@ -47,7 +47,7 @@ public class Z2AddAndSearch {
 
     public boolean search(String word, int index){
         if (index == word.length()){
-            return values[26] != null;
+            return isEnd;
         }
         char currentChar = word.charAt(index);
 
