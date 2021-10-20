@@ -24,38 +24,25 @@ public class Z2PeekIterator implements Iterator<Integer> {
 
     private Iterator<Integer> iterator;
 
-    private boolean isPeek;
-
-    private boolean peakNext;
-    private int peekValue;
+    private Integer next;
 
     public Z2PeekIterator(Iterator<Integer> iterator) {
         this.iterator = iterator;
     }
 
     public Integer peek() {
-        if (isPeek){
-            return peekValue;
-        }
-        isPeek = true;
-        peakNext = iterator.hasNext();
-        return peekValue = iterator.next();
+        return next;
     }
 
     @Override
     public Integer next() {
-        if (isPeek){
-            isPeek = false;
-            return peekValue;
-        }
-        return iterator.next();
+        Integer temp = next;
+        next = iterator.hasNext() ? iterator.next() : null;
+        return temp;
     }
 
     @Override
     public boolean hasNext() {
-        if (isPeek){
-            return peakNext;
-        }
-        return iterator.hasNext();
+        return next != null;
     }
 }
