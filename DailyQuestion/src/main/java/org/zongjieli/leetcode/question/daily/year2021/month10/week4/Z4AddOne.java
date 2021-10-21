@@ -13,22 +13,16 @@ package org.zongjieli.leetcode.question.daily.year2021.month10.week4;
  */
 public class Z4AddOne {
     public int[] plusOne(int[] digits) {
-        for (int i = 0 ; i < digits.length ; i++){
+        int i = digits.length;
+        while (--i >= 0){
             if (digits[i] != 9){
-                int index = digits.length - 1;
-                digits[index]++;
-                while (index >= i){
-                    if (digits[index] == 10){
-                        digits[index] = 0;
-                        digits[--index]++;
-                    } else {
-                        return digits;
-                    }
-                }
+                digits[i]++;
+                return digits;
             }
+            digits[i] = 0;
         }
-        int[] result = new int[digits.length + 1];
-        result[0] = 1;
-        return result;
+        digits = new int[digits.length + 1];
+        digits[0] = 1;
+        return digits;
     }
 }
