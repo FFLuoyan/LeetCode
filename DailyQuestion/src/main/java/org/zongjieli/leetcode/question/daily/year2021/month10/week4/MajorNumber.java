@@ -1,14 +1,12 @@
 package org.zongjieli.leetcode.question.daily.year2021.month10.week4;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 给定一个大小为 n 的整数数组,找出其中所有出现超过 n/3 次的元素
  *
- * 1 <= nums.length <= 5 * 104
+ * 1 <= nums.length <= 5 * 10^4
  * -10^9 <= nums[i] <= 10^9
  *
  * @author   Li.zongjie
@@ -17,17 +15,49 @@ import java.util.Map;
  */
 public class MajorNumber {
     public List<Integer> majorityElement(int[] nums) {
-        Map<Integer,Integer> countMap = new HashMap<>(2 * nums.length);
+        int a = 100000;
+        int aCount = 0;
+        int b = 100000;
+        int bCount = 0;
         for (int num : nums) {
-            countMap.merge(num, 1, Integer::sum);
-        }
-        int max = nums.length / 3;
-        List<Integer> result = new ArrayList<>(4);
-        countMap.forEach((k,v) -> {
-            if (v > max){
-                result.add(k);
+            if (num == a){
+                aCount++;
+            } else if (num == b){
+                bCount++;
+            } else if (aCount == 0){
+                a = num;
+                aCount++;
+            } else if (bCount == 0){
+                b = num;
+                bCount++;
+            } else {
+                aCount--;
+                bCount--;
             }
-        });
+        }
+        List<Integer> result = new ArrayList<>(4);
+        int count = 0;
+        if (aCount > 0){
+            for (int num : nums) {
+                if (num == a){
+                    count++;
+                }
+            }
+            if (count > nums.length / 3){
+                result.add(a);
+            }
+        }
+        count = 0;
+        if (bCount > 0){
+            for (int num : nums) {
+                if (num == b){
+                    count++;
+                }
+            }
+            if (count > nums.length / 3){
+                result.add(b);
+            }
+        }
         return result;
     }
 }
