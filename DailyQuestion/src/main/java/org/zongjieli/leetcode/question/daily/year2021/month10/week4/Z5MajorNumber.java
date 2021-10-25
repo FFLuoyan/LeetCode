@@ -13,7 +13,7 @@ import java.util.List;
  * @date     2021/10/22
  * @version  1.0
  */
-public class MajorNumber {
+public class Z5MajorNumber {
     public List<Integer> majorityElement(int[] nums) {
         int a = 100000;
         int aCount = 0;
