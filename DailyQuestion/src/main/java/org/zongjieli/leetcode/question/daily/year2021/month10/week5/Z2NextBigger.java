@@ -21,23 +21,23 @@ import java.util.*;
  */
 public class Z2NextBigger {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-        int[] numsIndex = new int[10001];
-        Set<Integer> numberIndexSet = new HashSet<>();
-        for (int i = 0; i < nums2.length; i++) {
+        int[] nums = new int[10001];
+        LinkedList<Integer> save = new LinkedList<>();
+        for (int i = nums2.length - 1 ; i >= 0 ; i--){
             int current = nums2[i];
-            Iterator<Integer> iterator = numberIndexSet.iterator();
-            while (iterator.hasNext()){
-                int key = iterator.next();
-                if (current > key){
-                    numsIndex[key] = current;
-                    iterator.remove();
+            while (save.size() > 0){
+                int compare = save.pollFirst();
+                if (compare > current){
+                    nums[current] = compare;
+                    save.addFirst(compare);
+                    break;
                 }
             }
-            numberIndexSet.add(current);
+            save.addFirst(current);
         }
-        numberIndexSet.forEach(k -> numsIndex[k] = -1);
         for (int i = 0; i < nums1.length; i++) {
-            nums1[i] = numsIndex[nums1[i]];
+            int current = nums1[i];
+            nums1[i] = nums[current] == 0 ? -1 : nums[current];
         }
         return nums1;
     }
