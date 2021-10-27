@@ -1,4 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2021.month10.week4;
+
+import java.util.Arrays;
+
 /**
  * 给定一个具体的矩形页面面积
  * 设计一个长度为 L 和宽度为 W 且满足以下要求的矩形的页面
@@ -20,8 +23,13 @@ public class Z6ConstructRectangle {
     public int[] constructRectangle(int area) {
         int w = (int) Math.sqrt(area);
         while (area % w != 0){
-            w = area / ((area / w) + 1);
+            w--;
         }
         return new int[]{area / w, w};
+    }
+
+    public static void main(String[] args) {
+        Z6ConstructRectangle test = new Z6ConstructRectangle();
+        System.out.println(Arrays.toString(test.constructRectangle(9998)));
     }
 }
