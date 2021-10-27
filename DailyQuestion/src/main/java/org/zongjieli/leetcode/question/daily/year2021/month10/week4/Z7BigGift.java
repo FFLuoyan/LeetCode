@@ -31,72 +31,67 @@ import java.util.List;
  */
 public class Z7BigGift {
     public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
-        // 1 第一件商品包含数量 1 第二件 ... 第 n 件 1 总价
-        long[] specials = new long[special.size()];
-        for (int i = 0 ; i < special.size() ; i++){
-            List<Integer> item = special.get(i);
-            for (int j = 0 ; j < item.size() ; j++){
-                specials[i] <<= 7;
-                specials[i] += item.get(j);
-            }
-        }
-        // 1 第一件商品价格 1 第二件 ... 第 n 件 1 0
-        long prices = 0;
-        for (int i = 0 ; i < price.size() ; i++){
-            prices <<= 1;
-            prices += 1;
-            prices <<= 6;
-            prices += price.get(i);
-        }
-        prices <<= 1;
-        prices += 1;
-        prices <<= 6;
+        int base = 16;
+        int need = 0;
+        int compare = 0;
+        int prices = 0;
+        int allCost = 0;
+        for (int i = 0; i < needs.size(); i++) {
+            need <<= 5;
+            need += base;
+            int currentNeed = needs.get(i);
+            need += currentNeed;
 
-        // 1 第一件商品需要数量 1 第二件 ... 第 n 件 1 0
-        long need = 0;
-        long compare = 0;
-        for (Integer i : needs) {
-            need <<= 1;
-            need += 1;
-            need <<= 6;
-            need += i;
-            compare += 1;
-            compare <<= 7;
+            compare <<= 5;
+            compare += base;
+
+            int currentPrice = price.get(i);
+            prices <<= 5;
+            prices += currentPrice;
+
+            allCost += currentNeed * currentPrice;
         }
-        need <<= 1;
-        need += 1;
-        need <<= 6;
-        compare <<= 6;
-        return getResult(0, 0, prices, need, specials, compare);
+
+        int[] bag = new int[special.size()];
+        int[] bagCost = new int[special.size()];
+
+        for (int i = 0; i < special.size(); i++) {
+            List<Integer> item = special.get(i);
+            int itemIndex = item.size() - 1;
+            bagCost[i] = item.get(itemIndex);
+            int bagNumber = 0;
+            for (int j = 0 ; j < itemIndex ; j++){
+                bagNumber <<= 5;
+                bagNumber += item.get(j);
+            }
+            bag[i] = bagNumber;
+        }
+        return getMin(0, bag, bagCost, 0, need, prices, compare);
     }
 
-    private int getResult(int specialsIndex, int currentCost, long price, long need, long[] specials, long compare){
-        if (specialsIndex == specials.length){
-            while (need > 0){
-                long currentNeed = need & 63;
-                long currentPrice = price & 63;
+    private int getMin(int bagIndex, int[] bag, int[] bagCost, int currentCost, int needs, int prices, int compare){
+        if (bagIndex == bag.length){
+            while (needs > 0){
+                int currentNeed = needs & 15;
+                int currentPrice = prices & 15;
+                needs >>= 5;
+                prices >>= 5;
                 currentCost += currentNeed * currentPrice;
-                need >>= 7;
-                price >>= 7;
             }
             return currentCost;
         }
-        long special = specials[specialsIndex];
-        int min = getResult(specialsIndex + 1, currentCost, price, need, specials, compare);
-        while (((need - special) & compare) == compare){
-            int specialCost = (int) (special & 63);
-            need -= special;
-            need += specialCost;
-            currentCost += specialCost;
-            min = Math.min(min, getResult(specialsIndex + 1, currentCost, price, need, specials, compare));
+        int min = getMin(bagIndex + 1, bag, bagCost, currentCost, needs, prices, compare);
+        while (((needs -= bag[bagIndex]) & compare) == compare){
+            currentCost += bagCost[bagIndex];
+            min = Math.min(min, getMin(bagIndex + 1, bag, bagCost, currentCost, needs, prices, compare));
         }
         return min;
     }
 
     public static void main(String[] args) {
         Z7BigGift test = new Z7BigGift();
-//        System.out.println(test.shoppingOffers(Arrays.asList(2,5), Arrays.asList(Arrays.asList(3,0,5)), Arrays.asList(3,2)));
-//        System.out.println(test.shoppingOffers(Arrays.asList(2,5), Arrays.asList(Arrays.asList(3,0,5), Arrays.asList(1,2,10)), Arrays.asList(3,2)));
+        System.out.println(test.shoppingOffers(Arrays.asList(2,5), Arrays.asList(Arrays.asList(3,0,5)), Arrays.asList(3,2)));
+        System.out.println(test.shoppingOffers(Arrays.asList(2,5), Arrays.asList(Arrays.asList(3,0,5), Arrays.asList(1,2,10)), Arrays.asList(3,2)));
         System.out.println(test.shoppingOffers(Arrays.asList(9,9), Arrays.asList(Arrays.asList(1,1,1)), Arrays.asList(2,2)));
     }
 }
