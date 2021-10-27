@@ -22,19 +22,12 @@ import java.util.Map;
  */
 public class Z5EndCity {
     public String destCity(List<List<String>> paths) {
-        Map<String, Boolean> pathMap = new HashMap<>();
-        paths.forEach(path -> {
-            String start = path.get(0);
-            String end = path.get(1);
-            pathMap.compute(start, (k,o) -> o != null ? null : true);
-            pathMap.compute(end, (k,o) -> o != null ? null : false);
-        });
-        String[] result = new String[1];
-        pathMap.forEach((k,v) -> {
-            if (!v){
-                result[0] = k;
-            }
-        });
-        return result[0];
+        Map<String, String> pathMap = new HashMap<>(256);
+        paths.forEach(path -> pathMap.put(path.get(0), path.get(1)));
+        String result = paths.get(0).get(1);
+        while (pathMap.containsKey(result)){
+            result = pathMap.get(result);
+        }
+        return result;
     }
 }
