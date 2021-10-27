@@ -10,40 +10,36 @@ import java.util.*;
  * nums1 中数字 x 的下一个更大元素是指 x 在 nums2 中对应位置的右边的第一个比 x 大的元素
  * 如果不存在,对应位置输出 -1
  *
- *  1 <= nums1.length <= nums2.length <= 1000
- *  0 <= nums1[i], nums2[i] <= 10^4
- *  nums1 和 nums2中所有整数互不相同
- *  nums1 中的所有整数同样出现在 nums2 中
+ * 1 <= nums1.length <= nums2.length <= 1000
+ * 0 <= nums1[i], nums2[i] <= 10^4
+ * nums1 和 nums2 中所有整数互不相同
+ * nums1 中的所有整数同样出现在 nums2 中
  *
- * @author   Li.zongjie
- * @date     2021/10/26
- * @version  1.0
+ * @author Li.zongjie
+ * @version 1.0
+ * @date 2021/10/26
  */
 public class Z2NextBigger {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
         int[] nums = new int[10001];
-        LinkedList<Integer> save = new LinkedList<>();
+        int[] save = new int[nums2.length];
+        int saveIndex = -1;
         for (int i = nums2.length - 1 ; i >= 0 ; i--){
             int current = nums2[i];
-            while (save.size() > 0){
-                int compare = save.pollFirst();
-                if (compare > current){
-                    nums[current] = compare;
-                    save.addFirst(compare);
-                    break;
-                }
+            while (saveIndex >= 0 && save[saveIndex] < current){
+                saveIndex--;
             }
-            save.addFirst(current);
+            nums[current] = saveIndex < 0 ? -1 : save[saveIndex];
+            save[++saveIndex] = current;
         }
         for (int i = 0; i < nums1.length; i++) {
-            int current = nums1[i];
-            nums1[i] = nums[current] == 0 ? -1 : nums[current];
+            nums1[i] = nums[nums1[i]];
         }
         return nums1;
     }
 
     public static void main(String[] args) {
         Z2NextBigger test = new Z2NextBigger();
-        System.out.println(Arrays.toString(test.nextGreaterElement(new int[]{4,1,2}, new int[]{1,3,4,2})));
+        System.out.println(Arrays.toString(test.nextGreaterElement(new int[]{4, 1, 2}, new int[]{1, 3, 4, 2})));
     }
 }
