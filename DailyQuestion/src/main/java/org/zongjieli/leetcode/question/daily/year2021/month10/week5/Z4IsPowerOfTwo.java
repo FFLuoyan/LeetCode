@@ -1,4 +1,9 @@
 package org.zongjieli.leetcode.question.daily.year2021.month10.week5;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 给定正整数 N,按任何顺序(包括原始顺序)将数字重新排序,注意其前导数字不能为零
  * 如果可以通过上述方式得到 2 的幂,返回 true,否则返回 false
@@ -8,68 +13,41 @@ package org.zongjieli.leetcode.question.daily.year2021.month10.week5;
  * @version  1.0
  */
 public class Z4IsPowerOfTwo {
+
+    private long[][] values = new long[][]{
+            {}
+            ,{8, 4, 2, 1}
+            ,{64, 32, 61}
+            ,{521, 652, 821}
+            ,{9821, 9640, 8420, 4210}
+            ,{66553, 87632, 86431}
+            ,{885422, 644221, 732110}
+            ,{8888630, 9444310, 9752210, 8765410}
+            ,{88766410, 55443332, 77766211}
+            ,{987653210, 866554432, 877432211}
+            ,{9998855432L, 9997664422L, 8876444321L, 8774432110L}};
+
     public boolean reorderedPowerOf2(int n) {
         int[] count = new int[10];
+        int bit = 0;
         while (n > 0){
             int last = n % 10;
             count[last]++;
             n /= 10;
+            bit++;
         }
-
-        int zero = 1;
-        for (int i = 1 ; i <= count[0] ; i++){
-            zero *= 10;
-        }
-
         long max = 0;
-
-        for (int i = 9 ; i > 0 ; i--) {
-            for (int j = count[i] ; j > 0 ; j--){
-                max = (10 * max) + i;
+        for (int i = 9 ; i >= 0 ; i--){
+            while (count[i]-- > 0){
+                max *= 10;
+                max += i;
             }
         }
-
-        max *= zero;
-
-        int minStart = (int) (max % 10);
-        int min = minStart * zero;
-
-        for (int i = 1 ; i < count[minStart] ; i++){
-            min *= 10;
-            min += minStart;
-        }
-
-        for (int i = minStart + 1 ; i < count.length; i++) {
-            for (int j = count[i] ; j > 0 ; j--){
-                min = (10 * min) + i;
-            }
-        }
-
-        long minPower = 1;
-        while ((min &= (~minPower)) != 0){
-            minPower <<= 1;
-        }
-
-        while (minPower <= max){
-            int[] powerCount = new int[10];
-            long temp = minPower;
-            while (temp > 0){
-                int last = (int) (temp % 10);
-                powerCount[last]++;
-                temp /= 10;
-            }
-            int i = 0;
-            for (; i < 10 ; i++){
-                if (powerCount[i] != count[i]){
-                    break;
-                }
-            }
-            if (i == 10){
+        for (long l : values[bit]) {
+            if (max == l){
                 return true;
             }
-            minPower <<= 1;
         }
-
         return false;
     }
 
