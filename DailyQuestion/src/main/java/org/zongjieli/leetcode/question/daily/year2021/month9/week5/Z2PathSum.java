@@ -3,7 +3,6 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week5;
 import org.zongjieli.leetcode.base.TreeNode;
 
 /**
- *
  * 给定一个二叉树的根节点 root,和一个整数 targetSum
  * 求该二叉树里节点值之和等于 targetSum 的路径的数目
  *
@@ -22,32 +21,35 @@ import org.zongjieli.leetcode.base.TreeNode;
  */
 public class Z2PathSum {
     public int pathSum(TreeNode root, int targetSum) {
-        return pathCount(root,true,0,targetSum);
+        return pathSum(root, targetSum, true);
     }
 
-    public int pathCount(TreeNode root, boolean isStart, int before, int target){
+    public int pathSum(TreeNode root, int targetSum, boolean isStart) {
         if (root == null){
             return 0;
         }
-        int result = 0;
-        int val = root.val;
+        int currentTarget = targetSum - root.val;
+        int result = currentTarget == 0 ? 1 : 0;
         if (isStart){
-            result += pathCount(root.left,true,0,target);
-            result += pathCount(root.right,true,0,target);
-        } else {
-            val += before;
+            result += pathSum(root.left, targetSum, true);
+            result += pathSum(root.right, targetSum, true);
         }
-        if (val == target){
-            result++;
-        }
-        result += pathCount(root.left,false,val,target);
-        result += pathCount(root.right,false,val,target);
+        result += pathSum(root.left, currentTarget, false);
+        result += pathSum(root.right, currentTarget, false);
         return result;
     }
 
     public static void main(String[] args) {
         Z2PathSum test = new Z2PathSum();
+
+//        System.out.println(test.pathSum(new TreeNode(0, new TreeNode(0, new TreeNode(0, new TreeNode(0), new TreeNode(0)), new TreeNode(0)), new TreeNode(0, null, new TreeNode(0, null, new TreeNode(0, null, new TreeNode(0))))),0));
         // 2
         System.out.println(test.pathSum(new TreeNode(1, null, new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4, null, new TreeNode(5))))),3));
+        // 3
+        System.out.println(test.pathSum(new TreeNode(10, new TreeNode(5, new TreeNode(3, new TreeNode(3), new TreeNode(2)), new TreeNode(2, null , new TreeNode(1))), new TreeNode(-3, null, new TreeNode(11))), 8));
+        // 2
+        System.out.println(test.pathSum(new TreeNode(5, new TreeNode(3), new TreeNode(3)), 8));
+        // 6
+        System.out.println(test.pathSum(new TreeNode(2, new TreeNode(2, new TreeNode(2), new TreeNode(2)), new TreeNode(2, new TreeNode(2), new TreeNode(2))), 4));
     }
 }
