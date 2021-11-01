@@ -15,15 +15,23 @@ package org.zongjieli.leetcode.question.daily.year2021.month11.week1;
  */
 public class Z1DistributeCandies {
     public int distributeCandies(int[] candyType) {
-        boolean[] record = new boolean[200001];
+        int[] record = new int[8192];
+        int half = candyType.length >> 1;
         int count = 0;
+        int index;
+        int v;
         for (int i : candyType) {
             i += 100000;
-            if (!record[i]){
-                record[i] = true;
+            index = i >> 5;
+            v = 1 << (i & 31);
+            if ((record[index] & v) == 0){
+                record[index] |= v;
                 count++;
+                if (count == half){
+                    return half;
+                }
             }
         }
-        return Math.min(count, candyType.length / 2);
+        return count;
     }
 }
