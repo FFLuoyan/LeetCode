@@ -19,13 +19,7 @@ import org.zongjieli.leetcode.base.ListNode;
  */
 public class Z2DeleteNode {
     public void deleteNode(ListNode node) {
-        ListNode next = node.next;
-        while (next.next != null){
-            node.val = next.val;
-            node = next;
-            next = next.next;
-        }
-        node.val = next.val;
-        node.next = null;
+        node.val = node.next.val;
+        node.next = node.next.next;
     }
 }
