@@ -24,14 +24,11 @@ public class Z6DisappearOnce {
             bit <<= 1;
         }
         int a = 0;
-        int b = 0;
         for (int num : nums) {
             if ((num & bit) == 0){
                 a ^= num;
-            }else {
-                b ^= num;
             }
         }
-        return new int[]{a,b};
+        return new int[]{a,a ^ two};
     }
 }
