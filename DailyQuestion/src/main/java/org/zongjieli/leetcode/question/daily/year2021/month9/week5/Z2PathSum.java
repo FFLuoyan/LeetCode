@@ -20,35 +20,39 @@ import org.zongjieli.leetcode.base.TreeNode;
  * @version  1.0
  */
 public class Z2PathSum {
+
+    private int[] sum = new int[1002];
+
     public int pathSum(TreeNode root, int targetSum) {
-        return pathSum(root, targetSum, true);
+        sum(1, root, targetSum);
+        return sum[1001];
     }
 
-    public int pathSum(TreeNode root, int targetSum, boolean isStart) {
+    public void sum(int currentIndex, TreeNode root, int targetSum){
         if (root == null){
-            return 0;
+            return;
         }
-        int currentTarget = targetSum - root.val;
-        int result = currentTarget == 0 ? 1 : 0;
-        if (isStart){
-            result += pathSum(root.left, targetSum, true);
-            result += pathSum(root.right, targetSum, true);
+        int currentSum = sum[currentIndex - 1] + root.val;
+        sum[currentIndex] = currentSum;
+        for (int i = 0 ; i < currentIndex ; i++){
+            if (currentSum - sum[i] == targetSum){
+                sum[1001]++;
+            }
         }
-        result += pathSum(root.left, currentTarget, false);
-        result += pathSum(root.right, currentTarget, false);
-        return result;
+        sum(currentIndex + 1, root.left, targetSum);
+        sum(currentIndex + 1, root.right, targetSum);
     }
 
     public static void main(String[] args) {
         Z2PathSum test = new Z2PathSum();
 
 //        System.out.println(test.pathSum(new TreeNode(0, new TreeNode(0, new TreeNode(0, new TreeNode(0), new TreeNode(0)), new TreeNode(0)), new TreeNode(0, null, new TreeNode(0, null, new TreeNode(0, null, new TreeNode(0))))),0));
-        // 2
-        System.out.println(test.pathSum(new TreeNode(1, null, new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4, null, new TreeNode(5))))),3));
-        // 3
-        System.out.println(test.pathSum(new TreeNode(10, new TreeNode(5, new TreeNode(3, new TreeNode(3), new TreeNode(2)), new TreeNode(2, null , new TreeNode(1))), new TreeNode(-3, null, new TreeNode(11))), 8));
-        // 2
-        System.out.println(test.pathSum(new TreeNode(5, new TreeNode(3), new TreeNode(3)), 8));
+//        // 2
+//        System.out.println(test.pathSum(new TreeNode(1, null, new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4, null, new TreeNode(5))))),3));
+//        // 3
+//        System.out.println(test.pathSum(new TreeNode(10, new TreeNode(5, new TreeNode(3, new TreeNode(3), new TreeNode(2)), new TreeNode(2, null , new TreeNode(1))), new TreeNode(-3, null, new TreeNode(11))), 8));
+//        // 2
+//        System.out.println(test.pathSum(new TreeNode(5, new TreeNode(3), new TreeNode(3)), 8));
         // 6
         System.out.println(test.pathSum(new TreeNode(2, new TreeNode(2, new TreeNode(2), new TreeNode(2)), new TreeNode(2, new TreeNode(2), new TreeNode(2))), 4));
     }
