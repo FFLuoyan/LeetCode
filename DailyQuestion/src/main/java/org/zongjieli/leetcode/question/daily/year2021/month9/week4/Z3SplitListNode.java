@@ -3,10 +3,11 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week4;
 import org.zongjieli.leetcode.base.ListNode;
 
 /**
- * 给你一个头结点为 head 的单链表和一个整数 k
- * 请你设计一个算法将链表分隔为 k 个连续的部分
+ * 给定一个头结点为 head 的单链表和一个整数 k
+ * 请设计一个算法将链表分隔为 k 个连续的部分
  *
- * 每部分的长度应该尽可能的相等: 任意两部分的长度差距不能超过 1
+ * 每部分的长度应该尽可能的相等:
+ * 任意两部分的长度差距不能超过 1
  * 这可能会导致有些部分为 null
  *
  * 这 k 个部分应该按照在链表中出现的顺序排列
@@ -36,24 +37,22 @@ public class Z3SplitListNode {
         // 多少个节点长度少一个
         int longNumber = count % k;
         int index = 0;
-        while (index < result.length){
+        while (index < result.length && head != null){
             result[index++] = head;
             int length = index <= longNumber ? splitLength + 1 : splitLength;
             while (length-- > 1){
                 head = head.next;
             }
-            if (length >= 0){
-                temp = head.next;
-                head.next = null;
-                head = temp;
-            }
+            temp = head.next;
+            head.next = null;
+            head = temp;
         }
         return result;
     }
 
     public static void main(String[] args) {
         Z3SplitListNode test = new Z3SplitListNode();
-//        test.splitListToParts(new ListNode(1,new ListNode(2,new ListNode(3))),5);// 1,2,3,null,null
+        test.splitListToParts(new ListNode(1,new ListNode(2,new ListNode(3))),5);// 1,2,3,null,null
         test.splitListToParts(null,5);// null,null,null,null,null
     }
 }

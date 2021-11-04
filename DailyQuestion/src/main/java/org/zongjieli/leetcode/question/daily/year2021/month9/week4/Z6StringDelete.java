@@ -4,8 +4,8 @@ package org.zongjieli.leetcode.question.daily.year2021.month9.week4;
  * 找到使得 word1 和 word2 相同所需的最小步数
  * 每步可以删除任意一个字符串中的一个字符
  *
- * 给定单词的长度不超过500。
- * 给定单词中的字符只含有小写字母。
+ * 给定单词的长度不超过 500
+ * 给定单词中的字符只含有小写字母
  *
  * Origin
  * @see org.zongjieli.leetcode.origin.year2021.month9.LongestCommonSequence
