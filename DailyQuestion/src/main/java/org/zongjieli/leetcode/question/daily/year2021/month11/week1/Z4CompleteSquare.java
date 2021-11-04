@@ -26,4 +26,23 @@ public class Z4CompleteSquare {
         }
         return false;
     }
+
+    public boolean isPerfectSquareByNewton(int num) {
+        double v = num;
+        while (v * v - num > 0.000001){
+            v = num / v / 2 + v / 2;
+        }
+        double sub = v - (int) v;
+        return sub < 0.000001 || sub > 0.999999;
+    }
+
+    public static void main(String[] args) {
+        Z4CompleteSquare test = new Z4CompleteSquare();
+//        test.isPerfectSquareByNewton(16);
+//        System.out.println(Math.sqrt(Integer.MAX_VALUE));
+//        test.isPerfectSquareByNewton(46340 * 46340);
+//        System.out.println(Math.sqrt(100489));
+//        test.isPerfectSquareByNewton(100489);
+        test.isPerfectSquareByNewton(9);
+    }
 }
