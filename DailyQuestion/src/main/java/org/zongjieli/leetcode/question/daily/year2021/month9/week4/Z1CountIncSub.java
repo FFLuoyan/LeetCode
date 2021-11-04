@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2021.month9.week4;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 给定一个未排序的整数数组,找到最长递增子序列的个数
  *
@@ -14,52 +11,46 @@ import java.util.Map;
  */
 public class Z1CountIncSub {
     public int findNumberOfLIS(int[] nums) {
-        // number:[length,count]
-        Map<Integer,int[]> count = new HashMap<>();
-        for (int num : nums) {
-            int[] max = new int[2];
-            count.forEach((k,v) -> {
-                if (k < num){
-                    if (v[0] > max[0]){
-                        max[0] = v[0];
-                        max[1] = v[1];
-                    } else if (v[0] == max[0]){
-                        max[1] += v[1];
+        int resultLength = 1;
+        int result = 0;
+        int[] maxLength = new int[nums.length];
+        int[] maxCount = new int[nums.length];
+        for (int i = 0 ; i < nums.length ; i++){
+            int length = 1;
+            int lengthCount = 1;
+            for (int j = 0 ; j < i ; j++){
+                if (nums[j] < nums[i]){
+                    int compareLength = maxLength[j] + 1;
+                    if (length < compareLength){
+                        length = compareLength;
+                        lengthCount = maxCount[j];
+                    } else if (length == compareLength){
+                        lengthCount += maxCount[j];
                     }
                 }
-            });
-            max[0]++;
-            int[] get = count.get(num);
-            if (max[0] == 1){
-                if (get == null){
-                    max[1] = 1;
-                } else {
-                    max[1] = get[1] + 1;
-                }
-            } else if (get != null && max[0] == get[0]){
-                max[1] += get[1];
             }
-            count.put(num,max);
+            maxLength[i] = length;
+            maxCount[i] = lengthCount;
+            if (length > resultLength){
+                result = lengthCount;
+                resultLength = length;
+            } else if (length == resultLength){
+                result += lengthCount;
+            }
         }
-
-        int[] result = new int[2];
-        count.forEach((k,v) -> {
-            if (v[0] > result[0]){
-                result[0] = v[0];
-                result[1] = v[1];
-            } else if (v[0] == result[0]){
-                result[1] += v[1];
-            }
-        });
-        return result[1];
+        return result;
     }
 
 
     public static void main(String[] args) {
         Z1CountIncSub test = new Z1CountIncSub();
+        // 2
         System.out.println(test.findNumberOfLIS(new int[]{1,3,5,4,7}));
+        // 5
         System.out.println(test.findNumberOfLIS(new int[]{2,2,2,2,2}));
+        // 0
         System.out.println(test.findNumberOfLIS(new int[0]));
+        // 27
         System.out.println(test.findNumberOfLIS(new int[]{3,2,1,6,5,4,9,8,7}));
     }
 }
