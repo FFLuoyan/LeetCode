@@ -17,14 +17,10 @@ package org.zongjieli.leetcode.question.daily.year2021.month11.week1;
  */
 public class Z5LongestSubsequence {
     public int longestSubsequence(int[] arr, int difference) {
-        int[] save = new int[20001];
-        for (int i : arr) {
-            int compareIndex = (i += 10000) - difference;
-            save[i] = (compareIndex < 0 || compareIndex > 20000) ? 1 : save[compareIndex] + 1;
-        }
+        int[] save = new int[40001];
         int result = 0;
-        for (int i : save) {
-            result = Math.max(result, i);
+        for (int i : arr) {
+            result = Math.max(result, save[i += 20000] = save[i - difference] + 1);
         }
         return result;
     }
