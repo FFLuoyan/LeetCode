@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2021.month11.week1;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 给定一个整数数组 arr 和一个整数 difference
  * 请找出并返回 arr 中最长等差子序列的长度
@@ -20,15 +17,15 @@ import java.util.Map;
  */
 public class Z5LongestSubsequence {
     public int longestSubsequence(int[] arr, int difference) {
-        Map<Integer, Integer> save = new HashMap<>();
+        int[] save = new int[20001];
         for (int i : arr) {
-            Integer count = save.get(i - difference);
-            if (count == null){
-                save.put(i, 1);
-            } else {
-                save.put(i, count + 1);
-            }
+            int compareIndex = (i += 10000) - difference;
+            save[i] = (compareIndex < 0 || compareIndex > 20000) ? 1 : save[compareIndex] + 1;
         }
-        return save.values().parallelStream().max(Integer::compareTo).get();
+        int result = 0;
+        for (int i : save) {
+            result = Math.max(result, i);
+        }
+        return result;
     }
 }
