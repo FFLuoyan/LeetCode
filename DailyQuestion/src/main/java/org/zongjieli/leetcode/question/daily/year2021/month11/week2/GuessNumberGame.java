@@ -23,26 +23,21 @@ package org.zongjieli.leetcode.question.daily.year2021.month11.week2;
 public class GuessNumberGame {
     public String getHint(String secret, String guess) {
         int[] count = new int[10];
-        for (int i = 0 ; i < secret.length() ; i++){
-            count[secret.charAt(i) - '0']++;
-        }
+        int[] compare = new int[10];
         int bull = 0;
-        int cow = 0;
-        for (int i = 0 ; i < guess.length() ; i++) {
+        for (int i = 0 ; i < secret.length() ; i++){
+            char secretChar = secret.charAt(i);
             char guessChar = guess.charAt(i);
-            char rightChar = secret.charAt(i);
-            int index = guessChar - '0';
-            if (guessChar == rightChar) {
+            if (secretChar == guessChar){
                 bull++;
-                if (count[index] == 0) {
-                    cow--;
-                } else {
-                    count[index]--;
-                }
-            } else if (count[index] > 0) {
-                count[index]--;
-                cow++;
+                continue;
             }
+            count[secretChar - '0']++;
+            compare[guessChar - '0']++;
+        }
+        int cow = 0;
+        for (int i = 0 ; i < 10 ; i++){
+            cow += Math.min(count[i], compare[i]);
         }
         return bull + "A" + cow + "B";
     }
