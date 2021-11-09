@@ -22,23 +22,22 @@ package org.zongjieli.leetcode.question.daily.year2021.month11.week2;
  */
 public class GuessNumberGame {
     public String getHint(String secret, String guess) {
-        int[] count = new int[10];
-        int[] compare = new int[10];
+        int[] count = new int[60];
+        int[] compare = new int[60];
         int bull = 0;
+        char secretChar;
+        char guessChar;
         for (int i = 0 ; i < secret.length() ; i++){
-            char secretChar = secret.charAt(i);
-            char guessChar = guess.charAt(i);
-            if (secretChar == guessChar){
-                bull++;
-                continue;
-            }
-            count[secretChar - '0']++;
-            compare[guessChar - '0']++;
+            secretChar= secret.charAt(i);
+            guessChar = guess.charAt(i);
+            bull += secretChar == guessChar ? 1 : 0;
+            count[secretChar]++;
+            compare[guessChar]++;
         }
         int cow = 0;
-        for (int i = 0 ; i < 10 ; i++){
+        for (int i = 48 ; i < 58 ; i++){
             cow += Math.min(count[i], compare[i]);
         }
-        return bull + "A" + cow + "B";
+        return new StringBuilder().append(bull).append("A").append(cow - bull).append("B").toString();
     }
 }
