@@ -20,7 +20,7 @@ package org.zongjieli.leetcode.question.daily.year2021.month11.week2;
  * @date     2021/11/8
  * @version  1.0
  */
-public class GuessNumberGame {
+public class Z1GuessNumberGame {
     public String getHint(String secret, String guess) {
         int[] count = new int[60];
         int[] compare = new int[60];
