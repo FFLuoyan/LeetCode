@@ -12,16 +12,20 @@ package org.zongjieli.leetcode.algorithm.primary.string;
  * @date     2021/11/9
  * @version  1.0
  */
-public class P04CharXor {
+public class P04Anagram {
     public boolean isAnagram(String s, String t) {
         int length = s.length();
         if (length != t.length()){
             return false;
         }
         int[] count = new int[128];
-        for (int i = 0 ; i < length ; i++){
-            count[s.charAt(i)]++;
-            count[t.charAt(i)]--;
+        char[] charArrays = s.toCharArray();
+        for (char currentChar : charArrays) {
+            count[currentChar]++;
+        }
+        charArrays = t.toCharArray();
+        for (char current : charArrays) {
+            count[current]--;
         }
         for (int i = 97 ; i <= 122 ; i++){
             if (count[i] != 0){
