@@ -33,47 +33,56 @@ package org.zongjieli.leetcode.algorithm.primary.string;
  */
 public class P06StringToNumber {
     public int myAtoi(String s) {
-        int signal = 1;
-        int index = 0;
-        while (index < s.length()){
-            if ((signal = s.charAt(index)) == ' '){
-                ++index;
-                continue;
-            }
-            break;
-        }
-
+        /*
+            运用有限状态机思想
+            将输入分为四个状态
+            开始状态: 一开始属于的状态
+                空格: 继续处于开始状态
+                符号: 进入符号状态
+                数字: 进入数字状态
+                其他: 进入结束状态
+            符号状态: 当输入正负号时进入该状态
+                数字: 进入数字状态
+                其他: 进入结束状态
+            数字状态: 当输入为数字时进入该状态
+                数字: 进入数字状态
+                其他: 进入结束状态
+            结束状态: 当输入异常或输入结束时进入该状态
+         */
+        boolean isPositive = true;
         long result = 0;
-        if (signal >= '0' && signal <= '9'){
-            result = signal - '0';
-            signal = 1;
-        } else if (signal == '-'){
-            signal = -1;
-        } else if (signal == '+'){
-            signal = 1;
+        int state = 0;
+        int[][] states = new int[][]{
+                {0,1,2,3},
+                {3,3,2,3},
+                {3,3,2,3},
+                {3,3,3,3}
+        };
+        for (int i = 0 ; i < s.length() ; i++){
+            char currentChar = s.charAt(i);
+            state = states[state][
+                    currentChar == ' ' ? 0
+                    : currentChar == '+' || currentChar == '-' ? 1
+                    : currentChar <= '9' && currentChar >= '0' ? 2
+                    : 3];
+            if (state == 3){
+                break;
+            }
+            if (state == 1){
+                isPositive = currentChar == '+';
+            } else if (state == 2){
+                result = result * 10 + currentChar - '0';
+                if (result > Integer.MAX_VALUE){
+                    break;
+                }
+            }
+        }
+
+        if (isPositive){
+            return (int) Math.min(result, Integer.MAX_VALUE);
         } else {
-            return 0;
+            return (int) Math.max(-result, Integer.MIN_VALUE);
         }
-
-        while (++index < s.length()){
-            char currentChar = s.charAt(index);
-            if (currentChar < '0' || currentChar > '9'){
-                break;
-            }
-            result = 10 * result + (currentChar - '0');
-            if (-result < Integer.MIN_VALUE){
-                break;
-            }
-        }
-        result = signal * result;
-        if (result > Integer.MAX_VALUE){
-            return Integer.MAX_VALUE;
-        }
-        if (result < Integer.MIN_VALUE){
-            return Integer.MIN_VALUE;
-        }
-        return (int) result;
-
     }
 
     public static void main(String[] args) {
