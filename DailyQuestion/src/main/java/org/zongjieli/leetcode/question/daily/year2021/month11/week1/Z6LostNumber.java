@@ -14,12 +14,10 @@ package org.zongjieli.leetcode.question.daily.year2021.month11.week1;
  */
 public class Z6LostNumber {
     public int missingNumber(int[] nums) {
-        int result = nums.length;
-        int i = 0;
-        for (; i < nums.length ; i++){
-            result ^= i;
-            result ^= nums[i];
+        int sum = nums.length * (1 + nums.length) / 2;
+        for (int num : nums) {
+            sum -= num;
         }
-        return result;
+        return sum;
     }
 }
