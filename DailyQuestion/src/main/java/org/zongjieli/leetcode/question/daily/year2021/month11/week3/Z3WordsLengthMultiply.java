@@ -16,23 +16,15 @@ package org.zongjieli.leetcode.question.daily.year2021.month11.week3;
  */
 public class Z3WordsLengthMultiply {
     public int maxProduct(String[] words) {
-        boolean[][] exists = new boolean[words.length][26];
+        int[] exists = new int[words.length];
         int result = 0;
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
-            boolean[] current = exists[i];
             for (int j = 0 ; j < word.length() ; j++){
-                current[word.charAt(j) - 'a'] = true;
+                exists[i] |= (1 << (word.charAt(j) - 'a'));
             }
             for (int j = 0 ; j < i ; j++){
-                boolean[] compare = exists[j];
-                int k = 0;
-                for (; k < 26 ; k++){
-                    if (compare[k] && current[k]){
-                        break;
-                    }
-                }
-                if (k == 26){
+                if ((exists[j] | exists[i]) == (exists[i] + exists[j])){
                     result = Math.max(result, words[j].length() * word.length());
                 }
             }
