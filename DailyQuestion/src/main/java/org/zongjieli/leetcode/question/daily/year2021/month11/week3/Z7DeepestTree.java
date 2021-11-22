@@ -25,9 +25,11 @@ public class Z7DeepestTree {
         if (root.children == null || root.children.size() == 0){
             return 1;
         }
-        int[] result = new int[]{0};
-        root.children.forEach(r -> result[0] = Math.max(result[0], maxDepth(r)));
-        return result[0] + 1;
+        int result = 1;
+        for (int i = 0; i < root.children.size(); i++) {
+            result = Math.max(result, maxDepth(root.children.get(i)));
+        }
+        return result + 1;
     }
 
     public static void main(String[] args) {
