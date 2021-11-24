@@ -34,28 +34,68 @@ public class Z3FormatNumber {
         for (int i = 0 ; i < s.length() ; i++){
             save[s.charAt(i)]++;
         }
-        int[] result = new int[10];
-        result[0] = save['z'];
-        result[2] = save['w'];
-        result[4] = save['u'];
-        result[6] = save['x'];
-        result[8] = save['g'];
-
-        result[3] = save['h'] - result[8];
-        result[5] = save['f'] - result[4];
-        result[7] = save['s'] - result[6];
-
-        result[1] = save['o'] - result[0] - result[2] - result[4];
-        result[9] = (save['n'] - result[1] - result[7]) / 2;
-
         char[] chars = new char[s.length()];
         int index = 0;
-
-        for (int i = 0 ; i <= 9 ; i++){
-            for (int j = 0 ; j < result[i] ; j++){
-                chars[index++] = (char) (i + '0');
-            }
+        // 0
+        int count = save['z'];
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '0';
         }
+
+        // 1
+        count = save['o'] - count - save['w'] - save['u'];
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '1';
+        }
+
+        // 2
+        count = save['w'];
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '2';
+        }
+
+        // 3
+        count = save['h'] - save['g'];
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '3';
+        }
+
+        // 4
+        count = save['u'];
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '4';
+        }
+
+        // 5
+        count = save['f'] - count;
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '5';
+        }
+
+        // 6
+        count = save['x'];
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '6';
+        }
+
+        // 7
+        count = save['s'] - count;
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '7';
+        }
+
+        // 8
+        count = save['g'];
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '8';
+        }
+
+        // 9
+        count = save['i'] - save['x'] - count - save['f'] + save['u'];
+        for (int i = 0 ; i < count ; i++){
+            chars[index++] = '9';
+        }
+
         return new String(chars, 0, index);
     }
 }
