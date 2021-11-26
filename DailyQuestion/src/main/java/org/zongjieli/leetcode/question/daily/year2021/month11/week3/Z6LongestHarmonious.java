@@ -22,14 +22,12 @@ public class Z6LongestHarmonious {
         for (int num : nums) {
             save.merge(num, 1, Integer::sum);
         }
-        int[] result = new int[]{0};
-        save.forEach((key, value) -> {
-            Integer add = save.get(key + 1);
-            if (add != null) {
-                result[0] = Math.max(result[0], value + add);
-            }
-        });
-        return result[0];
+        int result = 0;
+        Integer add;
+        for (Map.Entry<Integer, Integer> e : save.entrySet()){
+            result = (add = save.get(e.getKey() + 1)) == null ? result : Math.max(result, e.getValue() + add);
+        }
+        return result;
     }
 
     public static void main(String[] args) {
