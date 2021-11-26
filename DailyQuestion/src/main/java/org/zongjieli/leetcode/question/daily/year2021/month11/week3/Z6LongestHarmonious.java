@@ -1,6 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2021.month11.week3;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * 和谐数组是指一个数组里元素的最大值和最小值之间的差别正好是 1
@@ -18,19 +18,15 @@ import java.util.HashMap;
  */
 public class Z6LongestHarmonious {
     public int findLHS(int[] nums) {
-        HashMap<Integer, Integer> count = new HashMap<>();
+        HashMap<Integer, Integer> save = new HashMap<>();
         for (int num : nums) {
-            count.merge(num, 1, Integer::sum);
+            save.merge(num, 1, Integer::sum);
         }
         int[] result = new int[]{0};
-        count.forEach((k,v) -> {
-            Integer c = count.get(k + 1);
-            if (c != null){
-                result[0] = Math.max(result[0], c + v);
-            }
-            c = count.get(k - 1);
-            if (c != null){
-                result[0] = Math.max(result[0], c + v);
+        save.forEach((key, value) -> {
+            Integer add = save.get(key + 1);
+            if (add != null) {
+                result[0] = Math.max(result[0], value + add);
             }
         });
         return result[0];
