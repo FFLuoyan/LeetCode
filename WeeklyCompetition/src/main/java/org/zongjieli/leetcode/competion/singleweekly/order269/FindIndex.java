@@ -12,6 +12,9 @@ import java.util.List;
  * 如果不存在目标下标,返回一个空列表
  * 返回的列表必须按递增顺序排列
  *
+ * 1 <= nums.length <= 100
+ * 1 <= nums[i], target <= 100
+ *
  * @author   Li.zongjie
  * @date     2021/11/28
  * @version  1.0
