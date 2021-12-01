@@ -18,14 +18,8 @@ public class Z3ContinuousChar {
         char currentChar = s.charAt(0);
         int currentCount = 1;
         for (int i = 1 ; i < s.length() ; i++){
-            char loop = s.charAt(i);
-            if (loop == currentChar){
-                currentCount++;
-                result = Math.max(result, currentCount);
-            } else {
-                currentCount = 1;
-                currentChar = loop;
-            }
+            currentCount = currentChar == (currentChar = s.charAt(i)) ? currentCount + 1 : 1;
+            result = Math.max(result, currentCount);
         }
         return result;
     }
