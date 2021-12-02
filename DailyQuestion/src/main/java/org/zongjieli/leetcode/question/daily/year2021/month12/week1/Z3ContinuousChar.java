@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2021.month12;
+package org.zongjieli.leetcode.question.daily.year2021.month12.week1;
 /**
  * 给定一个字符串 s
  * 字符串的能量定义为
