@@ -1,6 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2021.month12.week1;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -28,30 +29,35 @@ import java.util.TreeMap;
  */
 public class Z4RelativeRank {
     public String[] findRelativeRanks(int[] score) {
+        int length = score.length;
         TreeMap<Integer, Integer> scoreIndex = new TreeMap<>();
-        for (int i = 0; i < score.length; i++) {
+        for (int i = 0; i < length; i++) {
             scoreIndex.put(score[i], i);
         }
-        int[] compare = Arrays.copyOf(score,score.length);
-        Arrays.sort(compare);
-        String[] result = new String[score.length];
-        result[scoreIndex.get(compare[score.length - 1])] = "Gold Medal";
-        if (score.length >= 2){
-            result[scoreIndex.get(compare[score.length - 2])] = "Silver Medal";
-        }
+        String[] result = new String[length];
 
-        if (score.length >= 3){
-            result[scoreIndex.get(compare[score.length - 3])] = "Bronze Medal";
+        int th = 1;
+        Map.Entry<Integer, Integer> current = scoreIndex.lastEntry();
+        result[current.getValue()] = "Gold Medal";
+        th++;
+        if (length >= 2){
+            current = scoreIndex.lowerEntry(current.getKey());
+            result[current.getValue()] = "Silver Medal";
         }
-
-        for (int i = 4 ; i <= score.length ; i++){
-            result[scoreIndex.get(compare[score.length - i])] = String.valueOf(i);
+        th++;
+        if (length >= 3){
+            current = scoreIndex.lowerEntry(current.getKey());
+            result[current.getValue()] = "Bronze Medal";
+        }
+        th++;
+        while ((current = scoreIndex.lowerEntry(current.getKey())) != null){
+            result[current.getValue()] = String.valueOf(th++);
         }
         return result;
     }
 
     public static void main(String[] args) {
         Z4RelativeRank test = new Z4RelativeRank();
-        System.out.println(Arrays.toString(test.findRelativeRanks(new int[]{5,4})));
+        System.out.println(Arrays.toString(test.findRelativeRanks(new int[]{5,4,3,2,1})));
     }
 }
