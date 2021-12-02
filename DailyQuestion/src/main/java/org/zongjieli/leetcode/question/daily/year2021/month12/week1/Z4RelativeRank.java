@@ -1,12 +1,10 @@
 package org.zongjieli.leetcode.question.daily.year2021.month12.week1;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * 给定一个长度为 n 的整数数组 score
- * 其中 score[i] 是第 i 位运动员在比赛中的得分所有得分都互不相同
+ * 其中 score[i] 是第 i 位运动员在比赛中的得分,所有得分都互不相同
  * 运动员将根据得分决定名次,其中名次第 1 的运动员得分最高
  * 名次第 2 的运动员得分第 2 高,依此类推
  * 运动员的名次决定了他们的获奖情况:
@@ -28,33 +26,29 @@ import java.util.TreeMap;
  * @version  1.0
  */
 public class Z4RelativeRank {
+
     public String[] findRelativeRanks(int[] score) {
         int length = score.length;
-        TreeMap<Integer, Integer> scoreIndex = new TreeMap<>();
+        int[] record = new int[1000001];
         for (int i = 0; i < length; i++) {
-            scoreIndex.put(score[i], i);
+            record[score[i]] = i;
         }
+        Arrays.sort(score);
         String[] result = new String[length];
-
-        int th = 1;
-        Map.Entry<Integer, Integer> current = scoreIndex.lastEntry();
-        result[current.getValue()] = "Gold Medal";
-        th++;
+        result[record[score[length - 1]]] = "Gold Medal";
         if (length >= 2){
-            current = scoreIndex.lowerEntry(current.getKey());
-            result[current.getValue()] = "Silver Medal";
+            result[record[score[length - 2]]] = "Silver Medal";
         }
-        th++;
         if (length >= 3){
-            current = scoreIndex.lowerEntry(current.getKey());
-            result[current.getValue()] = "Bronze Medal";
+            result[record[score[length - 3]]] = "Bronze Medal";
         }
-        th++;
-        while ((current = scoreIndex.lowerEntry(current.getKey())) != null){
-            result[current.getValue()] = String.valueOf(th++);
+        int th = 3;
+        while (++th <= length){
+            result[record[score[length - th]]] = String.valueOf(th);
         }
         return result;
     }
+
 
     public static void main(String[] args) {
         Z4RelativeRank test = new Z4RelativeRank();
