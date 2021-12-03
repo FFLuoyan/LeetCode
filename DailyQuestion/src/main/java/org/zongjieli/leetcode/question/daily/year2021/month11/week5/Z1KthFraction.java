@@ -25,17 +25,19 @@ import java.util.TreeSet;
  */
 public class Z1KthFraction {
     public int[] kthSmallestPrimeFraction(int[] arr, int k) {
-        TreeSet<int[]> save = new TreeSet<>((a,b) -> Integer.compare(arr[a[0]] * arr[b[1]], arr[a[1]] * arr[b[0]]));
+        int low = 32767;
+        int higher = 2147418112;
+        TreeSet<Integer> save = new TreeSet<>((a,b) -> Integer.compare(((a & higher) >> 16) * (b & low), (a & low) * ((b & higher) >> 16)));
         for (int i = 0 ; i < arr.length ; i++){
             for (int j = i + 1 ; j < arr.length ; j++){
-                save.add(new int[]{i, j});
+                save.add((arr[i] << 16) + arr[j]);
                 if (save.size() > k){
                     save.pollLast();
                 }
             }
         }
-        int[] index = save.last();
-        return new int[]{arr[index[0]], arr[index[1]]};
+        int v = save.last();
+        return new int[]{(v & higher) >> 16, v & low};
     }
 
     public static void main(String[] args) {
