@@ -30,19 +30,12 @@ public class Z5ReverseMax {
         }
 
         int sum = 0;
-        if ((k & 1) == 0){
-            for (int i = index ; i < 201 ; i++){
-                sum += i * count[i];
-            }
-            return sum - nums.length * 100;
-        }
-        // index == 100
         int minIndex = 200;
-        for (int i = 100 ; i < 201 ; i++){
+        for (int i = index ; i < 201 ; i++){
             sum += i * count[i];
             minIndex = i < minIndex && count[i] != 0 ? i : minIndex;
         }
-        return sum - 2 * minIndex + 200 - nums.length * 100;
+        return sum - nums.length * 100 + ((k & 1) == 0 ? 0 : ( 200 - 2 * minIndex));
     }
 
     public static void main(String[] args) {
