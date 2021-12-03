@@ -25,17 +25,11 @@ import java.util.Arrays;
 public class Z1KthFraction {
     public int[] kthSmallestPrimeFraction(int[] arr, int k) {
         int[] min = new int[arr.length];
-        int[][] value = new int[arr.length][arr.length];
-        for (int i = 0 ; i < arr.length ; i++){
-            for (int j = 1 ; j < arr.length ; j++){
-                value[i][j] = arr[i] * arr[j];
-            }
-        }
         Arrays.fill(min, arr.length - 1);
         while (true){
             int current = 0;
             for (int i = 1 ; min[i - 1] != arr.length - 1 ; i++){
-                current = value[current][min[i]] < value[i][min[current]] ? current : i;
+                current = arr[current] * arr[min[i]] < arr[i] * arr[min[current]] ? current : i;
             }
             if (--k == 0){
                 return new int[]{arr[current], arr[min[current]]};
@@ -46,7 +40,9 @@ public class Z1KthFraction {
 
     public static void main(String[] args) {
         Z1KthFraction test = new Z1KthFraction();
-//        System.out.println(Arrays.toString(test.kthSmallestPrimeFraction(new int[]{1,2,3,5}, 3)));
+        // 2,5
+        System.out.println(Arrays.toString(test.kthSmallestPrimeFraction(new int[]{1,2,3,5}, 3)));
+        // 13,17
         System.out.println(Arrays.toString(test.kthSmallestPrimeFraction(new int[]{1,13,17,59}, 6)));
     }
 }
