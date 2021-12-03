@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2021.month12.week1;
 
-import java.util.Arrays;
-
 /**
  * 给定一个整数数组 nums 和一个整数 k,按以下方法修改该数组:
  * 选择某个下标 i 并将 nums[i] 替换为 -nums[i]
@@ -18,24 +16,33 @@ import java.util.Arrays;
  */
 public class Z5ReverseMax {
     public int largestSumAfterKNegations(int[] nums, int k) {
-        Arrays.sort(nums);
-        int index = 0;
-        for (; index < nums.length && k > 0; index++){
-            if (nums[index] >= 0){
-                break;
-            }
-            k--;
-            nums[index] = -nums[index];
-        }
-        if ((k & 1) != 0){
-            index = index == 0 || (index != nums.length && nums[index] < nums[index - 1]) ? index : index - 1;
-            nums[index] = -nums[index];
-        }
-        int sum = 0;
+        int[] count = new int[201];
         for (int num : nums) {
-            sum += num;
+            count[num + 100]++;
         }
-        return sum;
+        int index = 0;
+        while (index < 100 && k > 0){
+            int min = Math.min(k, count[index]);
+            k -= min;
+            count[index] -= min;
+            count[200 - index] += min;
+            index = k > 0 ? index + 1 : index;
+        }
+
+        int sum = 0;
+        if ((k & 1) == 0){
+            for (int i = index ; i < 201 ; i++){
+                sum += i * count[i];
+            }
+            return sum - nums.length * 100;
+        }
+        // index == 100
+        int minIndex = 200;
+        for (int i = 100 ; i < 201 ; i++){
+            sum += i * count[i];
+            minIndex = i < minIndex && count[i] != 0 ? i : minIndex;
+        }
+        return sum - 2 * minIndex + 200 - nums.length * 100;
     }
 
     public static void main(String[] args) {
@@ -46,5 +53,7 @@ public class Z5ReverseMax {
         System.out.println(test.largestSumAfterKNegations(new int[]{-2, 5, 0, 2, -2}, 3));
         // 5
         System.out.println(test.largestSumAfterKNegations(new int[]{-4, -2, -3}, 4));
+        // 13
+        System.out.println(test.largestSumAfterKNegations(new int[]{2, -3, -1, 5, -4}, 2));
     }
 }
