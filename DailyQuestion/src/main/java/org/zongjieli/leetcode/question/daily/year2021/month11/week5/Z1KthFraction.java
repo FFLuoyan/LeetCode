@@ -1,6 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2021.month11.week5;
 
 import java.util.Arrays;
+import java.util.TreeSet;
 
 /**
  * 给定一个按递增顺序排序的数组 arr 和一个整数 k
@@ -24,18 +25,17 @@ import java.util.Arrays;
  */
 public class Z1KthFraction {
     public int[] kthSmallestPrimeFraction(int[] arr, int k) {
-        int[] min = new int[arr.length];
-        Arrays.fill(min, arr.length - 1);
-        while (true){
-            int current = 0;
-            for (int i = 1 ; min[i - 1] != arr.length - 1 ; i++){
-                current = arr[current] * arr[min[i]] < arr[i] * arr[min[current]] ? current : i;
+        TreeSet<int[]> save = new TreeSet<>((a,b) -> Integer.compare(arr[a[0]] * arr[b[1]], arr[a[1]] * arr[b[0]]));
+        for (int i = 0 ; i < arr.length ; i++){
+            for (int j = i + 1 ; j < arr.length ; j++){
+                save.add(new int[]{i, j});
+                if (save.size() > k){
+                    save.pollLast();
+                }
             }
-            if (--k == 0){
-                return new int[]{arr[current], arr[min[current]]};
-            }
-            min[current]--;
         }
+        int[] index = save.last();
+        return new int[]{arr[index[0]], arr[index[1]]};
     }
 
     public static void main(String[] args) {
