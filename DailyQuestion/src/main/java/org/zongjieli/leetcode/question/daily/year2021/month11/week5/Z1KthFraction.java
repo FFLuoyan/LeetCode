@@ -1,4 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2021.month11.week5;
+
+import java.util.Arrays;
+
 /**
  * 给定一个按递增顺序排序的数组 arr 和一个整数 k
  * 数组 arr 由 1 和若干素数组成,且其中所有整数互不相同
@@ -21,34 +24,29 @@ package org.zongjieli.leetcode.question.daily.year2021.month11.week5;
  */
 public class Z1KthFraction {
     public int[] kthSmallestPrimeFraction(int[] arr, int k) {
-        int[] fraction = new int[arr.length];
-        fraction[0] = arr.length - 1;
-        int th = 1;
-        int minIndex = 0;
-        while (true){
-            for (int i = 0 ; i < fraction.length ; i++){
-                if (fraction[i] == 0){
-                    continue;
-                }
-                // min arr[minIndex] / arr[fraction[minIndex]]
-                // compare arr[i] / arr[fraction[i]]
-                if (arr[minIndex] * arr[fraction[i]] > arr[i] * arr[fraction[minIndex]]){
-                    minIndex = i;
-                }
+        int[] min = new int[arr.length];
+        int[][] value = new int[arr.length][arr.length];
+        for (int i = 0 ; i < arr.length ; i++){
+            for (int j = 1 ; j < arr.length ; j++){
+                value[i][j] = arr[i] * arr[j];
             }
-            if (th == k){
-                return new int[]{arr[minIndex], arr[fraction[minIndex]]};
-            }
-            th++;
-
-            if (fraction[minIndex + 1] == 0){
-                fraction[minIndex + 1] = fraction[minIndex];
-            }
-
-            if (fraction[minIndex] > minIndex){
-                fraction[minIndex]--;
-            }
-
         }
+        Arrays.fill(min, arr.length - 1);
+        while (true){
+            int current = 0;
+            for (int i = 1 ; min[i - 1] != arr.length - 1 ; i++){
+                current = value[current][min[i]] < value[i][min[current]] ? current : i;
+            }
+            if (--k == 0){
+                return new int[]{arr[current], arr[min[current]]};
+            }
+            min[current]--;
+        }
+    }
+
+    public static void main(String[] args) {
+        Z1KthFraction test = new Z1KthFraction();
+//        System.out.println(Arrays.toString(test.kthSmallestPrimeFraction(new int[]{1,2,3,5}, 3)));
+        System.out.println(Arrays.toString(test.kthSmallestPrimeFraction(new int[]{1,13,17,59}, 6)));
     }
 }
