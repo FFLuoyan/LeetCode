@@ -15,15 +15,12 @@ package org.zongjieli.leetcode.question.daily.year2021.month12.week1;
  */
 public class Z6StringContains {
     public boolean canConstruct(String ransomNote, String magazine) {
-        int[] count = new int[26];
-        for (int i = 0 ; i < ransomNote.length() ; i++){
-            count[ransomNote.charAt(i) - 'a']++;
-        }
+        int[] count = new int[128];
         for (int i = 0 ; i < magazine.length() ; i++){
-            count[magazine.charAt(i) - 'a']--;
+            count[magazine.charAt(i)]++;
         }
-        for (int i : count) {
-            if (i > 0){
+        for (int i = 0 ; i < ransomNote.length() ; i++){
+            if (--count[ransomNote.charAt(i)] < 0){
                 return false;
             }
         }
