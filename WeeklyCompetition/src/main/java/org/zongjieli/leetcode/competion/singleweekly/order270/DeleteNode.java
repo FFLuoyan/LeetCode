@@ -19,23 +19,18 @@ import org.zongjieli.leetcode.base.ListNode;
  */
 public class DeleteNode {
     public ListNode deleteMiddle(ListNode head) {
-        int length = 1;
-        ListNode t = head;
-        while (t.next != null){
-            length++;
-            t = t.next;
+        ListNode returnNext = new ListNode(0, head);
+        ListNode deleteNext = returnNext;
+        boolean next = false;
+        while (head.next != null){
+            head = head.next;
+            deleteNext = (next ^= true) ? deleteNext.next : deleteNext;
         }
+        deleteNext.next = deleteNext.next.next;
+        return returnNext.next;
+    }
 
-        int deleteNextIndex = length / 2 - 1;
-        ListNode temp = new ListNode();
-        temp.next = head;
-        int index = -1;
-        ListNode current = temp;
-        while (index < deleteNextIndex){
-            current = current.next;
-            index++;
-        }
-        current.next = current.next.next;
-        return temp.next;
+    public static void main(String[] args) {
+        DeleteNode test = new DeleteNode();
     }
 }
