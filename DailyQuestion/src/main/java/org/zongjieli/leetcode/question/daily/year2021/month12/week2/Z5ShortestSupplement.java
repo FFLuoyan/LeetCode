@@ -32,32 +32,25 @@ package org.zongjieli.leetcode.question.daily.year2021.month12.week2;
  */
 public class Z5ShortestSupplement {
     public String shortestCompletingWord(String licensePlate, String[] words) {
-        int[] count = new int[26];
+        int[] count = new int[27];
         for (int i = 0 ; i < licensePlate.length() ; i++){
             char c = licensePlate.charAt(i);
-            if (c >= 'a' && c <= 'z'){
-                count[c - 'a']++;
-            } else if (c >= 'A' && c <= 'Z'){
-                count[c - 'A']++;
-            }
+            count[c >= 'a' ? c - 'a' : c >= 'A' ? c - 'A' : 26]++;
         }
 
-        String result = "AAAAAAAAAAAAAAAA";
+        String result = null;
 
-        for (String word : words) {
+        a: for (String word : words) {
             int[] temp = new int[26];
             for (int i = 0 ; i < word.length(); i++){
                 temp[word.charAt(i) - 'a']++;
             }
-            int i = -1;
-            while (++i < 26){
+            for (int i = 0 ; i < 26; i++){
                 if (temp[i] < count[i]){
-                    break;
+                    continue a;
                 }
             }
-            if (i == 26){
-                result = result.length() <= word.length() ? result : word;
-            }
+            result = result == null || result.length() > word.length() ? word : result;
         }
 
         return result;
