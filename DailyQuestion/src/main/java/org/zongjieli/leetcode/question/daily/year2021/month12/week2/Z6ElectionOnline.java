@@ -37,17 +37,17 @@ public class Z6ElectionOnline {
 
     public Z6ElectionOnline(int[] persons, int[] times) {
         timeMaxPerson = new TreeMap<>();
-        Map<Integer, Integer> timePersonCount = new HashMap<>(2 * times.length);
-        int lastTime = times[0];
-        timeMaxPerson.put(lastTime, persons[0]);
-        timePersonCount.put(persons[0], 1);
+        Map<Integer, Integer> personCount = new HashMap<>(2 * times.length);
+        int lastPerson = persons[0];
+        int lastCount = 1;
+        timeMaxPerson.put(times[0], lastPerson);
+        personCount.put(lastPerson, 1);
         for (int i = 1 ; i < times.length ; i++){
-            int lastPerson = timeMaxPerson.get(lastTime);
-            lastTime = times[i];
-            int lastCount = timePersonCount.get(lastPerson);
-            int currentPersonCount = timePersonCount.getOrDefault(persons[i], 0) + 1;
-            timePersonCount.put(persons[i], currentPersonCount);
-            timeMaxPerson.put(lastTime, currentPersonCount >= lastCount ? persons[i] : lastPerson);
+            int currentPersonCount = personCount.getOrDefault(persons[i], 0) + 1;
+            personCount.put(persons[i], currentPersonCount);
+            lastPerson = currentPersonCount >= lastCount ? persons[i] : lastPerson;
+            timeMaxPerson.put(times[i], lastPerson);
+            lastCount = Math.max(currentPersonCount, lastCount);
         }
     }
 
