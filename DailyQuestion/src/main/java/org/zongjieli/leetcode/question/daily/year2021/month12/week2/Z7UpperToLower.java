@@ -10,7 +10,19 @@ package org.zongjieli.leetcode.question.daily.year2021.month12.week2;
  * @version  1.0
  */
 public class Z7UpperToLower {
+
     public String toLowerCase(String s) {
         return s.toLowerCase();
+    }
+
+    public String toLowerCaseByBit(String s) {
+        // A: 01000001,a: 01100001
+        byte[] v = s.getBytes();
+        for (int i = 0; i < v.length; i++) {
+            if (v[i] <= 'Z' && v[i] >= 'A'){
+                v[i] |= 32;
+            }
+        }
+        return new String(v);
     }
 }
