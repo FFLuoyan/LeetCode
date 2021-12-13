@@ -1,9 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2021.month12.week2;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * 给定两个整数数组 persons 和 times
  * 在选举中,第 i 张票是在时刻为 times[i] 时投给候选人 persons[i] 的
@@ -33,26 +29,33 @@ import java.util.TreeMap;
  */
 public class Z6ElectionOnline {
 
-    private TreeMap<Integer, Integer> timeMaxPerson;
+    private int[] timePerson;
+    private int[] times;
 
     public Z6ElectionOnline(int[] persons, int[] times) {
-        timeMaxPerson = new TreeMap<>();
-        Map<Integer, Integer> personCount = new HashMap<>(2 * times.length);
-        int lastPerson = persons[0];
-        int lastCount = 1;
-        timeMaxPerson.put(times[0], lastPerson);
-        personCount.put(lastPerson, 1);
+        this.times = times;
+        int[] personCount = new int[persons.length];
+        timePerson = new int[persons.length];
+
+        personCount[persons[0]]++;
+        timePerson[0] = persons[0];
+
         for (int i = 1 ; i < times.length ; i++){
-            int currentPersonCount = personCount.getOrDefault(persons[i], 0) + 1;
-            personCount.put(persons[i], currentPersonCount);
-            lastPerson = currentPersonCount >= lastCount ? persons[i] : lastPerson;
-            timeMaxPerson.put(times[i], lastPerson);
-            lastCount = Math.max(currentPersonCount, lastCount);
+            timePerson[i] = ++personCount[persons[i]] >= personCount[timePerson[i - 1]] ? persons[i] : timePerson[i - 1];
         }
     }
 
     public int q(int t) {
-        return timeMaxPerson.floorEntry(t).getValue();
+        int left = 0,right = times.length - 1;
+        while (left < right){
+            int middle = (left + right + 1) / 2;
+            if (times[middle] <= t){
+                left = middle;
+            } else {
+                right = middle - 1;
+            }
+        }
+        return timePerson[right];
     }
 
     public static void main(String[] args) {
