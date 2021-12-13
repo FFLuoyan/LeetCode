@@ -34,13 +34,7 @@ public class WaterPlant {
         int aCapacity = capacityA;
         int bCapacity = capacityB;
         int result = 0;
-        while (aIndex <= bIndex){
-            if (aIndex == bIndex){
-                if (Math.max(aCapacity,bCapacity) < plants[aIndex]){
-                    result++;
-                }
-                break;
-            }
+        while (aIndex < bIndex){
             if ((aCapacity -= plants[aIndex]) < 0){
                 result++;
                 aCapacity = capacityA - plants[aIndex];
@@ -53,6 +47,9 @@ public class WaterPlant {
 
             aIndex++;
             bIndex--;
+        }
+        if (aIndex == bIndex && Math.max(aCapacity,bCapacity) < plants[aIndex]){
+            result++;
         }
         return result;
     }
