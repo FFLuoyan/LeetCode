@@ -41,6 +41,9 @@ public class Z5ShortestSupplement {
         String result = null;
 
         a: for (String word : words) {
+            if (result != null && word.length() > result.length()){
+                continue;
+            }
             int[] temp = new int[26];
             for (int i = 0 ; i < word.length(); i++){
                 temp[word.charAt(i) - 'a']++;
@@ -50,7 +53,7 @@ public class Z5ShortestSupplement {
                     continue a;
                 }
             }
-            result = result == null || result.length() > word.length() ? word : result;
+            result = word;
         }
 
         return result;
