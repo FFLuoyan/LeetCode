@@ -39,9 +39,9 @@ public class Z3LoudAndRich {
             result[i] = i;
         }
         // 直接比 person i 钱少的人
-        Map<Integer, List<Integer>> temp = new HashMap<>(quiet.length);
+        int[][] temp = new int[quiet.length][quiet.length + 1];
         for (int[] pair : richer) {
-            temp.computeIfAbsent(pair[0], k -> new ArrayList<>()).add(pair[1]);
+            temp[pair[0]][temp[pair[0]][quiet.length]++] = pair[1];
             if (quiet[result[pair[1]]] > quiet[result[pair[0]]]) {
                 setValue(temp, result, quiet, pair[1], result[pair[0]]);
             }
@@ -49,17 +49,14 @@ public class Z3LoudAndRich {
         return result;
     }
 
-    public void setValue(Map<Integer, List<Integer>> save, int[] result, int[] quiet, int loop, int value) {
+    public void setValue(int[][] save, int[] result, int[] quiet, int loop, int value) {
         result[loop] = value;
-        List<Integer> list = save.get(loop);
-        if (list == null) {
-            return;
-        }
-        list.forEach(c -> {
-            if (quiet[result[c]] > quiet[value]) {
-                setValue(save, result, quiet, c, value);
+        int[] list = save[loop];
+        for (int i = 0 ; i < list[quiet.length] ; i++){
+            if (quiet[result[list[i]]] > quiet[value]) {
+                setValue(save, result, quiet, list[i], value);
             }
-        });
+        }
     }
 
     public static void main(String[] args) {
@@ -68,5 +65,7 @@ public class Z3LoudAndRich {
         System.out.println(Arrays.toString(test.loudAndRich(new int[][]{{1, 0}, {2, 1}, {3, 1}, {3, 7}, {4, 3}, {5, 3}, {6, 3}}, new int[]{3, 2, 5, 4, 6, 1, 7, 0})));
         // [0,0,0]
         System.out.println(Arrays.toString(test.loudAndRich(new int[][]{{0, 1}, {1, 2}}, new int[]{0, 1, 2})));
+        // [4,4,4,4,4]
+        System.out.println(Arrays.toString(test.loudAndRich(new int[][]{{1, 0}, {3, 2}, {4, 3}, {2, 1}}, new int[]{4, 3, 2, 1, 0})));
     }
 }
