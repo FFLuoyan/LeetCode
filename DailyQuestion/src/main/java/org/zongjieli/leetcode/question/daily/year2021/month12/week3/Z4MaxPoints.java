@@ -2,7 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2021.month12.week3;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 给定一个点数组 points 和一个表示角度的整数 angle 及位置 location
@@ -31,16 +30,31 @@ import java.util.stream.Collectors;
  * @version  1.0
  */
 public class Z4MaxPoints {
-    public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
+    private int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
         int oX = location.get(0);
         int oY = location.get(1);
-        List<Double> temp = points.stream().filter(point -> point.get(0) != oX || point.get(1) != oY).map(point -> Math.atan2(point.get(1) - oY, point.get(0) - oX)).sorted().collect(Collectors.toList());
-        int locationPointCount = points.size() - temp.size();
-        double min = angle * Math.PI / 180;
+
+        double[] pointArray = new double[points.size() << 1];
+        int locationPointCount = 0;
         int index = 0;
-        while (index < temp.size() && temp.get(index) - min <= -Math.PI){
-            temp.add(temp.get(index) + Math.PI + Math.PI);
-            index++;
+        for (List<Integer> point : points) {
+            int x = point.get(0) - oX;
+            int y = point.get(1) - oY;
+            if (x == 0 && y == 0){
+                locationPointCount++;
+                continue;
+            }
+            pointArray[index++] = Math.atan2(y, x);
+        }
+
+        Arrays.sort(pointArray, 0, index);
+
+        double circular = 2 * Math.PI;
+        double angleRadian = angle * Math.PI / 180;
+        int length = index;
+        for (int i = 0 ; i < index && pointArray[i] - angleRadian < Math.PI; i++){
+            pointArray[i + index] = pointArray[i] + circular;
+            length++;
         }
 
         int startIndex = 0;
@@ -48,8 +62,8 @@ public class Z4MaxPoints {
 
         int result = 0;
 
-        while (endIndex < temp.size()){
-            if (temp.get(endIndex) - temp.get(startIndex) <= min){
+        while (endIndex < length){
+            if (pointArray[endIndex] - pointArray[startIndex] <= angleRadian){
                 result = Math.max(result, endIndex - startIndex + 1);
                 endIndex++;
             } else {
@@ -63,13 +77,13 @@ public class Z4MaxPoints {
     public static void main(String[] args) {
         Z4MaxPoints test = new Z4MaxPoints();
         // 2
-//        System.out.println(test.visiblePoints(Arrays.asList(Arrays.asList(1,1), Arrays.asList(2,2), Arrays.asList(1,2), Arrays.asList(2,1)), 0, Arrays.asList(1,1)));
-//        // 3
-//        System.out.println(test.visiblePoints(Arrays.asList(Arrays.asList(2,1), Arrays.asList(2,2), Arrays.asList(3,3)), 90, Arrays.asList(1,1)));
-//        // 4
-//        System.out.println(test.visiblePoints(Arrays.asList(Arrays.asList(1,1), Arrays.asList(2,2), Arrays.asList(3,3), Arrays.asList(4,4), Arrays.asList(1,2), Arrays.asList(2,1)), 0, Arrays.asList(1,1)));
-//        // 2
-//        System.out.println(test.visiblePoints(Arrays.asList(Arrays.asList(0,0), Arrays.asList(0,2)), 90, Arrays.asList(1,1)));
+        System.out.println(test.visiblePoints(Arrays.asList(Arrays.asList(1,1), Arrays.asList(2,2), Arrays.asList(1,2), Arrays.asList(2,1)), 0, Arrays.asList(1,1)));
+        // 3
+        System.out.println(test.visiblePoints(Arrays.asList(Arrays.asList(2,1), Arrays.asList(2,2), Arrays.asList(3,3)), 90, Arrays.asList(1,1)));
+        // 4
+        System.out.println(test.visiblePoints(Arrays.asList(Arrays.asList(1,1), Arrays.asList(2,2), Arrays.asList(3,3), Arrays.asList(4,4), Arrays.asList(1,2), Arrays.asList(2,1)), 0, Arrays.asList(1,1)));
+        // 2
+        System.out.println(test.visiblePoints(Arrays.asList(Arrays.asList(0,0), Arrays.asList(0,2)), 90, Arrays.asList(1,1)));
         // 3
         System.out.println(test.visiblePoints(Arrays.asList(Arrays.asList(1,1), Arrays.asList(1,1), Arrays.asList(1,1)), 1, Arrays.asList(1,1)));
     }
