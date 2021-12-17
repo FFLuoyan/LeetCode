@@ -25,76 +25,40 @@ package org.zongjieli.leetcode.question.daily.year2021.month12.week2;
  */
 public class Z4TicTacToe {
     public boolean validTicTacToe(String[] board) {
-        int[][] save = new int[3][3];
-        int xCount = 0;
-        int oCount = 0;
-        int xRow = 0;
-        int oRow = 0;
-
+        int[] values = new int[9];
+        int[] count = new int[3];
+        boolean[] win = new boolean[3];
         for (int i = 0 ; i < 3 ; i++){
+            String currentString = board[i];
             for (int j = 0 ; j < 3 ; j++){
-                save[i][j] = board[i].charAt(j);
-                if (save[i][j] == 'X'){
-                    xCount++;
-                } else if (save[i][j] == 'O'){
-                    oCount++;
-                }
-            }
-            if (save[i][0] == save[i][1] && save[i][0] == save[i][2]){
-                if (save[i][0] == 'X'){
-                    xRow++;
-                } else if (save[i][0] == 'O'){
-                    oRow++;
-                }
+                char currentChar = currentString.charAt(j);
+                int c = currentChar == 'X' ? 1 : currentChar == 'O' ? 2 : 0;
+                values[3 * i + j] = c;
+                count[c]++;
             }
         }
 
-        if (xCount - oCount > 1 || oCount > xCount){
-            return false;
+        int c = values[4];
+        if ((c == values[0] && c == values[8]) || (c == values[1] && c == values[7]) || (c == values[2] && c == values[6]) || (c == values[3] && c == values[5])){
+            win[c] = true;
         }
-
-        for (int i = 0 ; i < 3 ; i++){
-            if (save[0][i] == save[1][i] && save[1][i] == save[2][i]){
-                if (save[0][i] == 'X'){
-                    xRow++;
-                } else if (save[0][i] == 'O'){
-                    oRow++;
-                }
-            }
+        c = values[0];
+        if ((c == values[1] && c == values[2]) || (c == values[3] && c == values[6])){
+            win[c] = true;
         }
-
-        if (save[0][0] == save[1][1] && save[1][1] == save[2][2]){
-            if (save[0][0] == 'X'){
-                xRow++;
-            } else if (save[0][0] == 'O'){
-                oRow++;
-            }
+        c = values[8];
+        if ((c == values[6] && c == values[7]) || (c == values[2] && c == values[5])){
+            win[c] = true;
         }
-
-        if (save[0][2] == save[1][1] && save[1][1] == save[2][0]){
-            if (save[1][1] == 'X'){
-                xRow++;
-            } else if (save[1][1] == 'O'){
-                oRow++;
-            }
-        }
-
-        if (xRow > 0){
-            return xCount - oCount == 1 && oRow == 0;
-        }
-
-        if (oRow > 0){
-            return xCount == oCount;
-        }
-        return true;
+        return win[1] ? !win[2] && count[1] == count[2] + 1 : win[2] ? count[1] == count[2] : count[1] - count[2] == 0 || count[1] - count[2] == 1;
     }
 
     public static void main(String[] args) {
         Z4TicTacToe test = new Z4TicTacToe();
         // false
-//        System.out.println(test.validTicTacToe(new String[]{"XXX","XOO","OO "}));
+        System.out.println(test.validTicTacToe(new String[]{"XXX","XOO","OO "}));
         // true
-//        System.out.println(test.validTicTacToe(new String[]{"X  ","   ","  O"}));
+        System.out.println(test.validTicTacToe(new String[]{"X  ","   ","  O"}));
         // false
         System.out.println(test.validTicTacToe(new String[]{"XXO","XOX","OXO"}));
     }
