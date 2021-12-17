@@ -20,7 +20,8 @@ public class Z5ExchangeDrinks {
             计算 n / (a - 1) 即可得到可换酒的总次数
             但是如果正好整除,则说明最后一次兑换时只有 a - 1 个酒瓶
             需要把这瓶酒删掉
+            也可以一开始就减去一个空瓶,保证最后肯定会剩下一个空瓶
          */
-        return  numBottles + numBottles / (numExchange - 1) + (numBottles % (numExchange - 1) == 0 ? -1 : 0);
+        return  numBottles + (numBottles - 1) / (numExchange - 1);
     }
 }
