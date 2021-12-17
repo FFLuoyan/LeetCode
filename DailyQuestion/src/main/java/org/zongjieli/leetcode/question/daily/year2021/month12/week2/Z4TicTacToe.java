@@ -27,7 +27,6 @@ public class Z4TicTacToe {
     public boolean validTicTacToe(String[] board) {
         int[] values = new int[9];
         int[] count = new int[3];
-        boolean[] win = new boolean[3];
         for (int i = 0 ; i < 3 ; i++){
             String currentString = board[i];
             for (int j = 0 ; j < 3 ; j++){
@@ -38,19 +37,29 @@ public class Z4TicTacToe {
             }
         }
 
-        int c = values[4];
-        if ((c == values[0] && c == values[8]) || (c == values[1] && c == values[7]) || (c == values[2] && c == values[6]) || (c == values[3] && c == values[5])){
-            win[c] = true;
-        }
-        c = values[0];
-        if ((c == values[1] && c == values[2]) || (c == values[3] && c == values[6])){
-            win[c] = true;
-        }
-        c = values[8];
-        if ((c == values[6] && c == values[7]) || (c == values[2] && c == values[5])){
-            win[c] = true;
-        }
-        return win[1] ? !win[2] && count[1] == count[2] + 1 : win[2] ? count[1] == count[2] : count[1] - count[2] == 0 || count[1] - count[2] == 1;
+        /*
+            可以从多个角度分析状态是否合法
+                从玩家获胜角度
+                    如果玩家一赢,则玩家二不可能赢,且玩家一比玩家二落子数量多 1
+                    如果玩家二赢,则玩家一不可能赢,且玩家二罗子数量与玩家一一致
+                    如果还未胜利,则此时玩家一的落子数与玩家二一致或者多一
+                从落子数量角度
+                    如果玩家一落子数比玩家二多一,则玩家二不可能赢
+                    如果玩家一落子数与玩家二一致,则玩家一不可能赢
+                    其他情况不可能出现
+         */
+        return count[1] == count[2] + 1 ? !win(values, 2) : count[1] == count[2] && !win(values, 1);
+    }
+
+    private boolean win(int[] values, int player){
+        int compare;
+        return
+                // 第一行或第一列一致
+                ((compare = values[0]) == player && ((compare == values[1] && compare == values[2]) || (compare == values[3] && compare == values[6])))
+                // 第二行或第二列一致或对角线一致
+                || ((compare = values[4]) == player && ((compare == values[1] && compare == values[7]) || (compare == values[3] && compare == values[5]) || (compare == values[0] && compare == values[8]) || (compare == values[2] && compare == values[6])))
+                // 第三行或第三列一致
+                || ((compare = values[8]) == player && ((compare == values[2] && compare == values[5]) || (compare == values[6] && compare == values[7])));
     }
 
     public static void main(String[] args) {
