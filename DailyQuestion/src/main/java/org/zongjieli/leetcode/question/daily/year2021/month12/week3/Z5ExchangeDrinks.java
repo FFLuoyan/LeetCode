@@ -14,6 +14,13 @@ package org.zongjieli.leetcode.question.daily.year2021.month12.week3;
  */
 public class Z5ExchangeDrinks {
     public int numWaterBottles(int numBottles, int numExchange) {
-        return  numBottles * numExchange / (numExchange - 1) + ( numBottles * numExchange % (numExchange - 1) == 0 ? -1 : 0);
+        /*
+            开始有 n 个酒瓶,每换一次酒,就会损失 a 个酒瓶,但是会得到 1 个酒瓶
+            就相当于每换一次酒,损失了 (a - 1) 个酒瓶
+            计算 n / (a - 1) 即可得到可换酒的总次数
+            但是如果正好整除,则说明最后一次兑换时只有 a - 1 个酒瓶
+            需要把这瓶酒删掉
+         */
+        return  numBottles + numBottles / (numExchange - 1) + (numBottles % (numExchange - 1) == 0 ? -1 : 0);
     }
 }
