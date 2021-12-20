@@ -28,11 +28,10 @@ public class Z7FindJudge {
         int[] trustB = new int[n + 1];
         for (int[] t : trust) {
             aTrust[t[0]] = true;
-            trustB[t[1]] += t[0];
+            trustB[t[1]]++;
         }
-        int all = n * (n + 1) / 2;
         for (int i = 1 ; i <= n ; i++){
-            if (!aTrust[i] && trustB[i] == all - i){
+            if (!aTrust[i] && trustB[i] == n - 1){
                 return i;
             }
         }
