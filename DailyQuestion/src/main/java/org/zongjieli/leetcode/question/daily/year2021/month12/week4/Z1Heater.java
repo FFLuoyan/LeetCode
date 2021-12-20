@@ -1,6 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2021.month12.week4;
 
-import java.util.TreeSet;
+import java.util.Arrays;
 
 /**
  * 冬季已经来临,设计一个有固定加热半径的供暖器向所有房屋供暖
@@ -19,18 +19,37 @@ import java.util.TreeSet;
  */
 public class Z1Heater {
     public int findRadius(int[] houses, int[] heaters) {
-        TreeSet<Integer> positions = new TreeSet<>();
-        for (int heater : heaters) {
-            positions.add(heater);
+        Arrays.sort(houses);
+        Arrays.sort(heaters);
+        int houseLength = houses.length;
+        int heaterLength = heaters.length;
+        if (heaters.length == 1){
+            int right = houses[houseLength - 1] - heaters[0];
+            int left = heaters[0] - houses[0];
+            return right < 0 ? left : left < 0 ? right : Math.max(right, left);
         }
         int result = 0;
-        for (int house : houses) {
-            Integer min = positions.floor(house);
-            Integer max = positions.ceiling(house);
-            min = min == null ? Integer.MAX_VALUE : house - min;
-            max = max == null ? Integer.MAX_VALUE : max - house;
-            result = Math.max(result, Math.min(min, max));
+        int startIndex = 0;
+        int endIndex = houseLength - 1;
+        int value;
+        if ((value = heaters[0] - houses[0]) > 0){
+            result = value;
+            while (++startIndex < houseLength && heaters[0] - houses[startIndex] > 0){}
         }
+
+        if ((value = houses[endIndex] - heaters[heaterLength - 1]) > 0){
+            result = Math.max(result, value);
+            while (--endIndex >= 0 && houses[endIndex] - heaters[heaterLength - 1] > 0){}
+        }
+
+        int heaterIndex = 0;
+        for (int i = startIndex ; i <= endIndex ; i++){
+            while (heaters[heaterIndex + 1] < houses[i]){
+                ++heaterIndex;
+            }
+            result = Math.max(result, Math.min(heaters[heaterIndex + 1] - houses[i], houses[i] - heaters[heaterIndex]));
+        }
+
         return result;
     }
 
@@ -38,5 +57,9 @@ public class Z1Heater {
         Z1Heater test = new Z1Heater();
         // 1
         System.out.println(test.findRadius(new int[]{1,2,3,4}, new int[]{1,4}));
+        // 1
+        System.out.println(test.findRadius(new int[]{1,2,3}, new int[]{2}));
+        // 3
+        System.out.println(test.findRadius(new int[]{1,5}, new int[]{2}));
     }
 }
