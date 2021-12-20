@@ -24,22 +24,17 @@ package org.zongjieli.leetcode.question.daily.year2021.month12.week3;
  */
 public class Z7FindJudge {
     public int findJudge(int n, int[][] trust) {
-        boolean[][] aTrustB = new boolean[n + 1][n + 1];
+        boolean[] aTrust = new boolean[n + 1];
+        int[] trustB = new int[n + 1];
         for (int[] t : trust) {
-            aTrustB[t[0]][t[1]] = true;
+            aTrust[t[0]] = true;
+            trustB[t[1]] += t[0];
         }
-        a: for (int i = 1 ; i <= n ; i++) {
-            for (boolean b : aTrustB[i]) {
-                if (b){
-                    continue a;
-                }
+        int all = n * (n + 1) / 2;
+        for (int i = 1 ; i <= n ; i++){
+            if (!aTrust[i] && trustB[i] == all - i){
+                return i;
             }
-            for (int j = 1 ; j <= n ; j++){
-                if (j != i && !aTrustB[j][i]){
-                    continue a;
-                }
-            }
-            return i;
         }
         return -1;
     }
