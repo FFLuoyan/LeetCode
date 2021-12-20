@@ -18,38 +18,21 @@ import java.util.Arrays;
  * @version  1.0
  */
 public class Z1Heater {
-    public int findRadius(int[] houses, int[] heaters) {
+    private int findRadius(int[] houses, int[] heaters) {
         Arrays.sort(houses);
         Arrays.sort(heaters);
-        int houseLength = houses.length;
-        int heaterLength = heaters.length;
-        if (heaters.length == 1){
-            int right = houses[houseLength - 1] - heaters[0];
-            int left = heaters[0] - houses[0];
-            return right < 0 ? left : left < 0 ? right : Math.max(right, left);
-        }
+
         int result = 0;
-        int startIndex = 0;
-        int endIndex = houseLength - 1;
-        int value;
-        if ((value = heaters[0] - houses[0]) > 0){
-            result = value;
-            while (++startIndex < houseLength && heaters[0] - houses[startIndex] > 0){}
-        }
-
-        if ((value = houses[endIndex] - heaters[heaterLength - 1]) > 0){
-            result = Math.max(result, value);
-            while (--endIndex >= 0 && houses[endIndex] - heaters[heaterLength - 1] > 0){}
-        }
-
         int heaterIndex = 0;
-        for (int i = startIndex ; i <= endIndex ; i++){
-            while (heaters[heaterIndex + 1] < houses[i]){
-                ++heaterIndex;
+        int temp;
+        for (int house : houses) {
+            int current = Math.abs(heaters[heaterIndex] - house);
+            while (heaterIndex < heaters.length - 1 && (temp = Math.abs(heaters[heaterIndex + 1] - house)) <= current) {
+                current = temp;
+                heaterIndex++;
             }
-            result = Math.max(result, Math.min(heaters[heaterIndex + 1] - houses[i], houses[i] - heaters[heaterIndex]));
+            result = Math.max(current, result);
         }
-
         return result;
     }
 
@@ -61,5 +44,7 @@ public class Z1Heater {
         System.out.println(test.findRadius(new int[]{1,2,3}, new int[]{2}));
         // 3
         System.out.println(test.findRadius(new int[]{1,5}, new int[]{2}));
+        // 0
+        System.out.println(test.findRadius(new int[]{1,2,3,9,10,1000,17}, new int[]{1,2,3,9,10,50,1000,1001,17}));
     }
 }
