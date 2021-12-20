@@ -25,67 +25,71 @@ public class Z3MaxSubarraySum {
         for (int i = k ; i < nums.length ; i++){
             value[i - k + 1] = value[i - k] + nums[i] - nums[i - k];
         }
-        int allMax = value[0] + value[k] + value[2 * k];
-        int [] result = new int[]{0, k, 2 * k};
-        /*
-            i 取 0
-            j 取 k
-            查找 l 的最大值,并记录下标 index2
-            在 [k,index2 - k] 中查找 j 的最大值
-            记录此时 j + l 的最大值及下标 index1,index2
-            遍历 j,从 index2 - k 开始,找到一个比 j 更大的下标 index1
-            查找 l 的最大值
-         */
-        for (int i = 0 ; i < value.length - 2 * k; ){
 
-            int index2 = findMax(value,i + 2 * k, value.length - 1);
-            int index1 = findMax(value, i + k, index2 - k);
+        int[] rightMax = new int[value.length];
+        rightMax[value.length - 1] = value.length - 1;
+        for (int i = value.length - 2 ; i >= 2 * k ; i--){
+            rightMax[i] = value[i] >= value[rightMax[i + 1]] ? i : rightMax[i + 1];
+        }
 
-            int[] max = new int[]{index1, index2, value[index1] + value[index2]};
+        int[] leftMax = new int[value.length];
+        for (int i = 1 ; i < value.length - 2 * k ; i++){
+            leftMax[i] = value[i] > value[leftMax[i - 1]] ? i : leftMax[i - 1];
+        }
 
-            for (int j = index2 - k + 1 ; j < value.length - k ; j++){
-                if (value[j] > value[max[0]]){
-                    int index = findMax(value, j + k, value.length - 1);
-                    j = findMax(value, j, index - k);
-                    int tempMax = value[j] + value[index];
-                    if (tempMax >= max[2]){
-                        max[0] = j;
-                        max[1] = index;
-                        max[2] = tempMax;
-                    }
+        int[] result = new int[]{0, k, 2 * k};
+        int max = value[0] + value[k] + value[2 * k];
+
+        int temp;
+        int index1;
+        int index2;
+        int index3 = 2 * k - 1;
+        while (index3 + 1 <= value.length - 1){
+            index3 = rightMax[index3 + 1];
+            int[] index = findMax(value, k, index3 - k);
+
+            for (int i = index[0] ; i < index.length ; i++){
+                index2 = index[i];
+                index1 = leftMax[index2 - k];
+                if ((temp = value[index1] + value[index2] + value[index3]) > max){
+                    max = temp;
+                    result[0] = index1;
+                    result[1] = index2;
+                    result[2] = index3;
                 }
             }
-
-            int iTemp = findMax(value, 0, max[0] - k);
-            if (value[iTemp] + max[2] > allMax){
-                result[0] = iTemp;
-                result[1] = max[0];
-                result[2] = max[1];
-                allMax = value[iTemp] + max[2];
-            }
-            i = max[0] - k + 1;
         }
 
         return result;
     }
 
-    public int findMax(int[] array, int startIndex, int endIndex){
-        int index = startIndex;
-        for (int i = startIndex + 1; i <= endIndex; i++){
-            index = array[i] > array[index] ? i : index;
+    public int[] findMax(int[] value, int startIndex, int endIndex){
+        int[] indexes = new int[value.length];
+        indexes[0] = indexes.length - 1;
+        indexes[indexes[0]] = endIndex;
+        int max = value[endIndex];
+        for (int i = endIndex - 1 ; i >= startIndex ; i--){
+            if (value[i] >= max){
+                indexes[--indexes[0]] = i;
+                max = value[i];
+            }
         }
-        return index;
+        return indexes;
     }
 
     public static void main(String[] args) {
         Z3MaxSubarraySum test = new Z3MaxSubarraySum();
+        // 1,4,7
+        System.out.println(Arrays.toString(test.maxSumOfThreeSubarrays(new int[]{7,13,20,19,19,2,10,1,1,19}, 3)));
         // 0,3,5
         System.out.println(Arrays.toString(test.maxSumOfThreeSubarrays(new int[]{1,2,1,2,6,7,5,1}, 2)));
         // 0,2,4
         System.out.println(Arrays.toString(test.maxSumOfThreeSubarrays(new int[]{1,2,1,2,1,2,1,2,1}, 2)));
         // 0,1,2
         System.out.println(Arrays.toString(test.maxSumOfThreeSubarrays(new int[]{1,1,1,1,1,1}, 1)));
-        // 1,4,7
-        System.out.println(Arrays.toString(test.maxSumOfThreeSubarrays(new int[]{7,13,20,19,19,2,10,1,1,19}, 3)));
+        // 38,58,64
+        System.out.println(Arrays.toString(test.maxSumOfThreeSubarrays(new int[]{13,10,7,7,15,7,15,11,10,9,7,3,17,19,13,7,18,17,4,4,17,20,5,7,17,9,6,7,13,8,5,10,13,20,16,13,14,11,20,14,16,17,16,16,4,2,11,5,17,14,2,3,18,9,16,3,1,9,20,13,17,15,10,8,15,17,19,9,12,14,5,20,11,2,9,10,6,5,8,9,4,19,13,16,1,6,14,5,8,15,16,6,1,9,4,18,16,1,8,5}, 3)));
+        // 6,41,75
+        System.out.println(Arrays.toString(test.maxSumOfThreeSubarrays(new int[]{10,5,9,4,14,10,16,9,17,19,2,11,15,10,17,20,3,14,19,17,14,20,10,17,9,14,18,3,7,5,7,20,11,1,13,6,3,11,18,3,5,6,14,10,10,4,12,7,5,7,5,15,14,20,13,15,6,20,13,6,9,15,2,6,16,13,2,9,14,3,6,2,10,9,7,10,5,3,14,14,6,16,1,19,12,5,16,9,2,16,11,19,9,2,17,19,6,5,6,6}, 21)));
     }
 }
