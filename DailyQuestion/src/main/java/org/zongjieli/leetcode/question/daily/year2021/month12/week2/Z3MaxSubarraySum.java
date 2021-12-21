@@ -37,44 +37,24 @@ public class Z3MaxSubarraySum {
             leftMax[i] = value[i] > value[leftMax[i - 1]] ? i : leftMax[i - 1];
         }
 
-        int[] result = new int[]{0, k, 2 * k};
-        int max = value[0] + value[k] + value[2 * k];
+        int maxIndex1 = 0;
+        int maxIndex2 = k;
+        int maxIndex3 = 2 * k;
+        int max = 0;
 
-        int temp;
-        int index1;
-        int index2;
-        int index3 = 2 * k - 1;
-        while (index3 + 1 <= value.length - 1){
-            index3 = rightMax[index3 + 1];
-            int[] index = findMax(value, k, index3 - k);
-
-            for (int i = index[0] ; i < index.length ; i++){
-                index2 = index[i];
-                index1 = leftMax[index2 - k];
-                if ((temp = value[index1] + value[index2] + value[index3]) > max){
-                    max = temp;
-                    result[0] = index1;
-                    result[1] = index2;
-                    result[2] = index3;
-                }
+        int index1,index3,temp;
+        for (int index2 = k ; index2 < value.length - k ; index2++){
+            index1 = leftMax[index2 - k];
+            index3 = rightMax[index2 + k];
+            if ((temp = value[index1] + value[index2] + value[index3]) > max){
+                max = temp;
+                maxIndex1 = index1;
+                maxIndex2 = index2;
+                maxIndex3 = index3;
             }
         }
 
-        return result;
-    }
-
-    public int[] findMax(int[] value, int startIndex, int endIndex){
-        int[] indexes = new int[value.length];
-        indexes[0] = indexes.length - 1;
-        indexes[indexes[0]] = endIndex;
-        int max = value[endIndex];
-        for (int i = endIndex - 1 ; i >= startIndex ; i--){
-            if (value[i] >= max){
-                indexes[--indexes[0]] = i;
-                max = value[i];
-            }
-        }
-        return indexes;
+        return new int[]{maxIndex1, maxIndex2, maxIndex3};
     }
 
     public static void main(String[] args) {
