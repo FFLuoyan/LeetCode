@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.competion.singleweekly.order271;
+package org.zongjieli.leetcode.competion.singleweekly.order270;
 /**
  * 总计有 n 个环,环的颜色可以是红、绿、蓝中的一种
  * 这些环分布穿在 10 根编号为 0 到 9 的杆上
@@ -22,7 +22,7 @@ package org.zongjieli.leetcode.competion.singleweekly.order271;
  * @date     2021/12/12
  * @version  1.0
  */
-public class RingAndRod {
+public class O271N1RingAndRod {
     public int countPoints(String rings) {
         boolean[][] exists = new boolean[10][3];
         for (int i = 0 ; i < rings.length() ; i+= 2){
@@ -39,7 +39,7 @@ public class RingAndRod {
     }
 
     public static void main(String[] args) {
-        RingAndRod test = new RingAndRod();
+        O271N1RingAndRod test = new O271N1RingAndRod();
         System.out.println(test.countPoints("B0B6G0R6R0R6G9"));
     }
 }

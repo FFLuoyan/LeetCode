@@ -17,7 +17,7 @@ import org.zongjieli.leetcode.base.ListNode;
  * @date     2021/12/5
  * @version  1.0
  */
-public class DeleteNode {
+public class O270N2DeleteNode {
     public ListNode deleteMiddle(ListNode head) {
         ListNode returnNext = new ListNode(0, head);
         ListNode deleteNext = returnNext;
@@ -31,6 +31,6 @@ public class DeleteNode {
     }
 
     public static void main(String[] args) {
-        DeleteNode test = new DeleteNode();
+        O270N2DeleteNode test = new O270N2DeleteNode();
     }
 }

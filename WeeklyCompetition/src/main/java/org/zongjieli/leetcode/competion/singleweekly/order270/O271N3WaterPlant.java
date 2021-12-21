@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.competion.singleweekly.order271;
+package org.zongjieli.leetcode.competion.singleweekly.order270;
 /**
  * Alice 和 Bob 打算给花园里的 n 株植物浇水
  * 植物排成一行,从左到右进行标记,编号从 0 到 n - 1
@@ -27,7 +27,7 @@ package org.zongjieli.leetcode.competion.singleweekly.order271;
  * @date     2021/12/12
  * @version  1.0
  */
-public class WaterPlant {
+public class O271N3WaterPlant {
     public int minimumRefill(int[] plants, int capacityA, int capacityB) {
         int aIndex = 0;
         int bIndex = plants.length - 1;
