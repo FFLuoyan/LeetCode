@@ -15,15 +15,28 @@ package org.zongjieli.leetcode.question.daily.year2021.month12.week4;
  */
 public class Z3SubString {
     public int repeatedStringMatch(String a, String b) {
-        int multiple = (b.length() - 1) / a.length() + 1;
-        StringBuilder aDuplicate = new StringBuilder(a.length() * multiple);
-        for (int i = 0 ; i < multiple ; i++){
-            aDuplicate.append(a);
+        byte[] aBytes = a.getBytes();
+        byte[] bBytes = b.getBytes();
+
+        // b 的起点在 a 的下标位置
+        for (int bStart = 0 ; bStart < aBytes.length ; bStart++){
+            int bIndex = 0;
+            int aIndex = bStart;
+            int result = 1;
+            for (; bIndex < bBytes.length ; aIndex++, bIndex++){
+                if (aIndex == aBytes.length){
+                    aIndex = 0;
+                    result++;
+                }
+                if (aBytes[aIndex] != bBytes[bIndex]){
+                    break;
+                }
+            }
+            if (bIndex == bBytes.length){
+                return result;
+            }
+
         }
-        if (aDuplicate.toString().contains(b)){
-            return multiple;
-        }
-        aDuplicate.append(a);
-        return aDuplicate.toString().contains(b) ? multiple + 1 : -1;
+        return -1;
     }
 }
