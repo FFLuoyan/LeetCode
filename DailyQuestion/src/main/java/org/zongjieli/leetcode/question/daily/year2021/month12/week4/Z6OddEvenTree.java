@@ -20,28 +20,32 @@ import java.util.LinkedList;
  */
 public class Z6OddEvenTree {
     public boolean isEvenOddTree(TreeNode root) {
-        // 是否为奇数(偶数层为奇数)
+        TreeNode[] nodeSave = new TreeNode[100001];
+        nodeSave[0] = root;
+
+        int nextSave = 1;
+        int nextStart = 0;
         boolean isOdd = true;
-        LinkedList<TreeNode> nodeSave = new LinkedList<>();
-        nodeSave.add(root);
         int beforeValue, currentValue;
-        while (!nodeSave.isEmpty()){
+        while (nextStart < nextSave){
+            int temp = nextSave;
             beforeValue = isOdd ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-            for (int i = nodeSave.size() ; i > 0 ; i--){
-                TreeNode current = nodeSave.pollFirst();
+            for (int i = nextStart ; i < temp ; i++){
+                TreeNode current = nodeSave[i];
                 currentValue = current.val;
                 if (isOdd ? currentValue <= beforeValue || (currentValue & 1) == 0 : currentValue >= beforeValue || (currentValue & 1) == 1){
                     return false;
                 }
                 if (current.left != null){
-                    nodeSave.addLast(current.left);
+                    nodeSave[nextSave++] = current.left;
                 }
                 if (current.right != null){
-                    nodeSave.addLast(current.right);
+                    nodeSave[nextSave++] = current.right;
                 }
                 beforeValue = current.val;
             }
             isOdd = !isOdd;
+            nextStart = temp;
         }
         return true;
     }
