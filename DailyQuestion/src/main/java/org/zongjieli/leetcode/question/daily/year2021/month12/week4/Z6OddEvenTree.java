@@ -26,42 +26,22 @@ public class Z6OddEvenTree {
         nodeSave.add(root);
         int currentLength = nodeSave.size();
         while (currentLength != 0){
-            int tempLength = currentLength - 1;
-            TreeNode before = nodeSave.pollFirst();
-            if (before.val % 2 == 1 != isOdd){
-                return false;
-            }
-            if (before.left != null){
-                nodeSave.addLast(before.left);
-            }
-            if (before.right != null){
-                nodeSave.addLast(before.right);
-            }
-
+            int tempLength = currentLength;
+            int beforeValue = isOdd ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+            int currentValue;
             while (--tempLength >= 0){
                 TreeNode current = nodeSave.pollFirst();
-                if (isOdd){
-                    if (current.val % 2 == 0){
-                        return false;
-                    }
-                    if (current.val <= before.val){
-                        return false;
-                    }
-                } else {
-                    if (current.val % 2 != 0){
-                        return false;
-                    }
-                    if (current.val >= before.val){
-                        return false;
-                    }
+                currentValue = current.val;
+                if (isOdd ? currentValue <= beforeValue || (currentValue & 1) == 0 : currentValue >= beforeValue || (currentValue & 1) == 1){
+                    return false;
                 }
-                before = current;
-                if (before.left != null){
-                    nodeSave.addLast(before.left);
+                if (current.left != null){
+                    nodeSave.addLast(current.left);
                 }
-                if (before.right != null){
-                    nodeSave.addLast(before.right);
+                if (current.right != null){
+                    nodeSave.addLast(current.right);
                 }
+                beforeValue = current.val;
             }
             isOdd = !isOdd;
             currentLength = nodeSave.size();
