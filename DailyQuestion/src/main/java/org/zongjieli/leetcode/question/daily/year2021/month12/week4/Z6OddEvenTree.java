@@ -24,12 +24,10 @@ public class Z6OddEvenTree {
         boolean isOdd = true;
         LinkedList<TreeNode> nodeSave = new LinkedList<>();
         nodeSave.add(root);
-        int currentLength = nodeSave.size();
-        while (currentLength != 0){
-            int tempLength = currentLength;
-            int beforeValue = isOdd ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-            int currentValue;
-            while (--tempLength >= 0){
+        int beforeValue, currentValue;
+        while (!nodeSave.isEmpty()){
+            beforeValue = isOdd ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+            for (int i = nodeSave.size() ; i > 0 ; i--){
                 TreeNode current = nodeSave.pollFirst();
                 currentValue = current.val;
                 if (isOdd ? currentValue <= beforeValue || (currentValue & 1) == 0 : currentValue >= beforeValue || (currentValue & 1) == 1){
@@ -44,7 +42,6 @@ public class Z6OddEvenTree {
                 beforeValue = current.val;
             }
             isOdd = !isOdd;
-            currentLength = nodeSave.size();
         }
         return true;
     }
