@@ -2,8 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2021.month12.week4;
 
 import org.zongjieli.leetcode.base.TreeNode;
 
-import java.util.LinkedList;
-
 /**
  * 如果一棵二叉树满足下述几个条件,则可以称为奇偶树:
  *  二叉树根节点所在层下标为 0,根的子节点所在层下标为 1,根的孙节点所在层下标为 2,依此类推
@@ -21,31 +19,20 @@ import java.util.LinkedList;
 public class Z6OddEvenTree {
     public boolean isEvenOddTree(TreeNode root) {
         TreeNode[] nodeSave = new TreeNode[100001];
-        nodeSave[0] = root;
-
-        int nextSave = 1;
-        int nextStart = 0;
         boolean isOdd = true;
-        int beforeValue, currentValue;
-        while (nextStart < nextSave){
-            int temp = nextSave;
-            beforeValue = isOdd ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-            for (int i = nextStart ; i < temp ; i++){
-                TreeNode current = nodeSave[i];
-                currentValue = current.val;
-                if (isOdd ? currentValue <= beforeValue || (currentValue & 1) == 0 : currentValue >= beforeValue || (currentValue & 1) == 1){
+        for (int nextSave = 1, nextStart = 0, currentValue, currentEnd = nextSave ; nextStart < nextSave ; isOdd = !isOdd, nextStart = currentEnd, currentEnd = nextSave){
+            for (int i = nextStart, beforeValue = isOdd ? Integer.MIN_VALUE : Integer.MAX_VALUE; i < currentEnd ; beforeValue = root.val, root = nodeSave[++i]){
+                currentValue = root.val;
+                if (isOdd ? (currentValue <= beforeValue || (currentValue & 1) == 0) : currentValue >= beforeValue || (currentValue & 1) == 1){
                     return false;
                 }
-                if (current.left != null){
-                    nodeSave[nextSave++] = current.left;
+                if (root.left != null){
+                    nodeSave[nextSave++] = root.left;
                 }
-                if (current.right != null){
-                    nodeSave[nextSave++] = current.right;
+                if (root.right != null){
+                    nodeSave[nextSave++] = root.right;
                 }
-                beforeValue = current.val;
             }
-            isOdd = !isOdd;
-            nextStart = temp;
         }
         return true;
     }
@@ -54,5 +41,7 @@ public class Z6OddEvenTree {
         Z6OddEvenTree test = new Z6OddEvenTree();
         // false
         System.out.println(test.isEvenOddTree(new TreeNode(2, new TreeNode(12, new TreeNode(5, new TreeNode(18), new TreeNode(16)), new TreeNode(9)), new TreeNode(8))));
+        // true
+        System.out.println(test.isEvenOddTree(new TreeNode(1, new TreeNode(10, new TreeNode(3, new TreeNode(12), new TreeNode(8)), null), new TreeNode(4, new TreeNode(7, new TreeNode(6), null), new TreeNode(9, null, new TreeNode(2))))));
     }
 }
