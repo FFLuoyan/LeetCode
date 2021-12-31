@@ -15,23 +15,14 @@ import java.util.Set;
  */
 public class Z5PerfectNumber {
     public boolean checkPerfectNumber(int num) {
-        if (num == 1){
-            return false;
-        }
-        Set<Integer> factors = new HashSet<>();
-        factors.add(1);
+        int sum = 1;
         int max = (int) Math.sqrt(num);
         for (int i = 2 ; i <= max ; i++){
             if (num % i == 0){
-                factors.add(i);
-                factors.add(num / i);
+                sum += (i + num / i);
             }
         }
-        int sum = 0;
-        for (Integer factor : factors) {
-            sum += factor;
-        }
-        return sum == num;
+        return num != 1 && sum == num;
     }
 
     public static void main(String[] args) {
