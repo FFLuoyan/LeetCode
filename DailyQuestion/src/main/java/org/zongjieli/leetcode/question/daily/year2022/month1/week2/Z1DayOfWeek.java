@@ -17,22 +17,20 @@ package org.zongjieli.leetcode.question.daily.year2022.month1.week2;
 public class Z1DayOfWeek {
 
     private String[] days = new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-    private int[] monthDays = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    private int[] yearBase = new int[]{4, 5, 0, 1, 2, 3, 5, 6, 0, 1, 3, 4, 5, 6, 1, 2, 3, 4, 6, 0, 1, 2, 4, 5, 6, 0, 2, 3, 4, 5, 0, 1, 2, 3, 5, 6, 0, 1, 3, 4, 5, 6, 1, 2, 3, 4, 6, 0, 1, 2, 4, 5, 6, 0, 2, 3, 4, 5, 0, 1, 2, 3, 5, 6, 0, 1, 3, 4, 5, 6, 1, 2, 3, 4, 6, 0, 1, 2, 4, 5, 6, 0, 2, 3, 4, 5, 0, 1, 2, 3, 5, 6, 0, 1, 3, 4, 5, 6, 1, 2, 3, 4, 6, 0, 1, 2, 4, 5, 6, 0, 2, 3, 4, 5, 0, 1, 2, 3, 5, 6, 0, 1, 3, 4, 5, 6, 1, 2, 3, 4};
+
+    private int[] monthBase = new int[]{0, 0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};
 
     public String dayOfTheWeek(int day, int month, int year) {
-        int dayOfWeek = 5;
-        for (int i = 1971 ; i < year ; i++){
-            dayOfWeek += (i % 4 == 0 ? 2 : 1);
+        int dayBase = yearBase[year - 1971] + day;
+        if (month > 1){
+            dayBase += monthBase[month];
+            if (month > 2 && (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))){
+                dayBase++;
+            }
         }
-        for (int i = 0 ; i < month - 1; i++){
-            dayOfWeek += monthDays[i];
-        }
-        if ((year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)) && month > 2){
-            dayOfWeek++;
-        }
-        dayOfWeek += day;
-        dayOfWeek--;
-        return days[dayOfWeek % 7];
+        return days[dayBase % 7];
     }
 
     public static void main(String[] args) {
