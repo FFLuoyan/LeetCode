@@ -20,11 +20,12 @@ public class Z3ReplaceQuestionMark {
         char[] result = new char[s.length() + 2];
         for (int i = 0 ; i < s.length() ; i++){
             result[i + 1] = s.charAt(i);
+            result[i + 1] = result[i + 1] == '?' ? result[i] == 'a' ? 'b' : 'a' : result[i + 1];
         }
         for (int i = 1 ; i < result.length - 1 ; i++){
-            result[i] = result[i] == '?' ? result[i - 1] == 'a' ? result[i + 1] == 'b' ? 'c' : 'b' : result[i + 1] == 'a' ? result[i - 1] == 'b' ? 'c' : 'b' : 'a' : result[i];
+            result[i] = result[i] == result[i + 1] ? result[i - 1] == 'c' ? 'd' : 'c' : result[i];
         }
-        return new String(result, 1 , s.length());
+        return new String(result, 1, s.length());
     }
 
 }
