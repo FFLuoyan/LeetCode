@@ -28,16 +28,16 @@ public class Z1MaxDuration {
     public char slowestKey(int[] releaseTimes, String keysPressed) {
         char result = keysPressed.charAt(0);
         int resultTime = releaseTimes[0];
-        int time;
+        char current;
+        int currentTime;
         for (int i = 1 ; i < releaseTimes.length ; i++){
-            time = releaseTimes[i] - releaseTimes[i - 1];
-            if (time > resultTime){
-                resultTime = time;
-                result = keysPressed.charAt(i);
-            } else if (time == resultTime){
-                char current = keysPressed.charAt(i);
-                result = current > result ? current : result;
+            currentTime = releaseTimes[i] - releaseTimes[i - 1];
+            if (currentTime < resultTime){
+                continue;
             }
+            current = keysPressed.charAt(i);
+            result = currentTime > resultTime ? current : current > result ? current : result;
+            resultTime = currentTime;
         }
         return result;
     }
