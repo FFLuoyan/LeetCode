@@ -18,26 +18,23 @@ import java.util.*;
  */
 public class Z5FindSumMin {
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        TreeMap<Integer, LinkedList<List<Integer>>> pairMap = new TreeMap<>();
+        TreeMap<Integer, LinkedList<int[]>> pairMap = new TreeMap<>();
         for (int i = 0; i < nums1.length; i++) {
             int sum = nums1[i] + nums2[0];
-            pairMap.computeIfAbsent(sum, key -> new LinkedList<>()).add(Arrays.asList(i, 0));
+            pairMap.computeIfAbsent(sum, key -> new LinkedList<>()).add(new int[]{i, 0});
         }
         List<List<Integer>> result = new ArrayList<>(k);
         while (result.size() < k && !pairMap.isEmpty()){
-            LinkedList<List<Integer>> first = pairMap.firstEntry().getValue();
-            List<Integer> pair = first.pollFirst();
-            int pairFirst = pair.get(0);
-            int pairSecond = pair.get(1);
-            result.add(Arrays.asList(nums1[pairFirst], nums2[pairSecond]));
+            LinkedList<int[]> first = pairMap.firstEntry().getValue();
+            int[] pair = first.pollFirst();
+            result.add(Arrays.asList(nums1[pair[0]], nums2[pair[1]]));
             if (first.isEmpty()){
                 pairMap.pollFirstEntry();
             }
 
-            if (++pairSecond < nums2.length){
-                pairMap.computeIfAbsent(nums1[pairFirst] + nums2[pairSecond], key -> new LinkedList<>()).add(Arrays.asList(pairFirst, pairSecond));
+            if (++pair[1] < nums2.length){
+                pairMap.computeIfAbsent(nums1[pair[0]] + nums2[pair[1]], key -> new LinkedList<>()).add(pair);
             }
-
         }
         return result;
     }
