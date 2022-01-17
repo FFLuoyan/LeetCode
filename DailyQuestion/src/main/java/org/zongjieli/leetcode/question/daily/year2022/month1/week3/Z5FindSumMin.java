@@ -1,0 +1,51 @@
+package org.zongjieli.leetcode.question.daily.year2022.month1.week3;
+
+import java.util.*;
+
+/**
+ * 给定两个以升序排列的整数数组 nums1 和 nums2,以及一个整数 k
+ * 定义一对值 (u,v),其中第一个元素来自 nums1,第二个元素来自 nums2
+ * 请找到和最小的 k 个数对 (u1,v1),(u2,v2),...,(uk,vk)
+ *
+ * 1 <= nums1.length, nums2.length <= 10^4
+ * -10^9 <= nums1[i], nums2[i] <= 10^9
+ * nums1, nums2 均为升序排列
+ * 1 <= k <= 1000
+ *
+ * @author   Li.zongjie
+ * @date     2022/1/14
+ * @version  1.0
+ */
+public class Z5FindSumMin {
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        int[] oneToTwo = new int[nums1.length];
+        List<List<Integer>> result = new ArrayList<>(k);
+        while (result.size() < k){
+            int first = 0;
+            while (oneToTwo[first] == nums2.length && ++first < nums1.length){ }
+            if (first == nums1.length){
+                break;
+            }
+
+            int min = first;
+            for (int i = first + 1 ; i < nums1.length ; i++){
+                if (nums1[i] + nums2[oneToTwo[i]] < nums1[min] + nums2[oneToTwo[min]]){
+                    min = i;
+                }
+            }
+
+            result.add(Arrays.asList(nums1[min], nums2[oneToTwo[min]++]));
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Z5FindSumMin test = new Z5FindSumMin();
+        // [1,2],[1,4],[1,6]
+        System.out.println(test.kSmallestPairs(new int[]{1,7,11}, new int[]{2,4,6}, 3));
+        // [1,1],[1,1]
+        System.out.println(test.kSmallestPairs(new int[]{1,1,2}, new int[]{1,2,3}, 2));
+        // [1,1],[1,1]
+        System.out.println(test.kSmallestPairs(new int[]{1,1}, new int[]{1}, 2));
+    }
+}
