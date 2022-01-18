@@ -19,11 +19,12 @@ import java.util.*;
 public class Z5FindSumMin {
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
         int[][] pairArray = new int[nums1.length][3];
+        int[] pair;
         for (int i = 0; i < nums1.length; i++) {
-            pairArray[i] = new int[]{i, 0, nums1[i] + nums2[0]};
+            (pair = pairArray[i])[0] = i;
+            pair[2] = nums1[i] + nums2[0];
         }
         List<List<Integer>> result = new ArrayList<>(k);
-        int[] pair;
         while (result.size() < k && (pair = pairArray[0])[2] != Integer.MAX_VALUE){
             result.add(Arrays.asList(nums1[pair[0]], nums2[pair[1]]));
             pair[2] = ++pair[1] == nums2.length ? Integer.MAX_VALUE : nums1[pair[0]] + nums2[pair[1]];
