@@ -17,20 +17,15 @@ import java.util.List;
 public class Z2MinTimeRange {
     public int findMinDifference(List<String> timePoints) {
         boolean[] timeExists = new boolean[1440];
+        int base = '0' * 671;
         for (String timePoint : timePoints) {
-            int time = ((timePoint.charAt(0) - '0') * 10 + timePoint.charAt(1) - '0') * 60 + (timePoint.charAt(3) - '0') * 10 + timePoint.charAt(4) - '0';
-            if (timeExists[time]){
+            if (!(timeExists[timePoint.charAt(0) * 600 + timePoint.charAt(1) * 60 + timePoint.charAt(3) * 10 + timePoint.charAt(4) - base] ^= true)){
                 return 0;
             }
-            timeExists[time] = true;
         }
-        int timeStart = 0;
-        for (int i = 0 ; i < 1440 ; i++){
-            if (timeExists[i]){
-                timeStart = i;
-                break;
-            }
-        }
+        int timeStart = -1;
+        while (!timeExists[++timeStart]){}
+
         int loopStart = timeStart;
         int loop = timeStart;
         int min = 1440;
@@ -46,6 +41,7 @@ public class Z2MinTimeRange {
 
     public static void main(String[] args) {
         Z2MinTimeRange test = new Z2MinTimeRange();
+        // 1
         System.out.println(test.findMinDifference(Arrays.asList("23:59","00:00")));
     }
 }
