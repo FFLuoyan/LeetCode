@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class Z2MinTimeRange {
     public int findMinDifference(List<String> timePoints) {
+        if (timePoints.size() > 1440){
+            return 0;
+        }
         boolean[] timeExists = new boolean[1440];
         int base = '0' * 671;
         for (String timePoint : timePoints) {
