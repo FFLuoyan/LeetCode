@@ -37,6 +37,24 @@ public class Z5FindSumMin {
         return result;
     }
 
+    public List<List<Integer>> kSmallestPairsByQueue(int[] nums1, int[] nums2, int k) {
+        PriorityQueue<int[]> pairList = new PriorityQueue<>(2 * nums1.length, Comparator.comparingInt(a -> a[2]));
+        for (int i = 0; i < nums1.length; i++) {
+            pairList.add(new int[]{i, 0, nums1[i] + nums2[0]});
+        }
+        List<List<Integer>> result = new ArrayList<>(k);
+        while (result.size() < k && pairList.size() > 0){
+            int[] pair = pairList.poll();
+            result.add(Arrays.asList(nums1[pair[0]], nums2[pair[1]]));
+            if (++pair[1] < nums2.length){
+                pair[2] = nums1[pair[0]] + nums2[pair[1]];
+                pairList.add(pair);
+            }
+        }
+        return result;
+    }
+
+
     public static void main(String[] args) {
         Z5FindSumMin test = new Z5FindSumMin();
         // [1,2],[1,4],[1,6]
