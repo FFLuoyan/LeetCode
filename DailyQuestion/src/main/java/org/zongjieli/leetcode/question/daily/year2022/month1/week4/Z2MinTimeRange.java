@@ -16,18 +16,32 @@ import java.util.List;
  */
 public class Z2MinTimeRange {
     public int findMinDifference(List<String> timePoints) {
-        int length = timePoints.size();
-        int[] save = new int[length + 1];
-        save[length] = 24 * 60;
-        for (int i = 0 ; i < timePoints.size() ; i++){
-            String timePoint = timePoints.get(i);
-            save[i] = ((timePoint.charAt(0) - '0') * 10 + timePoint.charAt(1) - '0') * 60 + (timePoint.charAt(3) - '0') * 10 + timePoint.charAt(4) - '0';
-            for (int j = 0 ; j < i ; j++){
-                int sub = Math.abs(save[i] - save[j]);
-                save[length] = Math.min(save[length], Math.min(sub, 1440 - sub));
+        boolean[] timeExists = new boolean[1440];
+        for (String timePoint : timePoints) {
+            int time = ((timePoint.charAt(0) - '0') * 10 + timePoint.charAt(1) - '0') * 60 + (timePoint.charAt(3) - '0') * 10 + timePoint.charAt(4) - '0';
+            if (timeExists[time]){
+                return 0;
+            }
+            timeExists[time] = true;
+        }
+        int timeStart = 0;
+        for (int i = 0 ; i < 1440 ; i++){
+            if (timeExists[i]){
+                timeStart = i;
+                break;
             }
         }
-        return save[length];
+        int loopStart = timeStart;
+        int loop = timeStart;
+        int min = 1440;
+        while (++loop < 1440){
+            if (timeExists[loop]){
+                min = Math.min(min, loop - loopStart);
+                loopStart = loop;
+            }
+        }
+        min = Math.min(min, 1440 - loopStart + timeStart);
+        return min;
     }
 
     public static void main(String[] args) {
