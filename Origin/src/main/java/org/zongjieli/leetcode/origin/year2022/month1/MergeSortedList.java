@@ -2,9 +2,6 @@ package org.zongjieli.leetcode.origin.year2022.month1;
 
 import org.zongjieli.leetcode.base.ListNode;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
 /**
  * 给定一个链表数组,每个链表都已经按升序排列
  * 请将所有链表合并到一个升序链表中,返回合并后的链表
@@ -22,24 +19,45 @@ import java.util.PriorityQueue;
  */
 public class MergeSortedList {
     public ListNode mergeKLists(ListNode[] lists) {
-        PriorityQueue<ListNode> save = new PriorityQueue<>(Comparator.comparingInt(a -> a.val));
-        for (ListNode list : lists) {
-            if (list != null){
-                save.add(list);
+        if (lists.length == 0){
+            return null;
+        }
+        return merge(0, lists.length - 1, lists);
+    }
+
+    public ListNode merge(int left, int right, ListNode[] nodes){
+        if (left == right){
+            return nodes[left];
+        } else if (left == right - 1){
+            return mergeTwo(nodes[left], nodes[right]);
+        } else if (left > right){
+            return null;
+        } else {
+            int middle = (left + right) / 2;
+            return mergeTwo(merge(left, middle, nodes), merge(middle + 1, right, nodes));
+        }
+    }
+
+    public ListNode mergeTwo(ListNode first, ListNode second) {
+        if (first == null){
+            return second;
+        }
+        ListNode resultNext = new ListNode(0, first);
+
+        ListNode next = resultNext;
+        while (second != null){
+            if (next.next.val > second.val){
+                ListNode temp = next.next;
+                next.next = second;
+                second = temp;
+            }
+            next = next.next;
+            if (next.next == null){
+                next.next = second;
+                break;
             }
         }
-        ListNode returnNext = new ListNode(0, null);
-        ListNode next = returnNext;
-        while (!save.isEmpty()){
-            ListNode first = save.poll();
-            next.next = first;
-            next = first;
-            if (next.next != null){
-                save.add(next.next);
-                next.next = null;
-            }
-        }
-        return returnNext.next;
+        return resultNext.next;
     }
 
     public static void main(String[] args) {
