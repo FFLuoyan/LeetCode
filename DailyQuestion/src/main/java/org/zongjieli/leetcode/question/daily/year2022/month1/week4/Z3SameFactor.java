@@ -1,7 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2022.month1.week4;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 给定一个整数数组 nums 和一个整数 k
@@ -19,21 +19,19 @@ import java.util.Set;
  */
 public class Z3SameFactor {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
-        Set<Integer> value = new HashSet<>(nums.length);
+        Map<Integer, Integer> save = new HashMap<>(nums.length);
         for (int i = 0; i < nums.length; i++) {
-            if (i > k){
-                value.remove(nums[i - k - 1]);
-            }
-            if (value.contains(nums[i])){
+            Integer old = save.put(nums[i], i);
+            if (old != null && i - old <= k){
                 return true;
             }
-            value.add(nums[i]);
         }
         return false;
     }
 
     public static void main(String[] args) {
         Z3SameFactor test = new Z3SameFactor();
+        // true
         System.out.println(test.containsNearbyDuplicate(new int[]{1,2,3,1}, 3));
     }
 }
