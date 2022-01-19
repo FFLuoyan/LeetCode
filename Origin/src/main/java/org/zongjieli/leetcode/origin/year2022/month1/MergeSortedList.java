@@ -39,24 +39,19 @@ public class MergeSortedList {
     }
 
     public ListNode mergeTwo(ListNode first, ListNode second) {
-        if (first == null){
-            return second;
-        }
-        ListNode resultNext = new ListNode(0, first);
-
+        ListNode resultNext = new ListNode(0, null);
         ListNode next = resultNext;
-        while (second != null){
-            if (next.next.val > second.val){
-                ListNode temp = next.next;
+        while (second != null && first != null){
+            if (first.val < second.val){
+                next.next = first;
+                first = first.next;
+            } else {
                 next.next = second;
-                second = temp;
+                second = second.next;
             }
             next = next.next;
-            if (next.next == null){
-                next.next = second;
-                break;
-            }
         }
+        next.next = first == null ? second : first;
         return resultNext.next;
     }
 
