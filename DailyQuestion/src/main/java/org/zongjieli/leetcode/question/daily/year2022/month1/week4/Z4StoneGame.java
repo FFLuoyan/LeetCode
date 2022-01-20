@@ -27,10 +27,28 @@ public class Z4StoneGame {
             按照路径 1 (1 2),或者 2 (2 1) 直至某个数字取完,其中括号表示循环
             Alice 要获胜则需要保证从 1 或者 2 开始,取至 1 或 2 还有剩余
             这个剩余必须被 Bob 拿到,否则会造成数字取完 Bob 直接获胜
+
+            如果 count[0] 为偶数
+                Alice 先拿 1 时
+                    1 一个都没有(算先拿 2,不在此计算)
+                    1 只有一个,Bob 则必拿 2,需要 2 至少有一个
+                    1 有两个时,Alice 拿了一个 2 后 Bob 再拿 2,需要 2 至少有两个
+                    1 有三个及以上上,需要 2 >= 1
+                先拿 2 同理
+
+                整理值域得,1,2 均大于 0 即可(即均大于 0 时取少的则必胜)
+
+            count[0] 为奇数时
+                Alice 先拿 1
+                    1 一个都没有(算先拿 2,不在此计算)
+                    1 只有 1 个时,Bob 拿 3,无论有几个 2,Alice 均必输
+                    1 有 2 个时,Bob 再拿 3,后续 Alice 1,Bob 2 循环
+                        要想 Alice 获胜,则需要 Bob 多拿,则 1 需要比 2 多至少 3 个
+                先拿 2 同理
+
+                整理值域得多的比少的要多至少 3 个(取多的则必胜)
          */
-        int sub = count[1] - count[2];
-        return (count[1] != 0 && sub != 1 && sub != 2 && ((count[1] <= count[2] ? 1 : 0) + count[0]) % 2 == 1)
-                || (count[2] != 0 && sub != -1 && sub != -2 && ((count[2] <= count[1] ? 1 : 0) + count[0]) % 2 == 1);
+        return count[0] % 2 == 0 ? (count[1] > 0 && count[2] > 0) : Math.abs(count[1] - count[2]) > 2;
     }
 
     public static void main(String[] args) {
