@@ -1,13 +1,13 @@
-package org.zongjieli.leetcode.question.daily.year2022.month1.week4;
+package org.zongjieli.leetcode.competion.singleweekly.order260;
 
 import org.zongjieli.leetcode.origin.collection.stonegame.StoneGame9;
 
 /**
  * @author   Li.zongjie
- * @date     2022/1/20
+ * @date     2021/10/3
  * @version  1.0
  */
-public class Z4StoneGame {
+public class O260N3StoneGame {
     /**
      * @see StoneGame9
      */

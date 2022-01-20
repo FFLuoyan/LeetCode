@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.base;
 
+import lombok.Data;
+
 /**
  * 单链表
  *
@@ -8,7 +10,7 @@ package org.zongjieli.leetcode.base;
  * @date 2021/3/18
  */
 
-
+@Data
 public class ListNode {
     public int val;
     public ListNode next;
