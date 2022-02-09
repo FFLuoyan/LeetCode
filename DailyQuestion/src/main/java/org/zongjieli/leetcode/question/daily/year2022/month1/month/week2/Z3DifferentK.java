@@ -19,19 +19,19 @@ package org.zongjieli.leetcode.question.daily.year2022.month1.month.week2;
  */
 public class Z3DifferentK {
     public int countKDifference(int[] nums, int k) {
-        int[] count = new int[101];
+        int[] count = new int[101 + 2 * k];
         int result = 0;
         for (int num : nums) {
             count[num]++;
-            int temp = num + k;
-            if (temp <= 100){
-                result += count[temp];
-            }
-            temp = num - k;
-            if (temp > 0){
-                result += count[temp];
-            }
+            result += count[num = (num + k)];
+            count[num + k]++;
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Z3DifferentK test = new Z3DifferentK();
+        // 3
+        System.out.println(test.countKDifference(new int[]{3, 2, 1, 5, 4}, 2));
     }
 }
