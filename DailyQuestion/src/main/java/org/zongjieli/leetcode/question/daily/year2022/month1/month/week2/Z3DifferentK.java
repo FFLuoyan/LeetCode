@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month1.month.week2;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 给定一个整数数组 nums 和一个整数 k
  * 请你返回数对 (i, j) 的数目
@@ -22,12 +19,18 @@ import java.util.Map;
  */
 public class Z3DifferentK {
     public int countKDifference(int[] nums, int k) {
-        Map<Integer, Integer> count = new HashMap<>(nums.length);
+        int[] count = new int[101];
         int result = 0;
         for (int num : nums) {
-            result += count.getOrDefault(num - k, 0);
-            result += count.getOrDefault(num + k, 0);
-            count.merge(num, 1, Integer::sum);
+            count[num]++;
+            int temp = num + k;
+            if (temp <= 100){
+                result += count[temp];
+            }
+            temp = num - k;
+            if (temp > 0){
+                result += count[temp];
+            }
         }
         return result;
     }
