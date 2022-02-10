@@ -27,10 +27,7 @@ public class Z4SimplestFraction {
         return result;
     }
 
-    public int maxCommon(int a,int b){
-        if ((a %= b) == 0){
-            return b;
-        }
-        return maxCommon(b, a);
+    public int maxCommon(int a, int b){
+        return b == 0 ? a : maxCommon(b, a % b);
     }
 }
