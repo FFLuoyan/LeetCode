@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2022.month1.month.week2;
+package org.zongjieli.leetcode.question.daily.year2022.month2.week2;
 
 /**
  * 如果字符串中不含有任何 'aaa','bbb' 或 'ccc' 这样的字符串作为子串

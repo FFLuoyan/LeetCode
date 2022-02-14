@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2022.month1.month.week2;
+package org.zongjieli.leetcode.question.daily.year2022.month2.week2;
 
 import java.util.Arrays;
 

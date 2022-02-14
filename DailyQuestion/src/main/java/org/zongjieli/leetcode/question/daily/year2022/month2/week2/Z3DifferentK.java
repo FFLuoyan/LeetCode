@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2022.month1.month.week2;
+package org.zongjieli.leetcode.question.daily.year2022.month2.week2;
 
 /**
  * 给定一个整数数组 nums 和一个整数 k
