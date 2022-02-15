@@ -23,27 +23,27 @@ import java.util.List;
  */
 public class Z2LuckyNumber {
     public List<Integer> luckyNumbers (int[][] matrix) {
-        List<Integer> result = new ArrayList<>();
-        for (int rowIndex = 0 ; rowIndex < matrix.length ; rowIndex++) {
-            int[] row = matrix[rowIndex];
+        List<Integer> result = new ArrayList<>(matrix.length);
+        for (int[] row : matrix) {
             int min = row[0];
             int minIndex = 0;
-            for (int i = 1 ; i < row.length ; i++) {
-                if (row[i] < min){
-                    min = row[i];
-                    minIndex = i;
+            for (int column = 1; column < row.length; column++) {
+                if (row[column] < min) {
+                    min = row[minIndex = column];
                 }
             }
-            int max = matrix[0][minIndex];
+
+            int max = row[minIndex];
             int maxIndex = 0;
-            for (int i = 1 ; i < matrix.length ; i++){
-                if (matrix[i][minIndex] > max) {
-                    max = matrix[i][minIndex];
-                    maxIndex = i;
+            while (maxIndex < matrix.length) {
+                if (matrix[maxIndex][minIndex] > max) {
+                    break;
                 }
+                ++maxIndex;
             }
-            if (maxIndex == rowIndex){
-                result.add(matrix[maxIndex][minIndex]);
+
+            if (maxIndex == matrix.length) {
+                result.add(max);
             }
         }
         return result;
