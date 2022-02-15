@@ -1,6 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2022.month2.week3;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,29 +24,42 @@ import java.util.List;
  */
 public class Z2LuckyNumber {
     public List<Integer> luckyNumbers (int[][] matrix) {
-        List<Integer> result = new ArrayList<>(matrix.length);
+        /*
+             幸运数必定只有一个
+             假设矩阵中存在幸运数 N(r1,c1),N(r2,c2)
+             对幸运数 1,有 N(r1,c1) > N(r2,c1), N(r1,c1) < N(r1,c2)
+             而幸运数 2 同样有 N(r2,c2) > N(r1,c2), N(r2,c2) < N(r2,c1)
+             则 N(r1,c1) > N(r2,c1) > N(r2,c2) > N(r1,c2)
+             与 N(r1,c1) < N(r1,c2) 矛盾
+
+             对于每一行的最小值组成的数组 m1,m2,...,mn
+             如果存在幸运数,则必定为数组中的最大值
+             反证法,若存在幸运数 N(r1,c1),及一个比它大的数 N(r2,c2)
+             由定义知,c1 ≠ c2,且由于不同行,r1 ≠ r2
+             则有 N(r2,c2) > N(r1,c1) > N(r2,c1)
+             而 N(r2,c2) 是 r2 行最小值,与假设矛盾
+         */
+        int max = 0;
+        int maxColumn = 0;
         for (int[] row : matrix) {
-            int min = row[0];
             int minIndex = 0;
+            int min = row[0];
             for (int column = 1; column < row.length; column++) {
                 if (row[column] < min) {
                     min = row[minIndex = column];
                 }
             }
-
-            int max = row[minIndex];
-            int maxIndex = 0;
-            while (maxIndex < matrix.length) {
-                if (matrix[maxIndex][minIndex] > max) {
-                    break;
-                }
-                ++maxIndex;
-            }
-
-            if (maxIndex == matrix.length) {
-                result.add(max);
+            if (min > max) {
+                max = min;
+                maxColumn = minIndex;
             }
         }
-        return result;
+
+        for (int[] row : matrix) {
+            if (row[maxColumn] > max) {
+                return new ArrayList<>();
+            }
+        }
+        return Collections.singletonList(max);
     }
 }
