@@ -24,7 +24,9 @@ public class Z5ComplexMultiply {
         int i1 = Integer.parseInt(num1.substring(split1 + 1, num1.length() - 1));
         int i2 = Integer.parseInt(num2.substring(split2 + 1, num2.length() - 1));
 
-        return new StringBuilder().append(r1 * r2 - i1 * i2).append('+').append(r1 * i2 + r2 * i1).append('i').toString();
+        // StringBuilder can be replaced with String
+        // 百度发现,String 连加的底层会被编译器优化为 StringBuilder 类型,待验证
+        return String.valueOf(r1 * r2 - i1 * i2) + '+' + (r1 * i2 + r2 * i1) + 'i';
     }
 
     public static void main(String[] args) {
