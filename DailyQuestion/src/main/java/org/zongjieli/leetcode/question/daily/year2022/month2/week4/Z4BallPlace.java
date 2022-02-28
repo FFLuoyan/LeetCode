@@ -28,22 +28,8 @@ public class Z4BallPlace {
     public int[] findBall(int[][] grid) {
         int[] result = new int[grid[0].length];
         for (int i = 0 ; i < result.length ; i++){
-            int row = 0;
-            int column = i;
-            while (row < grid.length && column >= 0 && column < result.length) {
-                if (grid[row][column] == 1) {
-                    if (column == result.length - 1 || grid[row][column + 1] == -1) {
-                        break;
-                    }
-                    row++;
-                    column++;
-                } else if (column == 0 || grid[row][column - 1] == 1) {
-                    break;
-                } else {
-                    row++;
-                    column--;
-                }
-            }
+            int row = 0, column = i;
+            for (; row < grid.length && (grid[row][column] == 1 ? (++column < result.length && grid[row][column] != -1) : (--column >= 0 && grid[row][column] != 1)) ; row++) { }
             result[i] = row == grid.length && column >= 0 && column < result.length ? column : -1;
         }
         return result;
@@ -51,7 +37,12 @@ public class Z4BallPlace {
 
     public static void main(String[] args) {
         Z4BallPlace test = new Z4BallPlace();
-        // 0, 1, 2, 3, 4, -1
-        System.out.println(Arrays.toString(test.findBall(new int[][]{{1,1,1,1,1,1},{-1,-1,-1,-1,-1,-1},{1,1,1,1,1,1},{-1,-1,-1,-1,-1,-1}})));
+//        // 0, 1, 2, 3, 4, -1
+//        System.out.println(Arrays.toString(test.findBall(new int[][]{{1,1,1,1,1,1},{-1,-1,-1,-1,-1,-1},{1,1,1,1,1,1},{-1,-1,-1,-1,-1,-1}})));
+//        // 1, -1, -1, -1, -1
+//        System.out.println(Arrays.toString(test.findBall(new int[][]{{1,1,1,-1,-1},{1,1,1,-1,-1},{-1,-1,-1,1,1},{1,1,1,1,-1},{-1,-1,-1,-1,-1}})));
+        // -1,-1,-1,2,3,4,5,6,-1,-1,9,10,11,14,-1,-1,15,16,19,20,-1,-1,21,24,-1,-1,25,-1,-1,28,29,30,31,32,33,34,35,-1,-1,-1,-1,40,41,42,43,44,45,-1,-1,48,-1,-1,-1,-1,53,56,-1,-1,-1,-1,59,60,61,64,65,66,67,68,-1,-1,71,72,-1,-1,75,76,-1,-1,77,78,-1,-1,-1,-1,83,86,-1,-1,87,-1,-1,-1,-1,94,95,-1,-1,96,97,98
+        System.out.println(Arrays.toString(test.findBall(new int[][]{{-1,1,-1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,1,1,-1,-1,-1,1,1,1,-1,-1,1,1,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,-1,-1,-1,-1,-1,-1,-1,1,-1,-1,1,-1,1,-1,-1,1,1,-1,1,-1,-1,-1,-1,1,1,1,1,1,1,-1,1,1,1,-1,1,1,1,-1,-1,-1,1,-1,1,-1,-1,1,1,-1,-1,1,-1,1,-1,1,1,1,-1,-1,-1,-1}})));
+
     }
 }
