@@ -23,8 +23,7 @@ public class Z7OptimalDivision {
         StringBuilder result = new StringBuilder();
         result.append(nums[0]).append('/');
         if (nums.length == 2) {
-            result.append(nums[1]);
-            return result.toString();
+            return result.append(nums[1]).toString();
         }
         result.append('(').append(nums[1]);
         for (int i = 2 ; i < nums.length ; i++) {
