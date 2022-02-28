@@ -16,19 +16,15 @@ package org.zongjieli.leetcode.question.daily.year2022.month2.week4;
  */
 public class Z5ComplexMultiply {
     public String complexNumberMultiply(String num1, String num2) {
-        String[] nums1 = num1.split("\\+");
-        String[] nums2 = num2.split("\\+");
+        int split1 = num1.indexOf('+');
+        int split2 = num2.indexOf('+');
+        int r1 = Integer.parseInt(num1.substring(0, split1));
+        int r2 = Integer.parseInt(num2.substring(0, split2));
 
-        int real1 = Integer.parseInt(nums1[0]);
-        int real2 = Integer.parseInt(nums2[0]);
+        int i1 = Integer.parseInt(num1.substring(split1 + 1, num1.length() - 1));
+        int i2 = Integer.parseInt(num2.substring(split2 + 1, num2.length() - 1));
 
-        int image1 = Integer.parseInt(nums1[1].substring(0, nums1[1].length() - 1));
-        int image2 = Integer.parseInt(nums2[1].substring(0, nums2[1].length() - 1));
-
-        int real = real1 * real2 - image1 * image2;
-        int image = real1 * image2 + real2 * image1;
-
-        return real + "+" + image + "i";
+        return new StringBuilder().append(r1 * r2 - i1 * i2).append('+').append(r1 * i2 + r2 * i1).append('i').toString();
     }
 
     public static void main(String[] args) {
