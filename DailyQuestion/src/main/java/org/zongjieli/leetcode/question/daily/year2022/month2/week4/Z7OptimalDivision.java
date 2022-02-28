@@ -19,16 +19,16 @@ public class Z7OptimalDivision {
     public String optimalDivision(int[] nums) {
         if (nums.length == 1) {
             return String.valueOf(nums[0]);
-        } else if (nums.length == 2) {
-            return nums[0] + "/" + nums[1];
-        } else {
-            StringBuilder result = new StringBuilder();
-            result.append(nums[0]).append("/(").append(nums[1]);
-            for (int i = 2 ; i < nums.length ; i++) {
-                result.append("/").append(nums[i]);
-            }
-            result.append(")");
-            return result.toString();
         }
+        if (nums.length == 2) {
+            return nums[0] + "/" + nums[1];
+        }
+        StringBuilder result = new StringBuilder();
+        result.append(nums[0]).append('/').append('(').append(nums[1]);
+        for (int i = 2 ; i < nums.length ; i++) {
+            result.append('/').append(nums[i]);
+        }
+        result.append(')');
+        return result.toString();
     }
 }
