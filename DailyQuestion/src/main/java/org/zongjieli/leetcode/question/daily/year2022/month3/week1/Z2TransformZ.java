@@ -23,24 +23,32 @@ public class Z2TransformZ {
         if (numRows <= 1) {
             return s;
         }
-        char[] source = s.toCharArray();
-        StringBuilder[] results = new StringBuilder[numRows];
-        for (int i = 0 ; i < numRows ; i++) {
-            results[i] = new StringBuilder();
+        byte[] source = s.getBytes();
+        int length = source.length;
+        byte[] result = new byte[length];
+        int resultIndex = 0;
+        int interval = 2 * numRows - 2;
+        // 第一行
+        for (int sourceIndex = 0 ; sourceIndex < length ; sourceIndex += interval) {
+            result[resultIndex++] = source[sourceIndex];
         }
-        int index = 0;
-        while (index < source.length) {
-            for (int i = 0 ; i < numRows - 1 && index < source.length ; i++, index++) {
-                results[i].append(source[index]);
+        // 中间行
+        for (int row = 1 ; row < numRows - 1 ; row++) {
+            int sourceIndex1 = row;
+            int sourceIndex2 = numRows + numRows - row - 2;
+            for (; sourceIndex2 < length ; sourceIndex1 += interval, sourceIndex2+= interval) {
+                result[resultIndex++] = source[sourceIndex1];
+                result[resultIndex++] = source[sourceIndex2];
             }
-            for (int i = numRows - 1 ; i > 0 && index < source.length ; i--, index++) {
-                results[i].append(source[index]);
+            if (sourceIndex1 < length) {
+                result[resultIndex++] = source[sourceIndex1];
             }
         }
-        for (int i = 1 ; i < numRows ; i++) {
-            results[0].append(results[i]);
+        // 最后一行
+        for (int sourceIndex = numRows - 1 ; sourceIndex < length ; sourceIndex += interval) {
+            result[resultIndex++] = source[sourceIndex];
         }
-        return results[0].toString();
+        return new String(result);
     }
 
     public static void main(String[] args) {
