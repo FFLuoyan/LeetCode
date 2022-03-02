@@ -19,11 +19,9 @@ public class Z3ReverseCharacter {
         int left = 0, right = value.length - 1;
         a: while (left < right) {
             byte leftV = value[left];
-            while (leftV < 'A' || (leftV > 'Z' && leftV < 'a') || leftV > 'z') {
-                if (++left >= right) {
-                    break a;
-                }
-                leftV = value[left];
+            if (leftV < 'A' || (leftV > 'Z' && leftV < 'a') || leftV > 'z') {
+                ++left;
+                continue;
             }
 
             byte rightV = value[right];
