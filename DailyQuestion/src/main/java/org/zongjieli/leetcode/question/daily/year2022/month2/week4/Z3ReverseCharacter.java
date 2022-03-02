@@ -17,16 +17,21 @@ public class Z3ReverseCharacter {
     public String reverseOnlyLetters(String s) {
         byte[] value = s.getBytes();
         int left = 0, right = value.length - 1;
-        while (left < right) {
+        a: while (left < right) {
             byte leftV = value[left];
-            byte rightV = value[right];
-            if (leftV < 'A' || (leftV > 'Z' && leftV < 'a') || leftV > 'z') {
-                left++;
-                continue;
+            while (leftV < 'A' || (leftV > 'Z' && leftV < 'a') || leftV > 'z') {
+                if (++left >= right) {
+                    break a;
+                }
+                leftV = value[left];
             }
-            if (rightV < 'A' || (rightV > 'Z' && rightV < 'a') || rightV > 'z') {
-                right--;
-                continue;
+
+            byte rightV = value[right];
+            while (rightV < 'A' || (rightV > 'Z' && rightV < 'a') || rightV > 'z') {
+                if (--right <= left) {
+                    break a;
+                }
+                rightV = value[right];
             }
             value[right--] = leftV;
             value[left++] = rightV;
