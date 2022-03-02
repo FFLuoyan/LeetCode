@@ -26,34 +26,23 @@ import java.util.Arrays;
  */
 public class Z4BallPlace {
 
-    private int[][] temp;
-
     public int[] findBall(int[][] grid) {
-        int rows = grid.length;
         int cols = grid[0].length;
-        if (cols == 1) {
-            return new int[]{-1};
-        }
-        temp = new int[rows][cols];
+        int[] result = new int[cols];
         for (int i = 0 ; i < cols ; i++) {
-            getResult(grid, 0, i);
+            result[i] = getResult(grid, 0, i);
         }
-        return temp[0];
+        return result;
     }
 
     public int getResult(int[][] grid, int row, int col) {
-        if (row == temp.length) {
+        if (row == grid.length) {
             return col;
         }
-        if (temp[row][col] != 0) {
-            return temp[row][col];
-        }
-        int current = grid[row][col];
+        int[] currentRow = grid[row];
+        int current = currentRow[col];
         int nextCol = col + current;
-        if (nextCol < 0 || nextCol >= temp[0].length || current != grid[row][nextCol]) {
-            return temp[row][col] = -1;
-        }
-        return temp[row][col] = getResult(grid, row + 1, nextCol);
+        return nextCol < 0 || nextCol >= currentRow.length || current != currentRow[nextCol] ? -1 : getResult(grid, row + 1, nextCol);
     }
 
     public static void main(String[] args) {
