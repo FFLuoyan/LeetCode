@@ -31,30 +31,30 @@ public class Z1Domino {
             if (dominoesChars[i] == '.') {
                 continue;
             }
-            if (dominoesChars[i] == 'L') {
+            if (dominoesChars[i] == 'R') {
                 if (isRight) {
-                    boolean isBlank = (start + i) % 2 == 0;
-                    int end = (start + i + 1) / 2;
-                    for (int j = start + 1 ; j < end ; j++) {
+                    for (int j = start + 1 ; j < i ; j++) {
                         dominoesChars[j] = 'R';
                     }
-                    isRight = false;
-                    start = isBlank ? end : end - 1;
                 }
-
-                for (int j = start + 1; j < i ; j++) {
-                    dominoesChars[j] = 'L';
-                }
-                start = i;
-            } else if (isRight) {
-                for (int j = start + 1; j < i ; j++) {
-                    dominoesChars[j] = 'R';
-                }
-                start = i;
-            } else {
                 isRight = true;
                 start = i;
+                continue;
             }
+
+            if (isRight) {
+                int end = (start + i + 1) / 2;
+                for (int j = start + 1 ; j < end ; j++) {
+                    dominoesChars[j] = 'R';
+                }
+                isRight = false;
+                start = (start + i) % 2 == 0 ? end : end - 1;
+            }
+
+            for (int j = start + 1; j < i ; j++) {
+                dominoesChars[j] = 'L';
+            }
+            start = i;
         }
 
         if (isRight) {
