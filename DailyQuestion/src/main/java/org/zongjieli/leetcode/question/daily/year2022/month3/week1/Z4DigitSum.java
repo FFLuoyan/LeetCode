@@ -8,16 +8,14 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week1;
  */
 public class Z4DigitSum {
     public int addDigits(int num) {
-        int result = num;
-        while (result >= 10) {
-            num = result;
-            int temp = 0;
-            while (num >= 10) {
-                temp += (num % 10);
+        while (num > 9) {
+            int result = 0;
+            while (num > 9) {
+                result += (num % 10);
                 num /= 10;
             }
-            result = temp + num;
+            num += result;
         }
-        return result;
+        return num;
     }
 }
