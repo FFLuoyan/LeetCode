@@ -1,7 +1,4 @@
-package org.zongjieli.leetcode.competion.singleweekly.order271;
-
-import org.zongjieli.leetcode.competion.singleweekly.order269.SubarrayAverage;
-
+package org.zongjieli.leetcode.origin.year2022.month3;
 /**
  * 给定一个整数数组 nums
  * nums 中子数组的范围是子数组中最大元素和最小元素的差值
@@ -12,18 +9,19 @@ import org.zongjieli.leetcode.competion.singleweekly.order269.SubarrayAverage;
  * -10^9 <= nums[i] <= 10^9
  *
  * @author   Li.zongjie
- * @date     2021/12/12
+ * @date     2022/3/4
  * @version  1.0
  */
 public class SubArrayRangeSum {
+
     public long subArrayRanges(int[] nums) {
         long result = 0;
-        for (int i = 0 ; i < nums.length ; i++){
-            int max = nums[i];
-            int min = nums[i];
-            for (int j = i + 1 ; j < nums.length ; j++){
-                max = Math.max(max, nums[j]);
-                min = Math.min(min, nums[j]);
+        for (int start = 0 ; start < nums.length ; start++) {
+            int min = nums[start];
+            int max = min;
+            for (int end = start + 1 ; end < nums.length ; end++) {
+                min = Math.min(min, nums[end]);
+                max = Math.max(max, nums[end]);
                 result += (max - min);
             }
         }

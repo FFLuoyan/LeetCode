@@ -21,6 +21,11 @@
             <artifactId>base</artifactId>
             <version>${base.vertion}</version>
         </dependency>
+        <dependency>
+            <groupId>org.zongjieli.leetcode</groupId>
+            <artifactId>origin</artifactId>
+            <version>${origin.vertion}</version>
+        </dependency>
     </dependencies>
 
 </project>
