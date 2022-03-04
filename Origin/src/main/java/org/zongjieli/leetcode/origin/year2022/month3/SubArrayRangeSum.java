@@ -16,20 +16,30 @@ public class SubArrayRangeSum {
 
     public long subArrayRanges(int[] nums) {
         long result = 0;
-        for (int start = 0 ; start < nums.length ; start++) {
-            int min = nums[start];
-            int max = min;
-            for (int end = start + 1 ; end < nums.length ; end++) {
-                min = Math.min(min, nums[end]);
-                max = Math.max(max, nums[end]);
-                result += (max - min);
+        for (int i = 0 ; i < nums.length ; i++) {
+            int leftMin = 0, leftMax = 0, rightMin = 0, rightMax = 0;
+            for (int left = i - 1 ; left >= 0 && nums[left] >= nums[i] ; left--) {
+                leftMin++;
             }
+            for (int left = i - 1 ; left >= 0 && nums[left] <= nums[i] ; left--) {
+                leftMax++;
+            }
+            for (int right = i + 1 ; right < nums.length && nums[right] > nums[i]; right++) {
+                rightMin++;
+            }
+            for (int right = i + 1 ; right < nums.length && nums[right] < nums[i]; right++) {
+                rightMax++;
+            }
+            result += (leftMax * rightMax + leftMax + rightMax - leftMin * rightMin - leftMin - rightMin) * (long) nums[i];
         }
         return result;
     }
 
     public static void main(String[] args) {
         SubArrayRangeSum test = new SubArrayRangeSum();
+        // 4
         System.out.println(test.subArrayRanges(new int[]{1,2,3}));
+        // 4
+        System.out.println(test.subArrayRanges(new int[]{1,3,3}));
     }
 }
