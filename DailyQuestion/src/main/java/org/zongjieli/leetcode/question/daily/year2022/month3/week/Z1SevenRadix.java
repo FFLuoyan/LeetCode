@@ -12,4 +12,30 @@ public class Z1SevenRadix {
     public String convertToBase7(int num) {
         return Integer.toString(num, 7);
     }
+
+    public String convertToBase7Detail(int num) {
+        byte[] result = new byte[10];
+        int index = 10;
+        boolean isNegative = num < 0;
+        num = Math.abs(num);
+        while (num >= 7) {
+            result[--index] = (byte) ((num % 7) + 48);
+            num /= 7;
+        }
+        result[--index] = (byte) (num + 48);
+        if (isNegative) {
+            result[--index] = 45;
+        }
+        return new String(result, index, 10 - index);
+    }
+
+    public static void main(String[] args) {
+        Z1SevenRadix test = new Z1SevenRadix();
+        // "0"
+        System.out.println(test.convertToBase7(0));
+        // "202"
+        System.out.println(test.convertToBase7(100));
+        // "-100"
+        System.out.println(test.convertToBase7(-49));
+    }
 }
