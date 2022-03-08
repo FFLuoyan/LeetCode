@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2022.month3.week;
+package org.zongjieli.leetcode.question.daily.year2022.month3.week2;
 /**
  * 给定一个整数 num,将其转化为 7 进制,并以字符串形式输出
  *
@@ -9,6 +9,7 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week;
  * @version  1.0
  */
 public class Z1SevenRadix {
+
     public String convertToBase7(int num) {
         return Integer.toString(num, 7);
     }
