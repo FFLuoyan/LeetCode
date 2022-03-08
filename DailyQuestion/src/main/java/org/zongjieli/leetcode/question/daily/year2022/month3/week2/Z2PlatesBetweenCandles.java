@@ -32,33 +32,30 @@ import java.util.TreeSet;
 public class Z2PlatesBetweenCandles {
     public int[] platesBetweenCandles(String s, int[][] queries) {
         int[] left = new int[s.length()];
-        int[] right = new int[s.length()];
+        int[] leftContain = new int[left.length];
         int all = 0;
         int current = 0;
+        int lastIndex = -1;
         for (int i = 0 ; i < s.length() ; i++) {
             if (s.charAt(i) == '|') {
                 all += current;
                 current = 0;
+                for (int j = lastIndex + 1 ; j <= i ; j++) {
+                    leftContain[j] = all;
+                }
+                lastIndex = i;
             } else {
                 current++;
             }
             left[i] = all;
         }
         all += current;
-        int temp = current = 0;
-        for (int i = s.length() - 1 ; i >= 0 ; i--) {
-            if (s.charAt(i) == '|') {
-                temp += current;
-                current = 0;
-            } else {
-                current++;
-            }
-            right[i] = temp;
+        for (int i = lastIndex + 1 ; i < leftContain.length ; i++) {
+            leftContain[i] = all;
         }
-
         int[] result = new int[queries.length];
         for (int i = 0; i < queries.length; i++) {
-            result[i] = Math.max(0, right[queries[i][0]] + left[queries[i][1]] - all);
+            result[i] = Math.max(0, left[queries[i][1]] - leftContain[queries[i][0]]);
         }
         return result;
     }
@@ -66,8 +63,10 @@ public class Z2PlatesBetweenCandles {
     public static void main(String[] args) {
         Z2PlatesBetweenCandles test = new Z2PlatesBetweenCandles();
         // [2]
-//        System.out.println(Arrays.toString(test.platesBetweenCandles("||**||**|*", new int[][]{{3, 8}})));
+        System.out.println(Arrays.toString(test.platesBetweenCandles("||**||**|*", new int[][]{{3, 8}})));
         // [9,0,0,0,0]
         System.out.println(Arrays.toString(test.platesBetweenCandles("***|**|*****|**||**|*", new int[][]{{1, 17}, {4, 5}, {14, 17}, {5, 11}, {15, 16}})));
+        // [0]
+        System.out.println(Arrays.toString(test.platesBetweenCandles("*|*", new int[][]{{2, 2}})));
     }
 }
