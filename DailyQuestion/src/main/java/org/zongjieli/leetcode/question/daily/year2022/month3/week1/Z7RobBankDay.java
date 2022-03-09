@@ -62,17 +62,20 @@ public class Z7RobBankDay {
             dec.put(decIndex, security.length - 1);
         }
         List<Integer> result = new ArrayList<>();
-        Map.Entry<Integer, Integer> current = dec.firstEntry();
-        while (current != null) {
-            int key = current.getKey();
-            int value = current.getValue();
-            for (int i = key + time ; i <= value ; i++) {
-                Map.Entry<Integer, Integer> right = inc.floorEntry(i);
-                if (right != null && right.getValue() - i >= time) {
-                    result.add(i);
+        Map.Entry<Integer, Integer> decEntry = dec.firstEntry();
+        while (decEntry != null) {
+            int decLeft = decEntry.getKey();
+            int decRight = decEntry.getValue();
+            Map.Entry<Integer, Integer> incEntry = inc.floorEntry(decRight);
+            while (incEntry != null) {
+                int incLeft = incEntry.getKey();
+                int end = Math.min(decRight, incEntry.getValue() - time);
+                for (int j = Math.max(decLeft + time, incLeft) ; j <= end ; j++) {
+                    result.add(j);
                 }
+                incEntry = inc.lowerEntry(incLeft);
             }
-            current = dec.higherEntry(key);
+            decEntry = dec.higherEntry(decLeft);
         }
         return result;
     }
@@ -81,5 +84,9 @@ public class Z7RobBankDay {
         Z7RobBankDay test = new Z7RobBankDay();
         // [0, 1, 2, 3]
         System.out.println(test.goodDaysToRobBank(new int[] {1, 2, 3, 4}, 0));
+        // [2, 3]
+        System.out.println(test.goodDaysToRobBank(new int[] {5, 3, 3, 3, 5, 6, 2}, 2));
+        // [2, 4, 5, 8]
+        System.out.println(test.goodDaysToRobBank(new int[] {3, 1, 0, 3, 2, 2, 2, 1, 0, 0}, 1));
     }
 }
