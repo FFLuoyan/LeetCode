@@ -36,15 +36,12 @@ public class Z7RobBankDay {
             }
             return result;
         }
-        int incCount = 0, last = security[0], current;
-        security[0] = 0;
-        for (int i = 1 ; i < security.length ; i++) {
-            current = security[i];
-            incCount = current >= last ? incCount + 1 : 0;
-            security[i] = current <= last ? security[i - 1] + 1 : 0;
-            last = current;
-            if (incCount >= time && security[i - time] >= time) {
-                result.add(i - time);
+        int decCount = 0, incCount = 0;
+        for (int i = 1 ; i < security.length - time ; i++) {
+            decCount = security[i] <= security[i - 1] ? decCount + 1 : 0;
+            incCount = security[i + time] >= security[i + time - 1] ? incCount + 1 : 0;
+            if (incCount >= time && decCount >= time) {
+                result.add(i);
             }
         }
         return result;
