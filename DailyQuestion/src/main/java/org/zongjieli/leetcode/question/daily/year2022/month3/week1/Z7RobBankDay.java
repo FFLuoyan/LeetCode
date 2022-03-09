@@ -2,8 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week1;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * 一群强盗准备打劫银行,给定一个下标从 0 开始的整数数组 security
@@ -31,51 +29,21 @@ import java.util.TreeMap;
 public class Z7RobBankDay {
 
     public List<Integer> goodDaysToRobBank(int[] security, int time) {
+        int[] decs = new int[security.length];
+        int count = 0;
+        for (int i = 1 ; i < security.length ; i++) {
+            decs[i] = count = security[i] <= security[i - 1] ? count + 1 : 0;
+        }
+        List<Integer> result = new ArrayList<>(security.length);
+        count = 0;
         if (time == 0) {
-            List<Integer> result = new ArrayList<>();
-            for (int i = 0 ; i < security.length ; i++) {
+            result.add(security.length - 1);
+        }
+        for (int i = security.length - 2 ; i >= 0 ; i--) {
+            count = security[i] <= security[i + 1] ? count + 1 : 0;
+            if (decs[i] >= time && count >= time) {
                 result.add(i);
             }
-            return result;
-        }
-        TreeMap<Integer, Integer> inc = new TreeMap<>();
-        TreeMap<Integer, Integer> dec = new TreeMap<>();
-        int incIndex = 0;
-        int decIndex = 0;
-        for (int i = 1 ; i < security.length ; i++) {
-            if (security[i] > security[i - 1]) {
-                if (i - decIndex > time) {
-                    dec.put(decIndex, i - 1);
-                }
-                decIndex = i;
-            } else if (security[i] < security[i - 1]) {
-                if (i - incIndex > time) {
-                    inc.put(incIndex, i - 1);
-                }
-                incIndex = i;
-            }
-        }
-        if (security.length - incIndex > time) {
-            inc.put(incIndex, security.length - 1);
-        }
-        if (security.length - decIndex > time) {
-            dec.put(decIndex, security.length - 1);
-        }
-        List<Integer> result = new ArrayList<>();
-        Map.Entry<Integer, Integer> decEntry = dec.firstEntry();
-        while (decEntry != null) {
-            int decLeft = decEntry.getKey();
-            int decRight = decEntry.getValue();
-            Map.Entry<Integer, Integer> incEntry = inc.floorEntry(decRight);
-            while (incEntry != null) {
-                int incLeft = incEntry.getKey();
-                int end = Math.min(decRight, incEntry.getValue() - time);
-                for (int j = Math.max(decLeft + time, incLeft) ; j <= end ; j++) {
-                    result.add(j);
-                }
-                incEntry = inc.lowerEntry(incLeft);
-            }
-            decEntry = dec.higherEntry(decLeft);
         }
         return result;
     }
