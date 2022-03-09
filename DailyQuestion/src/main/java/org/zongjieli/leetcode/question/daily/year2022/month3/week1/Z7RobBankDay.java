@@ -29,20 +29,22 @@ import java.util.List;
 public class Z7RobBankDay {
 
     public List<Integer> goodDaysToRobBank(int[] security, int time) {
-        int[] decs = new int[security.length];
-        int count = 0;
-        for (int i = 1 ; i < security.length ; i++) {
-            decs[i] = count = security[i] <= security[i - 1] ? count + 1 : 0;
-        }
         List<Integer> result = new ArrayList<>(security.length);
-        count = 0;
         if (time == 0) {
-            result.add(security.length - 1);
-        }
-        for (int i = security.length - 2 ; i >= 0 ; i--) {
-            count = security[i] <= security[i + 1] ? count + 1 : 0;
-            if (decs[i] >= time && count >= time) {
+            for (int i = 0 ; i < security.length ; i++) {
                 result.add(i);
+            }
+            return result;
+        }
+        int incCount = 0, last = security[0];
+        security[0] = 0;
+        for (int i = 1 ; i < security.length ; i++) {
+            incCount = security[i] >= last ? incCount + 1 : 0;
+            int temp = security[i] <= last ? security[i - 1] + 1 : 0;
+            last = security[i];
+            security[i] = temp;
+            if (incCount >= time && security[i - time] >= time) {
+                result.add(i - time);
             }
         }
         return result;
