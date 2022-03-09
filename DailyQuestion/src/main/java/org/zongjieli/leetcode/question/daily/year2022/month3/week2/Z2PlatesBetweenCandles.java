@@ -1,9 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month3.week2;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * 给定一个长桌子,桌子上盘子和蜡烛排成一列
@@ -31,13 +28,15 @@ import java.util.TreeSet;
  */
 public class Z2PlatesBetweenCandles {
     public int[] platesBetweenCandles(String s, int[][] queries) {
-        int[] left = new int[s.length()];
-        int[] leftContain = new int[left.length];
+        byte[] bytes = s.getBytes();
+        int length = bytes.length;
+        int[] left = new int[length];
+        int[] leftContain = new int[length];
         int all = 0;
         int current = 0;
         int lastIndex = -1;
-        for (int i = 0 ; i < s.length() ; i++) {
-            if (s.charAt(i) == '|') {
+        for (int i = 0 ; i < length ; i++) {
+            if (bytes[i] == '|') {
                 all += current;
                 current = 0;
                 for (int j = lastIndex + 1 ; j <= i ; j++) {
