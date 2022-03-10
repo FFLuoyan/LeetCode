@@ -3,6 +3,7 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week2;
 import org.zongjieli.leetcode.base.Tree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ import java.util.List;
 public class Z4TreePreorder {
 
     public List<Integer> preorder(Tree root) {
-        List<Integer> result = new ArrayList<>(10000);
+        LinkedList<Integer> result = new LinkedList<>();
         if (root == null) {
             return result;
         }
@@ -28,8 +29,8 @@ public class Z4TreePreorder {
         return result;
     }
 
-    public void add(Tree root, List<Integer> result) {
-        result.add(root.val);
+    public void add(Tree root, LinkedList<Integer> result) {
+        result.addLast(root.val);
         if (root.children != null) {
             for (Tree child : root.children) {
                 add(child, result);
