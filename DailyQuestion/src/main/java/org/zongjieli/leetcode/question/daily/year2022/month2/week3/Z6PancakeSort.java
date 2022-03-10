@@ -25,28 +25,34 @@ import java.util.List;
  */
 public class Z6PancakeSort {
     public List<Integer> pancakeSort(int[] arr) {
-        List<Integer> result = new ArrayList<>();
-        LinkedList<Integer> values = new LinkedList<>();
-        for (int i : arr) {
-            values.addLast(i);
+        int[] valueIndex = new int[arr.length + 1];
+        for (int i = 0; i < arr.length; i++) {
+            valueIndex[arr[i]] = i;
         }
+        List<Integer> result = new ArrayList<>(6 * arr.length);
         for (int i = arr.length ; i > 1 ; i--) {
-            int count = 0;
-            while (!values.isEmpty()) {
-                count++;
-                int value = values.pollFirst();
-                if (value == i) {
-                    if (count > 1) {
-                        result.add(count);
-                    }
-                    result.add(i);
-                    if (i > count + 1) {
-                        result.add(i - count);
-                    }
-                    break;
-                }
-                values.addLast(value);
+            if (valueIndex[i] > 0) {
+                result.add(valueIndex[i] + 1);
             }
+            result.add(i);
+            if (i - valueIndex[i] > 2) {
+                result.add(i - 1 - valueIndex[i]);
+            }
+
+            if (i - valueIndex[i] > 3) {
+                result.add(i - 2 - valueIndex[i]);
+            }
+
+            if (i > 2) {
+                result.add(i - 1);
+            }
+
+            if (valueIndex[i] > 1) {
+                result.add(valueIndex[i]);
+            }
+
+            arr[valueIndex[i]] = arr[i - 1];
+            valueIndex[arr[i - 1]] = valueIndex[i];
         }
         return result;
     }
