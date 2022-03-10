@@ -20,7 +20,7 @@ import java.util.List;
 public class Z4TreePreorder {
 
     public List<Integer> preorder(Tree root) {
-        List<Integer> result = new ArrayList<>();
+        List<Integer> result = new ArrayList<>(10000);
         if (root == null) {
             return result;
         }
@@ -31,7 +31,9 @@ public class Z4TreePreorder {
     public void add(Tree root, List<Integer> result) {
         result.add(root.val);
         if (root.children != null) {
-            root.children.forEach(c -> add(c, result));
+            for (Tree child : root.children) {
+                add(child, result);
+            }
         }
     }
 
