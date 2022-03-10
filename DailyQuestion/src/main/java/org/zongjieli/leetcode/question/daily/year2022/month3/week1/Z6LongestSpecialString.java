@@ -17,14 +17,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week1;
 public class Z6LongestSpecialString {
 
     public int findLUSlength(String a, String b) {
-        int aL = a.length();
-        int bL = b.length();
-        if (aL != bL) {
-            return Math.max(aL, bL);
-        }
-        if (a.equals(b)) {
-            return -1;
-        }
-        return aL;
+        return a.equals(b) ? -1 : Math.max(a.length(), b.length());
     }
 }
