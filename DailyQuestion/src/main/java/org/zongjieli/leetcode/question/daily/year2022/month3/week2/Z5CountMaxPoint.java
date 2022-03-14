@@ -20,49 +20,41 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week2;
  */
 public class Z5CountMaxPoint {
 
+    private int length;
+    private long max = 0;
+    private int count = 0;
+
     public int countHighestScoreNodes(int[] parents) {
-        int length = parents.length;
-        int[][] sons = new int[length][2];
-        for (int i = 1 ; i < parents.length ; i++) {
-            sons[parents[i]][sons[parents[i]][0] == 0 ? 0 : 1] = i;
-        }
-        long[] result = new long[]{0, 0};
-        count(0, sons, result, length);
-        return (int) result[1];
-    }
-
-    public int count(int root, int[][] sons, long[] result, int all) {
-        int left = sons[root][0];
-        if (left == 0) {
-            countScore(all - 1, result);
-            return 1;
-        }
-        int leftCount = count(left, sons, result, all);
-        int right = sons[root][1];
-        if (right == 0) {
-            if (root == 0) {
-                countScore(all - 1, result);
-                return 0;
+        length = parents.length;
+        int[] lefts = new int[length];
+        int[] rights = new int[length];
+        for (int i = 1 ; i < length ; i++) {
+            if (lefts[parents[i]] == 0) {
+                lefts[parents[i]] = i;
+            } else {
+                rights[parents[i]] = i;
             }
-            countScore(leftCount * (all - leftCount - 1), result);
-            return leftCount + 1;
         }
-        int rightCount = count(right, sons, result, all);
-        if (root == 0) {
-            countScore(leftCount * rightCount, result);
-            return 0;
-        }
-        int subtree = leftCount + rightCount + 1;
-        countScore(((long) (all - subtree)) * leftCount * rightCount, result);
-        return subtree;
+        count(0, lefts, rights);
+        return count;
     }
 
-    public void countScore(long score, long[] result) {
-        if (score == result[0]) {
-            result[1]++;
-        } else if (score > result[0]) {
-            result[0] = score;
-            result[1] = 1;
+    public int count(int root, int[] lefts, int[] rights) {
+        int left = lefts[root];
+        int right = rights[root];
+        int leftCount = left == 0 ? 0 : count(left, lefts, rights);
+        int rightCount = right == 0 ? 0 : count(right, lefts, rights);
+        int parent = root == 0 ? length - leftCount - rightCount : length - leftCount - rightCount - 1;
+        countScore(((long) parent) * (leftCount == 0 ? 1 : leftCount) * (rightCount == 0 ? 1 : rightCount));
+        return length - parent;
+    }
+
+    public void countScore(long score) {
+        if (score == max) {
+            count++;
+        } else if (score > max) {
+            max = score;
+            count = 1;
         }
     }
 
