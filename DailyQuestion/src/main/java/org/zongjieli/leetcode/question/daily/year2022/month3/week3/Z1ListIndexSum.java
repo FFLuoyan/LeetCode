@@ -20,6 +20,9 @@ import java.util.*;
  */
 public class Z1ListIndexSum {
     public String[] findRestaurant(String[] list1, String[] list2) {
+        if (list2.length < list1.length) {
+            return findRestaurant(list2, list1);
+        }
         Map<String, Integer> save = new HashMap<>(list1.length);
         for (int i = 0; i < list1.length; i++) {
             save.put(list1[i], i);
