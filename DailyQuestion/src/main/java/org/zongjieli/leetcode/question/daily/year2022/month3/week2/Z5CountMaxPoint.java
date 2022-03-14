@@ -21,32 +21,31 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week2;
 public class Z5CountMaxPoint {
 
     public int countHighestScoreNodes(int[] parents) {
-        int[][] sons = new int[parents.length][2];
-        int[] sizes = new int[parents.length];
+        int length = parents.length;
+        int[][] sons = new int[length][2];
         for (int i = 1 ; i < parents.length ; i++) {
             sons[parents[i]][sons[parents[i]][0] == 0 ? 0 : 1] = i;
         }
-        int all = countSize(0, sizes, sons);
-        long max = sons[0][1] == 0 ? all - 1 : sizes[sons[0][0]] * sizes[sons[0][1]];
-        int count = 1;
-        for (int i = 1 ; i < parents.length ; i++) {
-            long point = sons[i][0] == 0 ? all - 1 : ((long) (all - sizes[i])) * (sons[i][1] == 0 ? (sizes[i] - 1) : sizes[sons[i][0]] * sizes[sons[i][1]]);
-            if (point > max) {
-                max = point;
-                count = 1;
-            } else if (point == max) {
-                count++;
-            }
-        }
-        return count;
+        long[] result = new long[]{0, 0};
+        count(0, sons, result, length);
+        return (int) result[1];
     }
 
-    public int countSize(int root, int[] size, int[][] sons) {
-        return size[root] =
-                sons[root][0] == 0
-                        ? 1
-                        : 1 + countSize(sons[root][0], size, sons)
-                        + (sons[root][1] == 0 ? 0 : countSize(sons[root][1], size, sons));
+    public int count(int root, int[][] sons, long[] result, int all) {
+        int left = sons[root][0];
+        int right = sons[root][1];
+        int leftCount = left == 0 ? 0 : count(left, sons, result, all);
+        int rightCount = right == 0 ? 0 : count(right, sons, result, all);
+        long parent = all - leftCount - rightCount - 1;
+        long score = (parent == 0 ? 1L : parent) * (leftCount == 0 ? 1 : leftCount) * (rightCount == 0 ? 1 : rightCount);
+
+        if (score == result[0]) {
+            result[1]++;
+        } else if (score > result[0]) {
+            result[0] = score;
+            result[1] = 1;
+        }
+        return leftCount + rightCount + 1;
     }
 
     public static void main(String[] args) {
@@ -55,5 +54,7 @@ public class Z5CountMaxPoint {
         System.out.println(test.countHighestScoreNodes(new int[]{-1, 2, 0, 2, 0}));
         // 2
         System.out.println(test.countHighestScoreNodes(new int[]{-1, 3, 3, 5, 7, 6, 0, 0}));
+        // 2
+        System.out.println(test.countHighestScoreNodes(new int[]{-1, 0}));
     }
 }
