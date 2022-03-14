@@ -21,27 +21,25 @@ public class Z7ValidUtf8 {
     public boolean validUtf8(int[] data) {
         int remain = 0;
         for (int current : data) {
-            if (remain == 0) {
-                if ((current & 128) == 0) {
-                    continue;
-                }
-                if ((current & 64) == 0) {
+            if ((current & 128) == 0) {
+                if (remain != 0) {
                     return false;
                 }
-                if ((current & 32) == 0) {
-                    remain = 1;
-                } else if ((current & 16) == 0) {
-                    remain = 2;
-                } else if ((current & 8) == 0) {
-                    remain = 3;
-                } else {
+            } else if (remain != 0) {
+                if ((current & 64) == 64) {
                     return false;
                 }
-            } else {
                 remain--;
-                if ((current & 192) != 128) {
-                    return false;
-                }
+            } else if ((current & 64) == 0) {
+                return false;
+            } else if ((current & 32) == 0) {
+                remain = 1;
+            } else if ((current & 16) == 0) {
+                remain = 2;
+            } else if ((current & 8) == 0) {
+                remain = 3;
+            } else {
+                return false;
             }
         }
         return remain == 0;
@@ -49,6 +47,7 @@ public class Z7ValidUtf8 {
 
     public static void main(String[] args) {
         Z7ValidUtf8 test = new Z7ValidUtf8();
+        // true
         System.out.println(test.validUtf8(new int[]{197, 130, 1}));
     }
 }
