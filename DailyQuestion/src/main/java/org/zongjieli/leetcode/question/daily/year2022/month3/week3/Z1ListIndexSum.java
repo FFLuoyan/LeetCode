@@ -24,15 +24,28 @@ public class Z1ListIndexSum {
         for (int i = 0; i < list1.length; i++) {
             save.put(list1[i], i);
         }
-        TreeMap<Integer, List<String>> result = new TreeMap<>();
-        for (int i = 0; i < list2.length; i++) {
-            if (save.containsKey(list2[i])) {
-                result.computeIfAbsent(i + save.get(list2[i]), k -> new ArrayList<>()).add(list2[i]);
+        List<String> result = new ArrayList<>();
+        int max = list1.length + list2.length;
+        for (int i = 0; i < list2.length && i <= max; i++) {
+            String current = list2[i];
+            if (!save.containsKey(current)) {
+                continue;
             }
+            int sum = save.get(current) + i;
+            if (sum > max) {
+                continue;
+            }
+            if (sum < max) {
+                max = sum;
+                result.clear();
+            }
+            result.add(current);
         }
-        List<String> r = result.firstEntry().getValue();
-        String[] re = new String[r.size()];
-        r.toArray(re);
-        return re;
+        return result.toArray(new String[0]);
+    }
+
+    public static void main(String[] args) {
+        Z1ListIndexSum test = new Z1ListIndexSum();
+        System.out.println(Arrays.toString(test.findRestaurant(new String[]{"Shogun", "Tapioca Express", "Burger King", "KFC"}, new String[]{"Piatti", "The Grill at Torrey Pines", "Hungry Hunter Steakhouse", "Shogun"})));
     }
 }
