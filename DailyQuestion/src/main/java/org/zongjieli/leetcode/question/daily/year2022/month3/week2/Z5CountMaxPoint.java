@@ -33,19 +33,37 @@ public class Z5CountMaxPoint {
 
     public int count(int root, int[][] sons, long[] result, int all) {
         int left = sons[root][0];
+        if (left == 0) {
+            countScore(all - 1, result);
+            return 1;
+        }
+        int leftCount = count(left, sons, result, all);
         int right = sons[root][1];
-        int leftCount = left == 0 ? 0 : count(left, sons, result, all);
-        int rightCount = right == 0 ? 0 : count(right, sons, result, all);
-        long parent = all - leftCount - rightCount - 1;
-        long score = (parent == 0 ? 1L : parent) * (leftCount == 0 ? 1 : leftCount) * (rightCount == 0 ? 1 : rightCount);
+        if (right == 0) {
+            if (root == 0) {
+                countScore(all - 1, result);
+                return 0;
+            }
+            countScore(leftCount * (all - leftCount - 1), result);
+            return leftCount + 1;
+        }
+        int rightCount = count(right, sons, result, all);
+        if (root == 0) {
+            countScore(leftCount * rightCount, result);
+            return 0;
+        }
+        int subtree = leftCount + rightCount + 1;
+        countScore(((long) (all - subtree)) * leftCount * rightCount, result);
+        return subtree;
+    }
 
+    public void countScore(long score, long[] result) {
         if (score == result[0]) {
             result[1]++;
         } else if (score > result[0]) {
             result[0] = score;
             result[1] = 1;
         }
-        return leftCount + rightCount + 1;
     }
 
     public static void main(String[] args) {
