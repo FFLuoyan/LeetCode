@@ -2,7 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week2;
 
 import org.zongjieli.leetcode.base.Tree;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
