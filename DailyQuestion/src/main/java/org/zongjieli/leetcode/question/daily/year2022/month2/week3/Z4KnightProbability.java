@@ -1,4 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month2.week3;
+
 /**
  * 在一个 n x n 的国际象棋棋盘上
  * 一个骑士从单元格 (row, column) 开始,并尝试进行 k 次移动
@@ -22,66 +23,77 @@ package org.zongjieli.leetcode.question.daily.year2022.month2.week3;
 public class Z4KnightProbability {
 
     public double knightProbability(int n, int k, int row, int column) {
-        if (row < 0 || row >= n || column < 0 || column >= n) {
+        if (n <= 2 && k > 0) {
             return 0;
         }
-        if (k == 0){
-            return 1;
+        int size = n * n;
+        double[] probability = new double[size];
+        probability[n * row + column] = 1;
+        int[][] indexes = new int[size][9];
+        for (int i = 0 ; i < n ; i++) {
+            for (int j = 0 ; j < n ; j++) {
+                int current = i * n + j;
+                if (i >= 2) {
+                    if (j >= 1) {
+                        indexes[current][indexes[current][8]++] = (i - 2) * n + j - 1;
+                    }
+                    if (j < n - 1) {
+                        indexes[current][indexes[current][8]++] = (i - 2) * n + j + 1;
+                    }
+                }
+
+                if (i >= 1) {
+                    if (j >= 2) {
+                        indexes[current][indexes[current][8]++] = (i - 1) * n + j - 2;
+                    }
+                    if (j < n - 2) {
+                        indexes[current][indexes[current][8]++] = (i - 1) * n + j + 2;
+                    }
+                }
+
+                if (i < n - 1) {
+                    if (j >= 2) {
+                        indexes[current][indexes[current][8]++] = (i + 1) * n + j - 2;
+                    }
+                    if (j < n - 2) {
+                        indexes[current][indexes[current][8]++] = (i + 1) * n + j + 2;
+                    }
+                }
+
+                if (i < n - 2) {
+                    if (j >= 1) {
+                        indexes[current][indexes[current][8]++] = (i + 2) * n + j - 1;
+                    }
+                    if (j < n - 1) {
+                        indexes[current][indexes[current][8]++] = (i + 2) * n + j + 1;
+                    }
+                }
+            }
         }
-        double[][] probability = new double[n][n];
-        probability[row][column] = 1;
         while (k-- > 0) {
-            double[][] next = new double[n][n];
-            for (int i = 0 ; i < n ; i++) {
-                for (int j = 0 ; j < n ; j++) {
-                    double current = probability[i][j] / 8;
-                    if (i >= 2) {
-                        if (j >= 1) {
-                            next[i - 2][j - 1] += current;
-                        }
-                        if (j < n - 1) {
-                            next[i - 2][j + 1] += current;
-                        }
-                    }
-                    if (i >= 1) {
-                        if (j >= 2) {
-                            next[i - 1][j - 2] += current;
-                        }
-                        if (j < n - 2) {
-                            next[i - 1][j + 2] += current;
-                        }
-                    }
-                    if (i < n - 1) {
-                        if (j >= 2) {
-                            next[i + 1][j - 2] += current;
-                        }
-                        if (j < n - 2) {
-                            next[i + 1][j + 2] += current;
-                        }
-                    }
-                    if (i < n - 2) {
-                        if (j >= 1) {
-                            next[i + 2][j - 1] += current;
-                        }
-                        if (j < n - 1) {
-                            next[i + 2][j + 1] += current;
-                        }
-                    }
+            double[] next = new double[size];
+            for (int i = 0 ; i < size ; i++) {
+                int loopSize = indexes[i][8];
+                for (int j = 0 ; j < loopSize ; j++) {
+                    next[i] += probability[indexes[i][j]] / 8;
                 }
             }
             probability = next;
         }
+
         double result = 0;
-        for (double[] rowD : probability) {
-            for (double v : rowD) {
-                result += v;
-            }
+        for (double v : probability) {
+            result += v;
         }
         return result;
     }
 
     public static void main(String[] args) {
         Z4KnightProbability test = new Z4KnightProbability();
+        // 0.0625
+        System.out.println(test.knightProbability(3, 2, 0, 0));
+        // 1
+        System.out.println(test.knightProbability(1, 0, 0, 0));
         System.out.println(test.knightProbability(8, 30, 6, 4));
     }
 }
