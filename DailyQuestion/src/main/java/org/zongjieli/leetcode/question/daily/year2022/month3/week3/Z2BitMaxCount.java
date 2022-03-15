@@ -26,8 +26,7 @@ public class Z2BitMaxCount {
             max |= num;
         }
         cal(nums, 0, 0);
-        cal(nums, 0, nums[0]);
-        return count >> 1;
+        return count;
     }
 
     public void cal(int[] nums, int index, int current) {
@@ -35,18 +34,18 @@ public class Z2BitMaxCount {
             count += (1 << nums.length - index);
             return;
         }
-        for (int i = index + 1 ; i < nums.length ; i++) {
-            cal(nums, i, current | nums[i]);
+        for (int i = index + 1 ; i <= nums.length ; i++) {
+            cal(nums, i, current | nums[i - 1]);
         }
     }
 
     public static void main(String[] args) {
         Z2BitMaxCount test = new Z2BitMaxCount();
         // 2
-//        System.out.println(test.countMaxOrSubsets(new int[]{3, 1}));
+        System.out.println(test.countMaxOrSubsets(new int[]{3, 1}));
         // 7
 //        System.out.println(test.countMaxOrSubsets(new int[]{2, 2, 2}));
         // 1
-        System.out.println(test.countMaxOrSubsets(new int[]{1, 2}));
+//        System.out.println(test.countMaxOrSubsets(new int[]{1, 2}));
     }
 }
