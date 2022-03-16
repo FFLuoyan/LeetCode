@@ -18,12 +18,11 @@ public class Z1SingleNumber {
         int left = 0;
         int right = nums.length - 1;
         while (left < right) {
-            int middle = (left + right) / 2;
-            boolean isOdd = (middle - left) % 2 == 1;
-            if (nums[middle] == nums[isOdd ? middle + 1 : middle - 1]) {
-                right = isOdd ? middle - 1 : middle - 2;
+            int middle = ((left + right) / 2) | 1;
+            if (nums[middle] == nums[middle - 1]) {
+                left = middle + 1;
             } else {
-                left = isOdd ? middle + 1 : middle;
+                right = middle - 1;
             }
         }
         return nums[left];
