@@ -12,15 +12,15 @@ package org.zongjieli.leetcode.question.daily.year2022.month2.week1;
  */
 public class Z7UniqueSum {
     public int sumOfUnique(int[] nums) {
+        int result = 0;
         int[] count = new int[101];
         for (int num : nums) {
-            count[num]++;
-        }
-        int result = 0;
-        for (int i = 0; i < count.length; i++) {
-            if (count[i] == 1) {
-                result += i;
+            if (count[num] == 0) {
+                result += num;
+            } else if (count[num] == 1) {
+                result -= num;
             }
+            count[num]++;
         }
         return result;
     }
