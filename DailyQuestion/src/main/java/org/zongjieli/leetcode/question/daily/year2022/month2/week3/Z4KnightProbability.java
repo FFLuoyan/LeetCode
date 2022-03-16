@@ -56,6 +56,11 @@ public class Z4KnightProbability {
         }
         row = row < size ? row : n - 1 - row;
         column = column < size ? column : n - 1 - column;
+        if (row > column) {
+            int temp = row;
+            row = column;
+            column = temp;
+        }
         double p = probability[k][row][column];
         if (p != 0) {
             return p;
