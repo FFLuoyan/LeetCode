@@ -23,69 +23,60 @@ package org.zongjieli.leetcode.question.daily.year2022.month2.week3;
 public class Z4KnightProbability {
 
     public double knightProbability(int n, int k, int row, int column) {
-        if (n <= 2 && k > 0) {
+        if (k == 0) {
+            return 1;
+        }
+        if (n <= 2) {
             return 0;
         }
-        int size = n * n;
-        double[] probability = new double[size];
-        probability[n * row + column] = 1;
-        int[][] indexes = new int[size][9];
+        double[][][] probability = new double[k + 1][n][n];
+        double[][] zero = probability[0];
         for (int i = 0 ; i < n ; i++) {
             for (int j = 0 ; j < n ; j++) {
-                int current = i * n + j;
-                if (i >= 2) {
-                    if (j >= 1) {
-                        indexes[current][indexes[current][8]++] = (i - 2) * n + j - 1;
-                    }
-                    if (j < n - 1) {
-                        indexes[current][indexes[current][8]++] = (i - 2) * n + j + 1;
-                    }
-                }
-
-                if (i >= 1) {
-                    if (j >= 2) {
-                        indexes[current][indexes[current][8]++] = (i - 1) * n + j - 2;
-                    }
-                    if (j < n - 2) {
-                        indexes[current][indexes[current][8]++] = (i - 1) * n + j + 2;
-                    }
-                }
-
-                if (i < n - 1) {
-                    if (j >= 2) {
-                        indexes[current][indexes[current][8]++] = (i + 1) * n + j - 2;
-                    }
-                    if (j < n - 2) {
-                        indexes[current][indexes[current][8]++] = (i + 1) * n + j + 2;
-                    }
-                }
-
-                if (i < n - 2) {
-                    if (j >= 1) {
-                        indexes[current][indexes[current][8]++] = (i + 2) * n + j - 1;
-                    }
-                    if (j < n - 1) {
-                        indexes[current][indexes[current][8]++] = (i + 2) * n + j + 1;
-                    }
-                }
+                zero[i][j] = 1;
             }
         }
-        while (k-- > 0) {
-            double[] next = new double[size];
-            for (int i = 0 ; i < size ; i++) {
-                int loopSize = indexes[i][8];
-                for (int j = 0 ; j < loopSize ; j++) {
-                    next[i] += probability[indexes[i][j]] / 8;
-                }
-            }
-            probability = next;
-        }
+        return calProbability(row, column, probability, k, n);
+    }
 
-        double result = 0;
-        for (double v : probability) {
-            result += v;
+    private double calProbability(int row, int column, double[][][]probability, int k, int n) {
+        double p = probability[k][row][column];
+        if (p != 0) {
+            return probability[k][row][column];
         }
-        return result;
+        if (row >= 2) {
+            if (column >= 1) {
+                p += calProbability(row - 2, column - 1, probability, k - 1, n);
+            }
+            if (column < n - 1) {
+                p += calProbability(row - 2, column + 1, probability, k - 1, n);
+            }
+        }
+        if (row >= 1) {
+            if (column >= 2) {
+                p += calProbability(row - 1, column - 2, probability, k - 1, n);
+            }
+            if (column < n - 2) {
+                p += calProbability(row - 1, column + 2, probability, k - 1, n);
+            }
+        }
+        if (row < n - 1) {
+            if (column >= 2) {
+                p += calProbability(row + 1, column - 2, probability, k - 1, n);
+            }
+            if (column < n - 2) {
+                p += calProbability(row + 1, column + 2, probability, k - 1, n);
+            }
+        }
+        if (row < n - 2) {
+            if (column >= 1) {
+                p += calProbability(row + 2, column - 1, probability, k - 1, n);
+            }
+            if (column < n - 1) {
+                p += calProbability(row + 2, column + 1, probability, k - 1, n);
+            }
+        }
+        return probability[k][row][column] = p / 8;
     }
 
     public static void main(String[] args) {
@@ -94,6 +85,5 @@ public class Z4KnightProbability {
         System.out.println(test.knightProbability(3, 2, 0, 0));
         // 1
         System.out.println(test.knightProbability(1, 0, 0, 0));
-        System.out.println(test.knightProbability(8, 30, 6, 4));
     }
 }
