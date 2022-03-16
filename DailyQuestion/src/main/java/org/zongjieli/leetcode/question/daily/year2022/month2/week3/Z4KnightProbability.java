@@ -29,53 +29,45 @@ public class Z4KnightProbability {
         if (n <= 2) {
             return 0;
         }
-        double[][][] probability = new double[k + 1][n][n];
+        if (n == 3) {
+            if (column == 1 && row == 1) {
+                return 0;
+            }
+            double p = 1;
+            while (k-- > 0) {
+                p /= 4;
+            }
+            return p;
+        }
+        int size = (n + 1) / 2;
+        double[][][] probability = new double[k + 1][size][size];
         double[][] zero = probability[0];
-        for (int i = 0 ; i < n ; i++) {
-            for (int j = 0 ; j < n ; j++) {
+        for (int i = 0 ; i < size ; i++) {
+            for (int j = 0 ; j < size ; j++) {
                 zero[i][j] = 1;
             }
         }
-        return calProbability(row, column, probability, k, n);
+        return calProbability(row, column, probability, k, n, size);
     }
 
-    private double calProbability(int row, int column, double[][][]probability, int k, int n) {
+    private double calProbability(int row, int column, double[][][]probability, int k, int n, int size) {
+        if (row < 0 || row >= n || column < 0 || column >= n) {
+            return 0;
+        }
+        row = row < size ? row : n - 1 - row;
+        column = column < size ? column : n - 1 - column;
         double p = probability[k][row][column];
         if (p != 0) {
-            return probability[k][row][column];
+            return p;
         }
-        if (row >= 2) {
-            if (column >= 1) {
-                p += calProbability(row - 2, column - 1, probability, k - 1, n);
-            }
-            if (column < n - 1) {
-                p += calProbability(row - 2, column + 1, probability, k - 1, n);
-            }
-        }
-        if (row >= 1) {
-            if (column >= 2) {
-                p += calProbability(row - 1, column - 2, probability, k - 1, n);
-            }
-            if (column < n - 2) {
-                p += calProbability(row - 1, column + 2, probability, k - 1, n);
-            }
-        }
-        if (row < n - 1) {
-            if (column >= 2) {
-                p += calProbability(row + 1, column - 2, probability, k - 1, n);
-            }
-            if (column < n - 2) {
-                p += calProbability(row + 1, column + 2, probability, k - 1, n);
-            }
-        }
-        if (row < n - 2) {
-            if (column >= 1) {
-                p += calProbability(row + 2, column - 1, probability, k - 1, n);
-            }
-            if (column < n - 1) {
-                p += calProbability(row + 2, column + 1, probability, k - 1, n);
-            }
-        }
+        p += calProbability(row - 2, column - 1, probability, k - 1, n, size);
+        p += calProbability(row - 2, column + 1, probability, k - 1, n, size);
+        p += calProbability(row - 1, column - 2, probability, k - 1, n, size);
+        p += calProbability(row - 1, column + 2, probability, k - 1, n, size);
+        p += calProbability(row + 1, column - 2, probability, k - 1, n, size);
+        p += calProbability(row + 1, column + 2, probability, k - 1, n, size);
+        p += calProbability(row + 2, column - 1, probability, k - 1, n, size);
+        p += calProbability(row + 2, column + 1, probability, k - 1, n, size);
         return probability[k][row][column] = p / 8;
     }
 
@@ -85,5 +77,9 @@ public class Z4KnightProbability {
         System.out.println(test.knightProbability(3, 2, 0, 0));
         // 1
         System.out.println(test.knightProbability(1, 0, 0, 0));
+        // 0
+        System.out.println(test.knightProbability(3, 1, 1, 1));
+        // 1.9052566E-4
+        System.out.println(test.knightProbability(8, 30, 6, 4));
     }
 }
