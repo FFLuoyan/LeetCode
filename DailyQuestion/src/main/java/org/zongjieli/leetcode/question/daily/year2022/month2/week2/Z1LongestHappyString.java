@@ -1,5 +1,8 @@
 package org.zongjieli.leetcode.question.daily.year2022.month2.week2;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 /**
  * 如果字符串中不含有任何 'aaa','bbb' 或 'ccc' 这样的字符串作为子串
  * 那么该字符串就是一个快乐字符串
@@ -19,93 +22,38 @@ package org.zongjieli.leetcode.question.daily.year2022.month2.week2;
  * @version  1.0
  */
 public class Z1LongestHappyString {
+
     public String longestDiverseString(int a, int b, int c) {
         StringBuilder result = new StringBuilder(a + b + c);
-        char ac = 'a', bc = 'b', cc = 'c', tempC;
-        int temp;
-        if (a < b){
-            temp = a;
-            a = b;
-            b = temp;
-            tempC = ac;
-            ac = bc;
-            bc = tempC;
-        }
+        int[][] save = new int[][]{{'a', a}, {'b', b}, {'c', c}};
+        Arrays.sort(save, Comparator.comparingInt(compare -> compare[1]));
 
-        if (c > a){
-            temp = c;
-            c = b;
-            b = a;
-            a = temp;
-            tempC = cc;
-            cc = bc;
-            bc = ac;
-            ac = tempC;
-        } else if (c > b){
-            temp = b;
-            b = c;
-            c = temp;
-            tempC = cc;
-            cc = bc;
-            bc = tempC;
-        }
+        char ac = (char) save[2][0];
+        char bc = (char) save[1][0];
+        char cc = (char) save[0][0];
+        a = save[2][1];
+        b = save[1][1];
+        c = save[0][1];
 
-        if (a >= 2 * (b + c)){
-            while (b-- > 0){
-                result.append(ac).append(ac).append(bc);
-                a -= 2;
-            }
-            while (c-- > 0){
-                result.append(ac).append(ac).append(cc);
-                a -= 2;
-            }
-            if (a-- > 0){
+        int count = 0;
+        while (a + b + c > 0) {
+            if (a > b && count < 2) {
                 result.append(ac);
+                a--;
+                count++;
+            } else if (b > c) {
+                result.append(bc);
+                b--;
+                count = 0;
+            } else if (c == 0) {
+                break;
+            } else {
+                result.append(cc);
+                c--;
+                count = 0;
             }
-
-            if (a > 0){
-                result.append(ac);
-            }
-            return result.toString();
         }
 
-        if (a >= b + c){
-            while (a > b + c){
-                if (b > 0) {
-                    a -= 2;
-                    b--;
-                    result.append(ac).append(ac).append(bc);
-                } else if (c > 0){
-                    a -= 2;
-                    c--;
-                    result.append(ac).append(ac).append(cc);
-                }
-            }
-
-            while (b-- > 0){
-                result.append(ac).append(bc);
-            }
-
-            while (c-- > 0){
-                result.append(ac).append(cc);
-            }
-            return result.toString();
-        }
-
-        while (a < b + c){
-            result.append(ac).append(bc).append(cc);
-            a--;
-            b--;
-            c--;
-        }
-
-        while (b-- > 0){
-            result.append(ac).append(bc);
-        }
-
-        while (c-- > 0){
-            result.append(ac).append(cc);
-        }
         return result.toString();
     }
 
@@ -113,7 +61,7 @@ public class Z1LongestHappyString {
         Z1LongestHappyString test = new Z1LongestHappyString();
         // ccaccbcc
         System.out.println(test.longestDiverseString(1,1,7));
-        // ccacc
+        // ccac
         System.out.println(test.longestDiverseString(1,0,3));
     }
 }
