@@ -13,10 +13,28 @@ package org.zongjieli.leetcode.question.daily.year2022.month2.week2;
  */
 public class Z7MaxBalloons {
     public int maxNumberOfBalloons(String text) {
-        int[] count = new int[128];
+        int a = 0, b = 0, n = 0, l = 0, o = 0;
         for (int i = 0 ; i < text.length() ; i++) {
-            count[text.charAt(i)]++;
+            switch (text.charAt(i)){
+                case 'a':
+                    a++;
+                    break;
+                case 'b':
+                    b++;
+                    break;
+                case 'n':
+                    n++;
+                    break;
+                case 'l':
+                    l++;
+                    break;
+                case 'o':
+                    o++;
+                    break;
+                default:
+                    break;
+            }
         }
-        return Math.min(count['a'], Math.min(count['b'], Math.min(count['n'], Math.min(count['l'], count['o']) / 2)));
+        return Math.min(a, Math.min(b, Math.min(n, Math.min(l, o) / 2)));
     }
 }
