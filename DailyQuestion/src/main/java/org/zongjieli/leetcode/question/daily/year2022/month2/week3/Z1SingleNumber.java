@@ -15,11 +15,45 @@ package org.zongjieli.leetcode.question.daily.year2022.month2.week3;
 public class Z1SingleNumber {
 
     public int singleNonDuplicate(int[] nums) {
-        int result = 0;
-        for (int num : nums) {
-            result ^= num;
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+            if (left == right) {
+                return nums[left];
+            }
+            int middle = (left + right) / 2;
+            int size = middle - left;
+            if (size % 2 == 1) {
+                // 单边单数
+                if (nums[middle] == nums[middle + 1]) {
+                    right = middle - 1;
+                } else if (nums[middle] == nums[middle - 1]){
+                    left = middle + 1;
+                } else {
+                    return nums[middle];
+                }
+            } else {
+                // 单边双数
+                if (nums[middle] == nums[middle + 1]) {
+                    left = middle +  2;
+                } else if (nums[middle] == nums[middle - 1]){
+                    right = middle - 2;
+                } else {
+                    return nums[middle];
+                }
+            }
         }
-        return result;
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        Z1SingleNumber test = new Z1SingleNumber();
+        // 2
+        System.out.println(test.singleNonDuplicate(new int[]{1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8}));
+        // 2
+        System.out.println(test.singleNonDuplicate(new int[]{1, 1, 2, 3, 3, 4, 4, 8, 8}));
+        // 2
+        System.out.println(test.singleNonDuplicate(new int[]{1, 1, 2, 3, 3, 4, 4, 8, 8, 9, 9}));
     }
 
 }
