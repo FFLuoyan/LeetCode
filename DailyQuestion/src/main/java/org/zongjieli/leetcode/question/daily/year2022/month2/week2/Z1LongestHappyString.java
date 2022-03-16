@@ -36,7 +36,7 @@ public class Z1LongestHappyString {
         c = save[0][1];
 
         int count = 0;
-        while (a + b + c > 0) {
+        while (a > 0 && (b > 0 || count < 2)) {
             if (a > b && count < 2) {
                 result.append(ac);
                 a--;
@@ -45,8 +45,6 @@ public class Z1LongestHappyString {
                 result.append(bc);
                 b--;
                 count = 0;
-            } else if (c == 0) {
-                break;
             } else {
                 result.append(cc);
                 c--;
