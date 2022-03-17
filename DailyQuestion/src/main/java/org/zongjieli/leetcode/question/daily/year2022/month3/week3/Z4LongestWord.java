@@ -18,28 +18,32 @@ import java.util.*;
 public class Z4LongestWord {
 
     public String longestWord(String[] words) {
-        String result = "";
-        LinkedList<String> save = new LinkedList<>();
         Set<String> all = new HashSet<>(Arrays.asList(words));
-        for (char c = 'a' ; c <= 'z' ; c++) {
-            String current = String.valueOf(c);
-            if (all.contains(current)) {
-                save.addLast(current);
+        Arrays.sort(words, (a, b) -> {
+            int aSize = a.length();
+            int bSize = b.length();
+            if (aSize != bSize) {
+                return Integer.compare(bSize, aSize);
             }
-        }
-        while (!save.isEmpty()) {
-            result = save.getFirst();
-            int size = save.size();
-            for (int i = 0 ; i < size ; i++) {
-                String temp = save.pollFirst();
-                for (char c = 'a' ; c <= 'z' ; c++) {
-                    String current = temp + c;
-                    if (all.contains(current)) {
-                        save.addLast(current);
-                    }
+            return a.compareTo(b);
+        });
+        for (String word : words) {
+            String current = word;
+            while (current.length() > 0) {
+                if (!all.contains(current)) {
+                    break;
                 }
+                current = current.substring(0, current.length() - 1);
+            }
+            if (current.length() == 0) {
+                return word;
             }
         }
-        return result;
+        return "";
+    }
+
+    public static void main(String[] args) {
+        Z4LongestWord test = new Z4LongestWord();
+        System.out.println(test.longestWord(new String[]{"a","ab","abc","abcd"}));
     }
 }
