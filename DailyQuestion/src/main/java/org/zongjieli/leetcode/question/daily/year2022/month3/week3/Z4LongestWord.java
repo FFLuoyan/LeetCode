@@ -22,20 +22,15 @@ public class Z4LongestWord {
         Arrays.sort(words, (a, b) -> {
             int aSize = a.length();
             int bSize = b.length();
-            if (aSize != bSize) {
-                return Integer.compare(bSize, aSize);
-            }
-            return a.compareTo(b);
+            return aSize != bSize ? Integer.compare(bSize, aSize) : a.compareTo(b);
         });
         for (String word : words) {
             String current = word;
-            while (current.length() > 0) {
-                if (!all.contains(current)) {
-                    break;
-                }
-                current = current.substring(0, current.length() - 1);
+            int length = current.length();
+            while (length > 0 && all.contains(current)) {
+                current = current.substring(0, --length);
             }
-            if (current.length() == 0) {
+            if (length == 0) {
                 return word;
             }
         }
@@ -44,6 +39,17 @@ public class Z4LongestWord {
 
     public static void main(String[] args) {
         Z4LongestWord test = new Z4LongestWord();
+        // abcd
         System.out.println(test.longestWord(new String[]{"a","ab","abc","abcd"}));
+        // apple
+        System.out.println(test.longestWord(new String[]{"a","ap","app","appl", "apple", "apply", "banana"}));
+        // eyj
+        System.out.println(test.longestWord(new String[]{"ogz", "eyj", "e", "ey", "hmn", "v", "hm", "ogznkb", "ogzn", "hmnm", "eyjuo", "vuq", "ogznk", "og", "eyjuoi", "d"}));
+        // yodn
+        System.out.println(test.longestWord(new String[]{"yo", "ew", "fc", "zrc", "yodn", "fcm", "qm", "qmo", "fcmz", "z", "ewq", "yod", "ewqz", "y"}));
+        // latte
+        System.out.println(test.longestWord(new String[]{"m", "mo", "moc", "moch", "mocha", "l", "la", "lat", "latt", "latte", "c", "ca", "cat"}));
+        // otif
+        System.out.println(test.longestWord(new String[]{"rac", "rs", "ra", "on", "r", "otif", "o", "onpdu", "rsf", "rs", "ot", "oti", "racy", "onpd"}));
     }
 }
