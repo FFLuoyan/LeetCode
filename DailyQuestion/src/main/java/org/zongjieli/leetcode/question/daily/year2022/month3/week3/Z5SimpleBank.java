@@ -39,8 +39,8 @@ public class Z5SimpleBank {
         System.arraycopy(balance, 0, accounts, 1, balance.length);
     }
 
-    public boolean transfer(int account1, int account2, long money) {
-        if (!accountExist(account1) || !accountExist(account2) || accounts[account1] < money) {
+    public boolean transfer(int account1,  int account2, long money) {
+        if (accountError(account1) || accountError(account2) || accounts[account1] < money) {
             return false;
         }
         accounts[account1] -= money;
@@ -49,7 +49,7 @@ public class Z5SimpleBank {
     }
 
     public boolean deposit(int account, long money) {
-        if (!accountExist(account)) {
+        if (accountError(account)) {
             return false;
         }
         accounts[account] += money;
@@ -57,14 +57,14 @@ public class Z5SimpleBank {
     }
 
     public boolean withdraw(int account, long money) {
-        if (!accountExist(account) || accounts[account] < money) {
+        if (accountError(account) || accounts[account] < money) {
             return false;
         }
         accounts[account] -= money;
         return true;
     }
 
-    public boolean accountExist(int account) {
-        return account < accounts.length && account > 0;
+    private boolean accountError(int account) {
+        return account >= accounts.length || account <= 0;
     }
 }
