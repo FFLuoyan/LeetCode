@@ -32,15 +32,17 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week3;
  */
 public class Z5SimpleBank {
 
+    private int max;
     private long[] accounts;
 
     public Z5SimpleBank(long[] balance) {
-        accounts = new long[balance.length + 1];
-        System.arraycopy(balance, 0, accounts, 1, balance.length);
+        max = balance.length;
+        accounts = new long[max + 1];
+        System.arraycopy(balance, 0, accounts, 1, max);
     }
 
     public boolean transfer(int account1,  int account2, long money) {
-        if (accountError(account1) || accountError(account2) || accounts[account1] < money) {
+        if (account1 > max || account2 > max || accounts[account1] < money) {
             return false;
         }
         accounts[account1] -= money;
@@ -49,7 +51,7 @@ public class Z5SimpleBank {
     }
 
     public boolean deposit(int account, long money) {
-        if (accountError(account)) {
+        if (account > max) {
             return false;
         }
         accounts[account] += money;
@@ -57,14 +59,11 @@ public class Z5SimpleBank {
     }
 
     public boolean withdraw(int account, long money) {
-        if (accountError(account) || accounts[account] < money) {
+        if (account > max || accounts[account] < money) {
             return false;
         }
         accounts[account] -= money;
         return true;
     }
 
-    private boolean accountError(int account) {
-        return account >= accounts.length || account <= 0;
-    }
 }
