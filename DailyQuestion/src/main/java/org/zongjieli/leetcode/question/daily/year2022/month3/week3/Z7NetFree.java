@@ -57,16 +57,16 @@ public class Z7NetFree {
             serverLinks.computeIfAbsent(edge[1], k -> new HashSet<>()).add(edge[0]);
         }
 
-        Map<Integer, Set<Integer>> serverLength = new HashMap<>();
         Set<Integer> currentServers = new HashSet<>();
         currentServers.add(0);
 
-        int[] current = new int[]{1, 0};
+        int[] current = new int[]{1, 0, 0};
         boolean[] serverExists = new boolean[n];
         serverExists[0] = true;
 
         while (current[0] < n) {
             Set<Integer> nextServers = new HashSet<>();
+            int returnTime = 2 * ++current[1];
             currentServers.forEach(currentServer -> {
                 Set<Integer> currentServerLinks = serverLinks.get(currentServer);
                 currentServerLinks.forEach(l -> {
@@ -74,21 +74,14 @@ public class Z7NetFree {
                         serverExists[l] = true;
                         current[0]++;
                         nextServers.add(l);
+                        current[2] = Math.max(current[2], ((returnTime - 1) / patience[l]) * patience[l] + returnTime + 1);
                     }
                 });
             });
-            serverLength.put(++current[1], currentServers = nextServers);
+            currentServers = nextServers;
         }
 
-        return serverLength.entrySet().stream().map(e -> {
-            int returnTime = 2 * e.getKey();
-            return e.getValue().stream().map(s -> {
-                if (patience[s] >= returnTime) {
-                    return returnTime + 1;
-                }
-                return returnTime % patience[s] != 0 ? (returnTime / patience[s]) * patience[s] + returnTime + 1 : (returnTime / patience[s] - 1) * patience[s] + returnTime + 1;
-            }).max(Integer::compareTo).get();
-        }).max(Integer::compareTo).get();
+        return current[2];
     }
 
     public static void main(String[] args) {
