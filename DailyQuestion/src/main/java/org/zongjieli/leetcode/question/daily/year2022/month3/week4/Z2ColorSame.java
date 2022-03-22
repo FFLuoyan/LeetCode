@@ -23,26 +23,25 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week4;
 public class Z2ColorSame {
 
     public boolean winnerOfGame(String colors) {
-        int aCount = 0,bCount = 0;
-        char start = colors.charAt(0);
+        byte[] colorBytes = colors.getBytes();
+        byte lc = colorBytes[0];
         int currentCount = 1;
-        for (int i = 1 ; i < colors.length() ; i++) {
-            char current = colors.charAt(i);
-            if (current == start) {
-                currentCount++;
-            } else {
-                start = current;
-                currentCount = 1;
-            }
-            if (currentCount >= 3) {
-                if (current == 'A') {
-                    aCount++;
-                } else {
-                    bCount++;
+        int[] count = new int[67];
+        for (int i = 1 ; i < colorBytes.length ; i++) {
+            if (colorBytes[i] != lc) {
+                if (currentCount >= 3) {
+                    count[lc] += (currentCount - 2);
                 }
+                currentCount = 1;
+                lc = colorBytes[i];
+            } else {
+                currentCount++;
             }
         }
-        return aCount > bCount;
+        if (currentCount >= 3) {
+            count[lc] += (currentCount - 2);
+        }
+        return count['A'] > count['B'];
     }
 
     public static void main(String[] args) {
