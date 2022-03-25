@@ -11,18 +11,11 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week4;
 public class Z5ZeroCount {
 
     public int trailingZeroes(int n) {
-        if (n < 5) {
-            return 0;
+        int result = 0;
+        while (n >= 5) {
+            result += (n /= 5);
         }
-        int count = 1;
-        int base = 5;
-        while (n >= base) {
-            count = 5 * count + 1;
-            base *= 5;
-        }
-        base /= 5;
-        count = (count - 1) / 5;
-        return (n / base) * count + trailingZeroes(n % base);
+        return result;
     }
 
     public static void main(String[] args) {
