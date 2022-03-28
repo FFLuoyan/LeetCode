@@ -12,15 +12,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week5;
 public class Z1AlternateBit {
 
     public boolean hasAlternatingBits(int n) {
-        boolean isNextZero = (n & 1) == 0;
-        while (n > 0) {
-            boolean isCurrentZero = (n & 1) == 0;
-            if (isCurrentZero ^ isNextZero) {
-                return false;
-            }
-            n >>= 1;
-            isNextZero = !isNextZero;
-        }
-        return true;
+        return Integer.bitCount(((n >> 1) ^ n) + 1) == 1;
     }
 }
