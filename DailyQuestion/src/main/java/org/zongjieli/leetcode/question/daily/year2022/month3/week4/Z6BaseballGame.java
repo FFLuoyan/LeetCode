@@ -28,23 +28,21 @@ import java.util.LinkedList;
 public class Z6BaseballGame {
 
     public int calPoints(String[] ops) {
-        LinkedList<Integer> points = new LinkedList<>();
+        int[] values = new int[ops.length];
+        int ci = 0;
         int all = 0;
         for (String op : ops) {
             if ("D".equals(op)) {
-                int p = 2 * points.getFirst();
-                all += p;
-                points.addFirst(p);
+                values[ci] = 2 * values[ci - 1];
+                all += values[ci++];
             } else if ("+".equals(op)) {
-                int p = points.getFirst() + points.get(1);
-                all += p;
-                points.addFirst(p);
+                values[ci] = values[ci - 1] + values[ci - 2];
+                all += values[ci++];
             } else if ("C".equals(op)) {
-                all -= points.pollFirst();
+                all -= values[--ci];
             } else {
-                int p = Integer.parseInt(op);
-                all += p;
-                points.addFirst(p);
+                values[ci] = Integer.parseInt(op);
+                all += values[ci++];
             }
         }
         return all;
