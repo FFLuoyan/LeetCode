@@ -12,6 +12,12 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week5;
 public class Z1AlternateBit {
 
     public boolean hasAlternatingBits(int n) {
-        return Integer.bitCount(((n >> 1) ^ n) + 1) == 1;
+        int r = n ^ (n >> 1);
+        return (r & (r + 1)) == 0;
+    }
+
+    public static void main(String[] args) {
+        Z1AlternateBit test = new Z1AlternateBit();
+        System.out.println(test.hasAlternatingBits(5));
     }
 }
