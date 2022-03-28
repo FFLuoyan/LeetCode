@@ -32,17 +32,22 @@ public class Z6BaseballGame {
         int ci = 0;
         int all = 0;
         for (String op : ops) {
-            if ("D".equals(op)) {
-                values[ci] = 2 * values[ci - 1];
-                all += values[ci++];
-            } else if ("+".equals(op)) {
-                values[ci] = values[ci - 1] + values[ci - 2];
-                all += values[ci++];
-            } else if ("C".equals(op)) {
-                all -= values[--ci];
-            } else {
-                values[ci] = Integer.parseInt(op);
-                all += values[ci++];
+            switch (op) {
+                case "D":
+                    values[ci] = 2 * values[ci - 1];
+                    all += values[ci++];
+                    break;
+                case "+":
+                    values[ci] = values[ci - 1] + values[ci - 2];
+                    all += values[ci++];
+                    break;
+                case "C":
+                    all -= values[--ci];
+                    break;
+                default:
+                    values[ci] = Integer.parseInt(op);
+                    all += values[ci++];
+                    break;
             }
         }
         return all;
