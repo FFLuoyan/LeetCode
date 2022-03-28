@@ -42,9 +42,9 @@ public class FindLostData {
             result[--n] = 6;
             remain -= 6;
         }
+        remain -= n;
         while (--n >= 0) {
             result[n] = 1;
-            remain--;
         }
         result[0] += remain;
         return result;
