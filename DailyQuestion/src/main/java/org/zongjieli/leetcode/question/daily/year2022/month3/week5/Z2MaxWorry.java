@@ -24,41 +24,29 @@ public class Z2MaxWorry {
 
     public int maxConsecutiveAnswers(String answerKey, int k) {
         byte[] answers = answerKey.getBytes();
-        // 先计算 max T
-        int remain = k;
-        int start = 0;
-        int maxT = 0;
-        for (int i = 0 ; i < answers.length ; i++) {
+        int l = answers.length, rf = k, rt = k, sf = 0, st = 0, max = 0;
+        for (int i = 0 ; i < l ; i++) {
             if (answers[i] == 'F') {
-                if (remain == 0) {
-                    maxT = Math.max(maxT, i - start);
-                    while (answers[start] == 'T') {
-                        start++;
+                if (rf > 0) {
+                    rf--;
+                } else {
+                    max = Math.max(max, i - sf);
+                    while (answers[sf] == 'T') {
+                        sf++;
                     }
-                    start++;
-                    remain = 1;
+                    sf++;
                 }
-                remain--;
+            } else if (rt > 0) {
+                rt--;
+            } else {
+                max = Math.max(max, i - st);
+                while (answers[st] == 'F') {
+                    st++;
+                }
+                st++;
             }
         }
-        maxT = Math.max(maxT, answers.length - start);
-        // 再计算 maxF
-        start = 0;
-        remain = k;
-        for (int i = 0 ; i < answers.length ; i++) {
-            if (answers[i] == 'T') {
-                if (remain == 0) {
-                    maxT = Math.max(maxT, i - start);
-                    while (answers[start] == 'F') {
-                        start++;
-                    }
-                    start++;
-                    remain = 1;
-                }
-                remain--;
-            }
-        }
-        return Math.max(maxT, answers.length - start);
+        return Math.max(max, Math.max(l - st, l - sf));
     }
 
     public static void main(String[] args) {
