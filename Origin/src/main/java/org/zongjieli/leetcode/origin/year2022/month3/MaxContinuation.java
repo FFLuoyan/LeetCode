@@ -18,8 +18,9 @@ public class MaxContinuation {
         // 保证 [left, i] 为最优解的大小
         int left = 0;
         for (int num : nums) {
-            if ((num == 0 ? --k : k) < 0 && nums[left++] == 0) {
-                k++;
+            k += (num - 1);
+            if (k < 0) {
+                k += 1 - nums[left++];
             }
         }
         return nums.length - left;
