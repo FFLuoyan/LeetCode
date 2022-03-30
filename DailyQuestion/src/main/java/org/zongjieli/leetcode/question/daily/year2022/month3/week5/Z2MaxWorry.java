@@ -26,19 +26,15 @@ public class Z2MaxWorry {
 
     public int maxConsecutiveAnswers(String answerKey, int k) {
         byte[] answers = answerKey.getBytes();
-        int[] ks = new int[128];
-        ks['F'] = ks['T'] = k;
-        int ts = 0, fs = 0;
+        int[] save = new int[128];
+        int start = 0;
         for (byte answer : answers) {
-             ks[answer] --;
-            if (ks['F'] < 0 && answers[fs++] == 'F') {
-                ks['F']++;
-            }
-            if (ks['T'] < 0 && answers[ts++] == 'T') {
-                ks['T']++;
+            save[answer]++;
+            if (Math.min(save['T'], save['F']) > k) {
+                save[answers[start++]]--;
             }
         }
-        return answers.length - Math.min(ts, fs);
+        return answers.length - start;
     }
 
     public static void main(String[] args) {
