@@ -14,17 +14,15 @@ package org.zongjieli.leetcode.origin.year2022.month3;
 public class MaxContinuation {
 
     public int longestOnes(int[] nums, int k) {
-        int start = 0, result = 0;
-        for (int i = 0 ; i < nums.length ; i++) {
-            if (nums[i] == 0 && --k < 0) {
-                result = Math.max(result, i - start);
-                while (nums[start] == 1) {
-                    start++;
-                }
-                start++;
+        // left 作为滑动窗口最左侧,遍历的时候维护窗口的大小
+        // 保证 [left, i] 为最优解的大小
+        int left = 0;
+        for (int num : nums) {
+            if ((num == 0 ? --k : k) < 0 && nums[left++] == 0) {
+                k++;
             }
         }
-        return Math.max(result, nums.length - start);
+        return nums.length - left;
     }
 
     public static void main(String[] args) {
