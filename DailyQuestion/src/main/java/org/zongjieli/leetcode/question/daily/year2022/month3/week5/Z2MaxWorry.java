@@ -16,6 +16,8 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week5;
  * answerKey[i] 要么是 'T',要么是 'F'
  * 1 <= k <= n
  *
+ * @see org.zongjieli.leetcode.origin.year2022.month3.MaxContinuation
+ *
  * @author   Li.zongjie
  * @date     2022/3/29
  * @version  1.0
@@ -24,29 +26,19 @@ public class Z2MaxWorry {
 
     public int maxConsecutiveAnswers(String answerKey, int k) {
         byte[] answers = answerKey.getBytes();
-        int l = answers.length, rf = k, rt = k, sf = 0, st = 0, max = 0;
-        for (int i = 0 ; i < l ; i++) {
-            if (answers[i] == 'F') {
-                if (rf > 0) {
-                    rf--;
-                } else {
-                    max = Math.max(max, i - sf);
-                    while (answers[sf] == 'T') {
-                        sf++;
-                    }
-                    sf++;
-                }
-            } else if (rt > 0) {
-                rt--;
-            } else {
-                max = Math.max(max, i - st);
-                while (answers[st] == 'F') {
-                    st++;
-                }
-                st++;
+        int[] ks = new int[128];
+        ks['F'] = ks['T'] = k;
+        int ts = 0, fs = 0;
+        for (byte answer : answers) {
+             ks[answer] --;
+            if (ks['F'] < 0 && answers[fs++] == 'F') {
+                ks['F']++;
+            }
+            if (ks['T'] < 0 && answers[ts++] == 'T') {
+                ks['T']++;
             }
         }
-        return Math.max(max, Math.max(l - st, l - sf));
+        return answers.length - Math.min(ts, fs);
     }
 
     public static void main(String[] args) {
