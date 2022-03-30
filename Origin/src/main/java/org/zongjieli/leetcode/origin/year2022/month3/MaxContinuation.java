@@ -14,19 +14,14 @@ package org.zongjieli.leetcode.origin.year2022.month3;
 public class MaxContinuation {
 
     public int longestOnes(int[] nums, int k) {
-        int start = 0;
-        int result = 0;
+        int start = 0, result = 0;
         for (int i = 0 ; i < nums.length ; i++) {
-            if (nums[i] == 0) {
-                if (k > 0) {
-                    k--;
-                } else {
-                    result = Math.max(result, i - start);
-                    while (nums[start] == 1) {
-                        start++;
-                    }
+            if (nums[i] == 0 && --k < 0) {
+                result = Math.max(result, i - start);
+                while (nums[start] == 1) {
                     start++;
                 }
+                start++;
             }
         }
         return Math.max(result, nums.length - start);
