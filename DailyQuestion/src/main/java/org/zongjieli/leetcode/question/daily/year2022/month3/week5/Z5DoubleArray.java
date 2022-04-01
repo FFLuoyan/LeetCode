@@ -16,22 +16,13 @@ package org.zongjieli.leetcode.question.daily.year2022.month3.week5;
 public class Z5DoubleArray {
 
     public boolean canReorderDoubled(int[] arr) {
-        int max = 0;
-        int zeroCount = 0;
+        int max = 0, min = 0;
         for (int i : arr) {
-            if (i == 0) {
-                zeroCount++;
-            } else if (i < 0) {
-                max = Math.max(-i, max);
-            } else {
-                max = Math.max(i, max);
-            }
-        }
-        if (zeroCount % 2 == 1) {
-            return false;
+            max = Math.max(i, max);
+            min = Math.min(i, min);
         }
         int[] p = new int[max + 1];
-        int[] n = new int[max + 1];
+        int[] n = new int[-min + 1];
         for (int i : arr) {
             if (i < 0) {
                 n[-i]++;
@@ -39,19 +30,26 @@ public class Z5DoubleArray {
                 p[i]++;
             }
         }
-        int count = max / 2;
+        if (p[0] % 2 == 1) {
+            return false;
+        }
+        return valid(p) && valid(n);
+    }
+
+    public boolean valid(int[] value) {
+        int count = value.length;
+        if (count % 2 == 0) {
+            return false;
+        }
+        count /= 2;
         for (int i = 1 ; i <= count ; i++) {
-            int c = p[i];
-            if (c != 0 && (p[2 * i] -= c) < 0) {
-                return false;
-            }
-            c = n[i];
-            if (c != 0 && (n[2 * i] -= c) < 0) {
+            int c = value[i];
+            if (c != 0 && (value[2 * i] -= c) < 0) {
                 return false;
             }
         }
-        for (int i = count + 1 ; i <= max ; i++) {
-            if (p[i] != 0 || n[i] != 0) {
+        for (int i = count + 1 ; i < value.length ; i++) {
+            if (value[i] > 0) {
                 return false;
             }
         }
