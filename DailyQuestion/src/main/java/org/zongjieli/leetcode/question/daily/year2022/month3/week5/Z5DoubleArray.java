@@ -30,32 +30,27 @@ public class Z5DoubleArray {
                 p[i]++;
             }
         }
-        if (p[0] % 2 == 1) {
+        int pl = p.length, nl = n.length;
+        if (p[0] % 2 == 1 || pl % 2 == 0 || nl % 2 == 0) {
             return false;
         }
-        return valid(p) && valid(n);
-    }
-
-    public boolean valid(int[] value) {
-        int count = value.length;
-        if (count % 2 == 0) {
-            return false;
-        }
-        count /= 2;
-        for (int i = 1 ; i <= count ; i++) {
-            int c = value[i];
-            if (c != 0 && (value[2 * i] -= c) < 0) {
+        int ph = pl / 2, nh = nl / 2, sum = 0;
+        for (int i = 1 ; i <= ph ; i++) {
+            int c = p[i];
+            if (c != 0 && (p[2 * i] -= c) < 0) {
                 return false;
             }
+            sum += c;
         }
-        for (int i = count + 1 ; i < value.length ; i++) {
-            if (value[i] > 0) {
+        for (int i = 1 ; i <= nh ; i++) {
+            int c = n[i];
+            if (c != 0 && (n[2 * i] -= c) < 0) {
                 return false;
             }
+            sum += c;
         }
-        return true;
+        return 2 * sum + p[0] == arr.length;
     }
-
 
     public static void main(String[] args) {
         Z5DoubleArray test = new Z5DoubleArray();
@@ -63,5 +58,7 @@ public class Z5DoubleArray {
         System.out.println(test.canReorderDoubled(new int[]{3, 1, 3, 6}));
         // true
         System.out.println(test.canReorderDoubled(new int[]{4, -2, 2, -4}));
+        // true
+        System.out.println(test.canReorderDoubled(new int[]{2, 4, 0, 0, 8, 1}));
     }
 }
