@@ -19,39 +19,29 @@ import java.util.TreeMap;
 public class Z5DoubleArray {
 
     public boolean canReorderDoubled(int[] arr) {
-        TreeMap<Integer, Integer> positiveAndZero = new TreeMap<>();
-        TreeMap<Integer, Integer> negative = new TreeMap<>();
+        int[][] save = new int[2][100001];
         for (int i : arr) {
-            if (i < 0) {
-                negative.merge(-i, 1, Integer::sum);
-            } else {
-                positiveAndZero.merge(i, 1, Integer::sum);
-            }
+            save[i < 0 ? 1 : 0][Math.abs(i)]++;
         }
-        Integer zero = positiveAndZero.remove(0);
-        if (zero != null && (zero % 2 == 1)) {
+        if (save[0][0] % 2 == 1) {
             return false;
         }
-        return validTree(positiveAndZero) && validTree(negative);
-    }
-
-    public boolean validTree(TreeMap<Integer, Integer> save) {
-        Map.Entry<Integer, Integer> first;
-        while ((first = save.pollFirstEntry()) != null) {
-            int dv = first.getKey() * 2;
-            int c = first.getValue();
-            Integer dc = save.get(dv);
-            if (dc == null || dc < c) {
+        for (int i = 1 ; i < 50001 ; i++) {
+            if (save[0][i] != 0 && (save[0][2 * i] -= save[0][i]) < 0) {
                 return false;
             }
-            if (dc == c) {
-                save.remove(dv);
-            } else {
-                save.put(dv, dc - c);
+            if (save[1][i] != 0 && (save[1][2 * i] -= save[1][i]) < 0) {
+                return false;
+            }
+        }
+        for (int i = 50000 ; i < 100001 ; i++) {
+            if (save[0][i] > 0 || save[1][i] > 0) {
+                return false;
             }
         }
         return true;
     }
+
 
     public static void main(String[] args) {
         Z5DoubleArray test = new Z5DoubleArray();
