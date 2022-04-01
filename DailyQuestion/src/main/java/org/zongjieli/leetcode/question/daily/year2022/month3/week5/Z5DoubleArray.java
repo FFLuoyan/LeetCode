@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month3.week5;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * 给定一个长度为偶数的整数数组 arr,只有对 arr 进行重组后可以满足
  *  对于每个 0 <= i < len(arr) / 2,都有 arr[2 * i + 1] = 2 * arr[2 * i] 
@@ -19,23 +16,42 @@ import java.util.TreeMap;
 public class Z5DoubleArray {
 
     public boolean canReorderDoubled(int[] arr) {
-        int[][] save = new int[2][100001];
+        int max = 0;
+        int zeroCount = 0;
         for (int i : arr) {
-            save[i < 0 ? 1 : 0][Math.abs(i)]++;
+            if (i == 0) {
+                zeroCount++;
+            } else if (i < 0) {
+                max = Math.max(-i, max);
+            } else {
+                max = Math.max(i, max);
+            }
         }
-        if (save[0][0] % 2 == 1) {
+        if (zeroCount % 2 == 1) {
             return false;
         }
-        for (int i = 1 ; i < 50001 ; i++) {
-            if (save[0][i] != 0 && (save[0][2 * i] -= save[0][i]) < 0) {
+        int[] p = new int[max + 1];
+        int[] n = new int[max + 1];
+        for (int i : arr) {
+            if (i < 0) {
+                n[-i]++;
+            } else {
+                p[i]++;
+            }
+        }
+        int count = max / 2;
+        for (int i = 1 ; i <= count ; i++) {
+            int c = p[i];
+            if (c != 0 && (p[2 * i] -= c) < 0) {
                 return false;
             }
-            if (save[1][i] != 0 && (save[1][2 * i] -= save[1][i]) < 0) {
+            c = n[i];
+            if (c != 0 && (n[2 * i] -= c) < 0) {
                 return false;
             }
         }
-        for (int i = 50000 ; i < 100001 ; i++) {
-            if (save[0][i] > 0 || save[1][i] > 0) {
+        for (int i = count + 1 ; i <= max ; i++) {
+            if (p[i] != 0 || n[i] != 0) {
                 return false;
             }
         }
