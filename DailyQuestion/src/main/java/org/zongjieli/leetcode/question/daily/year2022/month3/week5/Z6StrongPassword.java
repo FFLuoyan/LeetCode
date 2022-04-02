@@ -29,10 +29,52 @@ public class Z6StrongPassword {
         if (length <= 3) {
             return 6 - length;
         }
+
+        if (length < 6) {
+            int isUpper = 0, isLower = 0, isNumber = 0;
+            for (int i = 0 ; i < length ; i++) {
+                char currentChar = password.charAt(i);
+                if (currentChar <= '9' && currentChar >= '0') {
+                    isNumber = 1;
+                } else if (currentChar >= 'a' && currentChar <= 'z') {
+                    isLower = 1;
+                } else if (currentChar >= 'A' && currentChar <= 'Z') {
+                    isUpper = 1;
+                }
+            }
+            return Math.max(6 - length, 3 - isUpper - isLower - isNumber);
+        }
+
+        if (length <= 20) {
+            int current = 0;
+            char lastChar = '-';
+            int isUpper = 0, isLower = 0, isNumber = 0, replace = 0;
+            for (int i = 0 ; i < length ; i++) {
+                char currentChar = password.charAt(i);
+                if (currentChar <= '9' && currentChar >= '0') {
+                    isNumber = 1;
+                } else if (currentChar >= 'a' && currentChar <= 'z') {
+                    isLower = 1;
+                } else if (currentChar >= 'A' && currentChar <= 'Z') {
+                    isUpper = 1;
+                }
+
+                if (lastChar == '-' || currentChar != lastChar) {
+                    current = 1;
+                    lastChar = currentChar;
+                } else if (++current == 3) {
+                    current = 0;
+                    lastChar = '-';
+                    replace++;
+                }
+            }
+            return Math.max(3 - isLower - isUpper - isNumber, replace);
+        }
+
         int current = 0;
         char lastChar = '-';
         int isUpper = 0, isLower = 0, isNumber = 0;
-        LinkedList<Integer> same = new LinkedList<>();
+        int delete1 = 0, delete2 = 0, deleteAll = 0, replace = 0;
         for (int i = 0 ; i < length ; i++) {
             char currentChar = password.charAt(i);
             if (currentChar <= '9' && currentChar >= '0') {
@@ -42,81 +84,64 @@ public class Z6StrongPassword {
             } else if (currentChar >= 'A' && currentChar <= 'Z') {
                 isUpper = 1;
             }
+
             if (currentChar == lastChar) {
                 current++;
                 continue;
             } else if (current >= 3) {
-                same.add(current);
+                replace += current / 3;
+                int remain = current % 3;
+                if (remain == 0) {
+                    delete1++;
+                } else if (remain == 1) {
+                    delete2++;
+                }
+                deleteAll += (current - 2);
             }
-            current = 1;
             lastChar = currentChar;
+            current = 1;
         }
-        if (current >= 3 ){
-            same.add(current);
-        }
-        int isAll = isLower + isNumber + isUpper;
-        if (length < 6) {
-            return Math.max(6 - length, 3 - isAll);
-        } else if (length <= 20) {
-            return Math.max(3 - isAll, same.stream().mapToInt(r -> r / 3).sum());
-        } else {
-            int needDelete = length - 20;
-            if (same.isEmpty()) {
-                return needDelete + 3 - isAll;
-            }
-            same.sort(Comparator.comparingInt(a -> a % 3));
-            int r = 0;
-            while (!same.isEmpty()) {
-                if (needDelete == 0) {
-                    break;
-                }
-                int o = same.pollFirst();
-                if (o % 3 == 0) {
-                    r++;
-                    needDelete--;
-                    if (o != 3) {
-                        same.addLast(o - 1);
-                    }
-                } else if (o % 3 == 1) {
-                    if (needDelete < 2) {
-                        r++;
-                        needDelete--;
-                        same.addLast(o - 1);
-                    } else {
-                        r += 2;
-                        needDelete -= 2;
-                        if (o != 4) {
-                            same.addLast(o - 2);
-                        }
-                    }
-                } else {
-                    if (needDelete < 3) {
-                        r += needDelete;
-                        needDelete = 0;
-                        same.addLast(o - needDelete);
-                    } else {
-                        r += 3;
-                        needDelete -= 3;
-                        if (o != 5) {
-                            same.addLast(o - 3);
-                        }
-                    }
-                }
-            }
 
-            if (needDelete > 0 || same.isEmpty()) {
-                return needDelete + r + 3 - isAll;
-            } else {
-                return r + Math.max(3 - isAll, same.stream().mapToInt(s -> s / 3).sum());
+        if (current >= 3) {
+            replace += current / 3;
+            int remain = current % 3;
+            if (remain == 0) {
+                delete1++;
+            } else if (remain == 1) {
+                delete2++;
             }
+            deleteAll += (current - 2);
         }
+
+        int needDelete = length - 20;
+        int needSup = 3 - isUpper - isLower - isNumber;
+        if (needDelete >= deleteAll) {
+            return needDelete + needSup;
+        }
+
+        if (needDelete <= delete1) {
+            return needDelete + Math.max(replace - needDelete, needSup);
+        }
+        needDelete -= delete1;
+        replace -= delete1;
+        if (needDelete <= 2 * delete2) {
+            return delete1 + needDelete + Math.max(replace - needDelete / 2, needSup);
+        }
+
+        needDelete -= (2 * delete2);
+        replace -= delete2;
+        return delete1 + 2 * delete2 + needDelete + Math.max(replace - needDelete / 3, needSup);
     }
 
     public static void main(String[] args) {
         Z6StrongPassword test = new Z6StrongPassword();
         // 2
-//        System.out.println(test.strongPasswordChecker("ABABABABABABABABABAB1"));
+        System.out.println(test.strongPasswordChecker("ABABABABABABABABABAB1"));
         // 2
         System.out.println(test.strongPasswordChecker("QQQQQ"));
+        // 8
+        System.out.println(test.strongPasswordChecker("bbaaaaaaaaaaaaaaacccccc"));
+        // 3
+        System.out.println(test.strongPasswordChecker("10203040aaaaa50607080B"));
     }
 }
