@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month3.week5;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-
 /**
  * 如果一个密码满足下述所有条件,则认为这个密码是强密码:
  *  由至少 6 个,至多 20 个字符组成
@@ -28,47 +25,6 @@ public class Z6StrongPassword {
         int length = password.length();
         if (length <= 3) {
             return 6 - length;
-        }
-
-        if (length < 6) {
-            int isUpper = 0, isLower = 0, isNumber = 0;
-            for (int i = 0 ; i < length ; i++) {
-                char currentChar = password.charAt(i);
-                if (currentChar <= '9' && currentChar >= '0') {
-                    isNumber = 1;
-                } else if (currentChar >= 'a' && currentChar <= 'z') {
-                    isLower = 1;
-                } else if (currentChar >= 'A' && currentChar <= 'Z') {
-                    isUpper = 1;
-                }
-            }
-            return Math.max(6 - length, 3 - isUpper - isLower - isNumber);
-        }
-
-        if (length <= 20) {
-            int current = 0;
-            char lastChar = '-';
-            int isUpper = 0, isLower = 0, isNumber = 0, replace = 0;
-            for (int i = 0 ; i < length ; i++) {
-                char currentChar = password.charAt(i);
-                if (currentChar <= '9' && currentChar >= '0') {
-                    isNumber = 1;
-                } else if (currentChar >= 'a' && currentChar <= 'z') {
-                    isLower = 1;
-                } else if (currentChar >= 'A' && currentChar <= 'Z') {
-                    isUpper = 1;
-                }
-
-                if (lastChar == '-' || currentChar != lastChar) {
-                    current = 1;
-                    lastChar = currentChar;
-                } else if (++current == 3) {
-                    current = 0;
-                    lastChar = '-';
-                    replace++;
-                }
-            }
-            return Math.max(3 - isLower - isUpper - isNumber, replace);
         }
 
         int current = 0;
@@ -112,9 +68,16 @@ public class Z6StrongPassword {
             }
             deleteAll += (current - 2);
         }
+        int needSup = 3 - isUpper - isLower - isNumber;
+        if (length < 6) {
+            return Math.max(6 - length, needSup);
+        }
+        if (length <= 20) {
+            return Math.max(needSup, replace);
+        }
 
         int needDelete = length - 20;
-        int needSup = 3 - isUpper - isLower - isNumber;
+
         if (needDelete >= deleteAll) {
             return needDelete + needSup;
         }
