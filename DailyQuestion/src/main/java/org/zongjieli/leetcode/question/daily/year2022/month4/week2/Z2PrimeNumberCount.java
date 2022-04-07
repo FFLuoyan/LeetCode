@@ -1,4 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month4.week2;
+
 /**
  * 给定两个整数 left 和 right
  * 在闭区间 [left, right] 范围内
@@ -15,14 +16,26 @@ package org.zongjieli.leetcode.question.daily.year2022.month4.week2;
  */
 public class Z2PrimeNumberCount {
 
+    private int[] count = new int[]{0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5};
+
     public int countPrimeSetBits(int left, int right) {
-        int count = 0;
+        int result = 0;
         for (int i = left ; i <= right ; i++) {
-            int w = Integer.bitCount(i);
-            if (w == 2 || w == 3 || w == 5 || w == 7 || w == 11 || w == 13 || w == 17 || w == 19 || w == 23 || w == 29 || w == 31) {
-                count++;
+            int w = count[i & 31] + count[(i >> 5) & 31] + count[(i >> 10) & 31] + count[(i >> 15) & 31];
+            if (w == 2 || w == 3 || w == 5 || w == 7 || w == 11 || w == 13 || w == 17 || w == 19) {
+                result++;
             }
         }
-        return count;
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Z2PrimeNumberCount test = new Z2PrimeNumberCount();
+        // 4
+        System.out.println(test.countPrimeSetBits(6, 10));
+        // 117
+        System.out.println(test.countPrimeSetBits(8, 200));
+        // 1465
+        System.out.println(test.countPrimeSetBits(289051, 294301));
     }
 }
