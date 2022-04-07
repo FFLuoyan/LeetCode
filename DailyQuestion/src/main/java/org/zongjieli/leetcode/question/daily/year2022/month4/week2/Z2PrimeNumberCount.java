@@ -16,13 +16,12 @@ package org.zongjieli.leetcode.question.daily.year2022.month4.week2;
  */
 public class Z2PrimeNumberCount {
 
-    private int[] count = new int[]{0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5};
-
     public int countPrimeSetBits(int left, int right) {
         int result = 0;
         for (int i = left ; i <= right ; i++) {
-            int w = count[i & 31] + count[(i >> 5) & 31] + count[(i >> 10) & 31] + count[(i >> 15) & 31];
-            if (w == 2 || w == 3 || w == 5 || w == 7 || w == 11 || w == 13 || w == 17 || w == 19) {
+            // 665772 = 10100010100010101100
+            // 从低至高第 i 位表示第 i 位为质数,质数为 2, 3, 5, 7, 11, 13, 17, 19
+            if ((665772 >> Integer.bitCount(i) & 1) == 1) {
                 result++;
             }
         }
