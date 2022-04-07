@@ -16,16 +16,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month4.week2;
 public class Z4RotateString {
 
     public boolean rotateString(String s, String goal) {
-        int sl = s.length();
-        char[] value = new char[2 * sl];
-        for (int i = 0 ; i < sl ; i++) {
-            value[i] = value[i + sl] = s.charAt(i);
-        }
-        for (int i = 0 ; i < sl ; i++) {
-            if (new String(value, i, sl).equals(goal)) {
-                return true;
-            }
-        }
-        return false;
+        return s.length() == goal.length() && (s + s).contains(goal);
     }
 }
