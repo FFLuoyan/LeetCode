@@ -2,7 +2,7 @@ package org.zongjieli.leetcode.question.daily.year2022.month4.week2;
 
 import org.zongjieli.leetcode.base.Tree;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,22 +19,26 @@ import java.util.List;
 public class Z5NthTreeErgodic {
 
     public List<List<Integer>> levelOrder(Tree root) {
-        LinkedList<List<Integer>> result = new LinkedList<>();
-        if (root == null) {
-            return result;
-        }
-        LinkedList<Tree> current = new LinkedList<>();
-        current.add(root);
-        while (!current.isEmpty()) {
-            int size = current.size();
-            LinkedList<Integer> row = new LinkedList<>();
-            while (--size >= 0) {
-                Tree first = current.pollFirst();
-                row.add(first.val);
-                current.addAll(first.children);
-            }
-            result.addLast(row);
-        }
+        List<List<Integer>> result = new ArrayList<>();
+        addToResult(result, root, 0);
         return result;
+    }
+
+    private void addToResult(List<List<Integer>> result, Tree root, int n) {
+        if (root == null) {
+            return;
+        }
+        List<Integer> current;
+        if (n == result.size()) {
+            result.add(current = new ArrayList<>());
+        } else {
+            current = result.get(n);
+        }
+        current.add(root.val);
+        if (root.children != null) {
+            for (Tree child : root.children) {
+                addToResult(result, child, n + 1);
+            }
+        }
     }
 }
