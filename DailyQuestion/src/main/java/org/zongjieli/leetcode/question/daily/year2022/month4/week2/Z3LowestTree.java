@@ -40,44 +40,37 @@ public class Z3LowestTree {
         setTreeSize(tree, treeHeight, currentRoot, -1);
         while (true) {
             Set<Integer> subTree = tree.get(currentRoot);
-            // max, maxTree, subMax, subMaxTree
-            int[] v = new int[]{-1, -1, -1, -1};
-            subTree.forEach(s -> {
-                if (treeHeight[s] > v[0]) {
-                    v[2] = v[0];
-                    v[3] = v[1];
-                    v[0] = treeHeight[s];
-                    v[1] = s;
-                } else if (treeHeight[s] > v[2]) {
-                    v[2] = treeHeight[s];
-                    v[3] = s;
+            int max = -1, maxTree = -1, subMax = -1;
+            for (int s : subTree) {
+                if (treeHeight[s] > max) {
+                    subMax = max;
+                    max = treeHeight[s];
+                    maxTree = s;
+                } else if (treeHeight[s] > subMax) {
+                    subMax = treeHeight[s];
                 }
-            });
-            if (v[0] == v[2]) {
+            }
+
+            if (max == subMax) {
                 return Collections.singletonList(currentRoot);
             }
-            if (v[0] == v[2] + 1) {
-                return Arrays.asList(currentRoot, v[1]);
+            if (max == subMax + 1) {
+                return Arrays.asList(currentRoot, maxTree);
             }
-            if (v[3] == -1) {
-                treeHeight[currentRoot] = 0;
-            } else {
-                treeHeight[currentRoot] = v[2] + 1;
-            }
-            currentRoot = v[1];
+            treeHeight[currentRoot] = subMax + 1;
+            currentRoot = maxTree;
         }
     }
 
     public int setTreeSize(Map<Integer, Set<Integer>> tree, int[] treeSize, int current, int parent) {
         Set<Integer> subTree = tree.get(current);
-        int[] max = new int[]{-1};
-        subTree.forEach(s -> {
-            if (s == parent) {
-                return;
+        int max = -1;
+        for (int s : subTree) {
+            if (s != parent) {
+                max = Math.max(max, setTreeSize(tree, treeSize, s, current));
             }
-            max[0] = Math.max(max[0], setTreeSize(tree, treeSize, s, current));
-        });
-        return treeSize[current] = (max[0] == -1 ? 0 : max[0] + 1);
+        }
+        return treeSize[current] = max + 1;
     }
 
     public static void main(String[] args) {
@@ -90,5 +83,7 @@ public class Z3LowestTree {
         System.out.println(test.findMinHeightTrees(7, new int[][]{{0, 1}, {1, 2}, {1, 3}, {2, 4}, {3, 5}, {4, 6}}));
         // [5]
         System.out.println(test.findMinHeightTrees(10, new int[][]{{0, 1}, {0, 2}, {0, 3}, {2, 4}, {0, 5}, {5, 6}, {6, 7}, {2, 8}, {7, 9}}));
+        // [2]
+        System.out.println(test.findMinHeightTrees(15, new int[][]{{0, 1}, {0, 2}, {2, 3}, {2, 4}, {2, 5}, {4, 6}, {0, 7}, {4, 8}, {5, 9}, {7, 10}, {6, 11}, {0, 12}, {0, 13}, {3, 14}}));
     }
 }
