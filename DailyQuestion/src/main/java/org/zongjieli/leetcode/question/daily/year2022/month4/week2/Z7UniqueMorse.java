@@ -49,16 +49,18 @@ import java.util.Set;
  */
 public class Z7UniqueMorse {
 
-    private String[] morse = new String[]{".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
+    private int[] move = new int[]{2, 4, 4, 3, 1, 4, 3, 4, 2, 4, 3, 4, 2, 2, 3, 4, 4, 3, 3, 1, 3, 4, 3, 4, 4, 4};
+    private int[] value = new int[]{1, 8, 10, 4, 0, 2, 6, 0, 0, 7, 5, 4, 3, 2, 7, 6, 13, 2, 0, 1, 1, 1, 3, 9, 11, 12};
 
     public int uniqueMorseRepresentations(String[] words) {
-        Set<String> save = new HashSet<>(words.length);
+        Set<Long> save = new HashSet<>(words.length);
         for (String word : words) {
-            StringBuilder current = new StringBuilder();
+            long v = 0;
             for (int i = 0 ; i < word.length() ; i++) {
-                current.append(morse[word.charAt(i) - 'a']);
+                int index = word.charAt(i) - 'a';
+                v = (v << move[index]) + value[index];
             }
-            save.add(current.toString());
+            save.add(v);
         }
         return save.size();
     }
