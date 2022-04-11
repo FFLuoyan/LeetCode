@@ -30,24 +30,27 @@ public class Z3LowestTree {
         if (n == 1) {
             return Collections.singletonList(0);
         }
-        Map<Integer, Set<Integer>> tree = new HashMap<>();
+        LinkedList<Integer>[] allSons = new LinkedList[n];
+        for (int i = 0; i < allSons.length; i++) {
+            allSons[i] = new LinkedList<>();
+        }
         for (int[] edge : edges) {
-            tree.computeIfAbsent(edge[0], k -> new HashSet<>()).add(edge[1]);
-            tree.computeIfAbsent(edge[1], k -> new HashSet<>()).add(edge[0]);
+            allSons[edge[0]].add(edge[1]);
+            allSons[edge[1]].add(edge[0]);
         }
         int[] treeHeight = new int[n];
-        int currentRoot = edges[0][0];
-        setTreeSize(tree, treeHeight, currentRoot, -1);
+        int currentRoot = 0;
+        setTreeSize(allSons, treeHeight, currentRoot, -1);
         while (true) {
-            Set<Integer> subTree = tree.get(currentRoot);
+            LinkedList<Integer> sons = allSons[currentRoot];
             int max = -1, maxTree = -1, subMax = -1;
-            for (int s : subTree) {
-                if (treeHeight[s] > max) {
+            for (int son : sons) {
+                if (treeHeight[son] > max) {
                     subMax = max;
-                    max = treeHeight[s];
-                    maxTree = s;
-                } else if (treeHeight[s] > subMax) {
-                    subMax = treeHeight[s];
+                    max = treeHeight[son];
+                    maxTree = son;
+                } else if (treeHeight[son] > subMax) {
+                    subMax = treeHeight[son];
                 }
             }
 
@@ -62,12 +65,12 @@ public class Z3LowestTree {
         }
     }
 
-    public int setTreeSize(Map<Integer, Set<Integer>> tree, int[] treeSize, int current, int parent) {
-        Set<Integer> subTree = tree.get(current);
+    public int setTreeSize(LinkedList<Integer>[] allSons, int[] treeSize, int current, int parent) {
+        LinkedList<Integer> sons = allSons[current];
         int max = -1;
-        for (int s : subTree) {
-            if (s != parent) {
-                max = Math.max(max, setTreeSize(tree, treeSize, s, current));
+        for (int son : sons) {
+            if (son != parent) {
+                max = Math.max(max, setTreeSize(allSons, treeSize, son, current));
             }
         }
         return treeSize[current] = max + 1;
