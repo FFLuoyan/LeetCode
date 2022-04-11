@@ -13,16 +13,7 @@ package org.zongjieli.leetcode.question.daily.year2022.month4.week2;
 public class Z6Transform {
 
     public boolean reachingPoints(int sx, int sy, int tx, int ty) {
-        if (tx < sx || ty < sy) {
-            return false;
-        }
-        if (sx == tx && (ty - sy) % sx == 0) {
-            return true;
-        }
-        if (sy == ty && (tx - sx) % sy == 0) {
-            return true;
-        }
-        return tx > ty ? reachingPoints(sx, sy, tx % ty, ty) : reachingPoints(sx, sy, tx, ty % tx);
+        return tx < sx || ty < sy ? false : (sx == tx && (ty - sy) % sx == 0) || (sy == ty && (tx - sx) % sy == 0) ? true : tx > ty ? reachingPoints(sx, sy, tx % ty, ty) : reachingPoints(sx, sy, tx, ty % tx);
     }
 
     public static void main(String[] args) {
