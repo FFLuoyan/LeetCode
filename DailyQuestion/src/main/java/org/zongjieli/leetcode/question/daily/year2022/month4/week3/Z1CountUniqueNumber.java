@@ -14,20 +14,19 @@ public class Z1CountUniqueNumber {
         if (n == 0) {
             return 1;
         }
-        int nd = 9;
-        int tn = n - 1;
-        int base = 9;
-        while (--tn >= 0) {
+        int low = countNumbersWithUniqueDigits(--n);
+        int nd = 9, base = 9;
+        while (--n >= 0) {
             nd *= base--;
         }
-        return nd + countNumbersWithUniqueDigits(n - 1);
+        return nd + low;
     }
 
     public static void main(String[] args) {
         Z1CountUniqueNumber test = new Z1CountUniqueNumber();
-        // 9
+        // 10
         System.out.println(test.countNumbersWithUniqueDigits(1));
-        // 90
+        // 91
         System.out.println(test.countNumbersWithUniqueDigits(2));
     }
 }
