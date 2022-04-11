@@ -10,16 +10,14 @@ package org.zongjieli.leetcode.question.daily.year2022.month4.week3;
  */
 public class Z1CountUniqueNumber {
 
+    private int[] numbers = new int[]{1, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+
     public int countNumbersWithUniqueDigits(int n) {
-        if (n == 0) {
-            return 1;
+        int result = 0, base = 1;
+        for (int i = 0 ; i <= n ; i++) {
+            result += base *= numbers[i];
         }
-        int low = countNumbersWithUniqueDigits(--n);
-        int nd = 9, base = 9;
-        while (--n >= 0) {
-            nd *= base--;
-        }
-        return nd + low;
+        return result;
     }
 
     public static void main(String[] args) {
