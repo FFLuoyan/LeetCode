@@ -30,51 +30,40 @@ public class Z3LowestTree {
         if (n == 1) {
             return Collections.singletonList(0);
         }
-        LinkedList<Integer>[] allSons = new LinkedList[n];
-        for (int i = 0; i < allSons.length; i++) {
-            allSons[i] = new LinkedList<>();
+        List<Integer>[] save = new List[n];
+        for (int i = 0; i < save.length; i++) {
+            save[i] = new ArrayList<>();
         }
+        int[] sonCount = new int[n];
         for (int[] edge : edges) {
-            allSons[edge[0]].add(edge[1]);
-            allSons[edge[1]].add(edge[0]);
+            sonCount[edge[0]]++;
+            sonCount[edge[1]]++;
+            save[edge[0]].add(edge[1]);
+            save[edge[1]].add(edge[0]);
         }
-        int[] treeHeight = new int[n];
-        int currentRoot = 0;
-        setTreeSize(allSons, treeHeight, currentRoot, -1);
-        while (true) {
-            LinkedList<Integer> sons = allSons[currentRoot];
-            int max = -1, maxTree = -1, subMax = -1;
-            for (int son : sons) {
-                if (treeHeight[son] > max) {
-                    subMax = max;
-                    max = treeHeight[son];
-                    maxTree = son;
-                } else if (treeHeight[son] > subMax) {
-                    subMax = treeHeight[son];
+
+        int remain = n;
+        LinkedList<Integer> delete = new LinkedList<>();
+        for (int i = 0; i < sonCount.length; i++) {
+            if (sonCount[i] == 1) {
+                delete.addLast(i);
+            }
+        }
+        while (remain > 2) {
+            int size = delete.size();
+            while (--size >= 0) {
+                int waitDelete = delete.pollFirst();
+                remain--;
+                for (int son : save[waitDelete]) {
+                    if (--sonCount[son] == 1) {
+                        delete.addLast(son);
+                    }
                 }
             }
-
-            if (max == subMax) {
-                return Collections.singletonList(currentRoot);
-            }
-            if (max == subMax + 1) {
-                return Arrays.asList(currentRoot, maxTree);
-            }
-            treeHeight[currentRoot] = subMax + 1;
-            currentRoot = maxTree;
         }
+        return delete;
     }
 
-    public int setTreeSize(LinkedList<Integer>[] allSons, int[] treeSize, int current, int parent) {
-        LinkedList<Integer> sons = allSons[current];
-        int max = -1;
-        for (int son : sons) {
-            if (son != parent) {
-                max = Math.max(max, setTreeSize(allSons, treeSize, son, current));
-            }
-        }
-        return treeSize[current] = max + 1;
-    }
 
     public static void main(String[] args) {
         Z3LowestTree test = new Z3LowestTree();
