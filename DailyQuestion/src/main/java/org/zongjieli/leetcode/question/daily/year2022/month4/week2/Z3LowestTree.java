@@ -27,27 +27,39 @@ import java.util.*;
 public class Z3LowestTree {
 
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        if (n == 1) {
-            return Collections.singletonList(0);
-        }
-        int[] sonCount = new int[n];
-        for (int[] edge : edges) {
-            sonCount[edge[0]]++;
-            sonCount[edge[1]]++;
-        }
-        int[][] save = new int[n][];
+        /*
+            对于同一个节点的所有子节点,可以将其表达为一个链表
+            维护两个数组 value 以及 pre,将所有节点的子节点对应的链表关系全部记录下来
+            其中 value 表示对应的子节点,pre 表示当前下标对应的前置下标
+            对于链表的头部,其前置下标为 -1
+            再维护一个数组 index,用于表达每个节点对应的子节点的链表的尾部
+            三个数组就可以记录全部的父子关系
+            另外再额外维护一个子节点长度的数组 count,可以简化计算过程
+         */
+        int[] value = new int[2 * n];
+        int[] pre = new int[2 * n];
         int[] index = new int[n];
-        for (int i = 0; i < save.length; i++) {
-            save[i] = new int[sonCount[i]];
-        }
+        Arrays.fill(index, -1);
+        int[] count = new int[n];
+        // currentIndex
+        int ci = 0;
         for (int[] edge : edges) {
-            save[edge[0]][index[edge[0]]++] = edge[1];
-            save[edge[1]][index[edge[1]]++] = edge[0];
+            count[edge[0]]++;
+            count[edge[1]]++;
+            // 节点 edge[0]
+
+            pre[ci] = index[edge[0]];
+            index[edge[0]] = ci;
+            value[ci++] = edge[1];
+
+            pre[ci] = index[edge[1]];
+            index[edge[1]] = ci;
+            value[ci++] = edge[0];
         }
 
         int[] delete = new int[n + 1];
-        for (int i = 0; i < sonCount.length; i++) {
-            if (sonCount[i] == 1) {
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] == 1) {
                 delete[delete[n]++] = i;
             }
         }
@@ -56,10 +68,12 @@ public class Z3LowestTree {
             int end = delete[n];
             for (int i = last ; i < end ; i++) {
                 int waitDelete = delete[i];
-                for (int son : save[waitDelete]) {
-                    if (--sonCount[son] == 1) {
-                        delete[delete[n]++] = son;
+                ci = index[waitDelete];
+                while (ci != -1) {
+                    if (--count[value[ci]] == 1) {
+                        delete[delete[n]++] = value[ci];
                     }
+                    ci = pre[ci];
                 }
             }
             last = end;
