@@ -30,38 +30,45 @@ public class Z3LowestTree {
         if (n == 1) {
             return Collections.singletonList(0);
         }
-        List<Integer>[] save = new List[n];
-        for (int i = 0; i < save.length; i++) {
-            save[i] = new ArrayList<>();
-        }
         int[] sonCount = new int[n];
         for (int[] edge : edges) {
             sonCount[edge[0]]++;
             sonCount[edge[1]]++;
-            save[edge[0]].add(edge[1]);
-            save[edge[1]].add(edge[0]);
+        }
+        int[][] save = new int[n][];
+        int[] index = new int[n];
+        for (int i = 0; i < save.length; i++) {
+            save[i] = new int[sonCount[i]];
+        }
+        for (int[] edge : edges) {
+            save[edge[0]][index[edge[0]]++] = edge[1];
+            save[edge[1]][index[edge[1]]++] = edge[0];
         }
 
-        int remain = n;
-        LinkedList<Integer> delete = new LinkedList<>();
+        int[] delete = new int[n + 1];
         for (int i = 0; i < sonCount.length; i++) {
             if (sonCount[i] == 1) {
-                delete.addLast(i);
+                delete[delete[n]++] = i;
             }
         }
-        while (remain > 2) {
-            int size = delete.size();
-            while (--size >= 0) {
-                int waitDelete = delete.pollFirst();
-                remain--;
+        int last = 0;
+        while (last < n - 2) {
+            int end = delete[n];
+            for (int i = last ; i < end ; i++) {
+                int waitDelete = delete[i];
                 for (int son : save[waitDelete]) {
                     if (--sonCount[son] == 1) {
-                        delete.addLast(son);
+                        delete[delete[n]++] = son;
                     }
                 }
             }
+            last = end;
         }
-        return delete;
+        List<Integer> result = new ArrayList<>();
+        for (int i = last ; i < n ; i++) {
+            result.add(delete[i]);
+        }
+        return result;
     }
 
 
