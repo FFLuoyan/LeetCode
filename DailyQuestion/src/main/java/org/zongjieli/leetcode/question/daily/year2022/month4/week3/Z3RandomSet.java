@@ -26,8 +26,10 @@ import java.util.*;
  */
 public class Z3RandomSet {
 
-    private int[] randomValues = new int[8];
+    private int[] randomValues = new int[200000];
     private Map<Integer, Integer> values = new HashMap<>();
+    private Random random = new Random();
+    private int valueSize = 0;
 
     public Z3RandomSet() { }
 
@@ -35,14 +37,13 @@ public class Z3RandomSet {
         if (values.containsKey(val)) {
             return false;
         }
-        int nextIndex = values.size();
-        values.put(val, nextIndex);
-        if (nextIndex == randomValues.length) {
-            int[] newRandomValues = new int[2 * nextIndex];
-            System.arraycopy(randomValues, 0, newRandomValues, 0, nextIndex);
+        values.put(val, valueSize);
+        if (valueSize == randomValues.length) {
+            int[] newRandomValues = new int[2 * valueSize];
+            System.arraycopy(randomValues, 0, newRandomValues, 0, valueSize);
             randomValues = newRandomValues;
         }
-        randomValues[nextIndex] = val;
+        randomValues[valueSize++] = val;
         return true;
     }
 
@@ -52,17 +53,17 @@ public class Z3RandomSet {
             return false;
         }
         values.remove(val);
-        int length = values.size();
-        if (vi == length) {
+        valueSize--;
+        if (vi == valueSize) {
             return true;
         }
-        randomValues[vi] = randomValues[length];
-        values.put(randomValues[length], vi);
+        randomValues[vi] = randomValues[valueSize];
+        values.put(randomValues[valueSize], vi);
         return true;
     }
 
     public int getRandom() {
-        return randomValues[new Random().nextInt(values.size())];
+        return randomValues[random.nextInt(valueSize)];
     }
 
     public static void main(String[] args) {
