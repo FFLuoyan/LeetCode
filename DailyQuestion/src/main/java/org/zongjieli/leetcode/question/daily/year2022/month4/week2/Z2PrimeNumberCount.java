@@ -43,18 +43,25 @@ public class Z2PrimeNumberCount {
     };
 
     public int countPrimeSetBits(int left, int right) {
-        return countPrimeSetBit(right, 0) -  countPrimeSetBit(left - 1, 0);
+        return countPrimeSetBit(right) -  countPrimeSetBit(left - 1);
     }
 
-    public int countPrimeSetBit(int n, int add) {
-        if (n == 0) {
-            return bitAdd[0][add];
+    public int countPrimeSetBit(int n) {
+        int result = 0;
+        int bitCount = 0, bitCalculate = n;
+        while ((bitCalculate >>= 1) > 0) {
+            bitCount++;
         }
-        int mb = 0, bitCal = n;
-        while ((bitCal >>= 1) > 0) {
-            mb++;
+        int bitCompare = 1 << bitCount;
+        int add = 0;
+        while (bitCompare > 0) {
+            if ((n & bitCompare) > 0) {
+                result += bitAdd[bitCount][add++];
+            }
+            bitCompare >>= 1;
+            bitCount--;
         }
-        return bitAdd[mb][add] + countPrimeSetBit(n - (1 << (mb)), add + 1);
+        return result + bitAdd[0][add];
     }
 
     public static void main(String[] args) {
