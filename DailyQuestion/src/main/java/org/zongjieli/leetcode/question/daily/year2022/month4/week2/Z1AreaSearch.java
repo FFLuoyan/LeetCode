@@ -29,29 +29,32 @@ package org.zongjieli.leetcode.question.daily.year2022.month4.week2;
  */
 public class Z1AreaSearch {
 
-    private int[][] values = new int[18][];
+    private int[][] values;
 
     public Z1AreaSearch(int[] nums) {
+        int length = nums.length;
+        int size = 1;
+        while (length > 1) {
+            length = (length + 1) / 2;
+            size++;
+        }
+        values = new int[size][];
         values[0] = nums;
-        int index = 1;
         int[] current;
-        while (nums.length > 1) {
-            current = values[index++] = new int[(nums.length + 1) / 2];
-            for (int i = 0; i < nums.length; i++) {
-                current[i / 2] += nums[i];
+        for (int i = 1 ; i < size ; i++) {
+            current = values[i] = new int[((length = nums.length) + 1) / 2];
+            for (int j = 0 ; j < length ; j++) {
+                current[j / 2] += nums[j];
             }
             nums = current;
         }
     }
 
     public void update(int index, int val) {
-        int ci = 0;
-        int[] current = values[ci];
-        int add = val - current[index];
-        while (current != null && current.length > 0) {
-            current[index] += add;
+        int add = val - values[0][index];
+        for (int[] value : values) {
+            value[index] += add;
             index /= 2;
-            current = values[++ci];
         }
     }
 
