@@ -21,11 +21,13 @@ package org.zongjieli.leetcode.question.daily.year2022.month4.week1;
 public class Z7MaxChar {
 
     public char nextGreatestLetter(char[] letters, char target) {
-        int result = target;
+        char result = letters[0];
         for (char letter : letters) {
-            result = (letter > target) ^ (result > target) ? Math.max(letter, result) : Math.min(letter, result);
+            if (letter > target) {
+                return letter;
+            }
         }
-        return (char) result;
+        return result;
     }
 
     public static void main(String[] args) {
