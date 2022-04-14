@@ -20,16 +20,27 @@ public class Z6StringByTree {
         if (root.left == null && root.right == null) {
             return String.valueOf(root.val);
         }
-        return root.val + tree2str(root.left, true) + tree2str(root.right, false);
+        StringBuilder result = new StringBuilder();
+        result.append(root.val);
+        stringAdd(result, root.left, true);
+        stringAdd(result, root.right, false);
+        return result.toString();
     }
 
-    public String tree2str(TreeNode root, boolean isLeft) {
+    public void stringAdd(StringBuilder result, TreeNode root, boolean isLeft) {
         if (root == null) {
-            return isLeft ? "()" : "";
+            if (isLeft) {
+                result.append("()");
+            }
+            return;
         }
+        result.append('(').append(root.val);
         if (root.left == null && root.right == null) {
-            return "(" + root.val + ")";
+            result.append(')');
+            return;
         }
-        return "(" + root.val + tree2str(root.left, true) + tree2str(root.right, false) + ")";
+        stringAdd(result, root.left, true);
+        stringAdd(result, root.right, false);
+        result.append(')');
     }
 }
