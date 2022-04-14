@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2022.month3.week5;
+package org.zongjieli.leetcode.question.daily.year2022.month4.week1;
 
 /**
  * 给定一个长度为偶数的整数数组 arr,只有对 arr 进行重组后可以满足

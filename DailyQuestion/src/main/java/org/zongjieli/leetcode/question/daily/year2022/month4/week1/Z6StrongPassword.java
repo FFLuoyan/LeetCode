@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2022.month3.week5;
+package org.zongjieli.leetcode.question.daily.year2022.month4.week1;
 
 /**
  * 如果一个密码满足下述所有条件,则认为这个密码是强密码:
