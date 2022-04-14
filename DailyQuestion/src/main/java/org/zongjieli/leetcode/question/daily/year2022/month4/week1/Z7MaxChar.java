@@ -23,13 +23,14 @@ public class Z7MaxChar {
     public char nextGreatestLetter(char[] letters, char target) {
         int result = target;
         for (char letter : letters) {
-            result = letter > target ? result <= target ? letter : Math.min(result, letter) : result <= target ? Math.min(result, letter) : result;
+            result = (letter > target) ^ (result > target) ? Math.max(letter, result) : Math.min(letter, result);
         }
         return (char) result;
     }
 
     public static void main(String[] args) {
         Z7MaxChar test = new Z7MaxChar();
+        // c
         System.out.println(test.nextGreatestLetter(new char[]{'c', 'f', 'j'}, 'a'));
     }
 }
