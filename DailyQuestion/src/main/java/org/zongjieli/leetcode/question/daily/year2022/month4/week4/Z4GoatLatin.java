@@ -28,17 +28,38 @@ import java.util.stream.Collectors;
 public class Z4GoatLatin {
 
     public String toGoatLatin(String sentence) {
-        StringBuilder current = new StringBuilder("ma");
-        return Arrays
-                .stream(sentence.split(" "))
-                .map(word -> {
-                    current.append('a');
-                    char first = word.charAt(0);
-                    if (first == 'a' || first == 'e' || first == 'i' || first == 'o' || first == 'u' || first == 'A' || first == 'E' || first == 'I' || first == 'O' || first == 'U') {
-                        return word + current.toString();
-                    }
-                    return word.substring(1) + first + current.toString();
-                })
-                .collect(Collectors.joining(" "));
+        StringBuilder end = new StringBuilder("ma");
+        StringBuilder result = new StringBuilder();
+        boolean isEnd = true;
+        boolean isFirstVowel = true;
+        char first = ' ';
+
+        for (int i = 0 ; i < sentence.length() ; i++) {
+            char current = sentence.charAt(i);
+            if (isEnd) {
+                isEnd = false;
+                first = current;
+                isFirstVowel = first == 'a' || first == 'e' || first == 'i' || first == 'o' || first == 'u' || first == 'A' || first == 'E' || first == 'I' || first == 'O' || first == 'U';
+                if (isFirstVowel) {
+                    result.append(current);
+                }
+            } else if (current == ' ') {
+                isEnd = true;
+                if (!isFirstVowel) {
+                    result.append(first);
+                }
+                end.append('a');
+                result.append(end);
+                result.append(' ');
+            } else {
+                result.append(current);
+            }
+        }
+        if (!isFirstVowel) {
+            result.append(first);
+        }
+        end.append('a');
+        result.append(end);
+        return result.toString();
     }
 }
