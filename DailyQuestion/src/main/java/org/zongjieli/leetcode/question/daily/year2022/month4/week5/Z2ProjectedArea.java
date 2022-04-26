@@ -26,14 +26,16 @@ public class Z2ProjectedArea {
                 int r = row[j];
                 if (r > 0) {
                     result++;
-                    rm = Math.max(rm, r);
-                    cm[j] = Math.max(cm[j], r);
+                }
+                if (r > rm) {
+                    result += (r - rm);
+                    rm = r;
+                }
+                if (r > cm[j]) {
+                    result += (r - cm[j]);
+                    cm[j] = r;
                 }
             }
-            result += rm;
-        }
-        for (int max : cm) {
-            result += max;
         }
         return result;
     }
