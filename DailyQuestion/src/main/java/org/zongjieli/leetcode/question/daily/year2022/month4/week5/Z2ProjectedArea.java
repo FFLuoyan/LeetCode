@@ -18,21 +18,21 @@ package org.zongjieli.leetcode.question.daily.year2022.month4.week5;
 public class Z2ProjectedArea {
 
     public int projectionArea(int[][] grid) {
-        int[] columnMax = new int[grid[0].length];
+        int[] cm = new int[grid[0].length];
         int result = 0;
-        for (int i = 0; i < grid.length; i++) {
-            int[] row = grid[i];
-            int rowMax = 0;
+        for (int[] row : grid) {
+            int rm = 0;
             for (int j = 0; j < row.length; j++) {
-                if (row[j] != 0) {
+                int r = row[j];
+                if (r > 0) {
                     result++;
-                    rowMax = Math.max(rowMax, row[j]);
-                    columnMax[j] = Math.max(columnMax[j], row[j]);
+                    rm = Math.max(rm, r);
+                    cm[j] = Math.max(cm[j], r);
                 }
             }
-            result += rowMax;
+            result += rm;
         }
-        for (int max : columnMax) {
+        for (int max : cm) {
             result += max;
         }
         return result;
