@@ -23,17 +23,20 @@ import java.util.LinkedList;
  */
 public class Z5RecentCounter {
 
-    private LinkedList<Integer> requests = new LinkedList<>();
+    private int[] requests = new int[3002];
+    private int start = 0, end = 0;
 
     public Z5RecentCounter() {
 
     }
 
     public int ping(int t) {
-        requests.addLast(t);
-        Integer first;
-        while ((first = requests.pollFirst()) < t - 3000) { }
-        requests.addFirst(first);
-        return requests.size();
+        requests[end++] = t;
+        end %= 3002;
+        while (requests[start] < t - 3000) {
+            start++;
+            start %= 3002;
+        }
+        return (end + 3002 - start) % 3002;
     }
 }
