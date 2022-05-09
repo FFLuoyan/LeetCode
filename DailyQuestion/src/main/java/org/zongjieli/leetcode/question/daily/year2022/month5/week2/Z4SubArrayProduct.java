@@ -14,34 +14,14 @@ package org.zongjieli.leetcode.question.daily.year2022.month5.week2;
 public class Z4SubArrayProduct {
 
     public int numSubarrayProductLessThanK(int[] nums, int k) {
-        int result = 0;
-        int index = nums.length;
-        int length = index + 1;
-        int[] products = new int[length];
-        for (int num : nums) {
-            if (num >= k) {
-                products[index] = 0;
-                continue;
+        int result = 0, end = 0, product = 1;
+        for (int start = 0 ; start < nums.length ; start++) {
+            end = Math.max(start, end);
+            while (end < nums.length && product < k) {
+                product *= nums[end++];
             }
-            int nextStart = 0;
-            while (nextStart < products[index] && (products[nextStart] *= num) >= k) {
-                nextStart++;
-            }
-            result++;
-            if (nextStart == products[index]) {
-                products[index] = 1;
-                products[0] = num;
-                continue;
-            }
-            products[0] = products[nextStart];
-            int nextEnd = 1;
-            while (++nextStart < products[index]) {
-                products[nextEnd++] = products[nextStart] * num;
-                result++;
-            }
-            products[nextEnd] = num;
-            products[index] = nextEnd + 1;
-            result++;
+            result += Math.max(product < k ? end - start : end - start - 1, 0);
+            product /= nums[start];
         }
         return result;
     }
@@ -49,6 +29,10 @@ public class Z4SubArrayProduct {
     public static void main(String[] args) {
         Z4SubArrayProduct test = new Z4SubArrayProduct();
         // 8
-        System.out.println(test.numSubarrayProductLessThanK(new int[]{10, 5, 2, 6}, 100));
+//        System.out.println(test.numSubarrayProductLessThanK(new int[]{10, 5, 2, 6}, 100));
+//        // 18
+//        System.out.println(test.numSubarrayProductLessThanK(new int[]{10, 9, 10, 4, 3, 8, 3, 3, 6, 2, 10, 10, 9, 3}, 19));
+        // 0
+        System.out.println(test.numSubarrayProductLessThanK(new int[]{1, 2, 3}, 0));
     }
 }
