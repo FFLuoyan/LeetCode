@@ -19,10 +19,10 @@ public class Z1StringMatch {
     public int[] diStringMatch(String s) {
         int n = s.length(), min = 0, max = n;
         int[] result = new int[n + 1];
-        for (int i = n - 1 ; i >= 0 ; i--) {
-            result[i + 1] = s.charAt(i) == 'D' ? min++ : max--;
+        for (int i = 0 ; i < n ; i++) {
+            result[i] = s.charAt(i) == 'I' ? min++ : max--;
         }
-        result[0] = min;
+        result[n] = min;
         return result;
     }
 }
