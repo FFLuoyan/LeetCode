@@ -17,16 +17,10 @@ package org.zongjieli.leetcode.question.daily.year2022.month5.week3;
 public class Z1StringMatch {
 
     public int[] diStringMatch(String s) {
-        int n = s.length();
+        int n = s.length(), min = 0, max = n;
         int[] result = new int[n + 1];
-        int min = 0;
-        int max = n;
         for (int i = n - 1 ; i >= 0 ; i--) {
-            if (s.charAt(i) == 'D') {
-                result[i + 1] = min++;
-            } else {
-                result[i + 1] = max--;
-            }
+            result[i + 1] = s.charAt(i) == 'D' ? min++ : max--;
         }
         result[0] = min;
         return result;
