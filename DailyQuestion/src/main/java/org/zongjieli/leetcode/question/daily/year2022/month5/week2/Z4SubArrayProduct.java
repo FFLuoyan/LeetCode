@@ -16,10 +16,9 @@ public class Z4SubArrayProduct {
     public int numSubarrayProductLessThanK(int[] nums, int k) {
         int result = 0, end = 0, product = 1;
         for (int start = 0 ; start < nums.length ; start++) {
-            while (end < nums.length && product < k) {
+            while (end <= start || (end < nums.length && product < k)) {
                 product *= nums[end++];
             }
-            end = Math.max(end, start + 1);
             result += product < k ? end - start : end - start - 1;
             product /= nums[start];
         }
