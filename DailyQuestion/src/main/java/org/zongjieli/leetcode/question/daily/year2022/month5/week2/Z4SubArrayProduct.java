@@ -14,13 +14,13 @@ package org.zongjieli.leetcode.question.daily.year2022.month5.week2;
 public class Z4SubArrayProduct {
 
     public int numSubarrayProductLessThanK(int[] nums, int k) {
-        int result = 0, end = 0, product = 1;
-        for (int start = 0 ; start < nums.length ; start++) {
-            while (end <= start || (end < nums.length && product < k)) {
-                product *= nums[end++];
+        int result = 0, start = 0, product = 1;
+        for (int end = 0 ; end < nums.length ; end++) {
+            product *= nums[end];
+            while (start <= end && product >= k) {
+                product /= nums[start++];
             }
-            result += product < k ? end - start : end - start - 1;
-            product /= nums[start];
+            result += (end - start + 1);
         }
         return result;
     }
