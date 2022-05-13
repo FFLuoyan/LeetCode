@@ -18,17 +18,15 @@ public class Z5StringSame {
         if (fl == sl) {
             // 替换或相同
             for (int i = 0 ; i < fl ; i++) {
-                if (first.charAt(i) == second.charAt(i)) {
-                    continue;
-                }
-                for (int j = i + 1 ; j < fl ; j++) {
-                    if (first.charAt(j) != second.charAt(j)) {
-                        return false;
+                if (first.charAt(i) != second.charAt(i)) {
+                    for (int j = i + 1 ; j < fl ; j++) {
+                        if (first.charAt(j) != second.charAt(j)) {
+                            return false;
+                        }
                     }
+                    return true;
                 }
-                return true;
             }
-            return true;
         } else if (fl == sl + 1) {
             // first 删除一个或 second 插入一个
             for (int i = 0 ; i < sl ; i++) {
@@ -41,7 +39,6 @@ public class Z5StringSame {
                     return true;
                 }
             }
-            return true;
         } else if (sl == fl + 1) {
             // second 删除一个或 first 插入一个
             for (int i = 0 ; i < fl ; i++) {
@@ -54,9 +51,9 @@ public class Z5StringSame {
                     return true;
                 }
             }
-            return true;
         } else {
             return false;
         }
+        return true;
     }
 }
