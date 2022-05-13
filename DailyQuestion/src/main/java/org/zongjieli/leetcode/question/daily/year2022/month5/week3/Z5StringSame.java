@@ -13,47 +13,29 @@ package org.zongjieli.leetcode.question.daily.year2022.month5.week3;
 public class Z5StringSame {
 
     public boolean oneEditAway(String first, String second) {
-        int fl = first.length();
-        int sl = second.length();
-        if (fl == sl) {
-            // 替换或相同
-            for (int i = 0 ; i < fl ; i++) {
-                if (first.charAt(i) != second.charAt(i)) {
-                    for (int j = i + 1 ; j < fl ; j++) {
-                        if (first.charAt(j) != second.charAt(j)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            }
-        } else if (fl == sl + 1) {
-            // first 删除一个或 second 插入一个
-            for (int i = 0 ; i < sl ; i++) {
-                if (first.charAt(i) != second.charAt(i)) {
-                    for (int j = i ; j < sl ; j++) {
-                        if (first.charAt(j + 1) != second.charAt(j)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            }
-        } else if (sl == fl + 1) {
-            // second 删除一个或 first 插入一个
-            for (int i = 0 ; i < fl ; i++) {
-                if (first.charAt(i) != second.charAt(i)) {
-                    for (int j = i ; j < fl ; j++) {
-                        if (first.charAt(j) != second.charAt(j + 1)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            }
-        } else {
+        int fl = first.length(), sl = second.length();
+        if (sl > fl) {
+            return oneEditAway(second, first);
+        }
+        if (fl > sl + 1) {
             return false;
+        }
+        for (int i = 0 ; i < sl ; i++) {
+            if (first.charAt(i) != second.charAt(i)) {
+                for (int fi = i + 1, si = i + 1 - fl + sl ; si < sl ; fi++, si++) {
+                    if (first.charAt(fi) != second.charAt(si)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
         return true;
     }
+
+    public static void main(String[] args) {
+        Z5StringSame test = new Z5StringSame();
+        System.out.println(test.oneEditAway("islander", "slander"));
+    }
+
 }
