@@ -26,19 +26,16 @@ public class Z1TreePathBinary {
     }
 
     public void sumRootToLeaf(TreeNode root, int[] result, int before) {
-        before = (before << 1) + root.val;
-        if (root.left == null) {
-            if (root.right == null) {
-                result[0] += before;
-                return;
-            }
-            sumRootToLeaf(root.right, result, before);
-        } else {
-            sumRootToLeaf(root.left, result, before);
-            if (root.right != null) {
-                sumRootToLeaf(root.right, result, before);
-            }
+        if (root == null) {
+            return;
         }
+        before = (before << 1) + root.val;
+        if (root.left == null && root.right == null) {
+            result[0] += before;
+            return;
+        }
+        sumRootToLeaf(root.left, result, before);
+        sumRootToLeaf(root.right, result, before);
     }
 
 }
