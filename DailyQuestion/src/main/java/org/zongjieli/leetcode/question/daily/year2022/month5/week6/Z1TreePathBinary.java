@@ -20,22 +20,18 @@ import org.zongjieli.leetcode.base.TreeNode;
 public class Z1TreePathBinary {
 
     public int sumRootToLeaf(TreeNode root) {
-        int[] result = new int[1];
-        sumRootToLeaf(root, result, 0);
-        return result[0];
+        return sumRootToLeaf(root, 0);
     }
 
-    public void sumRootToLeaf(TreeNode root, int[] result, int before) {
+    public int sumRootToLeaf(TreeNode root, int before) {
         if (root == null) {
-            return;
+            return 0;
         }
         before = (before << 1) + root.val;
         if (root.left == null && root.right == null) {
-            result[0] += before;
-            return;
+            return before;
         }
-        sumRootToLeaf(root.left, result, before);
-        sumRootToLeaf(root.right, result, before);
+        return sumRootToLeaf(root.left, before) + sumRootToLeaf(root.right, before);
     }
 
 }
