@@ -37,24 +37,32 @@ public class Z4RandomPointRectangles {
 
     public Z4RandomPointRectangles(int[][] rects) {
         this.rects = rects;
-        sum = new int[rects.length];
+        sum = new int[rects.length + 1];
         int currentCount = 0;
         for (int i = 0 ; i < rects.length ; i++) {
             int[] rect = rects[i];
-            sum[i] = (currentCount += (rect[2] - rect[0] + 1) * (rect[3] - rect[1] + 1));
+            sum[i + 1] = (currentCount += (rect[2] - rect[0] + 1) * (rect[3] - rect[1] + 1));
         }
+    }
+
+    public int getIndex(int cp) {
+        int start = 1, end = sum.length - 1;
+        while (start < end) {
+            int middle = (start + end) / 2;
+            if (cp >= sum[middle]) {
+                start = middle + 1;
+            } else {
+                end = middle;
+            }
+        }
+        return start;
     }
 
     public int[] pick() {
         int cp = random.nextInt(sum[sum.length - 1]);
-        int index = 0;
-        while (cp >= sum[index]) {
-            index++;
-        }
-        if (index > 0) {
-            cp -= sum[index - 1];
-        }
-        int[] rect = rects[index];
+        int index = getIndex(cp);
+        cp -= sum[index - 1];
+        int[] rect = rects[index - 1];
         int xl = rect[2] - rect[0] + 1;
         return new int[]{rect[0] + cp % xl, rect[1] + cp / xl};
     }
