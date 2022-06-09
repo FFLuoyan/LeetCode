@@ -1,6 +1,9 @@
 package org.zongjieli.leetcode.question.daily.year2022.month6.week2;
 
-import java.util.Arrays;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -36,12 +39,16 @@ public class Z1RandomPoint {
     }
 
     public double[] randPoint() {
-        double rx = (random.nextDouble() * 2 - 1) * r + x;
-        double ry = (random.nextDouble() * 2 - 1) * r + y;
-        return (rx - x) * (rx - x) + (ry - y) * (ry - y) <= r * r ? new double[]{rx, ry} : randPoint();
+        double sx = random.nextDouble();
+        double sy = random.nextDouble();
+        if (sx > sy) {
+            double temp = sy;
+            sy = sx;
+            sx = temp;
+        }
+        double ca = sx * 2 * Math.PI / sy;
+        double cr = sy * r;
+        return new double[]{Math.cos(ca) * cr + x, Math.sin(ca) * cr + y};
     }
 
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(new Z1RandomPoint(0.01, 0.000001, 999999).randPoint()));
-    }
 }
