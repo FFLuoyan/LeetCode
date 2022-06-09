@@ -31,25 +31,30 @@ import java.util.*;
  */
 public class Z4RandomPointRectangles {
 
-    private TreeMap<Integer, int[]> rectMap;
-    private int all;
+    private int[] sum;
+    private int[][] rects;
     private Random random = new Random();
 
     public Z4RandomPointRectangles(int[][] rects) {
-        rectMap = new TreeMap<>();
+        this.rects = rects;
+        sum = new int[rects.length];
         int currentCount = 0;
-        for (int[] rect : rects) {
-            currentCount += (rect[2] - rect[0] + 1) * (rect[3] - rect[1] + 1);
-            rectMap.put(currentCount, rect);
+        for (int i = 0 ; i < rects.length ; i++) {
+            int[] rect = rects[i];
+            sum[i] = (currentCount += (rect[2] - rect[0] + 1) * (rect[3] - rect[1] + 1));
         }
-        all = currentCount;
     }
 
     public int[] pick() {
-        int cp = random.nextInt(all) + 1;
-        Map.Entry<Integer, int[]> re = rectMap.ceilingEntry(cp);
-        cp = re.getKey() - cp;
-        int[] rect = re.getValue();
+        int cp = random.nextInt(sum[sum.length - 1]);
+        int index = 0;
+        while (cp >= sum[index]) {
+            index++;
+        }
+        if (index > 0) {
+            cp -= sum[index - 1];
+        }
+        int[] rect = rects[index];
         int xl = rect[2] - rect[0] + 1;
         return new int[]{rect[0] + cp % xl, rect[1] + cp / xl};
     }
