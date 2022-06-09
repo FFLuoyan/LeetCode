@@ -1,9 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month6.week2;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
 /**
