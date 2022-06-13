@@ -22,25 +22,16 @@ import java.util.List;
 public class Z7SearchAndReplace {
 
     public List<String> findAndReplacePattern(String[] words, String pattern) {
-        char[] pcs = pattern.toCharArray();
+        int[] order = new int[pattern.length()];
+        for (int i = 0; i < order.length; i++) {
+            order[i] = pattern.indexOf(pattern.charAt(i));
+        }
         List<String> result = new LinkedList<>();
         a: for (String word : words) {
-            char[] w2p = new char[128];
-            char[] p2w = new char[128];
-            for (int i = 0; i < pcs.length; i++) {
-                char w = word.charAt(i);
-                char p = pcs[i];
-                if (w2p[w] != 0) {
-                    if (w2p[w] != p) {
-                        continue a;
-                    }
-                    continue;
-                }
-                if (p2w[p] != 0) {
+            for (int i = 0; i < order.length; i++) {
+                if (word.indexOf(word.charAt(i)) != order[i]) {
                     continue a;
                 }
-                w2p[w] = p;
-                p2w[p] = w;
             }
             result.add(word);
         }
