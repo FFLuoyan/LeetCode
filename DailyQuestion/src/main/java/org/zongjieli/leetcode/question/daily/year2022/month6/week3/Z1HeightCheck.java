@@ -23,15 +23,20 @@ import java.util.Arrays;
 public class Z1HeightCheck {
 
     public int heightChecker(int[] heights) {
-        int[] expected = new int[heights.length];
-        System.arraycopy(heights, 0, expected, 0, heights.length);
-        Arrays.sort(expected);
-        int count = 0;
-        for (int i = 0; i < expected.length; i++) {
-            if (expected[i] != heights[i]) {
-                count++;
-            }
+        int[] nc = new int[101];
+        for (int height : heights) {
+            nc[height]++;
         }
-        return count;
+        int result = 0;
+        for (int i = 0, min = 1 ; i < heights.length ; i++) {
+            while (nc[min] == 0) {
+                min++;
+            }
+            if (heights[i] != min) {
+                result++;
+            }
+            nc[min]--;
+        }
+        return result;
     }
 }
