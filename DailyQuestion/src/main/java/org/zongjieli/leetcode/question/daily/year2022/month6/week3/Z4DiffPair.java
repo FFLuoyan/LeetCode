@@ -1,8 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month6.week3;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -30,12 +28,12 @@ public class Z4DiffPair {
         Set<Integer> exist = new HashSet<>();
         Set<Integer> pair = new HashSet<>();
         for (int num : nums) {
-            if (exist.contains(num - k) && !pair.contains(num + num - k)) {
-                pair.add(num + num - k);
+            if (exist.contains(num - k) && !pair.contains(num - k)) {
+                pair.add(num - k);
                 result++;
             }
-            if (exist.contains(num + k) && !pair.contains(num + num + k)) {
-                pair.add(num + num + k);
+            if (exist.contains(num + k) && !pair.contains(num)) {
+                pair.add(num);
                 result++;
             }
             exist.add(num);
