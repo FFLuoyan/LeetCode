@@ -12,6 +12,18 @@ package org.zongjieli.leetcode.question.daily.year2022.month6.week4;
 public class Z2IpUseless {
 
     public String defangIPaddr(String address) {
-        return address.replaceAll("\\.", "[.]");
+        char[] replace = new char[address.length() + 6];
+        int index = 0;
+        for (int i = 0 ; i < address.length() ; i++) {
+            char cc = address.charAt(i);
+            if (cc == '.') {
+                replace[index++] = '[';
+                replace[index++] = '.';
+                replace[index++] = ']';
+            } else {
+                replace[index++] = cc;
+            }
+        }
+        return new String(replace);
     }
 }
