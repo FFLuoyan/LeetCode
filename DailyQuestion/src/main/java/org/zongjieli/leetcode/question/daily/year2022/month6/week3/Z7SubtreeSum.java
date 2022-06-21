@@ -26,34 +26,32 @@ public class Z7SubtreeSum {
 
     public int[] findFrequentTreeSum(TreeNode root) {
         Map<Integer, Integer> sumCount = new HashMap<>();
-        addSum(sumCount, root);
-        List<Integer> result = new ArrayList<>();
-        final int[] max = {0};
-        sumCount.forEach((k, v) -> {
-            if (v > max[0]) {
-                max[0] = v;
-                result.clear();;
-                result.add(k);
-            } else if (v == max[0]) {
-                result.add(k);
-            }
-        });
-        int[] r = new int[result.size()];
-        for (int i = 0; i < result.size(); i++) {
-            r[i] = result.get(i);
+        int[] max = {0};
+        List<Integer> maxSums = new ArrayList<>();
+        addSum(sumCount, root, max, maxSums);
+        int[] r = new int[maxSums.size()];
+        for (int i = 0; i < maxSums.size(); i++) {
+            r[i] = maxSums.get(i);
         }
         return r;
     }
 
-    private int addSum(Map<Integer, Integer> sumCount, TreeNode root) {
+    private int addSum(Map<Integer, Integer> sumCount, TreeNode root, int[] max, List<Integer> maxSums) {
         int cv = root.val;
         if (root.left != null) {
-            cv += addSum(sumCount, root.left);
+            cv += addSum(sumCount, root.left, max, maxSums);
         }
         if (root.right != null) {
-            cv += addSum(sumCount, root.right);
+            cv += addSum(sumCount, root.right, max, maxSums);
         }
-        sumCount.merge(cv, 1, Integer::sum);
+        int count = sumCount.merge(cv, 1, Integer::sum);
+        if (count > max[0]) {
+            max[0] = count;
+            maxSums.clear();;
+            maxSums.add(cv);
+        } else if (count == max[0]) {
+            maxSums.add(cv);
+        }
         return cv;
     }
 }
