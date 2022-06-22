@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month6.week3;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 /**
  * 给定一个整数数组和一个整数 k
@@ -24,19 +23,45 @@ import java.util.Set;
 public class Z4DiffPair {
 
     public int findPairs(int[] nums, int k) {
+        Arrays.sort(nums);
         int result = 0;
-        Set<Integer> exist = new HashSet<>();
-        Set<Integer> pair = new HashSet<>();
-        for (int num : nums) {
-            if (exist.contains(num - k) && !pair.contains(num - k)) {
-                pair.add(num - k);
-                result++;
+        if (k == 0) {
+            for (int i = 1 ; i < nums.length ; i++) {
+                if (nums[i] == nums[i - 1]) {
+                    result++;
+                    while (++i < nums.length && nums[i] == nums[i - 1]) { }
+                }
             }
-            if (exist.contains(num + k) && !pair.contains(num)) {
-                pair.add(num);
-                result++;
+            return result;
+        }
+
+        int before = 0;
+        for (int i = 1 ; i < nums.length ; i++) {
+            while (i < nums.length && nums[i] == nums[i - 1]) {
+                i++;
             }
-            exist.add(num);
+            if (i == nums.length) {
+                return result;
+            }
+            int v = nums[i] - nums[before];
+            if (v > k) {
+                while (v > k) {
+                    while (nums[before + 1] == nums[before]) {
+                        before++;
+                    }
+                    before++;
+                    v = nums[i] - nums[before];
+                }
+                if (v == k) {
+                    result++;
+                }
+            } else if (v == k) {
+                result++;
+                while (nums[before + 1] == nums[before]) {
+                    before++;
+                }
+                before++;
+            }
         }
         return result;
     }
@@ -45,5 +70,9 @@ public class Z4DiffPair {
         Z4DiffPair test = new Z4DiffPair();
         // 1
         System.out.println(test.findPairs(new int[]{1, 3, 1, 5, 4}, 0));
+        // 2
+        System.out.println(test.findPairs(new int[]{1, 3, 1, 5, 4}, 2));
+        // 1
+        System.out.println(test.findPairs(new int[]{1, 1, 1, 2, 2}, 1));
     }
 }
