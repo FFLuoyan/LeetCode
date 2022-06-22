@@ -1,4 +1,7 @@
 package org.zongjieli.leetcode.base;
+
+import lombok.Data;
+
 /**
  * 二叉树节点
  *
@@ -6,6 +9,8 @@ package org.zongjieli.leetcode.base;
  * @date     2021/3/28
  * @version  1.0
  */
+
+@Data
 public class TreeNode {
 
     public int val;
