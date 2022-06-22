@@ -26,44 +26,38 @@ public class Z4DiffPair {
         Arrays.sort(nums);
         int result = 0;
         if (k == 0) {
-            for (int i = 1 ; i < nums.length ; i++) {
-                if (nums[i] == nums[i - 1]) {
+            int index = 0;
+            while (index < nums.length) {
+                int nextIndex = getNextIndex(nums, index);
+                if (nextIndex - index > 1) {
                     result++;
-                    while (++i < nums.length && nums[i] == nums[i - 1]) { }
                 }
+                index = nextIndex;
             }
             return result;
         }
 
-        int before = 0;
-        for (int i = 1 ; i < nums.length ; i++) {
-            while (i < nums.length && nums[i] == nums[i - 1]) {
-                i++;
-            }
-            if (i == nums.length) {
-                return result;
-            }
-            int v = nums[i] - nums[before];
+        int before = 0, nextIndex = getNextIndex(nums, 0);
+        while (nextIndex < nums.length) {
+            int v = nums[nextIndex] - nums[before];
             if (v > k) {
-                while (v > k) {
-                    while (nums[before + 1] == nums[before]) {
-                        before++;
-                    }
-                    before++;
-                    v = nums[i] - nums[before];
-                }
+                before = getNextIndex(nums, before);
+            } else {
                 if (v == k) {
                     result++;
                 }
-            } else if (v == k) {
-                result++;
-                while (nums[before + 1] == nums[before]) {
-                    before++;
-                }
-                before++;
+                nextIndex = getNextIndex(nums, nextIndex);
             }
         }
         return result;
+    }
+
+    private int getNextIndex(int[] nums, int index) {
+        int v = nums[index++];
+        while (index < nums.length && nums[index] == v) {
+            index++;
+        }
+        return index;
     }
 
     public static void main(String[] args) {
