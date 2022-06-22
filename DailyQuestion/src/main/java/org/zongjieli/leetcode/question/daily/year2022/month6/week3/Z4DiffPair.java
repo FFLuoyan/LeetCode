@@ -24,40 +24,21 @@ public class Z4DiffPair {
 
     public int findPairs(int[] nums, int k) {
         Arrays.sort(nums);
-        int result = 0;
-        if (k == 0) {
-            int index = 0;
-            while (index < nums.length) {
-                int nextIndex = getNextIndex(nums, index);
-                if (nextIndex - index > 1) {
-                    result++;
-                }
-                index = nextIndex;
+        int result = 0, before = 0, target, size = nums.length, next = 1;
+        while (before < size) {
+            target = nums[before] + k;
+            while (next < size && nums[next] <= target) {
+                next++;
             }
-            return result;
-        }
-
-        int before = 0, nextIndex = getNextIndex(nums, 0);
-        while (nextIndex < nums.length) {
-            int v = nums[nextIndex] - nums[before];
-            if (v > k) {
-                before = getNextIndex(nums, before);
-            } else {
-                if (v == k) {
-                    result++;
-                }
-                nextIndex = getNextIndex(nums, nextIndex);
+            if (before != next - 1 && nums[next - 1] == target) {
+                result++;
+            }
+            int v = nums[before++];
+            while (before < size && nums[before] == v) {
+                before++;
             }
         }
         return result;
-    }
-
-    private int getNextIndex(int[] nums, int index) {
-        int v = nums[index++];
-        while (index < nums.length && nums[index] == v) {
-            index++;
-        }
-        return index;
     }
 
     public static void main(String[] args) {
