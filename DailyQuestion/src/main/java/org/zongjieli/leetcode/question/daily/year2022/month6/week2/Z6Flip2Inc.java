@@ -16,12 +16,11 @@ package org.zongjieli.leetcode.question.daily.year2022.month6.week2;
 public class Z6Flip2Inc {
 
     public int minFlipsMonoIncr(String s) {
-        int mz = 0, mo = 0;
+        int mz = 0, r = 0;
         for (byte b : s.getBytes()) {
-            mo = Math.min(mz, mo) + '1' - b;
-            mz += (b - '0');
+            r = Math.min(r + ('1' - b), mz += (b - '0'));
         }
-        return Math.min(mo, mz);
+        return r;
     }
 
     public static void main(String[] args) {
