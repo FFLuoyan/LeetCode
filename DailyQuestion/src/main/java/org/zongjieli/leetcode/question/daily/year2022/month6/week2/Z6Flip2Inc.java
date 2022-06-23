@@ -16,23 +16,20 @@ package org.zongjieli.leetcode.question.daily.year2022.month6.week2;
 public class Z6Flip2Inc {
 
     public int minFlipsMonoIncr(String s) {
-        byte[] ss = s.getBytes();
-        int o2z = 0;
-        for (byte b : ss) {
-            if (b == '1') {
-                o2z++;
-            }
-        }
-        int min = o2z;
-        int current = o2z;
-        for (int i = ss.length - 1; i >= 0 ; i--) {
-            if (ss[i] == '1') {
-                current--;
+        int mz = 0, mo = 0;
+        for (int i = 0 ; i < s.length() ; i++) {
+            if (s.charAt(i) == '1') {
+                mo = Math.min(mz++, mo);
             } else {
-                current++;
+                mo = Math.min(mz, mo) + 1;
             }
-            min = Math.min(min, current);
         }
-        return min;
+        return Math.min(mo, mz);
+    }
+
+    public static void main(String[] args) {
+        Z6Flip2Inc test = new Z6Flip2Inc();
+        // 1
+        System.out.println(test.minFlipsMonoIncr("00110"));
     }
 }
