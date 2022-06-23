@@ -18,11 +18,7 @@ public class Z6Flip2Inc {
     public int minFlipsMonoIncr(String s) {
         int mz = 0, mo = 0;
         for (int i = 0 ; i < s.length() ; i++) {
-            if (s.charAt(i) == '1') {
-                mo = Math.min(mz++, mo);
-            } else {
-                mo = Math.min(mz, mo) + 1;
-            }
+            mo = s.charAt(i) == '1' ? Math.min(mz++, mo) : Math.min(mz, mo) + 1;
         }
         return Math.min(mo, mz);
     }
