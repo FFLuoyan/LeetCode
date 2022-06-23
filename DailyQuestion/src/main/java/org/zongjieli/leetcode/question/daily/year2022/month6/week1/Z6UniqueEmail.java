@@ -47,10 +47,8 @@ public class Z6UniqueEmail {
                     ebs[si++] = cb;
                 }
             }
-            for (; ei < ebs.length ; ei++) {
-                ebs[si++] = ebs[ei];
-            }
-            emailSet.add(new String(ebs, 0, si));
+            System.arraycopy(ebs, ei, ebs, si, ebs.length - ei);
+            emailSet.add(new String(ebs, 0, si + ebs.length - ei));
         }
         return emailSet.size();
     }
