@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2022.month6.week2;
+package org.zongjieli.leetcode.question.daily.year2022.month6.week1;
 
 import java.util.Random;
 
@@ -20,14 +20,14 @@ import java.util.Random;
  * @date     2022/6/6
  * @version  1.0
  */
-public class Z1RandomPoint {
+public class Z7RandomPoint {
 
     private Random random;
     private double r;
     private double x;
     private double y;
 
-    public Z1RandomPoint(double radius, double x_center, double y_center) {
+    public Z7RandomPoint(double radius, double x_center, double y_center) {
         this.random = new Random();
         this.r = radius;
         x = x_center;
