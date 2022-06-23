@@ -26,8 +26,9 @@ public class Z2EatBanana {
         for (int pile : piles) {
             all += pile;
         }
+        int l = piles.length;
         int min = (int) ((all + h - 1) / h);
-        int max = (int) ((all + h - piles.length) / (h - piles.length + 1));
+        int max = (int) ((all + h -l - l + 1) / (h - l + 1));
         while (min < max) {
             int middle = (min + max) / 2;
             int count = 0;
@@ -47,7 +48,5 @@ public class Z2EatBanana {
         Z2EatBanana test = new Z2EatBanana();
         // 30
         System.out.println(test.minEatingSpeed(new int[]{30, 11, 23, 4, 20}, 5));
-        //
-        System.out.println(test.minEatingSpeed(new int[]{312884470}, 968709470));
     }
 }
