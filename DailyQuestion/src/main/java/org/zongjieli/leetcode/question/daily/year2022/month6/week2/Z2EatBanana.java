@@ -23,32 +23,24 @@ public class Z2EatBanana {
 
     public int minEatingSpeed(int[] piles, int h) {
         long all = 0;
-        int max = 0;
         for (int pile : piles) {
             all += pile;
-            max = Math.max(max, pile);
         }
-        int min = (int) (all / h);
-        if (all % h > 0) {
-            min++;
-        }
+        int min = (int) ((all + h - 1) / h);
+        int max = (int) ((all + h - piles.length) / (h - piles.length + 1));
         while (min < max) {
             int middle = (min + max) / 2;
-            if (canEat(piles, h, middle)) {
+            int count = 0;
+            for (int pile : piles) {
+                count += (pile + middle - 1) / middle;
+            }
+            if (count <= h) {
                 max = middle;
             } else {
                 min = middle + 1;
             }
         }
         return min;
-    }
-
-    private boolean canEat(int[] piles, int h, int v) {
-        int count = 0;
-        for (int pile : piles) {
-            count += (pile + v - 1) / v;
-        }
-        return count <= h;
     }
 
     public static void main(String[] args) {
