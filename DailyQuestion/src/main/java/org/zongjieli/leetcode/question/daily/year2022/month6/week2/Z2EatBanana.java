@@ -46,10 +46,7 @@ public class Z2EatBanana {
     private boolean canEat(int[] piles, int h, int v) {
         int count = 0;
         for (int pile : piles) {
-            count += pile / v;
-            if (pile % v > 0) {
-                count++;
-            }
+            count += (pile + v - 1) / v;
         }
         return count <= h;
     }
