@@ -34,8 +34,23 @@ public class Z6UniqueEmail {
     public int numUniqueEmails(String[] emails) {
         Set<String> emailSet = new HashSet<>();
         for (String email : emails) {
-            String[] es = email.split("@");
-            emailSet.add(es[0].split("\\+")[0].replaceAll("\\.", "") + "@" + es[1]);
+            byte[] ebs = email.getBytes();
+            int si = 0, ei = 0;
+            for (; ei < ebs.length ; ei++) {
+                byte cb = ebs[ei];
+                if (cb == '@') {
+                    break;
+                } else if (cb == '+') {
+                    while (ebs[++ei] != '@') { }
+                    break;
+                } else if (cb != '.') {
+                    ebs[si++] = cb;
+                }
+            }
+            for (; ei < ebs.length ; ei++) {
+                ebs[si++] = ebs[ei];
+            }
+            emailSet.add(new String(ebs, 0, si));
         }
         return emailSet.size();
     }
@@ -44,5 +59,7 @@ public class Z6UniqueEmail {
         Z6UniqueEmail test = new Z6UniqueEmail();
         // 2
         System.out.println(test.numUniqueEmails(new String[]{"test.email+alex@leetcode.com", "test.e.mail+bob.cathy@leetcode.com", "testemail+david@lee.tcode.com"}));
+        // 3
+        System.out.println(test.numUniqueEmails(new String[]{"a@leetcode.com", "b@leetcode.com", "c@leetcode.com"}));
     }
 }
