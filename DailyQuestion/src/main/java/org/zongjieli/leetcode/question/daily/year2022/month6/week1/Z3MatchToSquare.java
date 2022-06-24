@@ -19,53 +19,62 @@ import java.util.*;
 public class Z3MatchToSquare {
 
     public boolean makesquare(int[] matchsticks) {
-        int all = 0, result = 0;
+        int all = 0;
+        LinkedList<Integer> ms = new LinkedList<>();
         for (int matchstick : matchsticks) {
             all += matchstick;
-            result = (result << 1) + 1;
+            ms.add(matchstick);
         }
-        if (all % 4 != 0) {
+        if ((all & 3) > 0) {
             return false;
         }
         int single = all / 4;
-        List<Integer> sumCount = new ArrayList<>();
-        sumCount(0, matchsticks, single, sumCount, 0, 0);
-        if (sumCount.size() < 4) {
-            return false;
-        }
-        return getResult(sumCount, 0, 0, result, 0);
-    }
-
-    public void sumCount(int i, int[] values, int single, List<Integer> result, int ci, int cv) {
-        if (i == values.length) {
-            return;
-        }
-        sumCount(i + 1, values, single, result, ci, cv);
-        ci |= (1 << i);
-        if ((cv += values[i]) < single) {
-            sumCount(i + 1, values, single, result, ci, cv);
-        } else if (cv == single) {
-            result.add(ci);
-        }
-    }
-
-    public boolean getResult(List<Integer> values, int i, int cv, int tv, int cc) {
-        if (i >= values.size()) {
-            return false;
-        }
-        int current = values.get(i);
-        if (cc == 3) {
-            if ((current & cv) == 0 && (current | cv) == tv) {
-                return true;
+        LinkedList<Map<Integer, Integer>> needs = new LinkedList<>();
+        Map<Integer, Integer> firstNeed = new HashMap<>();
+        firstNeed.put(single, 4);
+        needs.addLast(firstNeed);
+        ms.sort(Integer::compareTo);
+        while (!ms.isEmpty()) {
+            int max = ms.pollLast();
+            int needSize = needs.size();
+            while (--needSize >= 0) {
+                Map<Integer, Integer> need = needs.pollFirst();
+                for (Map.Entry<Integer, Integer> ne : need.entrySet()) {
+                    int k = ne.getKey(), v = ne.getValue();
+                    if (k == max) {
+                        Map<Integer, Integer> nn = new HashMap<>(need);
+                        if (v == 1) {
+                            nn.remove(k);
+                            if (nn.size() == 0) {
+                                return true;
+                            }
+                        } else {
+                            nn.put(k, v - 1);
+                        }
+                        needs.addLast(nn);
+                    } else if (k > max) {
+                        Map<Integer, Integer> nn = new HashMap<>(need);
+                        if (v == 1) {
+                            nn.remove(k);
+                            nn.merge(k - max, 1, Integer::sum);
+                        } else {
+                            nn.put(k, v - 1);
+                            nn.merge(k - max, 1, Integer::sum);
+                        }
+                        needs.add(nn);
+                    }
+                }
             }
-            return getResult(values, i + 1, cv, tv, cc);
         }
-        return getResult(values, i + 1, cv, tv, cc) || ((current & cv) == 0 && getResult(values, i + 1, current | cv, tv, cc + 1));
+        return false;
     }
+
 
     public static void main(String[] args) {
         Z3MatchToSquare test = new Z3MatchToSquare();
-        // ture
+        // true
         System.out.println(test.makesquare(new int[]{1, 1, 2, 2, 2}));
+        // true
+        System.out.println(test.makesquare(new int[]{1, 1, 1, 1, 1, 1, 2, 2, 2}));
     }
 }
