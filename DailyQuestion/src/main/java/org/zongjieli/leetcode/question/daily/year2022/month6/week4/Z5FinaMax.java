@@ -2,9 +2,7 @@ package org.zongjieli.leetcode.question.daily.year2022.month6.week4;
 
 import org.zongjieli.leetcode.base.TreeNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 给定一棵二叉树的根节点 root
@@ -20,27 +18,17 @@ import java.util.List;
 public class Z5FinaMax {
 
     public List<Integer> largestValues(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
+        Map<Integer, Integer> rowValues = new HashMap<>();
+        countMax(root, 1, rowValues);
+        return new ArrayList<>(rowValues.values());
+    }
+
+    private void countMax(TreeNode root, int row, Map<Integer, Integer> rowValues) {
         if (root == null) {
-            return result;
+            return;
         }
-        LinkedList<TreeNode> rows = new LinkedList<>();
-        rows.addLast(root);
-        while (!rows.isEmpty()) {
-            int max = rows.getFirst().val;
-            int size = rows.size();
-            while (--size >= 0) {
-                TreeNode next = rows.pollFirst();
-                max = Math.max(next.val, max);
-                if (next.left != null) {
-                    rows.addLast(next.left);
-                }
-                if (next.right != null) {
-                    rows.addLast(next.right);
-                }
-            }
-            result.add(max);
-        }
-        return result;
+        rowValues.merge(row, root.val, (a, b) -> Math.max(b, a));
+        countMax(root.left, row + 1, rowValues);
+        countMax(root.right, row + 1, rowValues);
     }
 }
