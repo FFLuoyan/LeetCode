@@ -18,16 +18,20 @@ import java.util.*;
 public class Z5FinaMax {
 
     public List<Integer> largestValues(TreeNode root) {
-        Map<Integer, Integer> rowValues = new HashMap<>();
-        countMax(root, 1, rowValues);
-        return new ArrayList<>(rowValues.values());
+        List<Integer> rowValues = new ArrayList<>();
+        countMax(root, 0, rowValues);
+        return rowValues;
     }
 
-    private void countMax(TreeNode root, int row, Map<Integer, Integer> rowValues) {
+    private void countMax(TreeNode root, int row, List<Integer> rowValues) {
         if (root == null) {
             return;
         }
-        rowValues.merge(row, root.val, (a, b) -> Math.max(b, a));
+        if (row == rowValues.size()) {
+            rowValues.add(root.val);
+        } else {
+            rowValues.set(row, Math.max(root.val, rowValues.get(row)));
+        }
         countMax(root.left, row + 1, rowValues);
         countMax(root.right, row + 1, rowValues);
     }
