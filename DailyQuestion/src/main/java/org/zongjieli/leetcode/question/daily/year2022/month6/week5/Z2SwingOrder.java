@@ -19,16 +19,25 @@ import java.util.Arrays;
 public class Z2SwingOrder {
 
     public void wiggleSort(int[] nums) {
-        Arrays.sort(nums);
-        int[] result = new int[nums.length];
-        int index = nums.length - 1;
+        int[] count = new int[5001];
+        for (int num : nums) {
+            count[num]++;
+        }
+        int ci = 5000;
         for (int i = 1 ; i < nums.length ; i += 2) {
-            result[i] = nums[index--];
+            while (count[ci] == 0) {
+                ci--;
+            }
+            nums[i] = ci;
+            count[ci]--;
         }
         for (int i = 0 ; i < nums.length ; i += 2) {
-            result[i] = nums[index--];
+            while (count[ci] == 0) {
+                ci--;
+            }
+            nums[i] = ci;
+            count[ci]--;
         }
-        System.arraycopy(result, 0, nums, 0, nums.length);
     }
 
     public static void main(String[] args) {
