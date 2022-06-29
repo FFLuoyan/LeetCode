@@ -24,6 +24,30 @@ public class Z2SwingOrder {
             count[num]++;
         }
         int ci = 5000;
+        /*
+            对于符合条件的数组,设数组的长度为 l
+            对数组进行排序,得到 nums
+            则要求数组中相同的元素数量不超过 x
+            其中当 l 为偶数时, x = l / 2
+            当 l 为奇数时, x = (l + 1) / 2
+            如果元素数量超过 x,则必定会有相同元素相邻
+            无法得出结果
+            对于数组长度为偶数的数组
+            则有 num[i] < num[i + x]
+            可以形成排列 nums[x], nums[0], nums[x + 1],...,nums[l - 1], nums[x - 1]
+            对于数组长度为奇数的数组
+            已知 nums[0] 为数组中最小值
+            如果 nums[0] == nums[x - 1]
+            则 nums[0] == nums[1] ==...== nums[x - 1] < nums[x]
+            则结果应为 nums[0], nums[x], nums[1],..., nums[l - 1], nums[x - 1]
+            如果 nums[0] != nums[x - 1], 而存在 nums[i] == nums[i + x - 1]
+            要使所有 nums[i], nums[i + 1],..., nums[i + x - 1] 不相邻
+            则所有 nums[i + k] 应在结果数组中的偶数位上
+            而对于 nums[0] < nums[i + k], nums[0] 在所有奇数位上都无法满足条件
+            所以当 i != 0 时,nums[i] < nums[i + x - 1]
+            所以按照 nums[0], nums[x], nums[1], ..., nums[l - 1], nums[x - 1] 排列
+            结果必然满足要求
+         */
         for (int i = 1 ; i < nums.length ; i += 2) {
             while (count[ci] == 0) {
                 ci--;
