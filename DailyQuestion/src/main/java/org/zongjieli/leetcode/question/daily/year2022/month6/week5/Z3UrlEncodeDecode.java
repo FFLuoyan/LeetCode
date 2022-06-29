@@ -1,6 +1,8 @@
 package org.zongjieli.leetcode.question.daily.year2022.month6.week5;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,15 +36,14 @@ import java.util.Map;
 public class Z3UrlEncodeDecode {
 
     private int count = 0;
-    private Map<String, String> save = new HashMap<>();
+    private List<String> save = new ArrayList<>();
 
     public String encode(String longUrl) {
-        String key = "http:/t.com/" + count++;
-        save.put(key, longUrl);
-        return key;
+        save.add(longUrl);
+        return "" + count++;
     }
 
     public String decode(String shortUrl) {
-        return save.get(shortUrl);
+        return save.get(Integer.parseInt(shortUrl));
     }
 }
