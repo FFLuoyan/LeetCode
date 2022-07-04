@@ -20,17 +20,28 @@ public class Z1MinSub {
     public List<List<Integer>> minimumAbsDifference(int[] arr) {
         Arrays.sort(arr);
         int sub = Integer.MAX_VALUE;
-        List<List<Integer>> result = new ArrayList<>();
+        int[] save = new int[arr.length * 2];
+        int ai = 0;
         for (int i = 1 ; i < arr.length ; i++) {
             int cs = arr[i] - arr[i - 1];
             if (cs <= sub) {
                 if (cs < sub) {
-                    result.clear();
+                    ai = 0;
                     sub = cs;
                 }
-                result.add(Arrays.asList(arr[i - 1], arr[i]));
+                save[ai++] = arr[i - 1];
+                save[ai++] = arr[i];
             }
         }
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0 ; i < ai ; i += 2) {
+            result.add(Arrays.asList(save[i], save[i + 1]));
+        }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Z1MinSub test = new Z1MinSub();
+        System.out.println(test.minimumAbsDifference(new int[]{4, 2, 3, 1}));
     }
 }
