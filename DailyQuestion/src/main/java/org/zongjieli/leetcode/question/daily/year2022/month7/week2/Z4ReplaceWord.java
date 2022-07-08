@@ -51,15 +51,27 @@ public class Z4ReplaceWord {
             }
             cd.value[26] = cd;
         });
-        return Arrays.stream(sentence.split(" ")).map(s -> {
-            DirTree cd = dic;
-            for (int i = 0 ; i < s.length() && cd != null ; i++) {
-                if (cd.value[26] != null) {
-                    return s.substring(0, i);
-                }
-                cd = cd.value[s.charAt(i) - 'a'];
+        String[] words = sentence.split(" ");
+        StringBuilder result = new StringBuilder();
+        result.append(wordToBase(dic, words[0]));
+        for (int i = 1 ; i < words.length ; i++) {
+            result.append(" ").append(wordToBase(dic, words[i]));
+        }
+        return result.toString();
+    }
+
+    private String wordToBase(DirTree dic, String word) {
+        for (int i = 0 ; i < word.length() && dic != null ; i++) {
+            if (dic.value[26] != null) {
+                return word.substring(0, i);
             }
-            return s;
-        }).collect(Collectors.joining(" "));
+            dic = dic.value[word.charAt(i) - 'a'];
+        }
+        return word;
+    }
+
+    public static void main(String[] args) {
+        Z4ReplaceWord test = new Z4ReplaceWord();
+        System.out.println(test.replaceWords(Arrays.asList("a", "b", "c"), "aadsfasf absbs bbab cadsfafs"));
     }
 }
