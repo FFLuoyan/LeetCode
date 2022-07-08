@@ -35,8 +35,20 @@ import java.util.stream.Collectors;
 public class Z4ReplaceWord {
 
     class DirTree {
-        DirTree[] value = new DirTree[27];
+        boolean end;
+        DirTree[] value = new DirTree[26];
     }
+
+    private String wordToBase(DirTree dic, String word) {
+        for (int i = 0 ; i < word.length() && dic != null ; i++) {
+            if (dic.end) {
+                return word.substring(0, i);
+            }
+            dic = dic.value[word.charAt(i) - 'a'];
+        }
+        return word;
+    }
+
 
     public String replaceWords(List<String> dictionary, String sentence) {
         DirTree dic = new DirTree();
@@ -49,7 +61,7 @@ public class Z4ReplaceWord {
                 }
                 cd = cd.value[c];
             }
-            cd.value[26] = cd;
+            cd.end = true;
         });
         String[] words = sentence.split(" ");
         StringBuilder result = new StringBuilder();
@@ -58,16 +70,6 @@ public class Z4ReplaceWord {
             result.append(" ").append(wordToBase(dic, words[i]));
         }
         return result.toString();
-    }
-
-    private String wordToBase(DirTree dic, String word) {
-        for (int i = 0 ; i < word.length() && dic != null ; i++) {
-            if (dic.value[26] != null) {
-                return word.substring(0, i);
-            }
-            dic = dic.value[word.charAt(i) - 'a'];
-        }
-        return word;
     }
 
     public static void main(String[] args) {
