@@ -34,23 +34,30 @@ import java.util.stream.Collectors;
  */
 public class Z4ReplaceWord {
 
+    class DirTree {
+        DirTree[] value = new DirTree[27];
+    }
+
     public String replaceWords(List<String> dictionary, String sentence) {
-        Map<Character, Object> dic = new HashMap<>();
+        DirTree dic = new DirTree();
         dictionary.forEach(d -> {
-            char c = d.charAt(0);
-            Map<Character, Object> cd = (Map<Character, Object>) dic.computeIfAbsent(c, k -> new HashMap<>());
-            for (int i = 1 ; i < d.length() ; i++) {
-                cd = (Map<Character, Object>) cd.computeIfAbsent(d.charAt(i), k -> new HashMap<>());
+            DirTree cd = dic;
+            for (int i = 0 ; i < d.length() ; i++) {
+                int c = d.charAt(i) - 'a';
+                if (cd.value[c] == null) {
+                    cd.value[c] = new DirTree();
+                }
+                cd = cd.value[c];
             }
-            cd.put('-', '-');
+            cd.value[26] = cd;
         });
         return Arrays.stream(sentence.split(" ")).map(s -> {
-            Map<Character, Object> cd = dic;
+            DirTree cd = dic;
             for (int i = 0 ; i < s.length() && cd != null ; i++) {
-                if (cd.containsKey('-')) {
+                if (cd.value[26] != null) {
                     return s.substring(0, i);
                 }
-                cd = (Map<Character, Object>) cd.get(s.charAt(i));
+                cd = cd.value[s.charAt(i) - 'a'];
             }
             return s;
         }).collect(Collectors.joining(" "));
