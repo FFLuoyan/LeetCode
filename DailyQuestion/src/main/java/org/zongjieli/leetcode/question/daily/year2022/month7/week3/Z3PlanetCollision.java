@@ -25,26 +25,23 @@ import java.util.LinkedList;
 public class Z3PlanetCollision {
 
     public int[] asteroidCollision(int[] asteroids) {
-        LinkedList<Integer> rl = new LinkedList<>();
+        int index = 0;
         for (int asteroid : asteroids) {
             if (asteroid > 0) {
-                rl.addLast(asteroid);
+                asteroids[index++] = asteroid;
                 continue;
             }
-            while (!rl.isEmpty() && rl.getLast() > 0 && Math.abs(asteroid) > rl.getLast()) {
-                rl.pollLast();
+            while (index > 0 && asteroids[index - 1] > 0 && -asteroid > asteroids[index - 1]) {
+                index--;
             }
-            if (rl.isEmpty() || rl.getLast() < 0) {
-                rl.addLast(asteroid);
-            }
-            if (Math.abs(asteroid) == rl.getLast()) {
-                rl.pollLast();
+            if (index == 0 || asteroids[index - 1] < 0) {
+                asteroids[index++] = asteroid;
+            } else if (-asteroid == asteroids[index - 1]) {
+                index--;
             }
         }
-        int[] result = new int[rl.size()];
-        for (int i = 0; i < rl.size(); i++) {
-            result[i] = rl.get(i);
-        }
+        int[] result = new int[index];
+        System.arraycopy(asteroids, 0, result, 0, index);
         return result;
     }
 
