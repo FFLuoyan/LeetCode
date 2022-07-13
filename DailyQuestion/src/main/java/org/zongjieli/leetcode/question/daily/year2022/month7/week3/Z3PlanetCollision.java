@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month7.week3;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 
 /**
  * 给定一个整数数组 asteroids 表示在同一行的行星
@@ -25,21 +24,23 @@ import java.util.LinkedList;
 public class Z3PlanetCollision {
 
     public int[] asteroidCollision(int[] asteroids) {
-        int index = 0;
-        for (int asteroid : asteroids) {
-            if (asteroid < 0) {
-                while (index > 0 && asteroids[index - 1] > 0 && -asteroid > asteroids[index - 1]) {
-                    index--;
-                }
-            }
-            if (asteroid > 0 || index == 0 || asteroids[index - 1] < 0) {
-                asteroids[index++] = asteroid;
-            } else if (-asteroid == asteroids[index - 1]) {
-                index--;
+        int l = asteroids.length;
+        int[] rl = new int[l];
+        int i = 0, ri = 0;
+        while (i < l) {
+            if (ri == 0 || asteroids[i] > 0 || rl[ri - 1] < 0) {
+                rl[ri++] = asteroids[i++];
+            } else if (-asteroids[i] < rl[ri - 1]) {
+                i++;
+            } else if (-asteroids[i] > rl[ri - 1]) {
+                ri--;
+            } else {
+                i++;
+                ri--;
             }
         }
-        int[] result = new int[index];
-        System.arraycopy(asteroids, 0, result, 0, index);
+        int[] result = new int[ri];
+        System.arraycopy(rl, 0, result, 0, ri);
         return result;
     }
 
@@ -51,5 +52,7 @@ public class Z3PlanetCollision {
         System.out.println(Arrays.toString(test.asteroidCollision(new int[]{8, -8})));
         // 10
         System.out.println(Arrays.toString(test.asteroidCollision(new int[]{10, 2, -5})));
+        // -2, -2, -2
+        System.out.println(Arrays.toString(test.asteroidCollision(new int[]{-2, -2, 1, -2})));
     }
 }
