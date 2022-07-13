@@ -27,14 +27,12 @@ public class Z3PlanetCollision {
     public int[] asteroidCollision(int[] asteroids) {
         int index = 0;
         for (int asteroid : asteroids) {
-            if (asteroid > 0) {
-                asteroids[index++] = asteroid;
-                continue;
+            if (asteroid < 0) {
+                while (index > 0 && asteroids[index - 1] > 0 && -asteroid > asteroids[index - 1]) {
+                    index--;
+                }
             }
-            while (index > 0 && asteroids[index - 1] > 0 && -asteroid > asteroids[index - 1]) {
-                index--;
-            }
-            if (index == 0 || asteroids[index - 1] < 0) {
+            if (asteroid > 0 || index == 0 || asteroids[index - 1] < 0) {
                 asteroids[index++] = asteroid;
             } else if (-asteroid == asteroids[index - 1]) {
                 index--;
