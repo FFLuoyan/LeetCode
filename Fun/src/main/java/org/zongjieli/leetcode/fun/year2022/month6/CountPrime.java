@@ -17,8 +17,10 @@ public class CountPrime {
         for (int i = 2 ; i < n ; i++) {
             if (!save[i]) {
                 count++;
-                for (int j = 2 * i ; j < n ; j += i) {
-                    save[j] = true;
+                if ((long) i * i < n) {
+                    for (int j = i * i ; j < n ; j += i) {
+                        save[j] = true;
+                    }
                 }
             }
         }
