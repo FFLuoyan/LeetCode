@@ -1,6 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2022.month7.week4;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -29,38 +30,22 @@ public class Z3ShiftGrid {
         int m = grid.length;
         int n = grid[0].length;
         k = k % (m * n);
-        int sr = m - 1 - k / n;
-        int sc = n - k % n;
-        List<List<Integer>> result = new ArrayList<>();
-        List<Integer> cr = new ArrayList<>();
-        result.add(cr);
-        for (int i = sc ; i < n ; i++) {
-            cr.add(grid[sr][i]);
-        }
-        for (int i = sr + 1 ; i < m ; i++) {
-            for (int j = 0 ; j < n ; j++) {
-                if (cr.size() == n) {
-                    cr = new ArrayList<>();
-                    result.add(cr);
-                }
-                cr.add(grid[i][j]);
+        LinkedList<Integer> allGrids = new LinkedList<>();
+        for (int[] g : grid) {
+            for (int i : g) {
+                allGrids.addLast(i);
             }
         }
-        for (int i = 0 ; i < sr ; i++) {
+        while (--k >= 0) {
+            allGrids.addFirst(allGrids.pollLast());
+        }
+        List<List<Integer>> result = new ArrayList<>(m);
+        for (int i = 0 ; i < m ; i++) {
+            List<Integer> row = new ArrayList<>(n);
+            result.add(row);
             for (int j = 0 ; j < n ; j++) {
-                if (cr.size() == n) {
-                    cr = new ArrayList<>();
-                    result.add(cr);
-                }
-                cr.add(grid[i][j]);
+                row.add(allGrids.pollFirst());
             }
-        }
-        if (cr.size() == n) {
-            cr = new ArrayList<>();
-            result.add(cr);
-        }
-        for (int i = 0 ; i < sc ; i++) {
-            cr.add(grid[sr][i]);
         }
         return result;
     }
