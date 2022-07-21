@@ -29,22 +29,21 @@ public class Z3ShiftGrid {
     public List<List<Integer>> shiftGrid(int[][] grid, int k) {
         int m = grid.length;
         int n = grid[0].length;
-        k = k % (m * n);
-        LinkedList<Integer> allGrids = new LinkedList<>();
-        for (int[] g : grid) {
-            for (int i : g) {
-                allGrids.addLast(i);
+        int all = m * n;
+        int[] values = new int[all];
+        int ai = 0;
+        for (int[] row : grid) {
+            for (int column : row) {
+                values[ai++] = column;
             }
         }
-        while (--k >= 0) {
-            allGrids.addFirst(allGrids.pollLast());
-        }
+        ai = all - (k % all);
         List<List<Integer>> result = new ArrayList<>(m);
         for (int i = 0 ; i < m ; i++) {
             List<Integer> row = new ArrayList<>(n);
             result.add(row);
             for (int j = 0 ; j < n ; j++) {
-                row.add(allGrids.pollFirst());
+                row.add(values[(all + ai++) % all]);
             }
         }
         return result;
