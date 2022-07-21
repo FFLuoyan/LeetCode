@@ -17,22 +17,11 @@ import org.zongjieli.leetcode.base.TreeNode;
 public class Z4BinaryTreePrune {
 
     public TreeNode pruneTree(TreeNode root) {
-        TreeNode returnRight = new TreeNode(0, null, root);
-        return countAndPrune(returnRight.right) == 0 ? null : returnRight.right;
-    }
-
-    public int countAndPrune(TreeNode root) {
         if (root == null) {
-            return 0;
+            return null;
         }
-        int left = countAndPrune(root.left);
-        if (left == 0) {
-            root.left = null;
-        }
-        int right = countAndPrune(root.right);
-        if (right == 0) {
-            root.right = null;
-        }
-        return left + right + root.val;
+        root.left = pruneTree(root.left);
+        root.right = pruneTree(root.right);
+        return root.left == null && root.right == null && root.val == 0 ? null : root;
     }
 }
