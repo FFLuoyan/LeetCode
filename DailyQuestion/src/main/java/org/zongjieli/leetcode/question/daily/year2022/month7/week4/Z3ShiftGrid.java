@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month7.week4;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
