@@ -2,8 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month7.week5;
 
 import org.zongjieli.leetcode.base.TreeNode;
 
-import java.util.LinkedList;
-
 /**
  * 给定一个二叉树的根节点 root
  * 设根节点位于二叉树的第 1 层
@@ -20,28 +18,25 @@ import java.util.LinkedList;
 public class Z7MaxSumLayer {
 
     public int maxLevelSum(TreeNode root) {
-        LinkedList<TreeNode> nodes = new LinkedList<>();
-        nodes.add(root);
-        int size, result = 1, row = 1, rs = Integer.MIN_VALUE;
-        while ((size = nodes.size()) > 0) {
-            int sum = 0;
-            while (--size >= 0) {
-                TreeNode node = nodes.pollFirst();
-                sum += node.val;
-                if (node.left != null) {
-                    nodes.addLast(node.left);
-                }
-                if (node.right != null) {
-                    nodes.addLast(node.right);
-                }
+        int[] values = new int[1001];
+        addRowValues(root, 1, values);
+        int result = 1, rs = values[1];
+        for (int i = 2 ; i <= values[0] ; i++) {
+            if (values[i] > rs) {
+                result = i;
+                rs = values[i];
             }
-            if (sum > rs) {
-                result = row;
-                rs = sum;
-            }
-            row++;
         }
         return result;
+    }
+
+    public void addRowValues(TreeNode root, int row, int[] values) {
+        if (root != null) {
+            values[row] += root.val;
+            addRowValues(root.left, row + 1, values);
+            addRowValues(root.right, row + 1, values);
+            values[0] = Math.max(values[0], row);
+        }
     }
 
     public static void main(String[] args) {
