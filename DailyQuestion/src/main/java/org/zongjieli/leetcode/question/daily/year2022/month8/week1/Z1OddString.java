@@ -15,14 +15,14 @@ package org.zongjieli.leetcode.question.daily.year2022.month8.week1;
 public class Z1OddString {
 
     public String generateTheString(int n) {
+        byte[] result = new byte[n];
         int ac = (n & 1) == 1 ? n : n - 1;
-        StringBuilder result = new StringBuilder(n);
-        for (int i = 0 ; i < ac ; i++) {
-            result.append('a');
-        }
         if (ac < n) {
-            result.append('b');
+            result[ac] = 'b';
         }
-        return result.toString();
+        while (--ac >= 0) {
+            result[ac] = 'a';
+        }
+        return new String(result);
     }
 }
