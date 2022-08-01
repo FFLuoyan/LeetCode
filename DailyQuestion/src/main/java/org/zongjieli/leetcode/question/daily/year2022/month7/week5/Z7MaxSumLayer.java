@@ -31,12 +31,14 @@ public class Z7MaxSumLayer {
     }
 
     public void addRowValues(TreeNode root, int row, int[] values) {
-        if (root != null) {
-            values[row] += root.val;
+        values[row] += root.val;
+        if (root.left != null) {
             addRowValues(root.left, row + 1, values);
-            addRowValues(root.right, row + 1, values);
-            values[0] = Math.max(values[0], row);
         }
+        if (root.right != null) {
+            addRowValues(root.right, row + 1, values);
+        }
+        values[0] = Math.max(values[0], row);
     }
 
     public static void main(String[] args) {
