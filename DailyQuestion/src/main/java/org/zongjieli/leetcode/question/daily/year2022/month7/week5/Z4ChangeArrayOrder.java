@@ -20,17 +20,23 @@ import java.util.*;
 public class Z4ChangeArrayOrder {
 
     public int[] arrayRankTransform(int[] arr) {
-        TreeSet<Integer> values = new TreeSet<>();
-        for (int i : arr) {
-            values.add(i);
+        if (arr.length == 0) {
+            return arr;
         }
-        int count = 0;
-        Map<Integer, Integer> orders = new HashMap<>();
-        while (!values.isEmpty()) {
-            orders.put(values.pollFirst(), ++count);
-        }
+        int[][] values = new int[arr.length][2];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = orders.get(arr[i]);
+            values[i][0] = arr[i];
+            values[i][1] = i;
+        }
+        Arrays.sort(values, Comparator.comparingInt(a -> a[0]));
+        int last = values[0][0], order = 1;
+        arr[values[0][1]] = 1;
+        for (int i = 1; i < values.length; i++) {
+            if (values[i][0] > last) {
+                last = values[i][0];
+                order++;
+            }
+            arr[values[i][1]] = order;
         }
         return arr;
     }
