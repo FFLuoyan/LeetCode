@@ -24,20 +24,31 @@ import java.util.List;
 public class Z4NonIncreaseSub {
 
     public List<Integer> minSubsequence(int[] nums) {
-        Arrays.sort(nums);
+        int[] count = new int[101];
         int sum = 0;
         for (int num : nums) {
             sum += num;
+            count[num]++;
         }
         int half = sum / 2;
         sum = 0;
         List<Integer> result = new ArrayList<>();
-        for (int i = nums.length - 1; i >= 0; i--) {
-            result.add(nums[i]);
-            if ((sum += nums[i]) > half) {
-                break;
+        int i = 100;
+        while (i >= 0) {
+            if (--count[i] >= 0) {
+                result.add(i);
+                if ((sum += i) > half) {
+                    break;
+                }
+            } else {
+                i--;
             }
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Z4NonIncreaseSub test = new Z4NonIncreaseSub();
+        System.out.println(test.minSubsequence(new int[]{4, 3, 10, 9, 8}));
     }
 }
