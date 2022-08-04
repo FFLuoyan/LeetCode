@@ -17,34 +17,34 @@ import java.util.Arrays;
 public class Z3OrderString {
 
     public String orderlyQueue(String s, int k) {
-        if (k == 1) {
-            int l = s.length();
-            char[] sRepeat = new char[2 * l];
-            for (int i = 0 ; i < l ; i++) {
-                char cc = s.charAt(i);
-                sRepeat[i] = cc;
-                sRepeat[i + l] = cc;
-            }
-            int start = 0;
-            for (int i = 1 ; i < l ; i++) {
-                char cc = sRepeat[start];
-                char nc = sRepeat[i];
-                if (nc > cc) {
-                    continue;
-                }
-                for (int j = 1 ; j < l && nc == cc; j++) {
-                    nc = sRepeat[i + j];
-                    cc = sRepeat[start + j];
-                }
-                if (cc > nc) {
-                    start = i;
-                }
-            }
-            return new String(sRepeat, start, l);
+        if (k > 1) {
+            char[] result = s.toCharArray();
+            Arrays.sort(result);
+            return new String(result);
         }
-        char[] result = s.toCharArray();
-        Arrays.sort(result);
-        return new String(result);
+        int l = s.length();
+        char[] sRepeat = new char[2 * l];
+        for (int i = 0 ; i < l ; i++) {
+            char cc = s.charAt(i);
+            sRepeat[i] = cc;
+            sRepeat[i + l] = cc;
+        }
+        int start = 0;
+        for (int i = 1 ; i < l ; i++) {
+            char cc = sRepeat[start];
+            char nc = sRepeat[i];
+            if (nc > cc) {
+                continue;
+            }
+            for (int j = 1 ; j < l && nc == cc; j++) {
+                nc = sRepeat[i + j];
+                cc = sRepeat[start + j];
+            }
+            if (cc > nc) {
+                start = i;
+            }
+        }
+        return new String(sRepeat, start, l);
     }
 
     public static void main(String[] args) {
