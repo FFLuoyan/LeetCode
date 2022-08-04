@@ -27,6 +27,29 @@ public class CountPrime {
         return count;
     }
 
+    public int countPrimesByLinear(int n) {
+        int count = 0, pi = 0;
+        boolean[] save = new boolean[n];
+        int[] primes = new int[n];
+        for (int i = 2 ; i < n ; i++) {
+            if (!save[i]) {
+                count++;
+                primes[pi++] = i;
+            }
+            for (int j = 0 ; j < pi ; j++) {
+                int next = primes[j] * i;
+                if (next >= n) {
+                    break;
+                }
+                save[next] = true;
+                if (i % primes[j] == 0) {
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         CountPrime test = new CountPrime();
         // 4
