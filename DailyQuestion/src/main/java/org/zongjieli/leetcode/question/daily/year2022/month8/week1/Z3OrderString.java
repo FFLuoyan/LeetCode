@@ -25,14 +25,22 @@ public class Z3OrderString {
                 sRepeat[i] = cc;
                 sRepeat[i + l] = cc;
             }
-            String result = s;
+            int start = 0;
             for (int i = 1 ; i < l ; i++) {
-                String compare = new String(sRepeat, i, l);
-                if (compare.compareTo(result) < 0) {
-                    result = compare;
+                char cc = sRepeat[start];
+                char nc = sRepeat[i];
+                if (nc > cc) {
+                    continue;
+                }
+                for (int j = 1 ; j < l && nc == cc; j++) {
+                    nc = sRepeat[i + j];
+                    cc = sRepeat[start + j];
+                }
+                if (cc > nc) {
+                    start = i;
                 }
             }
-            return result;
+            return new String(sRepeat, start, l);
         }
         char[] result = s.toCharArray();
         Arrays.sort(result);
@@ -41,6 +49,9 @@ public class Z3OrderString {
 
     public static void main(String[] args) {
         Z3OrderString test = new Z3OrderString();
+        // acb
         System.out.println(test.orderlyQueue("cba", 1));
+        // bczfjtvxerzbrvigplen
+        System.out.println(test.orderlyQueue("enbczfjtvxerzbrvigpl", 1));
     }
 }
