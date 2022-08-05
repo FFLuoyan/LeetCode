@@ -2,8 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month8.week1;
 
 import org.zongjieli.leetcode.base.TreeNode;
 
-import java.util.LinkedList;
-
 /**
  * 给定一个二叉树的根 root 和两个整数 val 和 depth
  * 在给定的深度 depth 处添加一个值为 val 的节点行
@@ -32,25 +30,20 @@ public class Z5TreeAddRow {
         if (depth == 1) {
             return new TreeNode(val, root, null);
         }
-        LinkedList<TreeNode> cr = new LinkedList<>();
-        cr.add(root);
-        int cd = 1;
-        while (++cd < depth) {
-            int l = cr.size();
-            while (--l >= 0) {
-                TreeNode ct = cr.pollFirst();
-                if (ct.left != null) {
-                    cr.addLast(ct.left);
-                }
-                if (ct.right != null) {
-                    cr.addLast(ct.right);
-                }
-            }
-        }
-        for (TreeNode node : cr) {
-            node.left = new TreeNode(val, node.left, null);
-            node.right = new TreeNode(val, null, node.right);
-        }
+        addRow(root, val, depth - 1, 1);
         return root;
+    }
+
+    public void addRow(TreeNode root, int val, int tr, int cr) {
+        if (root == null) {
+            return;
+        }
+        if (tr == cr) {
+            root.left = new TreeNode(val, root.left, null);
+            root.right = new TreeNode(val, null, root.right);
+            return;
+        }
+        addRow(root.left, val, tr, cr + 1);
+        addRow(root.right, val, tr, cr + 1);
     }
 }
