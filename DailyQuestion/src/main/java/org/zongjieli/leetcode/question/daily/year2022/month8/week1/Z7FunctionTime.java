@@ -43,21 +43,30 @@ public class Z7FunctionTime {
         int[] result = new int[n];
         LinkedList<Integer> functionStart = new LinkedList<>();
         for (String log : logs) {
-            String[] logSplit = log.split(":");
-            if (logSplit[1].length() == 5) {
+            int li = log.length() - 1;
+            int i = li;
+            while (--i >= 0 && log.charAt(i) != ':'){ }
+            int time = log.charAt(i + 1) - '0';
+            for (int j = i + 2 ; j <= li ; j++) {
+                time = time * 10 + log.charAt(j) - '0';
+            }
+            if (log.charAt(i - 1) == 't') {
                 // 开始
-                functionStart.addLast(Integer.parseInt(logSplit[0]));
-                functionStart.addLast(Integer.parseInt(logSplit[2]));
+                int functionId = log.charAt(0) - '0';
+                for (int j = 1 ; j < i - 6 ; j++) {
+                    functionId = functionId * 10 + log.charAt(j) - '0';
+                }
+                functionStart.addLast(functionId);
+                functionStart.addLast(time);
                 functionStart.addLast(0);
             } else {
                 // 结束
-                int endTime = Integer.parseInt(logSplit[2]);
                 int otherCost = functionStart.pollLast();
                 int startTime = functionStart.pollLast();
                 int functionId = functionStart.pollLast();
-                result[functionId] += (endTime - startTime + 1 - otherCost);
+                result[functionId] += (time - startTime + 1 - otherCost);
                 if (!functionStart.isEmpty()) {
-                    functionStart.addLast(functionStart.pollLast() + (endTime - startTime + 1));
+                    functionStart.addLast(functionStart.pollLast() + (time - startTime + 1));
                 }
             }
         }
