@@ -1,5 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month8.week1;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,32 +45,43 @@ public class Z7FunctionTime {
         LinkedList<Integer> functionStart = new LinkedList<>();
         for (String log : logs) {
             int li = log.length() - 1;
-            int i = li;
-            while (--i >= 0 && log.charAt(i) != ':'){ }
-            int time = log.charAt(i + 1) - '0';
-            for (int j = i + 2 ; j <= li ; j++) {
-                time = time * 10 + log.charAt(j) - '0';
-            }
-            if (log.charAt(i - 1) == 't') {
-                // 开始
-                int functionId = log.charAt(0) - '0';
-                for (int j = 1 ; j < i - 6 ; j++) {
-                    functionId = functionId * 10 + log.charAt(j) - '0';
+            int functionId = log.charAt(0) - '0';
+            int i = 1;
+            for (; i <= li ; i++) {
+                char cc = log.charAt(i);
+                if (cc == ':') {
+                    break;
                 }
-                functionStart.addLast(functionId);
-                functionStart.addLast(time);
+                functionId = functionId * 10 + cc - '0';
+            }
+            if (log.charAt(i + 1) == 's') {
+                // 开始
+                int startTime = log.charAt((i += 7)) - '0';
+                while (++i <= li) {
+                    startTime = startTime * 10 + log.charAt(i) - '0';
+                }
+                functionStart.addLast(startTime);
                 functionStart.addLast(0);
             } else {
                 // 结束
+                int endTime = log.charAt((i += 5)) - '0';
+                while (++i <= li) {
+                    endTime = endTime * 10 + log.charAt(i) - '0';
+                }
                 int otherCost = functionStart.pollLast();
                 int startTime = functionStart.pollLast();
-                int functionId = functionStart.pollLast();
-                result[functionId] += (time - startTime + 1 - otherCost);
+                result[functionId] += (endTime - startTime + 1 - otherCost);
                 if (!functionStart.isEmpty()) {
-                    functionStart.addLast(functionStart.pollLast() + (time - startTime + 1));
+                    functionStart.addLast(functionStart.pollLast() + (endTime - startTime + 1));
                 }
             }
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Z7FunctionTime test = new Z7FunctionTime();
+        // [3, 4]
+        System.out.println(Arrays.toString(test.exclusiveTime(2, Arrays.asList("0:start:0", "1:start:2", "1:end:5", "0:end:6"))));
     }
 }
