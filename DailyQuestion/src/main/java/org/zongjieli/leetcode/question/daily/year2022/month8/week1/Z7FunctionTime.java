@@ -42,7 +42,8 @@ public class Z7FunctionTime {
 
     public int[] exclusiveTime(int n, List<String> logs) {
         int[] result = new int[n];
-        LinkedList<Integer> functionStart = new LinkedList<>();
+        int[] records = new int[logs.size() << 1];
+        int ri = 0;
         for (String log : logs) {
             int li = log.length() - 1;
             int functionId = log.charAt(0) - '0';
@@ -60,19 +61,19 @@ public class Z7FunctionTime {
                 while (++i <= li) {
                     startTime = startTime * 10 + log.charAt(i) - '0';
                 }
-                functionStart.addLast(startTime);
-                functionStart.addLast(0);
+                records[ri++] = startTime;
+                records[ri++] = 0;
             } else {
                 // 结束
                 int endTime = log.charAt((i += 5)) - '0';
                 while (++i <= li) {
                     endTime = endTime * 10 + log.charAt(i) - '0';
                 }
-                int otherCost = functionStart.pollLast();
-                int startTime = functionStart.pollLast();
+                int otherCost = records[--ri];
+                int startTime = records[--ri];
                 result[functionId] += (endTime - startTime + 1 - otherCost);
-                if (!functionStart.isEmpty()) {
-                    functionStart.addLast(functionStart.pollLast() + (endTime - startTime + 1));
+                if (ri != 0) {
+                    records[ri - 1] += (endTime - startTime + 1);
                 }
             }
         }
