@@ -22,33 +22,36 @@ public class Z4ReformatString {
 
     public String reformat(String s) {
         byte[] values = s.getBytes();
-        int l = values.length;
-        if (l == 1) {
-            return s;
-        }
-        Arrays.sort(values);
-        int middle = l / 2;
-        if (values[middle - 1] > 57 || values[middle + (l & 1)] <= 57) {
-            return "";
-        }
-        int left = 1, right = l - 2;
-        if ((l & 1) == 1) {
-            if (values[middle] > 57) {
-                left--;
+        int length = values.length;
+        int add = (length & 1);
+        int ni = 0, ci = 1, vi = 0, lni = length + add, lci = lni + 1;
+        byte[] result = new byte[length + 2 + add];
+        for (; ni <= lni && ci <= lci && vi < length; vi++) {
+            if (values[vi] <= 57) {
+                result[ni] = values[vi];
+                ni += 2;
             } else {
-                right++;
+                result[ci] = values[vi];
+                ci += 2;
             }
         }
-        for (; left < right ; left += 2, right -= 2) {
-            byte temp = values[left];
-            values[left] = values[right];
-            values[right] = temp;
+        if (ni > lni || ci > lci) {
+            return "";
         }
-        return new String(values);
+        if (add == 0 || ni > ci) {
+            return new String(result, 0, length);
+        }
+        result[length - 1] = result[0];
+        return new String(result, 1, length);
     }
 
     public static void main(String[] args) {
         Z4ReformatString test = new Z4ReformatString();
+        // 0a1b2c
         System.out.println(test.reformat("a0b1c2"));
+        // a1b2c0d
+        System.out.println(test.reformat("a0b1c2d"));
+        // 0a1b2c3
+        System.out.println(test.reformat("a0b1c23"));
     }
 }
