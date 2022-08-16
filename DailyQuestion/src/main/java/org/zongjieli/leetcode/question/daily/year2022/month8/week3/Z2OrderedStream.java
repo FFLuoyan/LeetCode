@@ -35,9 +35,11 @@ public class Z2OrderedStream {
 
     private String[] values;
     private int index = 1;
+    private List<String> result;
 
     public Z2OrderedStream(int n) {
         values = new String[n + 2];
+        result = new ArrayList<>(n);
     }
 
     public List<String> insert(int idKey, String value) {
@@ -45,7 +47,7 @@ public class Z2OrderedStream {
         if (values[index] == null) {
             return Collections.emptyList();
         }
-        List<String> result = new ArrayList<>();
+        result.clear();
         while (values[index] != null) {
             result.add(values[index++]);
         }
