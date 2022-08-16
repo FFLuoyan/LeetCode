@@ -1,4 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month8.week3;
+
 /**
  * 设计实现双端队列
  * 实现 Z1CircularDeque 类:
@@ -25,6 +26,8 @@ package org.zongjieli.leetcode.question.daily.year2022.month8.week3;
  * 1 <= k <= 1000
  * 0 <= value <= 1000
  * insertFront, insertLast, deleteFront, deleteLast, getFront, getRear, isEmpty, isFull 调用次数不大于 2000 次
+ *
+ * @see org.zongjieli.leetcode.question.daily.year2022.month8.week1.Z2CircularQueue
  *
  * @author   Li.zongjie
  * @date     2022/8/15
