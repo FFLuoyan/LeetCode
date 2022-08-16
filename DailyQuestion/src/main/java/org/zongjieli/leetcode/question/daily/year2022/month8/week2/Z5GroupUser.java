@@ -25,12 +25,16 @@ public class Z5GroupUser {
 
     public List<List<Integer>> groupThePeople(int[] groupSizes) {
         List<List<Integer>> result = new ArrayList<>();
-        Map<Integer, List<Integer>> sizeMap = new HashMap<>();
+        List[] resultMap = new ArrayList[500];
         for (int i = 0; i < groupSizes.length; i++) {
-            List<Integer> cl = sizeMap.computeIfAbsent(groupSizes[i], k -> new ArrayList<>());
-            cl.add(i);
-            if (cl.size() == groupSizes[i]) {
-                result.add(sizeMap.remove(groupSizes[i]));
+            int size = groupSizes[i];
+            if (resultMap[size] == null) {
+                resultMap[groupSizes[i]] = new ArrayList(groupSizes[i]);
+            }
+            resultMap[size].add(i);
+            if (resultMap[size].size() == size) {
+                result.add(resultMap[size]);
+                resultMap[size] = null;
             }
         }
         return result;
