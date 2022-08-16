@@ -13,16 +13,13 @@ package org.zongjieli.leetcode.question.daily.year2022.month8.week2;
  */
 public class Z7MaxScore {
     public int maxScore(String s) {
-        int base = '1' - s.charAt(0), compare = 0, mc = 0;
-        for (int i = 1 ; i < s.length() - 1 ; i++) {
-            if (s.charAt(i) == '0') {
-                compare++;
-                mc = Math.max(compare, mc);
-            } else {
-                base++;
-                compare--;
-            }
+        int base = '1' - s.charAt(0), compare = 0, mc = 0, mi = s.length() - 1;
+        for (int i = 1 ; i < mi ; i++) {
+            int c = s.charAt(i) - '0';
+            base += c;
+            compare += (1 - 2 * c);
+            mc = Math.max(compare, mc);
         }
-        return base + mc + s.charAt(s.length() - 1) - '0';
+        return base + mc + s.charAt(mi) - '0';
     }
 }
