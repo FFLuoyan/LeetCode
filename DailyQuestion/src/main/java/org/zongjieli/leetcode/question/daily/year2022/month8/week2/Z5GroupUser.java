@@ -1,9 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2022.month8.week2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 有 n 个人被分成数量未知的组,每个人都被标记为一个从 0 到 n - 1 的唯一 ID
@@ -25,16 +23,21 @@ public class Z5GroupUser {
 
     public List<List<Integer>> groupThePeople(int[] groupSizes) {
         List<List<Integer>> result = new ArrayList<>();
-        List[] resultMap = new ArrayList[500];
         for (int i = 0; i < groupSizes.length; i++) {
             int size = groupSizes[i];
-            if (resultMap[size] == null) {
-                resultMap[groupSizes[i]] = new ArrayList(groupSizes[i]);
-            }
-            resultMap[size].add(i);
-            if (resultMap[size].size() == size) {
-                result.add(resultMap[size]);
-                resultMap[size] = null;
+            if (size > 0) {
+                List<Integer> cl = new ArrayList<>(size);
+                cl.add(i);
+                groupSizes[i] = 0;
+                int cs = 1;
+                for (int j = i + 1 ; j < groupSizes.length && cs < size ; j++) {
+                    if (groupSizes[j] == size) {
+                        cl.add(j);
+                        groupSizes[j] = 0;
+                        cs++;
+                    }
+                }
+                result.add(cl);
             }
         }
         return result;
