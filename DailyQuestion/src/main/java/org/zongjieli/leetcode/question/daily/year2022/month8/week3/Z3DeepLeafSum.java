@@ -17,23 +17,19 @@ import java.util.LinkedList;
 public class Z3DeepLeafSum {
 
     public int deepestLeavesSum(TreeNode root) {
-        int sum = 0;
-        LinkedList<TreeNode> values = new LinkedList<>();
-        values.add(root);
-        while (!values.isEmpty()) {
-            sum = 0;
-            int size = values.size();
-            while (--size >= 0) {
-                TreeNode current = values.pollFirst();
-                sum += current.val;
-                if (current.left != null) {
-                    values.addLast(current.left);
-                }
-                if (current.right != null) {
-                    values.addLast(current.right);
-                }
-            }
+        int[] sums = new int[10001];
+        sum(sums, 1, root);
+        return sums[sums[0]];
+    }
+
+    private void sum(int[] sums, int currentRow, TreeNode current) {
+        sums[0] = Math.max(sums[0], currentRow);
+        sums[currentRow] += current.val;
+        if (current.left != null) {
+             sum(sums, currentRow + 1, current.left);
         }
-        return sum;
+        if (current.right != null) {
+            sum(sums, currentRow + 1, current.right);
+        }
     }
 }
