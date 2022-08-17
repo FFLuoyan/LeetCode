@@ -23,21 +23,24 @@ public class Z5GroupUser {
 
     public List<List<Integer>> groupThePeople(int[] groupSizes) {
         List<List<Integer>> result = new ArrayList<>();
+        boolean[] exists = new boolean[501];
         for (int i = 0; i < groupSizes.length; i++) {
             int size = groupSizes[i];
-            if (size > 0) {
+            if (!exists[size]) {
+                exists[size] = true;
                 List<Integer> cl = new ArrayList<>(size);
-                cl.add(i);
-                groupSizes[i] = 0;
-                int cs = 1;
-                for (int j = i + 1 ; j < groupSizes.length && cs < size ; j++) {
+                int cs = 0;
+                for (int j = i ; j < groupSizes.length ; j++) {
                     if (groupSizes[j] == size) {
                         cl.add(j);
-                        groupSizes[j] = 0;
                         cs++;
                     }
+                    if (cs == size) {
+                        result.add(cl);
+                        cl = new ArrayList<>(size);
+                        cs = 0;
+                    }
                 }
-                result.add(cl);
             }
         }
         return result;
