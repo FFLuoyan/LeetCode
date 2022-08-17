@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month8.week2;
 
-import java.util.Arrays;
-
 /**
  * 给定一个混合了数字和字母的字符串 s
  * 其中的字母均为小写英文字母
