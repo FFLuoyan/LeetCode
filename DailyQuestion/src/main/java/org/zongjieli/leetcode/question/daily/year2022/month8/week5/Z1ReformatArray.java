@@ -15,13 +15,10 @@ package org.zongjieli.leetcode.question.daily.year2022.month8.week5;
 public class Z1ReformatArray {
 
     public int[] shuffle(int[] nums, int n) {
-        int l = 2 * n;
-        int[] result = new int[l];
+        int[] result = new int[2 * n];
         for (int i = 0 ; i < n ; i++) {
-            result[i << 1] = nums[i];
-        }
-        for (int i = n ; i < l ; i++) {
-            result[2 * (i - n) + 1] = nums[i];
+            result[2 * i] = nums[i];
+            result[2 * i + 1] = nums[i + n];
         }
         return result;
     }
