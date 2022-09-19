@@ -18,16 +18,17 @@ import java.util.Arrays;
 public class Z1SortArray {
 
     public int[] frequencySort(int[] nums) {
-        int[][] count = new int[201][2];
+        int[] count = new int[201];
         for (int num : nums) {
-            count[num + 100][1] = num;
-            count[num + 100][0]++;
+            count[num + 100]++;
         }
-        Arrays.sort(count, (a, b) -> a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : b[1] - a[1]);
-        int ni = nums.length - 1;
-        for (int i = 200 ; i >= 0 && count[i][0] > 0 ; i--) {
-            for (int j = 0 ; j < count[i][0] ; j++) {
-                nums[ni--] = count[i][1];
+        for (int i = 0 ; i < nums.length ; i++) {
+            for (int j = i + 1 ; j < nums.length ; j++) {
+                if (count[nums[i] + 100] > count[nums[j] + 100] || (count[nums[i] + 100] == count[nums[j] + 100] && nums[i] < nums[j])) {
+                    int temp = nums[j];
+                    nums[j] = nums[i];
+                    nums[i] = temp;
+                }
             }
         }
         return nums;
@@ -35,6 +36,7 @@ public class Z1SortArray {
 
     public static void main(String[] args) {
         Z1SortArray test = new Z1SortArray();
+        // [2, 2, 1, 1, 3, 3, 3]
         System.out.println(Arrays.toString(test.frequencySort(new int[]{1, 1, 2, 2, 3, 3, 3})));
     }
 }
