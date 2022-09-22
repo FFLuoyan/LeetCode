@@ -22,20 +22,18 @@ public class Z4ConnectArray {
 
     public boolean canFormArray(int[] arr, int[][] pieces) {
         int[] after = new int[101];
-        boolean[] exists = new boolean[101];
-        exists[arr[0]] = true;
         for (int i = 1 ; i < arr.length ; i++) {
             after[arr[i - 1]] = arr[i];
-            exists[arr[i]] = true;
         }
+        after[arr[arr.length - 1]] = 101;
         for (int[] piece : pieces) {
-            if (!exists[piece[0]]) {
-                return false;
-            }
             for (int i = 1 ; i < piece.length ; i++) {
-                if (!exists[piece[i]] || after[piece[i - 1]] != piece[i]) {
+                if (after[piece[i - 1]] != piece[i]) {
                     return false;
                 }
+            }
+            if (after[piece[piece.length - 1]] == 0) {
+                return false;
             }
         }
         return true;
