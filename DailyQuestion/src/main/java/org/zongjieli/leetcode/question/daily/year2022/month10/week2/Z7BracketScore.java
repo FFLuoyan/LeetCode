@@ -30,6 +30,25 @@ public class Z7BracketScore {
         return values[0];
     }
 
+    public int scoreOfParentheses2(String s) {
+        /*
+            平衡括号字符串的最终值只和括号对 "()" 的数目及深度有关
+         */
+        int count = 0, score = 0, li = 0;
+        for (int bracketIndex = 0 ; bracketIndex < s.length() ; bracketIndex++) {
+            if (s.charAt(bracketIndex) == '(') {
+                count++;
+                li = bracketIndex;
+            } else {
+                count--;
+                if (bracketIndex == li + 1) {
+                    score += (1 << count);
+                }
+            }
+        }
+        return score;
+    }
+
     public static void main(String[] args) {
         Z7BracketScore test = new Z7BracketScore();
         // 2
