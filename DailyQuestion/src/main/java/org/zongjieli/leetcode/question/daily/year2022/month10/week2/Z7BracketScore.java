@@ -21,16 +21,13 @@ public class Z7BracketScore {
             if (s.charAt(bracketIndex) == '(') {
                 count++;
             } else {
-                if (values[count + 1] == 0) {
-                    values[count] += 1;
-                } else {
-                    values[count] += 2 * values[count + 1];
-                    values[count + 1] = 0;
-                }
+                int cv = values[count];
+                values[count] = 0;
                 count--;
+                values[count] += (cv == 0 ? 1 : 2 * cv);
             }
         }
-        return values[1];
+        return values[0];
     }
 
     public static void main(String[] args) {
