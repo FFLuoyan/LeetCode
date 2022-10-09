@@ -15,27 +15,22 @@ package org.zongjieli.leetcode.question.daily.year2022.month10.week2;
 public class Z7BracketScore {
 
     public int scoreOfParentheses(String s) {
-        byte[] bytes = s.getBytes();
-        return bracketScore(bytes, 0, bytes.length - 1);
-    }
-
-    private int bracketScore(byte[] bytes, int start, int end) {
-        if (start == end - 1) {
-            return 1;
-        }
-        int count = 1;
-        int ci = start;
-        while (count > 0) {
-            if (bytes[++ci] == '(') {
+        int[] values = new int[32];
+        int count = 0;
+        for (int bracketIndex = 0 ; bracketIndex < s.length() ; bracketIndex++) {
+            if (s.charAt(bracketIndex) == '(') {
                 count++;
             } else {
+                if (values[count + 1] == 0) {
+                    values[count] += 1;
+                } else {
+                    values[count] += 2 * values[count + 1];
+                    values[count + 1] = 0;
+                }
                 count--;
             }
         }
-        if (ci == end) {
-            return 2 * bracketScore(bytes, start + 1, end - 1);
-        }
-        return bracketScore(bytes, start, ci) + bracketScore(bytes, ci + 1, end);
+        return values[1];
     }
 
     public static void main(String[] args) {
