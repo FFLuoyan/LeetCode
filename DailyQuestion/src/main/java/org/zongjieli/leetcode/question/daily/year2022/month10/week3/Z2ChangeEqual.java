@@ -17,19 +17,23 @@ package org.zongjieli.leetcode.question.daily.year2022.month10.week3;
 public class Z2ChangeEqual {
 
     public boolean areAlmostEqual(String s1, String s2) {
-        char[] equals = new char[4];
+        char as = 'A', bs = 'B';
         int count = 0;
         for (int i = 0 ; i < s1.length() ; i++) {
             char a = s1.charAt(i);
             char b = s2.charAt(i);
             if (a != b) {
-                if (count >= 4) {
+                if (count == 0) {
+                    as = a;
+                    bs = b;
+                    count = 1;
+                } else if (count == 2 || as != b || bs != a) {
                     return false;
+                } else {
+                    count = 2;
                 }
-                equals[count++] = a;
-                equals[count++] = b;
             }
         }
-        return count == 0 || (count == 4 && equals[0] == equals[3] && equals[1] == equals[2]);
+        return count != 1;
     }
 }
