@@ -1,6 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2022.month10.week2;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.TreeMap;
 
 /**
@@ -19,17 +20,18 @@ import java.util.TreeMap;
 public class Z6AdvantageMax {
 
     public int[] advantageCount(int[] nums1, int[] nums2) {
-        TreeMap<Integer, Integer> save = new TreeMap<>();
-        for (int num : nums1) {
-            save.merge(num, 1, Integer::sum);
-        }
+        int[][] sort = new int[nums2.length][2];
         for (int i = 0; i < nums2.length; i++) {
-            Integer key = save.higherKey(nums2[i]);
-            if (key == null) {
-                key = save.firstKey();
-            }
-            nums1[i] = key;
-            save.compute(key, (k, o) -> o == 1 ? null : o - 1);
+            sort[i][0] = nums2[i];
+            sort[i][1] = i;
+        }
+        int[] nums1Sort = new int[nums1.length];
+        System.arraycopy(nums1, 0, nums1Sort, 0, nums1.length);
+        Arrays.sort(nums1Sort);
+        int is = 0, ie = nums1.length - 1;
+        Arrays.sort(sort, Comparator.comparingInt(a -> a[0]));
+        for (int i = sort.length - 1; i >= 0; i--) {
+            nums1[sort[i][1]] = nums1Sort[ie] > sort[i][0] ? nums1Sort[ie--] : nums1Sort[is++];
         }
         return nums1;
     }
