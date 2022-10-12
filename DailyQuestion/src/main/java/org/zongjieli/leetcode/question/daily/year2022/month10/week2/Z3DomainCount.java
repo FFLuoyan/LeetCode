@@ -1,9 +1,9 @@
 package org.zongjieli.leetcode.question.daily.year2022.month10.week2;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 网站域名 "discuss.leetcode.com" 由多个子域名组成
@@ -47,6 +47,8 @@ public class Z3DomainCount {
                 countMap.merge(domains[1] + "." + domains[2], count, Integer::sum);
             }
         }
-        return countMap.entrySet().stream().map(e -> e.getValue() + " " + e.getKey()).collect(Collectors.toList());
+        List<String> result = new ArrayList<>(2 * countMap.size());
+        countMap.forEach((k, v) -> result.add(v + " " + k));
+        return result;
     }
 }
