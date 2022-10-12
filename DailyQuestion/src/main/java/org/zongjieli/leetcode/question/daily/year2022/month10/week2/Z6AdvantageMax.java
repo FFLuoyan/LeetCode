@@ -2,7 +2,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month10.week2;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.TreeMap;
 
 /**
  * 给定两个大小相等的数组 nums1 和 nums2，
@@ -25,15 +24,13 @@ public class Z6AdvantageMax {
             sort[i][0] = nums2[i];
             sort[i][1] = i;
         }
-        int[] nums1Sort = new int[nums1.length];
-        System.arraycopy(nums1, 0, nums1Sort, 0, nums1.length);
-        Arrays.sort(nums1Sort);
+        Arrays.sort(nums1);
         int is = 0, ie = nums1.length - 1;
         Arrays.sort(sort, Comparator.comparingInt(a -> a[0]));
         for (int i = sort.length - 1; i >= 0; i--) {
-            nums1[sort[i][1]] = nums1Sort[ie] > sort[i][0] ? nums1Sort[ie--] : nums1Sort[is++];
+            nums2[sort[i][1]] = nums1[ie] > sort[i][0] ? nums1[ie--] : nums1[is++];
         }
-        return nums1;
+        return nums2;
     }
 
     public static void main(String[] args) {
