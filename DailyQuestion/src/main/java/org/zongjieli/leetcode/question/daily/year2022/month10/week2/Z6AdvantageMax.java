@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month10.week2;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * 给定两个大小相等的数组 nums1 和 nums2，
@@ -19,22 +18,22 @@ import java.util.Comparator;
 public class Z6AdvantageMax {
 
     public int[] advantageCount(int[] nums1, int[] nums2) {
-        int[][] sort = new int[nums2.length][2];
+        long[] sort = new long[nums2.length];
         for (int i = 0; i < nums2.length; i++) {
-            sort[i][0] = nums2[i];
-            sort[i][1] = i;
+            sort[i] = (((long) nums2[i]) << 32) + i;
         }
         Arrays.sort(nums1);
+        Arrays.sort(sort);
         int is = 0, ie = nums1.length - 1;
-        Arrays.sort(sort, Comparator.comparingInt(a -> a[0]));
         for (int i = sort.length - 1; i >= 0; i--) {
-            nums2[sort[i][1]] = nums1[ie] > sort[i][0] ? nums1[ie--] : nums1[is++];
+            nums2[(int) sort[i]] = nums1[ie] > (sort[i] >> 32) ? nums1[ie--] : nums1[is++];
         }
         return nums2;
     }
 
     public static void main(String[] args) {
         Z6AdvantageMax test = new Z6AdvantageMax();
+        // 2, 4, 1, 2, 0
         System.out.println(Arrays.toString(test.advantageCount(new int[]{2, 0, 4, 1, 2}, new int[]{1, 3, 0, 0, 2})));
     }
 }
