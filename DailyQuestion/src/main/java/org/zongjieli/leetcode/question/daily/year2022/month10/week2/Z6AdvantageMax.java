@@ -29,12 +29,7 @@ public class Z6AdvantageMax {
                 key = save.firstKey();
             }
             nums1[i] = key;
-            Integer value = save.get(key);
-            if (value == 1) {
-                save.remove(key);
-            } else {
-                save.put(key, value - 1);
-            }
+            save.compute(key, (k, o) -> o == 1 ? null : o - 1);
         }
         return nums1;
     }
