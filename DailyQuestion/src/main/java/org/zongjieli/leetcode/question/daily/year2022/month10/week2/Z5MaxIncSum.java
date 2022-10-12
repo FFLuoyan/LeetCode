@@ -19,14 +19,15 @@ package org.zongjieli.leetcode.question.daily.year2022.month10.week2;
 public class Z5MaxIncSum {
 
     public int maxAscendingSum(int[] nums) {
-        int result = 0, current = nums[0];
-        for (int i = 1 ; i < nums.length ; i++) {
-            if (nums[i] > nums[i - 1]) {
-                current += nums[i];
+        int result = 0, current = 0, last = 0;
+        for (int num : nums) {
+            if (num > last) {
+                current += num;
             } else {
                 result = Math.max(result, current);
-                current = nums[i];
+                current = num;
             }
+            last = num;
         }
         return Math.max(result, current);
     }
