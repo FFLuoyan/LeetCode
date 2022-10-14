@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month10.week3;
 
-import java.util.Arrays;
-
 /**
  * 给定一个长度为 n 的整数数组 arr,它表示在 [0, n - 1] 范围内的整数的排列
  * 将 arr 分割成若干块(即分区),并对每个块单独排序
@@ -22,10 +20,9 @@ public class Z4MostSortBlock {
     public int maxChunksToSorted(int[] arr) {
         int result = 0, max = -1;
         for (int i = 0; i < arr.length; i++) {
-            if (Math.min(i, arr[i]) > max) {
+            if (i == (max = Math.max(max, arr[i]))) {
                 result++;
             }
-            max = Math.max(max, arr[i]);
         }
         return result;
     }
