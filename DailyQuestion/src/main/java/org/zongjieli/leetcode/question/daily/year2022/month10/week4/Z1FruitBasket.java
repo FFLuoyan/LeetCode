@@ -21,20 +21,20 @@ public class Z1FruitBasket {
 
     public int totalFruit(int[] fruits) {
         int result = 0;
-        int a = -1, b = -1, as = 0, l = -1, ls = 0;
+        int a = -1, b = -1, l = -1, as = 0, ls = 0;
         for (int fruit : fruits) {
-            if (a == fruit || b == fruit) {
+            if (fruit == l) {
+                ls++;
                 as++;
+            } else if (a == fruit || b == fruit) {
+                as++;
+                l = fruit;
+                ls = 1;
             } else {
                 result = Math.max(as, result);
                 a = l;
+                l = b = fruit;
                 as = ls + 1;
-                b = fruit;
-            }
-            if (fruit == l) {
-                ls++;
-            } else {
-                l = fruit;
                 ls = 1;
             }
         }
