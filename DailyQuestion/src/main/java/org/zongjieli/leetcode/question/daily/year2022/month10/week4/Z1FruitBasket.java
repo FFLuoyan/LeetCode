@@ -1,4 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month10.week4;
+
 /**
  * 一家农场从左到右种植了一排果树,这些树用一个整数数组 fruits 表示
  * 其中 fruits[i] 是第 i 棵树上的水果种类
@@ -22,13 +23,7 @@ public class Z1FruitBasket {
         int result = 0;
         int a = -1, b = -1, as = 0, l = -1, ls = 0;
         for (int fruit : fruits) {
-            if (a == -1) {
-                a = fruit;
-                as = 1;
-            } else if (a == fruit || b == fruit) {
-                as++;
-            } else if (b == -1) {
-                b = fruit;
+            if (a == fruit || b == fruit) {
                 as++;
             } else {
                 result = Math.max(as, result);
