@@ -25,45 +25,38 @@ import java.util.*;
 public class Z7PersonDivision {
 
     public boolean possibleBipartition(int n, int[][] dislikes) {
-        Map<Integer, Set<Integer>[]> save = new HashMap<>();
+        int[] save = new int[n + 1];
+        int ci = 1;
         for (int[] dislike : dislikes) {
-            Set<Integer>[] gl = save.get(dislike[0]);
-            Set<Integer>[] gr = save.get(dislike[1]);
-            if (gl == null) {
-                if (gr == null) {
-                    Set<Integer>[] group = new Set[]{new HashSet<>(), new HashSet<>()};
-                    group[0].add(dislike[0]);
-                    group[1].add(dislike[1]);
-                    save.put(dislike[0], group);
-                    save.put(dislike[1], group);
+            int left = dislike[0], right = dislike[1], gl = save[left], gr = save[right], gra;
+            if (gl == 0) {
+                if (gr == 0) {
+                    save[left] = ci;
+                    save[right] = -ci;
+                    ci++;
                 } else {
-                    (gr[0].contains(dislike[1]) ? gr[1] : gr[0]).add(dislike[0]);
-                    save.put(dislike[0], gr);
+                    save[left] = -gr;
                 }
-            } else if (gr == null) {
-                (gl[0].contains(dislike[0]) ? gl[1] : gl[0]).add(dislike[1]);
-                save.put(dislike[1], gl);
-            } else if (gl[0] != gr[0]) {
-                boolean isLeft = gr[0].contains(dislike[1]);
-                Set<Integer> second = isLeft ? gr[0] : gr[1];
-                Set<Integer> secondOther = isLeft ? gr[1] : gr[0];
-                isLeft = gl[0].contains(dislike[0]);
-                Set<Integer> first = isLeft ? gl[0] : gl[1];
-                Set<Integer> firstOther = isLeft ? gl[1] : gl[0];
-                second.addAll(firstOther);
-                secondOther.addAll(first);
-                gl[0] = gr[0];
-                gl[1] = gr[1];
-            } else if ((gl[0].contains(dislike[0]) && gl[0].contains(dislike[1])) || (gl[1].contains(dislike[0]) && gl[1].contains(dislike[1]))) {
+            } else if (gr == 0) {
+                save[right] = -save[left];
+            } else if (gl == gr) {
                 return false;
+            } else if (Math.abs(gl) != (gra = Math.abs(gr))){
+                for (int i = 0; i < save.length; i++) {
+                    int current = save[i];
+                    if (Math.abs(current) == gra) {
+                        save[i] = current == gr ? -gl : gl;
+                    }
+                }
             }
-        }
 
+        }
         return true;
     }
 
     public static void main(String[] args) {
         Z7PersonDivision test = new Z7PersonDivision();
+        // false
         System.out.println(test.possibleBipartition(5, new int[][]{{1, 2}, {2, 3}, {3, 4}, {4, 5}, {1, 5}}));
     }
 }
