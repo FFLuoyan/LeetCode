@@ -28,7 +28,7 @@ public class Z7PersonDivision {
         int[] save = new int[n + 1];
         int ci = 1;
         for (int[] dislike : dislikes) {
-            int left = dislike[0], right = dislike[1], gl = save[left], gr = save[right], gra;
+            int left = dislike[0], right = dislike[1], gl = save[left], gr = save[right];
             if (gl == 0) {
                 if (gr == 0) {
                     save[left] = ci;
@@ -41,12 +41,9 @@ public class Z7PersonDivision {
                 save[right] = -save[left];
             } else if (gl == gr) {
                 return false;
-            } else if (Math.abs(gl) != (gra = Math.abs(gr))){
+            } else if (Math.abs(gl) != Math.abs(gr)){
                 for (int i = 0; i < save.length; i++) {
-                    int current = save[i];
-                    if (Math.abs(current) == gra) {
-                        save[i] = current == gr ? -gl : gl;
-                    }
+                    save[i] = save[i] == gr ? -gl : save[i] == -gr ? gl : save[i];
                 }
             }
 
