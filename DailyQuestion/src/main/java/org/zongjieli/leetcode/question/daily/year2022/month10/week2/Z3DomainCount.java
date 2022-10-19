@@ -40,15 +40,18 @@ public class Z3DomainCount {
             String[] countAndDomain = cpdomain.split(" ");
             int count = Integer.parseInt(countAndDomain[0]);
             String domain = countAndDomain[1];
-            String[] domains = domain.split("\\.");
-            countMap.merge(domain, count, Integer::sum);
-            countMap.merge(domains[domains.length - 1], count, Integer::sum);
-            if (domains.length == 3) {
-                countMap.merge(domains[1] + "." + domains[2], count, Integer::sum);
-            }
+            add(countMap, count, domain);
         }
         List<String> result = new ArrayList<>(2 * countMap.size());
         countMap.forEach((k, v) -> result.add(v + " " + k));
         return result;
+    }
+
+    public void add(Map<String, Integer> countMap, int count, String domain) {
+        countMap.merge(domain, count, Integer::sum);
+        int index = domain.indexOf('.');
+        if (domain.indexOf('.') != -1) {
+            add(countMap, count, domain.substring(index + 1));
+        }
     }
 }
