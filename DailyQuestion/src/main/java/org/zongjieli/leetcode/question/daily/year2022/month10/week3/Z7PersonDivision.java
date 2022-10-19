@@ -37,13 +37,12 @@ public class Z7PersonDivision {
                 所以需要再次执行上述操作,直至将所有联系团处理完毕
          */
         int[] save = new int[n + 1];
-        int remain = dislikes.length - 1, reformat = remain + 1;
+        int reformat = dislikes.length, remain = reformat - 1;
         while (remain > 1) {
             if (reformat == remain + 1) {
                 save[dislikes[0][0]] = 2;
-            } else {
-                remain = reformat - 1;
             }
+            remain = reformat - 1;
             reformat = 0;
             for (int i = 0 ; i <= remain ; i++) {
                 int left = dislikes[i][0], right = dislikes[i][1], sl = save[left], sr = save[right];
