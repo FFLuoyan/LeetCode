@@ -1,4 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month10.week4;
+
 /**
  * 学校的自助午餐提供圆形和方形的三明治,分别用数字 0 和 1 表示
  * 所有学生站在一个队列里,每个学生要么喜欢圆形的要么喜欢方形的
@@ -24,29 +25,16 @@ package org.zongjieli.leetcode.question.daily.year2022.month10.week4;
 public class Z3CountStudent {
 
     public int countStudents(int[] students, int[] sandwiches) {
-        int startIndex = 0;
+        int[] count = new int[2];
+        for (int student : students) {
+            count[student]++;
+        }
         for (int i = 0; i < sandwiches.length; i++) {
-            if ((startIndex = findNext(students, sandwiches[i], startIndex)) == -1) {
+            if (--count[sandwiches[i]] < 0) {
                 return sandwiches.length - i;
             }
-            startIndex++;
         }
         return 0;
     }
 
-    public int findNext(int[] students, int type, int startIndex) {
-        for (int i = startIndex ; i < students.length ; i++) {
-            if (type == students[i]) {
-                students[i] = -1;
-                return i;
-            }
-        }
-        for (int i = 0 ; i < startIndex ; i++) {
-            if (type == students[i]) {
-                students[i] = -1;
-                return i;
-            }
-        }
-        return -1;
-    }
 }
