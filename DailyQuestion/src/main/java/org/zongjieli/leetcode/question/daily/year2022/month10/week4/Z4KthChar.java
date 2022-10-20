@@ -29,4 +29,23 @@ public class Z4KthChar {
         }
         return kthGrammar(n - 1, (k + 1) >> 1) ^ (k & 1) ^ 1;
     }
+
+    public int kthGrammarByLow(int n, int k) {
+        /*
+            思路:
+                对于每行,前一半的字符作为基准字符,后一半的字符则为该字符的异或结果
+                且前一半的字符与前一行的所有字符完全一致
+
+         */
+        int result = 0;
+        int half = 1 << (n - 1);
+        while (k != 1) {
+            if (k > half) {
+                k -= half;
+                result ^= 1;
+            }
+            half >>= 1;
+        }
+        return result;
+    }
 }
