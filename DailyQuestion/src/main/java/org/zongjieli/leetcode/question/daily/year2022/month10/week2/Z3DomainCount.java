@@ -1,9 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month10.week2;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 网站域名 "discuss.leetcode.com" 由多个子域名组成
@@ -37,21 +34,29 @@ public class Z3DomainCount {
     public List<String> subdomainVisits(String[] cpdomains) {
         Map<String, Integer> countMap = new HashMap<>();
         for (String cpdomain : cpdomains) {
-            String[] countAndDomain = cpdomain.split(" ");
-            int count = Integer.parseInt(countAndDomain[0]);
-            String domain = countAndDomain[1];
-            add(countMap, count, domain);
+            byte[] cpDomainBytes = cpdomain.getBytes();
+            int currentIndex = 0, count = 0;
+            byte currentByte;
+            while ((currentByte = cpDomainBytes[currentIndex++]) != ' ') {
+                count = 10 * count + currentByte - '0';
+            }
+            String domain = new String(Arrays.copyOfRange(cpDomainBytes, currentIndex, cpDomainBytes.length));
+            countMap.put(domain, countMap.getOrDefault(domain, 0) + count);
+            while (currentIndex < cpDomainBytes.length) {
+                if (cpDomainBytes[currentIndex++] == '.') {
+                    domain = new String(Arrays.copyOfRange(cpDomainBytes, currentIndex, cpDomainBytes.length));
+                    countMap.put(domain, countMap.getOrDefault(domain, 0) + count);
+                }
+            }
         }
         List<String> result = new ArrayList<>(2 * countMap.size());
-        countMap.forEach((k, v) -> result.add(v + " " + k));
+        countMap.forEach((k, v) -> result.add(new StringBuilder().append(v).append(" ").append(k).toString()));
         return result;
     }
 
-    public void add(Map<String, Integer> countMap, int count, String domain) {
-        countMap.merge(domain, count, Integer::sum);
-        int index = domain.indexOf('.');
-        if (domain.indexOf('.') != -1) {
-            add(countMap, count, domain.substring(index + 1));
-        }
+    public static void main(String[] args) {
+        Z3DomainCount test = new Z3DomainCount();
+        System.out.println(test.subdomainVisits(new String[]{"9001 discuss.leetcode.com"}));
     }
+
 }
