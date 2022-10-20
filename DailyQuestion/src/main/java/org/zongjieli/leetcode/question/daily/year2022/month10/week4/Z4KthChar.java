@@ -7,7 +7,7 @@ package org.zongjieli.leetcode.question.daily.year2022.month10.week4;
  * 给定行数 n 和序数 k,返回第 n 行中第 k 个字符(k 从索引 1 开始)
  *
  * 1 <= n <= 30
- * 1 <= k <= 2n - 1
+ * 1 <= k <= 2^(n - 1)
  *
  * @author   Li.zongjie
  * @date     2022/10/20
@@ -27,6 +27,6 @@ public class Z4KthChar {
         if (n == 1) {
             return 0;
         }
-        return kthGrammar(n - 1, (k + 1) >> 1) ^ ((k + 1) & 1);
+        return kthGrammar(n - 1, (k + 1) >> 1) ^ (k & 1) ^ 1;
     }
 }
