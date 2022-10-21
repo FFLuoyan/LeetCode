@@ -48,4 +48,14 @@ public class Z4KthChar {
         }
         return result;
     }
+
+    public int kthGrammarByBit(int n, int k) {
+        /*
+            思路:
+                根据规律算法,可以发现最终结果其实只是在统计 k 中的二进制表示法中 1 个个数
+                而由于位置从 1 开始,转换成二进制表达法中的位置 0,则需要减 1
+
+         */
+        return Integer.bitCount(k - 1) & 1;
+    }
 }
