@@ -26,11 +26,16 @@ public class Z5StockSpan {
 
     public int next(int price) {
         save[ci] = price;
-        int baseCount = 1;
-        for (int i = ci - 1 ; i >= 0 && save[i] <= price ;) {
-            baseCount += count[i];
-            i -= count[i];
+        int ti = ci - 1;
+        while (ti >= 0 && save[ti] <= price) {
+            ti -= count[ti];
         }
-        return count[ci++] = baseCount;
+        return count[ci] = ci++ - ti;
+    }
+
+    public static void main(String[] args) {
+        Z5StockSpan test = new Z5StockSpan();
+        // 1
+        System.out.println(test.next(1));
     }
 }
