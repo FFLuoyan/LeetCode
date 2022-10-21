@@ -27,11 +27,9 @@ public class Z5StockSpan {
     public int next(int price) {
         save[ci] = price;
         int baseCount = 1;
-        if (ci != 0 && price >= save[ci - 1]) {
-            baseCount += count[ci - 1];
-            for (int i = ci - baseCount ; i >= 0 && save[i] <= price ; i--) {
-                baseCount++;
-            }
+        for (int i = ci - 1 ; i >= 0 && save[i] <= price ;) {
+            baseCount += count[i];
+            i -= count[i];
         }
         return count[ci++] = baseCount;
     }
