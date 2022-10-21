@@ -16,16 +16,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month10.week2;
 public class Z1CheckBinary {
 
     public boolean checkOnesSegment(String s) {
-        int ci = 0;
-        while (ci < s.length() && s.charAt(ci) == '1') {
-            ci++;
-        }
-        if (ci == s.length()) {
-            return true;
-        }
-        while (ci < s.length() && s.charAt(ci) == '0') {
-            ci++;
-        }
-        return ci == s.length();
+        return !s.contains("01");
     }
 }
