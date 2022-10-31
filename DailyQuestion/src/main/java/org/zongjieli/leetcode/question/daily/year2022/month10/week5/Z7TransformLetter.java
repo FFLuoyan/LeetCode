@@ -19,7 +19,7 @@ public class Z7TransformLetter {
 
     public List<String> letterCasePermutation(String s) {
         byte[] values = s.getBytes();
-        List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<>(2 << s.length());
         addToResult(result, 0, values);
         return result;
     }
@@ -27,20 +27,13 @@ public class Z7TransformLetter {
     public void addToResult(List<String> result, int currentIndex, byte[] values) {
         if (currentIndex >= values.length) {
             result.add(new String(values));
-        } else if (values[currentIndex] <= 57) {
-            // 数字
-            addToResult(result, currentIndex + 1, values);
-        } else if (values[currentIndex] <= 'Z') {
-            // 大写字母
-            values[currentIndex] += 32;
-            addToResult(result, currentIndex + 1, values);
-            values[currentIndex] -= 32;
-            addToResult(result, currentIndex + 1, values);
-        } else {
-            // 小写字母
-            values[currentIndex] -= 32;
-            addToResult(result, currentIndex + 1, values);
-            values[currentIndex] += 32;
+            return;
+        }
+
+        addToResult(result, currentIndex + 1, values);
+        if (values[currentIndex] > 57) {
+            // 非数字
+            values[currentIndex] ^= 32;
             addToResult(result, currentIndex + 1, values);
         }
     }
