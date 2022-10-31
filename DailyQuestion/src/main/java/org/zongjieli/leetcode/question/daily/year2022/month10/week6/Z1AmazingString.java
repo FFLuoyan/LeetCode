@@ -23,23 +23,21 @@ public class Z1AmazingString {
     public int magicalString(int n) {
         int result = 0;
         int current = 1;
-        LinkedList<Integer> values = new LinkedList<>();
-        while (n > 0) {
-            values.addLast(current);
-            Integer number = values.pollFirst();
-            if (number == 2) {
-                values.addLast(current);
+        int up = 1, down = 1;
+        int[] values = new int[n + 2];
+        while (up <= n) {
+            values[up] = current;
+            if (values[down] == 2) {
+                values[++up] = current;
             }
-            n -= number;
             if (current == 1) {
-                result += number;
-                if (n < 0) {
-                    result--;
-                }
+                result += values[down];
             }
+            up++;
+            down++;
             current ^= 3;
         }
-        return result;
+        return current == 2 && up == n + 2 ? result - 1 : result;
     }
 
     public static void main(String[] args) {
