@@ -23,11 +23,13 @@ public class Z4FindNearest {
         int result = points.length;
         int length = 10000;
         for (int i = 0; i < points.length; i++) {
-            int cl = length;
+            int cl;
             if (points[i][0] == x) {
                 cl = Math.abs(y - points[i][1]);
             } else if (points[i][1] == y) {
                 cl = Math.abs(x - points[i][0]);
+            } else {
+                continue;
             }
             if (cl < length) {
                 length = cl;
