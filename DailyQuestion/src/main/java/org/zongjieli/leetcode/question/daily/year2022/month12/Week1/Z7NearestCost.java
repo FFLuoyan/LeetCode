@@ -30,21 +30,26 @@ import java.util.TreeSet;
 public class Z7NearestCost {
 
     public int closestCost(int[] baseCosts, int[] toppingCosts, int target) {
-        TreeMap<Integer, TreeSet<Integer>> costs = new TreeMap<>();
-        topSum(toppingCosts, 0, 0, baseCosts, costs, target);
-        return costs.firstEntry().getValue().first();
+        int[] result = new int[]{Integer.MAX_VALUE};
+        topSum(toppingCosts, 0, 0, baseCosts, result, target);
+        return result[0];
     }
 
-    private void topSum(int[] toppingCosts, int currentSum, int currentIndex, int[] baseCosts, TreeMap<Integer, TreeSet<Integer>> costs, int target) {
+    private void topSum(int[] toppingCosts, int currentSum, int currentIndex, int[] baseCosts, int[] result, int target) {
         if (currentIndex == toppingCosts.length || currentSum > target) {
             for (int baseCost : baseCosts) {
-                costs.computeIfAbsent(Math.abs(target - baseCost - currentSum), k -> new TreeSet<>()).add(baseCost + currentSum);
+                int baseSum = baseCost + currentSum;
+                int abs = Math.abs(target - baseSum);
+                int resultAbs = Math.abs(result[0] - target);
+                if (abs < resultAbs || (abs == resultAbs && baseSum < result[0])) {
+                    result[0] = baseSum;
+                }
             }
             return;
         }
-        topSum(toppingCosts, currentSum, currentIndex + 1, baseCosts, costs, target);
-        topSum(toppingCosts, currentSum + toppingCosts[currentIndex], currentIndex + 1, baseCosts, costs, target);
-        topSum(toppingCosts, currentSum + toppingCosts[currentIndex] + toppingCosts[currentIndex], currentIndex + 1, baseCosts, costs, target);
+        topSum(toppingCosts, currentSum, currentIndex + 1, baseCosts, result, target);
+        topSum(toppingCosts, currentSum + toppingCosts[currentIndex], currentIndex + 1, baseCosts, result, target);
+        topSum(toppingCosts, currentSum + toppingCosts[currentIndex] + toppingCosts[currentIndex], currentIndex + 1, baseCosts, result, target);
     }
 
     public static void main(String[] args) {
