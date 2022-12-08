@@ -21,22 +21,22 @@ public class Z2DifferentCount {
 
     public int numDifferentIntegers(String word) {
         Set<String> count = new HashSet<>();
-        StringBuilder currentNumber = new StringBuilder();
-        for (int i = 0 ; i < word.length() ; i++) {
-            char currentChar = word.charAt(i);
-            if (currentChar >= 'a') {
-                if (currentNumber.length() > 0) {
-                    count.add(currentNumber.toString());
-                    currentNumber = new StringBuilder();
+        byte[] values = word.getBytes();
+        int vi = 0;
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] >= 'a') {
+                if (vi > 0) {
+                    count.add(new String(values, 0, vi));
+                    vi = 0;
                 }
-            } else if (currentNumber.length() == 1 && currentNumber.charAt(0) == '0') {
-                currentNumber.setCharAt(0, currentChar);
+            } else if (vi == 1 && values[0] == '0') {
+                values[0] = values[i];
             } else {
-                currentNumber.append(currentChar);
+                values[vi++] = values[i];
             }
         }
-        if (currentNumber.length() > 0) {
-            count.add(currentNumber.toString());
+        if (vi > 0) {
+            count.add(new String(values, 0, vi));
         }
         return count.size();
     }
@@ -45,5 +45,7 @@ public class Z2DifferentCount {
         Z2DifferentCount test = new Z2DifferentCount();
         // 4
         System.out.println(test.numDifferentIntegers("8b43121380705329e43121380705329u43121380705329p43121380705329x83mt37te"));
+        // 1
+        System.out.println(test.numDifferentIntegers("a1b01c001"));
     }
 }
