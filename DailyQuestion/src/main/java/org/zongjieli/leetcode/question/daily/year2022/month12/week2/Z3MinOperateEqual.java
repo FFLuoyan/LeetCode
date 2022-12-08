@@ -36,23 +36,18 @@ public class Z3MinOperateEqual {
         }
 
         if (bs < ss) {
-            int temp = bs;
-            bs = ss;
-            ss = temp;
             int[] ta = bigger;
             bigger = small;
             small = ta;
         }
 
-        int value = bs - ss;
+        int value = Math.abs(bs - ss);
         int count = 0;
         for (int i = 5; i >= 1; i--) {
             int cn = (bigger[i + 1] + small[6 - i]);
             count += cn;
             value -= i * cn;
-            if (value == 0) {
-                return count;
-            } else if (value < 0) {
+            if (value <= 0) {
                 return count + (value) / i;
             }
         }
