@@ -17,7 +17,7 @@ import java.util.Set;
  * @version 1.0
  * @date 2022/12/7
  */
-public class Z3DifferentCount {
+public class Z2DifferentCount {
 
     public int numDifferentIntegers(String word) {
         Set<String> count = new HashSet<>();
@@ -42,7 +42,7 @@ public class Z3DifferentCount {
     }
 
     public static void main(String[] args) {
-        Z3DifferentCount test = new Z3DifferentCount();
+        Z2DifferentCount test = new Z2DifferentCount();
         // 4
         System.out.println(test.numDifferentIntegers("8b43121380705329e43121380705329u43121380705329p43121380705329x83mt37te"));
     }
