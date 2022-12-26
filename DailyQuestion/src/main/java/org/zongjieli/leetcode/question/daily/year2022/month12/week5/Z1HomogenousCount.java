@@ -16,13 +16,11 @@ package org.zongjieli.leetcode.question.daily.year2022.month12.week5;
 public class Z1HomogenousCount {
 
     public int countHomogenous(String s) {
+        byte[] values = s.getBytes();
         long result = 0, lastCount = 1;
-        char lastChar = s.charAt(0);
-        for (int i = 1 ; i < s.length() ; i++) {
-            char currentChar = s.charAt(i);
-            if (currentChar != lastChar) {
+        for (int i = 1 ; i < values.length ; i++) {
+            if (values[i] != values[i - 1]) {
                 result += ((lastCount + 1) * lastCount / 2);
-                lastChar = currentChar;
                 lastCount = 1;
             } else {
                 lastCount++;
