@@ -17,16 +17,15 @@ public class Z1HomogenousCount {
 
     public int countHomogenous(String s) {
         byte[] values = s.getBytes();
-        long result = 0, lastCount = 1;
-        for (int i = 1 ; i < values.length ; i++) {
-            if (values[i] != values[i - 1]) {
-                result += ((lastCount + 1) * lastCount / 2);
-                lastCount = 1;
-            } else {
-                lastCount++;
+        long result = 0;
+        for (int i = 0 ; i < values.length ;) {
+            byte value = values[i];
+            long count = 1;
+            while (++i < values.length && values[i] == value) {
+                count++;
             }
+            result += ((count + 1) * count / 2);
         }
-        result += ((lastCount + 1) * lastCount / 2);
         return (int) (result % 1000000007);
     }
 
