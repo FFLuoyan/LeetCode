@@ -19,11 +19,7 @@ public class Z5OperateValue {
     public int finalValueAfterOperations(String[] operations) {
         int value = 0;
         for (String operation : operations) {
-            if (operation.charAt(1) == '+') {
-                value++;
-            } else {
-                value--;
-            }
+            value -= (operation.charAt(1) - 44);
         }
         return value;
     }
