@@ -12,7 +12,7 @@ package org.zongjieli.leetcode.question.daily.year2022.month12.week5;
  * @version 1.0
  * @date 2022/12/27
  */
-public class Z6TransposeString {
+public class Z2TransposeString {
 
     public int minimumMoves(String s) {
         int count = 0;
