@@ -15,16 +15,6 @@ package org.zongjieli.leetcode.question.daily.year2022.month12.week4;
 public class Z3MaxScore {
 
     public int maximumScore(int a, int b, int c) {
-        if (a < b) {
-            return maximumScore(b, a, c);
-        }
-        if (b < c) {
-            return maximumScore(a, c, b);
-        }
-        // a >= b, b >= c
-        if (a >= b + c) {
-            return b + c;
-        }
-        return (a + b + c) >> 1;
+        return a < b ? maximumScore(b, a, c) : b < c ? maximumScore(a, c, b) : Math.min(b + c, (a + b + c) >> 1);
     }
 }
