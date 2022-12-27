@@ -17,4 +17,15 @@ public class Z3MaxScore {
     public int maximumScore(int a, int b, int c) {
         return a < b ? maximumScore(b, a, c) : b < c ? maximumScore(a, c, b) : Math.min(b + c, (a + b + c) >> 1);
     }
+
+    public int maximumScoreCalMax(int a, int b, int c) {
+        /*
+            最终得分的结果最高也只能为 sum >> 1
+            当 max > remain 时,结果缩小为 remain
+            故可以计算出 sum 与 max,直接得出最终结果
+         */
+        int sum = a + b + c;
+        int max = Math.max(a, Math.max(b, c));
+        return Math.min(sum - max, sum >> 1);
+    }
 }
