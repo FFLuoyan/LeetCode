@@ -42,7 +42,7 @@ public class Z2MinBall {
 
     public boolean canSplit(int[] nums, int operation, int split) {
         for (int i = nums.length - 1; i >= 0 && operation >= 0; i--) {
-            operation -= ((nums[i] + split - 1) / split - 1);
+            operation -= ((nums[i] - 1) / split);
         }
         return operation >= 0;
     }
