@@ -34,14 +34,10 @@ public class Z1FindPath {
         while (isChange && !checked[destination]) {
             isChange = false;
             for (int[] edge : edges) {
-                if (checked[edge[0]]) {
-                    if (!checked[edge[1]]) {
-                        isChange = true;
-                        checked[edge[1]] = true;
-                    }
-                } else if (checked[edge[1]]) {
+                if (checked[edge[0]] ^ checked[edge[1]]) {
                     isChange = true;
                     checked[edge[0]] = true;
+                    checked[edge[1]] = true;
                 }
             }
         }
