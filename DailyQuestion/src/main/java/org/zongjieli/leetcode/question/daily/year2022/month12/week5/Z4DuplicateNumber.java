@@ -1,9 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month12.week5;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 给定三个整数数组 nums1、nums2 和 nums3
@@ -21,24 +18,23 @@ import java.util.Set;
 public class Z4DuplicateNumber {
 
     public List<Integer> twoOutOfThree(int[] nums1, int[] nums2, int[] nums3) {
-        Set<Integer> first = new HashSet<>();
+        int[] exist = new int[101];
         for (int i : nums1) {
-            first.add(i);
+            exist[i] = 1;
         }
-        Set<Integer> second = new HashSet<>();
-        Set<Integer> result = new HashSet<>();
         for (int i : nums2) {
-            second.add(i);
-            if (first.contains(i)) {
-                result.add(i);
-            }
+            exist[i] |= 2;
         }
         for (int i : nums3) {
-            if (second.contains(i) || first.contains(i)) {
+            exist[i] |= 4;
+        }
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < exist.length; i++) {
+            if (Integer.bitCount(exist[i]) >= 2) {
                 result.add(i);
             }
         }
-        return new ArrayList<>(result);
+        return result;
     }
 
 }
