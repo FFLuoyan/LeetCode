@@ -1,8 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month12.week4;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 有一个具有 n 个顶点的双向图
@@ -30,31 +28,31 @@ import java.util.Map;
 public class Z1FindPath {
 
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        if (source == destination) {
-            return true;
-        }
-        Map<Integer, Map<Integer, Map>> path = new HashMap<>();
-        for (int[] edge : edges) {
-            Map<Integer, Map> startPath = path.computeIfAbsent(edge[0], k -> new HashMap<>());
-            Map<Integer, Map> endPath = path.computeIfAbsent(edge[1], k -> new HashMap<>());
-            startPath.put(edge[1], endPath);
-            endPath.put(edge[0], startPath);
-        }
-        boolean[] allPath = new boolean[200001];
-        Map<Integer, Map> sourcePath = path.getOrDefault(source, Collections.emptyMap());
-        return find(sourcePath, destination, allPath);
-    }
-
-    public boolean find(Map<Integer, Map> path, int destination, boolean[] paths) {
-        if (path.containsKey(destination)) {
-            return true;
-        }
-        return path.entrySet().stream().anyMatch(entry -> {
-            if (paths[entry.getKey()]) {
-                return false;
+        boolean[] checked = new boolean[n];
+        boolean[] valueExist = new boolean[n];
+        LinkedList<Integer> values = new LinkedList<>();
+        values.add(source);
+        valueExist[source] = true;
+        while (!values.isEmpty()) {
+            int value = values.pollFirst();
+            for (int[] edge : edges) {
+                if (edge[0] == value) {
+                    if (!checked[edge[1]] && !valueExist[edge[1]]) {
+                        values.add(edge[1]);
+                        valueExist[edge[1]] = true;
+                    }
+                } else if (edge[1] == value) {
+                    if (!checked[edge[0]] && !valueExist[edge[0]]) {
+                        values.add(edge[0]);
+                        valueExist[edge[0]] = true;
+                    }
+                }
             }
-            paths[entry.getKey()] = true;
-            return find(entry.getValue(), destination, paths);
-        });
+            checked[value] = true;
+            if (valueExist[destination]) {
+                return true;
+            }
+        }
+        return false;
     }
 }
