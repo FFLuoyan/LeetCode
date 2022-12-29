@@ -46,6 +46,7 @@ public class Z1FindPath {
 
     public boolean validPathBySearch(int n, int[][] edges, int source, int destination) {
         int[] parent = new int[n];
+        int[] levels = new int[n];
         for (int i = 0; i < parent.length; i++) {
             parent[i] = i;
         }
@@ -53,7 +54,14 @@ public class Z1FindPath {
             int p1 = findParent(edge[0], parent);
             int p2 = findParent(edge[1], parent);
             if (p1 != p2) {
-                parent[p1] = p2;
+                if (levels[p1] < levels[p2]) {
+                    parent[p1] = p2;
+                } else if (levels[p2] < levels[p1]) {
+                    parent[p2] = p1;
+                } else {
+                    parent[p1] = p2;
+                    levels[p2]++;
+                }
             }
         }
         return findParent(source, parent) == findParent(destination, parent);
