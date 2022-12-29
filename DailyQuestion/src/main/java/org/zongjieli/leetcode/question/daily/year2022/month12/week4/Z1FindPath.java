@@ -31,7 +31,7 @@ public class Z1FindPath {
         boolean[] checked = new boolean[n];
         checked[source] = true;
         boolean isChange = true;
-        while (isChange) {
+        while (isChange && !checked[destination]) {
             isChange = false;
             for (int[] edge : edges) {
                 if (checked[edge[0]]) {
@@ -44,10 +44,7 @@ public class Z1FindPath {
                     checked[edge[0]] = true;
                 }
             }
-            if (checked[destination]) {
-                return true;
-            }
         }
-        return false;
+        return checked[destination];
     }
 }
