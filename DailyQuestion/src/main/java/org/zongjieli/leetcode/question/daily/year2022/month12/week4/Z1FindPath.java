@@ -29,27 +29,22 @@ public class Z1FindPath {
 
     public boolean validPath(int n, int[][] edges, int source, int destination) {
         boolean[] checked = new boolean[n];
-        boolean[] valueExist = new boolean[n];
-        LinkedList<Integer> values = new LinkedList<>();
-        values.add(source);
-        valueExist[source] = true;
-        while (!values.isEmpty()) {
-            int value = values.pollFirst();
+        checked[source] = true;
+        boolean isChange = true;
+        while (isChange) {
+            isChange = false;
             for (int[] edge : edges) {
-                if (edge[0] == value) {
-                    if (!checked[edge[1]] && !valueExist[edge[1]]) {
-                        values.add(edge[1]);
-                        valueExist[edge[1]] = true;
+                if (checked[edge[0]]) {
+                    if (!checked[edge[1]]) {
+                        isChange = true;
+                        checked[edge[1]] = true;
                     }
-                } else if (edge[1] == value) {
-                    if (!checked[edge[0]] && !valueExist[edge[0]]) {
-                        values.add(edge[0]);
-                        valueExist[edge[0]] = true;
-                    }
+                } else if (checked[edge[1]]) {
+                    isChange = true;
+                    checked[edge[0]] = true;
                 }
             }
-            checked[value] = true;
-            if (valueExist[destination]) {
+            if (checked[destination]) {
                 return true;
             }
         }
