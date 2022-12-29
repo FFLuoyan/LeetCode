@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month12.week4;
 
-import java.util.Arrays;
-
 /**
  * 给定一个整数数组 nums,其中 nums[i] 表示第 i 个袋子里球的数目,同时给定一个整数 maxOperations
  * 可以进行如下操作至多 maxOperations 次:
@@ -20,12 +18,14 @@ import java.util.Arrays;
 public class Z2MinBall {
 
     public int minimumSize(int[] nums, int maxOperations) {
-        Arrays.sort(nums);
         long sum = 0;
+        int max = nums[0];
         for (int num : nums) {
             sum += num;
+            max = Math.max(max, num);
         }
-        int left = (int) ((sum + nums.length + maxOperations - 1) / (nums.length + maxOperations)), right = nums[nums.length - 1];
+        int count = nums.length + maxOperations;
+        int left = (int) ((sum + count - 1) / count), right = max / (count / nums.length);
         if (canSplit(nums, maxOperations, left)) {
             return left;
         }
@@ -41,11 +41,8 @@ public class Z2MinBall {
     }
 
     public boolean canSplit(int[] nums, int operation, int split) {
-        for (int i = nums.length - 1; i >= 0 && nums[i] > split ; i--) {
+        for (int i = nums.length - 1; i >= 0 && operation >= 0; i--) {
             operation -= ((nums[i] + split - 1) / split - 1);
-            if (operation < 0) {
-                return false;
-            }
         }
         return operation >= 0;
     }
