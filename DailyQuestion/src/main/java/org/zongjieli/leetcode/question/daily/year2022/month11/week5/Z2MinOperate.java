@@ -17,9 +17,11 @@ package org.zongjieli.leetcode.question.daily.year2022.month11.week5;
 public class Z2MinOperate {
 
     public int minOperations(String s) {
-        int current = 0, result = 0;
-        for (int i = 0 ; i < s.length() ; i++) {
-            result += ((s.charAt(i) - '0') ^ (current ^= 1));
+        int result = 0;
+        char current = '0';
+        byte[] values = s.getBytes();
+        for (byte value : values) {
+            result += (value ^ (current ^= 1));
         }
         return Math.min(result, s.length() - result);
     }
