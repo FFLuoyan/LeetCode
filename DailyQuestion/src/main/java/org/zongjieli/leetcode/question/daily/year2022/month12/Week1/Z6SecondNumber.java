@@ -17,20 +17,17 @@ package org.zongjieli.leetcode.question.daily.year2022.month12.Week1;
 public class Z6SecondNumber {
 
     public int secondHighest(String s) {
-        int[] count = new int[10];
+        int[] count = new int[128];
         for (int i = 0 ; i < s.length() ; i++) {
-            int current = s.charAt(i) - '0';
-            if (current <= 9) {
-                count[current]++;
-            }
+            count[s.charAt(i)]++;
         }
-        int result = -1;
-        for (int i = 9 ; i >= 0 ; i--) {
+        boolean isMax = false;
+        for (int i = '9' ; i >= '0' ; i--) {
             if (count[i] > 0) {
-                if (result != -1) {
-                    return i;
+                if (isMax) {
+                    return i - '0';
                 }
-                result = count[i];
+                isMax = true;
             }
         }
         return -1;
