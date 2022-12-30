@@ -23,17 +23,15 @@ public class Z5MoveBall {
 
     public int[] minOperations(String boxes) {
         byte[] boxBytes = boxes.getBytes();
-        int leftCount = 0, li = boxBytes.length - 1;
-        int[] result = new int[boxBytes.length];
+        int leftCount = 0, li = boxBytes.length;
+        int[] result = new int[li--];
         for (byte boxByte : boxBytes) {
             result[li] += leftCount;
             leftCount += (boxByte - '0');
         }
         int rightCount = 0;
-        for (int i = li - 1 ; i >= 0 ; i--) {
-            leftCount -= (boxBytes[i + 1] - '0');
-            rightCount += (boxBytes[i + 1] - '0');
-            result[i] = result[i + 1] - leftCount + rightCount;
+        for (; li > 0 ; li--) {
+            result[li - 1] = result[li] - (leftCount -= (boxBytes[li] - '0')) + (rightCount += (boxBytes[li] - '0'));
         }
         return result;
     }
