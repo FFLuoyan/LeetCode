@@ -23,13 +23,33 @@ import java.util.Arrays;
 public class Z6MoveSeat {
 
     public int minMovesToSeat(int[] seats, int[] students) {
-        Arrays.sort(seats);
-        Arrays.sort(students);
-        int result = 0;
-        for (int i = seats.length - 1 ; i >= 0 ; i--) {
-            result += Math.abs(seats[i] - students[i]);
+        int[] seatPosition = new int[101];
+        int[] studentPosition = new int[101];
+        for (int i = 0; i < seats.length; i++) {
+            seatPosition[seats[i]]++;
+            studentPosition[students[i]]++;
+        }
+        int result = 0, seat = 100, student = 100;
+        while (seat > 0 && student > 0) {
+            if (seatPosition[seat] == 0) {
+                seat--;
+                continue;
+            }
+
+            if (studentPosition[student] == 0) {
+                student--;
+                continue;
+            }
+            result += Math.abs(seat - student);
+            seatPosition[seat]--;
+            studentPosition[student]--;
         }
         return result;
     }
 
+    public static void main(String[] args) {
+        Z6MoveSeat test = new Z6MoveSeat();
+        // 4
+        System.out.println(test.minMovesToSeat(new int[]{2, 2, 6, 6}, new int[]{1, 2, 3, 6}));
+    }
 }
