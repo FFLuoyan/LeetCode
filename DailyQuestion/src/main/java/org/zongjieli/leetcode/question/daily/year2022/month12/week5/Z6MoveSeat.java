@@ -29,16 +29,16 @@ public class Z6MoveSeat {
             seatPosition[seats[i]]++;
             studentPosition[students[i]]++;
         }
+        seatPosition[0] = 1;
+        studentPosition[0] = 1;
         int result = 0, seat = 100, student = 100;
         while (seat > 0 && student > 0) {
-            if (seatPosition[seat] == 0) {
+            while (seatPosition[seat] == 0) {
                 seat--;
-                continue;
             }
 
-            if (studentPosition[student] == 0) {
+            while (studentPosition[student] == 0) {
                 student--;
-                continue;
             }
             result += Math.abs(seat - student);
             seatPosition[seat]--;
