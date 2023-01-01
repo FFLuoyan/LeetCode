@@ -19,12 +19,13 @@ public class Z7FirstTwice {
 
     public char repeatedCharacter(String s) {
         char[] values = s.toCharArray();
-        boolean[] exist = new boolean[128];
+        int exist = 0;
         for (char value : values) {
-            if (exist[value]) {
+            int position = (1 << (value - 'a'));
+            if ((exist & position) > 0) {
                 return value;
             }
-            exist[value] = true;
+            exist |= position;
         }
         return 'a';
     }
