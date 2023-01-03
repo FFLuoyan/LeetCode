@@ -29,20 +29,25 @@ public class Z2CheckIncrease {
     public boolean areNumbersAscending(String s) {
         byte[] values = s.getBytes();
         int before = -1, current = 0;
-        for (byte value : values) {
-            if (value == ' ') {
-                if (current > 0) {
-                    if (before >= current) {
-                        return false;
-                    }
-                    before = current;
-                    current = 0;
+        for (int i = 0; i < values.length; i++) {
+            while (i < values.length && values[i] >= '0' && values[i] <= '9') {
+                current = 10 * current + values[i++] - '0';
+            }
+            if (current > 0) {
+                if (before >= current) {
+                    return false;
                 }
-            } else if (value < 'a') {
-                current = 10 * current + value - '0';
+                before = current;
+                current = 0;
             }
         }
-        return current <= 0 || before < current;
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Z2CheckIncrease test = new Z2CheckIncrease();
+        // true
+        System.out.println(test.areNumbersAscending("1 box has 3 blue 4 red 6 green and 12 yellow marbles"));
     }
 
 }
