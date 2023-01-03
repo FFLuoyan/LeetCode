@@ -28,17 +28,17 @@ public class Z2CheckIncrease {
 
     public boolean areNumbersAscending(String s) {
         byte[] values = s.getBytes();
-        int before = -1, current = 0;
+        int before = -1, current;
         for (int i = 0; i < values.length; i++) {
-            while (i < values.length && values[i] >= '0' && values[i] <= '9') {
-                current = 10 * current + values[i++] - '0';
-            }
-            if (current > 0) {
+            current = values[i] - '0';
+            if (current >= 0 && current <= 9) {
+                while (++i < values.length && values[i] >= '0' && values[i] <= '9') {
+                    current = 10 * current + values[i] - '0';
+                }
                 if (before >= current) {
                     return false;
                 }
                 before = current;
-                current = 0;
             }
         }
         return true;
