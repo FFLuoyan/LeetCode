@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month1.week2;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * 给定一个二维整数数组 orders
@@ -35,57 +34,47 @@ import java.util.TreeMap;
 public class Z2OverStockOrders {
 
     public int getNumberOfBacklogOrders(int[][] orders) {
-        TreeMap<Integer, Long> sellMap = new TreeMap<>();
-        TreeMap<Integer, Long> buyMap = new TreeMap<>();
+        PriorityQueue<long[]> sellQueue = new PriorityQueue<>(Comparator.comparingLong(a -> a[0]));
+        PriorityQueue<long[]> buyQueue = new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
         for (int[] order : orders) {
             if (order[2] == 0) {
                 // 采购订单
-                Map.Entry<Integer, Long> firstEntry;
-                int key;
-                long value;
-                while (!sellMap.isEmpty() && order[1] > 0 && (key = (firstEntry = sellMap.firstEntry()).getKey()) <= order[0]) {
-                    if ((value = firstEntry.getValue()) > order[1]) {
-                        sellMap.put(key, value - order[1]);
+                long[] first;
+                while (!sellQueue.isEmpty() && order[1] > 0 && (first = sellQueue.peek())[0] <= order[0]) {
+                    if (first[1] > order[1]) {
+                        first[1] -= order[1];
                         order[1] = 0;
-                    } else if (value == order[1]) {
-                        order[1] = 0;
-                        sellMap.remove(key);
                     } else {
-                        order[1] -= value;
-                        sellMap.remove(key);
+                        order[1] -= first[1];
+                        sellQueue.poll();
                     }
                 }
                 if (order[1] > 0) {
-                    buyMap.merge(order[0], (long) order[1], Long::sum);
+                    buyQueue.add(new long[]{order[0], order[1]});
                 }
             } else {
                 // 销售订单
-                Map.Entry<Integer, Long> lastEntry;
-                int key;
-                long value;
-                while (!buyMap.isEmpty() && order[1] > 0 && (key = (lastEntry = buyMap.lastEntry()).getKey()) >= order[0]) {
-                    if ((value = lastEntry.getValue()) > order[1]) {
-                        buyMap.put(key, value - order[1]);
+                long[] first;
+                while (!buyQueue.isEmpty() && order[1] > 0 && (first = buyQueue.peek())[0] >= order[0]) {
+                    if (first[1] > order[1]) {
+                        first[1] -= order[1];
                         order[1] = 0;
-                    } else if (value == order[1]) {
-                        order[1] = 0;
-                        buyMap.remove(key);
                     } else {
-                        order[1] -= value;
-                        buyMap.remove(key);
+                        order[1] -= first[1];
+                        buyQueue.poll();
                     }
                 }
                 if (order[1] > 0) {
-                    sellMap.merge(order[0], (long) order[1], Long::sum);
+                    sellQueue.add(new long[]{order[0], order[1]});
                 }
             }
         }
         long value = 0;
-        for (Long aLong : sellMap.values()) {
-            value += aLong;
+        for (long[] longs : sellQueue) {
+            value += longs[1];
         }
-        for (Long aLong : buyMap.values()) {
-            value += aLong;
+        for (long[] longs : buyQueue) {
+            value += longs[1];
         }
         return (int) (value % 1000000007);
     }
