@@ -27,18 +27,22 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week2;
 public class Z2CheckIncrease {
 
     public boolean areNumbersAscending(String s) {
-        String[] tokens = s.split(" ");
-        Integer before = null;
-        for (String token : tokens) {
-            if (token.charAt(0) < 'a') {
-                int current = Integer.parseInt(token);
-                if (before != null && before >= current) {
-                    return false;
+        byte[] values = s.getBytes();
+        int before = -1, current = 0;
+        for (byte value : values) {
+            if (value == ' ') {
+                if (current > 0) {
+                    if (before >= current) {
+                        return false;
+                    }
+                    before = current;
+                    current = 0;
                 }
-                before = current;
+            } else if (value < 'a') {
+                current = 10 * current + value - '0';
             }
         }
-        return true;
+        return current <= 0 || before < current;
     }
 
 }
