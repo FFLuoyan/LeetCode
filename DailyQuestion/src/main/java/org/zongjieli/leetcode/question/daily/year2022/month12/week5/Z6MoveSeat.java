@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month12.week5;
 
-import java.util.Arrays;
-
 /**
  * 一个房间里有 n 个座位和 n 名学生,房间用一个数轴表示
  * 给定一个长度为 n 的数组 seats,其中 seats[i] 是第 i 个座位的位置
