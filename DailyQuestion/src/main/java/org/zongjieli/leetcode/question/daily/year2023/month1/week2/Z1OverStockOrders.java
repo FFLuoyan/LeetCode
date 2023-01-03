@@ -31,7 +31,7 @@ import java.util.*;
  * @version 1.0
  * @date 2023/1/2
  */
-public class Z2OverStockOrders {
+public class Z1OverStockOrders {
 
     public int getNumberOfBacklogOrders(int[][] orders) {
         PriorityQueue<long[]> sellQueue = new PriorityQueue<>(Comparator.comparingLong(a -> a[0]));
@@ -80,7 +80,7 @@ public class Z2OverStockOrders {
     }
 
     public static void main(String[] args) {
-        Z2OverStockOrders test = new Z2OverStockOrders();
+        Z1OverStockOrders test = new Z1OverStockOrders();
         // 6
         System.out.println(test.getNumberOfBacklogOrders(new int[][]{{10, 5, 0}, {15, 2, 1}, {25, 1, 1}, {30, 4, 0}}));
         // 999999984
