@@ -35,37 +35,21 @@ public class Z1OverStockOrders {
 
     public int getNumberOfBacklogOrders(int[][] orders) {
         PriorityQueue<int[]> sellQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
-        PriorityQueue<int[]> buyQueue = new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));
+        PriorityQueue<int[]> buyQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
         for (int[] order : orders) {
             int[] first;
-            if (order[2] == 0) {
-                // 采购订单
-                while (!sellQueue.isEmpty() && order[1] > 0 && (first = sellQueue.peek())[0] <= order[0]) {
-                    if (first[1] > order[1]) {
-                        first[1] -= order[1];
-                        order[1] = 0;
-                    } else {
-                        order[1] -= first[1];
-                        sellQueue.poll();
-                    }
+            int price = (order[2] == 0 ? 1 : -1) * order[0], amount = order[1];
+            PriorityQueue<int[]> dealQueue = order[2] == 0 ? sellQueue : buyQueue;
+            while (!dealQueue.isEmpty() && amount > 0 && (first = dealQueue.peek())[0] <= price) {
+                int min = Math.min(first[1], amount);
+                first[1] -= min;
+                amount -= min;
+                if (first[1] == 0) {
+                    dealQueue.poll();
                 }
-                if (order[1] > 0) {
-                    buyQueue.add(new int[]{order[0], order[1]});
-                }
-            } else {
-                // 销售订单
-                while (!buyQueue.isEmpty() && order[1] > 0 && (first = buyQueue.peek())[0] >= order[0]) {
-                    if (first[1] > order[1]) {
-                        first[1] -= order[1];
-                        order[1] = 0;
-                    } else {
-                        order[1] -= first[1];
-                        buyQueue.poll();
-                    }
-                }
-                if (order[1] > 0) {
-                    sellQueue.add(new int[]{order[0], order[1]});
-                }
+            }
+            if (amount > 0) {
+                (order[2] == 0 ? buyQueue : sellQueue).add(new int[]{-price, amount});
             }
         }
         long value = 0;
