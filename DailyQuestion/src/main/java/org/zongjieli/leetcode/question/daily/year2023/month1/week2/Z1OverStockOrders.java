@@ -34,12 +34,12 @@ import java.util.*;
 public class Z1OverStockOrders {
 
     public int getNumberOfBacklogOrders(int[][] orders) {
-        PriorityQueue<long[]> sellQueue = new PriorityQueue<>(Comparator.comparingLong(a -> a[0]));
-        PriorityQueue<long[]> buyQueue = new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
+        PriorityQueue<int[]> sellQueue = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        PriorityQueue<int[]> buyQueue = new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));
         for (int[] order : orders) {
+            int[] first;
             if (order[2] == 0) {
                 // 采购订单
-                long[] first;
                 while (!sellQueue.isEmpty() && order[1] > 0 && (first = sellQueue.peek())[0] <= order[0]) {
                     if (first[1] > order[1]) {
                         first[1] -= order[1];
@@ -50,11 +50,10 @@ public class Z1OverStockOrders {
                     }
                 }
                 if (order[1] > 0) {
-                    buyQueue.add(new long[]{order[0], order[1]});
+                    buyQueue.add(new int[]{order[0], order[1]});
                 }
             } else {
                 // 销售订单
-                long[] first;
                 while (!buyQueue.isEmpty() && order[1] > 0 && (first = buyQueue.peek())[0] >= order[0]) {
                     if (first[1] > order[1]) {
                         first[1] -= order[1];
@@ -65,15 +64,15 @@ public class Z1OverStockOrders {
                     }
                 }
                 if (order[1] > 0) {
-                    sellQueue.add(new long[]{order[0], order[1]});
+                    sellQueue.add(new int[]{order[0], order[1]});
                 }
             }
         }
         long value = 0;
-        for (long[] longs : sellQueue) {
+        for (int[] longs : sellQueue) {
             value += longs[1];
         }
-        for (long[] longs : buyQueue) {
+        for (int[] longs : buyQueue) {
             value += longs[1];
         }
         return (int) (value % 1000000007);
