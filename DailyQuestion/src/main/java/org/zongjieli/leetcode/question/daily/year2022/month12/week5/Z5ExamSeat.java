@@ -1,6 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month12.week5;
 
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * 在考场里,一排有 n 个座位,分别编号为 0, 1, 2, ..., n-1
@@ -25,51 +25,125 @@ import java.util.TreeSet;
  */
 public class Z5ExamSeat {
 
-    private final TreeSet<Integer> seats;
+    private final TreeMap<Integer, PriorityQueue<Integer>> leftDistanceSeatsMap;
+    private final TreeMap<Integer, Integer> seatLeftDistanceMap;
     private final int n;
 
     public Z5ExamSeat(int n) {
-        seats = new TreeSet<>();
+        leftDistanceSeatsMap = new TreeMap<>();
+        seatLeftDistanceMap = new TreeMap<>();
         this.n = n;
     }
 
     public int seat() {
-        if (seats.isEmpty()) {
-            seats.add(0);
+        if (leftDistanceSeatsMap.isEmpty()) {
+            PriorityQueue<Integer> queue = new PriorityQueue<>();
+            queue.add(0);
+            leftDistanceSeatsMap.put(0, queue);
+            seatLeftDistanceMap.put(0, 0);
             return 0;
         }
-        int value = 0, before = seats.first(), distance = before;
-        for (Integer seat : seats) {
-            int cd = (seat - before) / 2;
-            if (cd > distance) {
-                distance = cd;
-                value = before + distance;
+        int rightMax = n - 1 - seatLeftDistanceMap.lastKey();
+        int leftMax = seatLeftDistanceMap.firstKey();
+        int seatMaxLeftDistance = leftDistanceSeatsMap.lastKey();
+        int seatMax = seatMaxLeftDistance / 2;
+        if (rightMax > seatMax && rightMax > leftMax) {
+            PriorityQueue<Integer> queue = new PriorityQueue<>();
+            queue.add(n - 1);
+            leftDistanceSeatsMap.put(rightMax, queue);
+            seatLeftDistanceMap.put(n - 1, rightMax);
+            return n - 1;
+        } else if (leftMax >= seatMax) {
+            PriorityQueue<Integer> queue = new PriorityQueue<>();
+            queue.add(0);
+            leftDistanceSeatsMap.put(0, queue);
+            seatLeftDistanceMap.put(0, 0);
+            return 0;
+        } else {
+            // 如果 seatMaxLeftDistance 为单数
+            // seatMaxLeftDistance - 1 对应的位置也是最小值
+            // 需要判断最小的数据的位置
+            if ((seatMaxLeftDistance & 1) == 1 && leftDistanceSeatsMap.containsKey(seatMaxLeftDistance - 1)) {
+                int rightSeat = leftDistanceSeatsMap.lastEntry().getValue().peek();
+                int leftSeat = leftDistanceSeatsMap.get(seatMaxLeftDistance - 1).peek();
+                if (leftSeat < rightSeat) {
+                    seatMaxLeftDistance--;
+                }
             }
-            before = seat;
+            PriorityQueue<Integer> queue = leftDistanceSeatsMap.get(seatMaxLeftDistance);
+            int seat = queue.poll();
+            if (queue.isEmpty()) {
+                leftDistanceSeatsMap.remove(seatMaxLeftDistance);
+            }
+            int seatLeftDistance = seatMaxLeftDistance - seatMax;
+            leftDistanceSeatsMap.computeIfAbsent(seatLeftDistance, k -> new PriorityQueue<>()).add(seat);
+            seatLeftDistanceMap.put(seat, seatLeftDistance);
+
+            int value =  seat - seatLeftDistance;
+            leftDistanceSeatsMap.computeIfAbsent(seatMax, k -> new PriorityQueue<>()).add(value);
+            seatLeftDistanceMap.put(value, seatMax);
+            return value;
         }
-        if (n - 1 - before > distance) {
-            value = n - 1;
-        }
-        seats.add(value);
-        return value;
     }
 
     public void leave(int p) {
-        seats.remove(p);
+        int distance = seatLeftDistanceMap.remove(p);
+        PriorityQueue<Integer> queue = leftDistanceSeatsMap.get(distance);
+        queue.remove(p);
+        if (queue.isEmpty()) {
+            leftDistanceSeatsMap.remove(distance);
+        }
+        if (p == 0) {
+            return;
+        }
+        Map.Entry<Integer, Integer> rightSeatEntry = seatLeftDistanceMap.higherEntry(p);
+        if (rightSeatEntry == null) {
+            return;
+        }
+        int rightSeat = rightSeatEntry.getKey();
+        int rightSeatDistance = rightSeatEntry.getValue();
+        int rightSeatDistanceAfter = rightSeatDistance + distance;
+        seatLeftDistanceMap.put(rightSeat, rightSeatDistanceAfter);
+        queue = leftDistanceSeatsMap.get(rightSeatDistance);
+        queue.remove(rightSeat);
+        if (queue.isEmpty()) {
+            leftDistanceSeatsMap.remove(rightSeatDistance);
+        }
+        leftDistanceSeatsMap.computeIfAbsent(rightSeatDistanceAfter, k -> new PriorityQueue<>()).add(rightSeat);
     }
 
     public static void main(String[] args) {
-        Z5ExamSeat test = new Z5ExamSeat(10);
-        // 0
-        System.out.println(test.seat());
-        // 9
-        System.out.println(test.seat());
-        // 4
-        System.out.println(test.seat());
-        // 2
-        System.out.println(test.seat());
+        Z5ExamSeat test;
+
+        test = new Z5ExamSeat(10);
+        // 0, 9, 4, 2, 5
+        System.out.print(test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat());
         test.leave(4);
-        // 5
-        System.out.println(test.seat());
+        System.out.println(" " + test.seat());
+
+        test = new Z5ExamSeat(4);
+        // 0, 3, 1, 2, 1
+        System.out.print(test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat());
+        test.leave(1);
+        test.leave(3);
+        System.out.println(" " + test.seat());
+
+        test = new Z5ExamSeat(10);
+        // 0, 9, 4, 0, 4, 2, 6, 1, 3, 5, 7, 8
+        System.out.print(test.seat() + " " + test.seat() + " " + test.seat());
+        test.leave(0);
+        test.leave(4);
+        System.out.println(" " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat());
+        test.leave(0);
+
+        test = new Z5ExamSeat(8);
+        // 0, 7, 3, 7, 0, 5, 1, 2, 4, 6, 0
+        System.out.print(test.seat() + " " + test.seat() + " " + test.seat());
+        test.leave(0);
+        test.leave(7);
+        System.out.print(" " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat() + " " + test.seat());
+        test.leave(0);
+        test.leave(7);
+        System.out.println(" " + test.seat());
     }
 }
