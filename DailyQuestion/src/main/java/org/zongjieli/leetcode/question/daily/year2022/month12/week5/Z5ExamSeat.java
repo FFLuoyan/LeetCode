@@ -45,22 +45,19 @@ public class Z5ExamSeat {
         }
         int left = seats.first();
         int right = n - 1 - seats.last();
-        while (!distances.isEmpty()) {
-            int[] distance = distances.peek();
-            Integer higher;
-            if (seats.contains(distance[0]) && (higher = seats.higher(distance[0])) != null && higher == distance[1]) {
-                int cd = (distance[1] - distance[0]) / 2;
-                if (cd < right || cd <= left) {
-                    break;
-                }
-                distances.poll();
-                int seat = cd + distance[0];
-                seats.add(seat);
-                distances.add(new int[]{distance[0], seat});
-                distances.add(new int[]{seat, distance[1]});
-                return seat;
-            }
+        int[] distance = new int[]{0, 0};
+        Integer higher;
+        while (!distances.isEmpty() && !(seats.contains((distance = distances.peek())[0]) && (higher = seats.higher(distance[0])) != null && higher == distance[1])) {
             distances.poll();
+        }
+        int cd = (distance[1] - distance[0]) / 2;
+        if (cd >= right && cd > left) {
+            distances.poll();
+            int seat = cd + distance[0];
+            seats.add(seat);
+            distances.add(new int[]{distance[0], seat});
+            distances.add(new int[]{seat, distance[1]});
+            return seat;
         }
         if (left >= right) {
             seats.add(0);
