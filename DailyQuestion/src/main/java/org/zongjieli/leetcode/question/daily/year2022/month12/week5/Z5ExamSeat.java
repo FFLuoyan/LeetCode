@@ -43,46 +43,33 @@ public class Z5ExamSeat {
             seats.add(0);
             return 0;
         }
+        int left = seats.first();
+        int right = n - 1 - seats.last();
         while (!distances.isEmpty()) {
             int[] distance = distances.peek();
             Integer higher;
             if (seats.contains(distance[0]) && (higher = seats.higher(distance[0])) != null && higher == distance[1]) {
-                break;
+                int cd = (distance[1] - distance[0]) / 2;
+                if (cd < right || cd <= left) {
+                    break;
+                }
+                distances.poll();
+                int seat = cd + distance[0];
+                seats.add(seat);
+                distances.add(new int[]{distance[0], seat});
+                distances.add(new int[]{seat, distance[1]});
+                return seat;
             }
             distances.poll();
         }
-        if (distances.isEmpty()) {
-            int left = seats.first();
-            int right = n - 1 - left;
-            if (left >= right) {
-                seats.add(0);
-                distances.add(new int[]{0, left});
-                return 0;
-            }
-            seats.add(n - 1);
-            distances.add(new int[]{left, n - 1});
-            return n - 1;
-        }
-        int[] distance = distances.peek();
-        int left = seats.first();
-        int right = n - 1 - seats.last();
-        int cd = (distance[1] - distance[0]) / 2;
-        if (left >= cd && left >= right) {
+        if (left >= right) {
             seats.add(0);
             distances.add(new int[]{0, left});
             return 0;
         }
-        if (right > cd) {
-            seats.add(n - 1);
-            distances.add(new int[]{seats.last(), n - 1});
-            return n - 1;
-        }
-        distances.poll();
-        int seat = cd + distance[0];
-        seats.add(seat);
-        distances.add(new int[]{distance[0], seat});
-        distances.add(new int[]{seat, distance[1]});
-        return seat;
+        seats.add(n - 1);
+        distances.add(new int[]{left, n - 1});
+        return n - 1;
     }
 
     public void leave(int p) {
