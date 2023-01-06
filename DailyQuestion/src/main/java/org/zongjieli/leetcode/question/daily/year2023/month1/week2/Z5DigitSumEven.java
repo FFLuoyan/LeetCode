@@ -15,18 +15,15 @@ public class Z5DigitSumEven {
     public int countEven(int num) {
         int single = num % 10;
         int base = (num - single) / 2 - 1;
-        if ((single & 1) == 0 && isDigitEven(num)) {
-            base++;
-        }
-        return (single + 1) / 2 + base;
-    }
-
-    public boolean isDigitEven(int num) {
         int sum = 0;
         while (num > 0) {
             sum += (num % 10);
             num /= 10;
         }
-        return (sum & 1) == 0;
+        if ((single & 1) == 0 && (sum & 1) == 0) {
+            base++;
+        }
+        return (single + 1) / 2 + base;
     }
+
 }
