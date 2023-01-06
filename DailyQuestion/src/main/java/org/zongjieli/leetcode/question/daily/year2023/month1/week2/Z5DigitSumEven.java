@@ -13,13 +13,15 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week2;
 public class Z5DigitSumEven {
 
     public int countEven(int num) {
-        int count = 0;
-        for (int i = 1 ; i <= num ; i++) {
-            if (isDigitEven(i)) {
-                count++;
-            }
+        if (num < 10) {
+            return num / 2;
         }
-        return count;
+        int single = num % 10;
+        int base = (num - single - 2) / 2;
+        if (isDigitEven(num)) {
+            return (isDigitEven(single) ? single / 2 + 1 : (single + 1) / 2) + base;
+        }
+        return (isDigitEven(single) ? (single + 1) / 2 : single / 2 + 1) + base;
     }
 
     public boolean isDigitEven(int num) {
