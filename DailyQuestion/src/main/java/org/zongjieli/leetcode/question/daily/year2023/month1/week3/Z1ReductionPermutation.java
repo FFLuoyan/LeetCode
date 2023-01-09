@@ -19,10 +19,23 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week3;
 public class Z1ReductionPermutation {
 
     public int reinitializePermutation(int n) {
-        int hn = n / 2, next, current = 1, count = 1;
-        while ((next = current < hn ? 2 * current : 2 * (current - hn) + 1) != 1) {
+        /*
+            对于每个下标 i,操作后的下标 j 为
+                i 在数组的前半段,即 i < n / 2 时,j = 2i
+                i 在数组的后半段,及 i >= 2 / 2 时,j = 2 * (i - n / 2) + 1
+            当 i == 0 或 i == n - 1 时,位置恒定不变
+            对于其余位置,则有,j = 2i mod (n - 1)
+            设经过 k 次移动后返回原位置
+            有 f^k(i) = (i * 2^k) mod (n - 1) = i
+            当 i == 1 时,有 (2^k) mod (n - 1) = 1
+            则对于 i ∈ (0, n - 1) 时, i * (2^k) mod (n - 1) === i * 1
+         */
+        if (n == 2) {
+            return 1;
+        }
+        int current = 1, count = 1;
+        while ((current = (2 * current) % (n - 1)) != 1) {
             count++;
-            current = next;
         }
         return count;
     }
