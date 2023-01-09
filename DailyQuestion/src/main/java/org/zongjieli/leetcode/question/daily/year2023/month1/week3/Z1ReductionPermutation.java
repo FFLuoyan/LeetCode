@@ -21,28 +21,39 @@ public class Z1ReductionPermutation {
     public int reinitializePermutation(int n) {
         int hn = n / 2;
         int[] values = new int[n];
-        for (int i = 0; i < values.length; i++) {
-            values[i] = i;
+        for (int i = 0 ; i < n ; i++) {
+            values[i] = count(hn, i, i);
         }
-        boolean isInitialization = false;
-        int count = 0;
-        while (!isInitialization) {
-            isInitialization = true;
-            int[] next = new int[n];
-            for (int i = 0; i < next.length; i += 2) {
-                if ((next[i] = values[i / 2]) != i) {
-                    isInitialization = false;
-                }
-            }
-            for (int i = 1; i < next.length; i += 2) {
-                if ((next[i] = values[hn + (i - 1) / 2]) != i) {
-                    isInitialization = false;
-                }
-            }
+        int result = values[0];
+        for (int i = 1 ; i < n ; i++) {
+            result = result * values[i] / common(result, values[i]);
+        }
+        return result;
+    }
+
+    public int count(int halfN, int target, int current) {
+        int next, count = 1;
+        while ((next = next(halfN, current)) != target) {
+            current = next;
             count++;
-            values = next;
         }
         return count;
     }
 
+    public int next(int halfN, int current) {
+        return current < halfN ? 2 * current : 2 * (current - halfN) + 1;
+    }
+
+    public int common(int a, int b) {
+        if (a % b == 0) {
+            return b;
+        }
+        return common(b, a % b);
+    }
+
+    public static void main(String[] args) {
+        Z1ReductionPermutation test = new Z1ReductionPermutation();
+        // 1
+        System.out.println(test.reinitializePermutation(2));
+    }
 }
