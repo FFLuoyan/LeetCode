@@ -22,7 +22,9 @@ public class Z1ReductionPermutation {
         int hn = n / 2;
         int[] values = new int[n];
         for (int i = 0 ; i < n ; i++) {
-            values[i] = count(hn, i, i);
+            if (values[i] == 0) {
+                count(hn, i, i, 0, values);
+            }
         }
         int result = values[0];
         for (int i = 1 ; i < n ; i++) {
@@ -31,17 +33,10 @@ public class Z1ReductionPermutation {
         return result;
     }
 
-    public int count(int halfN, int target, int current) {
-        int next, count = 1;
-        while ((next = next(halfN, current)) != target) {
-            current = next;
-            count++;
-        }
-        return count;
-    }
-
-    public int next(int halfN, int current) {
-        return current < halfN ? 2 * current : 2 * (current - halfN) + 1;
+    public int count(int halfN, int target, int current, int count, int[] values) {
+        count++;
+        int next = (current < halfN ? 2 * current : 2 * (current - halfN) + 1);
+        return values[current] = next == target ? count : count(halfN, target, next, count, values);
     }
 
     public int common(int a, int b) {
@@ -54,6 +49,6 @@ public class Z1ReductionPermutation {
     public static void main(String[] args) {
         Z1ReductionPermutation test = new Z1ReductionPermutation();
         // 1
-        System.out.println(test.reinitializePermutation(2));
+        System.out.println(test.reinitializePermutation(1000));
     }
 }
