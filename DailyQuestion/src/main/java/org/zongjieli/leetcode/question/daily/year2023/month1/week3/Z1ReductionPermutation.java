@@ -19,31 +19,12 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week3;
 public class Z1ReductionPermutation {
 
     public int reinitializePermutation(int n) {
-        int hn = n / 2;
-        int[] values = new int[n];
-        for (int i = 0 ; i < n ; i++) {
-            if (values[i] == 0) {
-                count(hn, i, i, 0, values);
-            }
+        int hn = n / 2, next, current = 1, count = 1;
+        while ((next = current < hn ? 2 * current : 2 * (current - hn) + 1) != 1) {
+            count++;
+            current = next;
         }
-        int result = values[0];
-        for (int i = 1 ; i < n ; i++) {
-            result = result * values[i] / common(result, values[i]);
-        }
-        return result;
-    }
-
-    public int count(int halfN, int target, int current, int count, int[] values) {
-        count++;
-        int next = (current < halfN ? 2 * current : 2 * (current - halfN) + 1);
-        return values[current] = next == target ? count : count(halfN, target, next, count, values);
-    }
-
-    public int common(int a, int b) {
-        if (a % b == 0) {
-            return b;
-        }
-        return common(b, a % b);
+        return count;
     }
 
     public static void main(String[] args) {
