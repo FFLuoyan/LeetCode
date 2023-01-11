@@ -16,15 +16,16 @@ public class Z2FullCharSentence {
 
     public boolean checkIfPangram(String sentence) {
         boolean[] exist = new boolean[26];
+        int count = 26;
         for (byte b : sentence.getBytes()) {
-            exist[b - 'a'] = true;
-        }
-        for (boolean b : exist) {
-            if (!b) {
-                return false;
+            if (!exist[b - 'a']) {
+                exist[b - 'a'] = true;
+                if (--count == 0) {
+                    return true;
+                }
             }
         }
-        return true;
+        return false;
     }
 
 }
