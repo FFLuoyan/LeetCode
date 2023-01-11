@@ -15,33 +15,40 @@ package org.zongjieli.leetcode.question.daily.year2022.month12.week3;
 public class Z1SumBeauty {
 
     public int beautySum(String s) {
-        int sum = 0;
         byte[] values = s.getBytes();
-        for (int i = 0 ; i < values.length ; i++) {
-            sum += startBeautySum(values, i);
+        int sum = 0, length = values.length;
+        for (int i = 0 ; i < length ; i++) {
+            int min = 1, max = 1, minIndex = values[i] - 'a', index, v;
+            int[] count = new int[26];
+            count[minIndex]++;
+            for (int j = i + 1 ; j < length ; j++) {
+                if ((v = ++count[index = values[j] - 'a']) > max) {
+                    max = v;
+                }
+                if (v < min) {
+                    min = v;
+                    minIndex = index;
+                } else if (index == minIndex) {
+                    min = length;
+                    for (int countIndex = 0; countIndex < 26; countIndex++) {
+                        if (count[countIndex] > 0 && count[countIndex] < min) {
+                            min = count[countIndex];
+                            minIndex = countIndex;
+                        }
+                    }
+                }
+                sum += (max - count[minIndex]);
+            }
         }
         return sum;
     }
 
-    public int startBeautySum(byte[] values, int start) {
-        int sum = 0, max = 1;
-        int[] count = new int[26];
-        for (; start < values.length ; start++) {
-            max = Math.max(max, ++count[values[start] - 'a']);
-            int min = max;
-            for (int i : count) {
-                if (i > 0) {
-                    min = Math.min(i, min);
-                }
-            }
-            sum += (max - min);
-        }
-        return sum;
-    }
 
     public static void main(String[] args) {
         Z1SumBeauty test = new Z1SumBeauty();
         // 5
         System.out.println(test.beautySum("aabcb"));
+        // 0
+        System.out.println(test.beautySum("x"));
     }
 }
