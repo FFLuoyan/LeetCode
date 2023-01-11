@@ -27,37 +27,34 @@ public class Z6LargestString {
     public String largestMerge(String word1, String word2) {
         char[] v1 = word1.toCharArray(), v2 = word2.toCharArray();
         int i1 = 0, i2 = 0;
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder(v1.length + v2.length);
         while (i1 < v1.length && i2 < v2.length) {
-            if (v1[i1] > v2[i2]) {
-                result.append(v1[i1++]);
-            } else if (v1[i1] < v2[i2]) {
-                result.append(v2[i2++]);
-            } else {
-                int i11 = i1, i22 = i2;
-                while (++i11 < v1.length && ++i22 < v2.length && v1[i11] == v2[i22]) {}
-                if (i11 == v1.length) {
-                    result.append(v2[i2++]);
-                } else if (i22 == v2.length) {
-                    result.append(v1[i1++]);
-                } else {
-                    if (v1[i11] > v2[i22]) {
-                        result.append(v1[i1++]);
-                    } else {
-                        result.append(v2[i2++]);
-                    }
-                }
-            }
-        }
-        if (i1 == v1.length) {
-            while (i2 < v2.length) {
-                result.append(v2[i2++]);
-            }
+            result.append(compare(v1, v2, i1, i2) ? v1[i1++] : v2[i2++]);
         }
         while (i1 < v1.length) {
             result.append(v1[i1++]);
         }
+        while (i2 < v2.length) {
+            result.append(v2[i2++]);
+        }
         return result.toString();
+    }
+
+    public boolean compare(char[] v1, char[] v2, int i1, int i2) {
+        if (v1[i1] > v2[i2]) {
+            return true;
+        }
+        while (i1 < v1.length && i2 < v2.length && v1[i1] == v2[i2]) {
+            i1++;
+            i2++;
+        }
+        return i2 == v2.length || (i1 < v1.length && v1[i1] > v2[i2]);
+    }
+
+    public static void main(String[] args) {
+        Z6LargestString test = new Z6LargestString();
+        // cbcabaaaaa
+        System.out.println(test.largestMerge("cabaa", "bcaaa"));
     }
 
 }
