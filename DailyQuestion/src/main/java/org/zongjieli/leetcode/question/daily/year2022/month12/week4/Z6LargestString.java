@@ -26,29 +26,26 @@ public class Z6LargestString {
 
     public String largestMerge(String word1, String word2) {
         char[] v1 = word1.toCharArray(), v2 = word2.toCharArray();
-        int i1 = 0, i2 = 0;
-        StringBuilder result = new StringBuilder(v1.length + v2.length);
-        while (i1 < v1.length && i2 < v2.length) {
-            result.append(compare(v1, v2, i1, i2) ? v1[i1++] : v2[i2++]);
+        int i1 = 0, i2 = 0, ri = 0, l1 = v1.length, l2 = v2.length;
+        char[] result = new char[l1 + l2];
+        while (i1 < l1 && i2 < l2) {
+            result[ri++] = compare(v1, v2, i1, i2, l1, l2) ? v1[i1++] : v2[i2++];
         }
-        while (i1 < v1.length) {
-            result.append(v1[i1++]);
+        while (i1 < l1) {
+            result[ri++] = v1[i1++];
         }
-        while (i2 < v2.length) {
-            result.append(v2[i2++]);
+        while (i2 < l2) {
+            result[ri++] = v2[i2++];
         }
-        return result.toString();
+        return new String(result);
     }
 
-    public boolean compare(char[] v1, char[] v2, int i1, int i2) {
-        if (v1[i1] > v2[i2]) {
-            return true;
-        }
-        while (i1 < v1.length && i2 < v2.length && v1[i1] == v2[i2]) {
+    public boolean compare(char[] v1, char[] v2, int i1, int i2, int l1, int l2) {
+        while (i1 < l1 && i2 < l2 && v1[i1] == v2[i2]) {
             i1++;
             i2++;
         }
-        return i2 == v2.length || (i1 < v1.length && v1[i1] > v2[i2]);
+        return i2 == l2 || (i1 < l1 && v1[i1] > v2[i2]);
     }
 
     public static void main(String[] args) {
