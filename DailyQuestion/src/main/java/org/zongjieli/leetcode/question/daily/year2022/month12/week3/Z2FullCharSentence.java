@@ -15,17 +15,19 @@ package org.zongjieli.leetcode.question.daily.year2022.month12.week3;
 public class Z2FullCharSentence {
 
     public boolean checkIfPangram(String sentence) {
-        boolean[] exist = new boolean[26];
-        int count = 26;
+        int exist = 0;
         for (byte b : sentence.getBytes()) {
-            if (!exist[b - 'a']) {
-                exist[b - 'a'] = true;
-                if (--count == 0) {
-                    return true;
-                }
+            if ((exist |= (1 << (b - 'a'))) == 67108863) {
+                return true;
             }
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        Z2FullCharSentence test = new Z2FullCharSentence();
+        // ture
+        System.out.println(test.checkIfPangram("thequickbrownfoxjumpsoverthelazydog"));
     }
 
 }
