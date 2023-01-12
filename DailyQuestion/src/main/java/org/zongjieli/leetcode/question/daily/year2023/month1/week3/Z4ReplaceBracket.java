@@ -1,8 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month1.week3;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 给定一个字符串 s,它包含一些括号对,每个括号中包含一个非空的键
@@ -33,27 +31,37 @@ import java.util.Map;
 public class Z4ReplaceBracket {
 
     public String evaluate(String s, List<List<String>> knowledge) {
-        Map<String, String> map = new HashMap<>();
+        Map<Character, Object> map = new HashMap<>();
         for (List<String> pair : knowledge) {
-            map.put(pair.get(0), pair.get(1));
+            char[] keyChars = pair.get(0).toCharArray();
+            Map<Character, Object> current = map;
+            for (char keyChar : keyChars) {
+                current = (Map<Character, Object>) current.computeIfAbsent(keyChar, k -> new HashMap<>());
+            }
+            current.put('0', pair.get(1));
         }
         StringBuilder result = new StringBuilder(s.length());
-        StringBuilder key = new StringBuilder(s.length());
         boolean isBracket = false;
+        Map<Character, Object> current = map;
         for (char c : s.toCharArray()) {
             if (c == '(') {
                 isBracket = true;
             } else if (c == ')') {
-                result.append(map.getOrDefault(key.toString(), "?"));
-                key = new StringBuilder(s.length());
+                result.append(current != null ? current.getOrDefault('0', "?") : "?");
+                current = map;
                 isBracket = false;
             } else if (!isBracket) {
                 result.append(c);
-            } else {
-                key.append(c);
+            } else if (current != null) {
+                current = (Map<Character, Object>) current.get(c);
             }
         }
         return result.toString();
     }
 
+    public static void main(String[] args) {
+        Z4ReplaceBracket test = new Z4ReplaceBracket();
+        // hi?
+        System.out.println(test.evaluate("hi(name)", Collections.singletonList(Arrays.asList("a", "b"))));
+    }
 }
