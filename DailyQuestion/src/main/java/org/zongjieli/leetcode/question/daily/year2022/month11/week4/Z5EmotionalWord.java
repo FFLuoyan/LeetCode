@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month11.week4;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 有时候人们会用重复写一些字母来表示额外的感受
  * 比如 "hello" -> "heeellooo", "hi" -> "hiii"
@@ -41,24 +38,21 @@ public class Z5EmotionalWord {
             chars[vl] = c;
             count[vl++] = cc;
         }
-        a: for (String word : words) {
-            int checkIndex = 0, currentIndex = 0, wl = word.length();
+        for (String word : words) {
+            int ci = 0, wi = 0, wl = word.length();
             char[] wcs = word.toCharArray();
-            char currentChar;
-            while (currentIndex < wl) {
-                if (checkIndex >= vl || (currentChar = wcs[currentIndex]) != chars[checkIndex]) {
-                    continue a;
+            char wc;
+            while (wi < wl && ci < vl && (wc = wcs[wi]) == chars[ci]) {
+                int wn = 1;
+                while (++wi < wl && wcs[wi] == wc) {
+                    wn++;
                 }
-                int currentCount = 1;
-                while (++currentIndex < wl && wcs[currentIndex] == currentChar) {
-                    currentCount++;
-                }
-                int checkCount = count[checkIndex++];
-                if (currentCount != checkCount && (checkCount < 3 || checkCount < currentCount)) {
-                    continue a;
+                int cn = count[ci];
+                if (wn == cn || (cn >= 3 && cn > wn)) {
+                    ci++;
                 }
             }
-            if (checkIndex == vl) {
+            if (ci == vl && wi == wl) {
                 result++;
             }
         }
@@ -69,6 +63,10 @@ public class Z5EmotionalWord {
         Z5EmotionalWord test = new Z5EmotionalWord();
         // 1
         System.out.println(test.expressiveWords("heeellooo", new String[]{"hello", "hi", "helo"}));
+        // 0
+        System.out.println(test.expressiveWords("heeellooo", new String[]{"heeelloooworld"}));
+        // 0
+        System.out.println(test.expressiveWords("aaa", new String[]{"aaaa"}));
         // 1
         System.out.println(test.expressiveWords("ggkyyyyffffbbhddddrxxsiixccqqqqkmmmiiiiiivvvyyuuujccuuuhhhhwssssnnttoyuuuussggttttfeeeebbbbeedddddqq", new String[]{"ggkyyfbbhdrxxsiixccqkmmiiivvvyyujccuuuhhwsnnttoyuuussggtttfeeebbbeedddqq"}));
     }
