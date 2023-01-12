@@ -30,30 +30,37 @@ import java.util.*;
  */
 public class Z4ReplaceBracket {
 
+    class Value {
+        String value = "?";
+        Value[] next;
+    }
+
     public String evaluate(String s, List<List<String>> knowledge) {
-        Map<Character, Object> map = new HashMap<>();
+        Value value = new Value();
         for (List<String> pair : knowledge) {
+            Value current = value;
             char[] keyChars = pair.get(0).toCharArray();
-            Map<Character, Object> current = map;
             for (char keyChar : keyChars) {
-                current = (Map<Character, Object>) current.computeIfAbsent(keyChar, k -> new HashMap<>());
+                int index = keyChar - 'a';
+                Value[] next = current.next == null ? (current.next = new Value[26]) : current.next;
+                current = next[index] == null ? next[index] = new Value() : next[index];
             }
-            current.put('0', pair.get(1));
+            current.value = pair.get(1);
         }
         StringBuilder result = new StringBuilder(s.length());
         boolean isBracket = false;
-        Map<Character, Object> current = map;
+        Value current = value;
         for (char c : s.toCharArray()) {
             if (c == '(') {
                 isBracket = true;
             } else if (c == ')') {
-                result.append(current != null ? current.getOrDefault('0', "?") : "?");
-                current = map;
+                result.append(current != null ? current.value : "?");
+                current = value;
                 isBracket = false;
             } else if (!isBracket) {
                 result.append(c);
             } else if (current != null) {
-                current = (Map<Character, Object>) current.get(c);
+                current = current.next == null ? null : current.next[c - 'a'];
             }
         }
         return result.toString();
@@ -63,5 +70,9 @@ public class Z4ReplaceBracket {
         Z4ReplaceBracket test = new Z4ReplaceBracket();
         // hi?
         System.out.println(test.evaluate("hi(name)", Collections.singletonList(Arrays.asList("a", "b"))));
+        // bobistwoyearsold
+        System.out.println(test.evaluate("(name)is(age)yearsold", Arrays.asList(Arrays.asList("name", "bob"), Arrays.asList("age", "two"))));
+        // c
+        System.out.println(test.evaluate("(zib)", Arrays.asList(Arrays.asList("qfviuwjo", "w"), Arrays.asList("kppdajmk", "n"), Arrays.asList("zib", "c"), Arrays.asList("ztfljcff", "i"), Arrays.asList("aoayyihi", "d"))));
     }
 }
