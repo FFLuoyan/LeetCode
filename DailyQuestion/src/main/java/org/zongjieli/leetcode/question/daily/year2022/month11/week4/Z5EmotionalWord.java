@@ -31,7 +31,8 @@ public class Z5EmotionalWord {
     public int expressiveWords(String s, String[] words) {
         List<Character> chars = new ArrayList<>();
         List<Integer> count = new ArrayList<>();
-        for (int i = 0 ; i < s.length() ;) {
+        int sl = s.length();
+        for (int i = 0 ; i < sl ;) {
             char currentChar = s.charAt(i);
             int currentCount = 1;
             while (++i < s.length() && s.charAt(i) == currentChar) {
@@ -40,21 +41,21 @@ public class Z5EmotionalWord {
             chars.add(currentChar);
             count.add(currentCount);
         }
-        int result = 0;
+        int result = 0, cs = chars.size();
         a: for (String word : words) {
-            int checkIndex = 0;
-            for (int i = 0 ; i < word.length() ;) {
-                if (checkIndex >= chars.size()) {
+            int checkIndex = 0, currentIndex = 0, wl = word.length();
+            while (currentIndex < wl) {
+                if (checkIndex >= cs) {
                     continue a;
                 }
-                char currentChar = word.charAt(i);
+                char currentChar = word.charAt(currentIndex);
                 char checkChar = chars.get(checkIndex);
                 if (checkChar != currentChar) {
                     continue a;
                 }
                 int checkCount = count.get(checkIndex++);
                 int currentCount = 1;
-                while (++i < word.length() && word.charAt(i) == currentChar) {
+                while (++currentIndex < word.length() && word.charAt(currentIndex) == currentChar) {
                     currentCount++;
                 }
                 if (currentCount != checkCount && (checkCount < 3 || checkCount < currentCount)) {
