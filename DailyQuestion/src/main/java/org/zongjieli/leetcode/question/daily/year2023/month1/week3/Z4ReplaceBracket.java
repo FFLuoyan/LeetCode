@@ -48,19 +48,17 @@ public class Z4ReplaceBracket {
             current.value = pair.get(1);
         }
         StringBuilder result = new StringBuilder(s.length());
-        boolean isBracket = false;
         Value current = value;
-        for (char c : s.toCharArray()) {
-            if (c == '(') {
-                isBracket = true;
-            } else if (c == ')') {
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == '(') {
+                while (chars[++i] != ')') {
+                    current = current != null && current.next != null ? current.next[chars[i] - 'a'] : null;
+                }
                 result.append(current != null ? current.value : "?");
                 current = value;
-                isBracket = false;
-            } else if (!isBracket) {
-                result.append(c);
-            } else if (current != null) {
-                current = current.next == null ? null : current.next[c - 'a'];
+            } else {
+                result.append(chars[i]);
             }
         }
         return result.toString();
