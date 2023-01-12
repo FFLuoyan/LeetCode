@@ -36,14 +36,13 @@ public class Z4ReplaceBracket {
             map.put(pair.get(0), pair.get(1));
         }
         char[] values = s.toCharArray();
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder(values.length);
         for (int i = 0; i < values.length; i++) {
-            if (values[i] == '(') {
-                StringBuilder key = new StringBuilder();
-                while (values[++i] != ')') {
-                    key.append(values[i]);
-                }
-                result.append(map.getOrDefault(key.toString(), "?"));
+            char c = values[i];
+            if (c == '(') {
+                int start = i + 1;
+                while (values[++i] != ')') {}
+                result.append(map.getOrDefault(s.substring(start, i), "?"));
             } else {
                 result.append(values[i]);
             }
