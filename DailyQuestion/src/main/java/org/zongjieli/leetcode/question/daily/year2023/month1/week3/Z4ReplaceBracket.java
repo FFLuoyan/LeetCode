@@ -30,35 +30,22 @@ import java.util.*;
  */
 public class Z4ReplaceBracket {
 
-    class Value {
-        String value = "?";
-        Value[] next;
-    }
-
     public String evaluate(String s, List<List<String>> knowledge) {
-        Value value = new Value();
+        Map<String, String> map = new HashMap<>();
         for (List<String> pair : knowledge) {
-            Value current = value;
-            char[] keyChars = pair.get(0).toCharArray();
-            for (char keyChar : keyChars) {
-                int index = keyChar - 'a';
-                Value[] next = current.next == null ? (current.next = new Value[26]) : current.next;
-                current = next[index] == null ? next[index] = new Value() : next[index];
-            }
-            current.value = pair.get(1);
+            map.put(pair.get(0), pair.get(1));
         }
-        StringBuilder result = new StringBuilder(s.length());
-        Value current = value;
-        char[] chars = s.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == '(') {
-                while (chars[++i] != ')') {
-                    current = current != null && current.next != null ? current.next[chars[i] - 'a'] : null;
+        char[] values = s.toCharArray();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == '(') {
+                StringBuilder key = new StringBuilder();
+                while (values[++i] != ')') {
+                    key.append(values[i]);
                 }
-                result.append(current != null ? current.value : "?");
-                current = value;
+                result.append(map.getOrDefault(key.toString(), "?"));
             } else {
-                result.append(chars[i]);
+                result.append(values[i]);
             }
         }
         return result.toString();
