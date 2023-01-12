@@ -29,40 +29,36 @@ import java.util.List;
 public class Z5EmotionalWord {
 
     public int expressiveWords(String s, String[] words) {
-        List<Character> chars = new ArrayList<>();
-        List<Integer> count = new ArrayList<>();
-        int sl = s.length();
+        int sl = s.length(), vl = 0, result = 0;
+        char[] chars = new char[sl], scs = s.toCharArray();
+        int[] count = new int[sl];
         for (int i = 0 ; i < sl ;) {
-            char currentChar = s.charAt(i);
-            int currentCount = 1;
-            while (++i < s.length() && s.charAt(i) == currentChar) {
-                currentCount++;
+            char c = scs[i];
+            int cc = 1;
+            while (++i < sl && scs[i] == c) {
+                cc++;
             }
-            chars.add(currentChar);
-            count.add(currentCount);
+            chars[vl] = c;
+            count[vl++] = cc;
         }
-        int result = 0, cs = chars.size();
         a: for (String word : words) {
             int checkIndex = 0, currentIndex = 0, wl = word.length();
+            char[] wcs = word.toCharArray();
+            char currentChar;
             while (currentIndex < wl) {
-                if (checkIndex >= cs) {
+                if (checkIndex >= vl || (currentChar = wcs[currentIndex]) != chars[checkIndex]) {
                     continue a;
                 }
-                char currentChar = word.charAt(currentIndex);
-                char checkChar = chars.get(checkIndex);
-                if (checkChar != currentChar) {
-                    continue a;
-                }
-                int checkCount = count.get(checkIndex++);
                 int currentCount = 1;
-                while (++currentIndex < word.length() && word.charAt(currentIndex) == currentChar) {
+                while (++currentIndex < wl && wcs[currentIndex] == currentChar) {
                     currentCount++;
                 }
+                int checkCount = count[checkIndex++];
                 if (currentCount != checkCount && (checkCount < 3 || checkCount < currentCount)) {
                     continue a;
                 }
             }
-            if (checkIndex == chars.size()) {
+            if (checkIndex == vl) {
                 result++;
             }
         }
