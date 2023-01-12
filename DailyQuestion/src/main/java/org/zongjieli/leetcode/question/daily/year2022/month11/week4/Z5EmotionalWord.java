@@ -39,24 +39,26 @@ public class Z5EmotionalWord {
             count[vl++] = cc;
         }
         for (String word : words) {
-            int ci = 0, wi = 0, wl = word.length();
-            char[] wcs = word.toCharArray();
-            char wc;
-            while (wi < wl && ci < vl && (wc = wcs[wi]) == chars[ci]) {
-                int wn = 1;
-                while (++wi < wl && wcs[wi] == wc) {
-                    wn++;
-                }
-                int cn = count[ci];
-                if (wn == cn || (cn >= 3 && cn > wn)) {
-                    ci++;
-                }
-            }
-            if (ci == vl && wi == wl) {
+            if (canExpress(chars, count, vl, word.toCharArray())) {
                 result++;
             }
         }
         return result;
+    }
+
+    public boolean canExpress(char[] compare, int[] count, int vl, char[] word) {
+        int ci = 0, wi = 0, wl = word.length;
+        char wc;
+        while (wi < wl && ci < vl && (wc = word[wi]) == compare[ci]) {
+            int wn = 1, cn;
+            while (++wi < wl && word[wi] == wc) {
+                wn++;
+            }
+            if (wn != (cn = count[ci++]) && (cn < 3 || cn < wn)) {
+                return false;
+            }
+        }
+        return ci == vl && wi == wl;
     }
 
     public static void main(String[] args) {
