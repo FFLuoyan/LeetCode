@@ -48,11 +48,12 @@ public class Z5EmotionalWord {
 
     public boolean canExpress(char[] compare, int[] count, int vl, char[] word) {
         int ci = 0, wi = 0, wl = word.length;
-        char wc;
-        while (wi < wl && ci < vl && (wc = word[wi]) == compare[ci]) {
-            int wn = 1, cn;
-            while (++wi < wl && word[wi] == wc) {
+        while (wi < wl && ci < vl) {
+            int wn = 0, cn;
+            char wc = compare[ci];
+            while (wi < wl && word[wi] == wc) {
                 wn++;
+                wi++;
             }
             if (wn != (cn = count[ci++]) && (cn < 3 || cn < wn)) {
                 return false;
