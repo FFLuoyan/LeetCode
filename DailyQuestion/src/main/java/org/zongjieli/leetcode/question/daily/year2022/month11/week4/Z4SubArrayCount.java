@@ -18,24 +18,26 @@ package org.zongjieli.leetcode.question.daily.year2022.month11.week4;
 public class Z4SubArrayCount {
 
     public int numSubarrayBoundedMax(int[] nums, int left, int right) {
-        int result = 0, beforeCount = 0, afterCount = 0;
-        for (int num : nums) {
-            if (num > right) {
-                beforeCount = 0;
-                afterCount = 0;
-            } else if (num >= left) {
-                afterCount = 0;
-                result += ++beforeCount;
-            } else {
-                result += (beforeCount++ - afterCount++);
+        int result = 0, lastOver = -1, lastMatch = -1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > right) {
+                result += (i - lastMatch - 1) * (lastMatch - lastOver);
+                lastMatch = lastOver = i;
+            } else if (nums[i] >= left) {
+                result += (lastMatch - lastOver + 1) * (i - lastMatch);
+                lastMatch = i;
             }
         }
+        result += (nums.length - lastMatch - 1) * (lastMatch - lastOver);
         return result;
     }
 
     public static void main(String[] args) {
         Z4SubArrayCount test = new Z4SubArrayCount();
-        System.out.println(test.numSubarrayBoundedMax(new int[]{1, 2, 3, 3, 2, 1}, 2, 3));
+        // 25
+        System.out.println(test.numSubarrayBoundedMax(new int[]{1, 2, 1, 3, 3, 2, 1}, 2, 3));
+        // 4
+        System.out.println(test.numSubarrayBoundedMax(new int[]{2, 1, 4, 3}, 2, 3));
     }
 
 }
