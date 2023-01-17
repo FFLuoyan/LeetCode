@@ -23,23 +23,18 @@ public class Z2NicePair {
 
     public int countNicePairs(int[] nums) {
         Map<Integer, Integer> add = new HashMap<>();
-        for (int num : nums) {
-            add.merge(rev(num) - num, 1, Integer::sum);
-        }
         long result = 0;
-        for (int v : add.values()) {
-            result = result + (long) v * (v - 1) / 2;
+        for (int num : nums) {
+            int rev = 0, before = num;
+            while (num > 0) {
+                rev = 10 * rev + (num % 10);
+                num /= 10;
+            }
+            int old = add.getOrDefault(rev -= before, 0);
+            result += old;
+            add.put(rev, old + 1);
         }
         return (int) (result % 1000000007);
-    }
-
-    public int rev(int num) {
-        int rev = 0;
-        while (num > 0) {
-            rev = 10 * rev + (num % 10);
-            num /= 10;
-        }
-        return rev;
     }
 
     public static void main(String[] args) {
