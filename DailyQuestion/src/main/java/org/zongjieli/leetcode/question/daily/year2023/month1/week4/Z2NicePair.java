@@ -22,19 +22,19 @@ import java.util.Map;
 public class Z2NicePair {
 
     public int countNicePairs(int[] nums) {
-        Map<Long, Long> add = new HashMap<>();
+        Map<Integer, Integer> add = new HashMap<>();
         for (int num : nums) {
-            add.merge(rev(num) - num, 1L, Long::sum);
+            add.merge(rev(num) - num, 1, Integer::sum);
         }
         long result = 0;
-        for (Long v : add.values()) {
-            result = result + v * (v - 1) / 2;
+        for (int v : add.values()) {
+            result = result + (long) v * (v - 1) / 2;
         }
         return (int) (result % 1000000007);
     }
 
-    public long rev(long num) {
-        long rev = 0;
+    public int rev(int num) {
+        int rev = 0;
         while (num > 0) {
             rev = 10 * rev + (num % 10);
             num /= 10;
