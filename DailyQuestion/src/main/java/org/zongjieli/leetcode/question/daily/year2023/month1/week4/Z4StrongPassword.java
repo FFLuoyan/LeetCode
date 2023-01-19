@@ -20,30 +20,28 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week4;
 public class Z4StrongPassword {
 
     public boolean strongPasswordCheckerII(String password) {
-        int length = password.length();
-        if (length < 8) {
+        if (password.length() < 8) {
             return false;
         }
+        byte lc = '"';
         byte[] values = password.getBytes();
-        for (int i = 1; i < values.length; i++) {
-            if (values[i] == values[i - 1]) {
+        boolean isLower = false, isUpper = false, isNumber = false, isSpecial = false;
+        for (byte value : values) {
+            if (value == lc) {
                 return false;
             }
+            lc = value;
+            if (value <= 'z' && value >= 'a') {
+                isLower = true;
+            } else if (value <= 'Z' && value >= 'A') {
+                isUpper = true;
+            } else if (value >= '0' && value <= '9') {
+                isNumber = true;
+            } else if (isSpecial || value == '!' || value == '@' || value == '#' || value == '$' || value == '%' || value == '^' || value == '&' || value == '*' || value == '(' || value == ')' || value == '-' || value == '+') {
+                isSpecial = true;
+            }
         }
-        password = password.replaceAll("[a-z]","");
-        if (length == (length = password.length())) {
-            return false;
-        }
-        password = password.replaceAll("[A-Z]","");
-        if (length == (length = password.length())) {
-            return false;
-        }
-        password = password.replaceAll("[0-9]","");
-        if (length == (length = password.length())) {
-            return false;
-        }
-        password = password.replaceAll("[\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\-\\+]","");
-        return length != password.length();
+        return isLower && isUpper && isNumber && isSpecial;
     }
 
     public static void main(String[] args) {
