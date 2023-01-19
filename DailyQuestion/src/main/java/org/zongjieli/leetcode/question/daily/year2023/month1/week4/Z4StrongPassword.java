@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2023.month1.week4;
 
+import java.util.Arrays;
+
 /**
  * 如果一个密码满足以下所有条件,我们称它是一个强密码:
  *  它有至少 8 个字符
@@ -19,29 +21,23 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week4;
  */
 public class Z4StrongPassword {
 
+    private final int[] types = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 4, 4, 4, 4, 0, 4, 4, 4, 4, 0, 4, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 4, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0};
+
     public boolean strongPasswordCheckerII(String password) {
         if (password.length() < 8) {
             return false;
         }
         byte lc = '"';
         byte[] values = password.getBytes();
-        boolean isLower = false, isUpper = false, isNumber = false, isSpecial = false;
+        boolean[] typeExists = new boolean[]{false, false, false, false, false};
         for (byte value : values) {
             if (value == lc) {
                 return false;
             }
             lc = value;
-            if (value <= 'z' && value >= 'a') {
-                isLower = true;
-            } else if (value <= 'Z' && value >= 'A') {
-                isUpper = true;
-            } else if (value >= '0' && value <= '9') {
-                isNumber = true;
-            } else if (isSpecial || value == '!' || value == '@' || value == '#' || value == '$' || value == '%' || value == '^' || value == '&' || value == '*' || value == '(' || value == ')' || value == '-' || value == '+') {
-                isSpecial = true;
-            }
+            typeExists[types[value]] = true;
         }
-        return isLower && isUpper && isNumber && isSpecial;
+        return typeExists[1] && typeExists[2] && typeExists[3] && typeExists[4];
     }
 
     public static void main(String[] args) {
