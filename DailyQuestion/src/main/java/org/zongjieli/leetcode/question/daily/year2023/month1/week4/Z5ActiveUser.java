@@ -1,9 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month1.week4;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.Arrays;
 
 /**
  * 给定用户在 LeetCode 的操作日志,和一个整数 k
@@ -28,12 +25,21 @@ import java.util.Set;
 public class Z5ActiveUser {
 
     public int[] findingUsersActiveMinutes(int[][] logs, int k) {
-        Map<Integer, Set<Integer>> userTimes = new HashMap<>();
-        for (int[] log : logs) {
-            userTimes.computeIfAbsent(log[0], a -> new HashSet<>()).add(log[1]);
-        }
+        Arrays.sort(logs, (a, b) -> a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : Integer.compare(a[1], b[1]));
         int[] result = new int[k];
-        userTimes.forEach((key, v) -> result[v.size() - 1]++);
+        int id = logs[0][0], count = 1, before = logs[0][1];
+        for (int i = 1; i < logs.length; i++) {
+            if (logs[i][0] != id) {
+                result[count - 1]++;
+                id = logs[i][0];
+                before = logs[i][1];
+                count = 1;
+            } else if (logs[i][1] != before) {
+                count++;
+                before = logs[i][1];
+            }
+        }
+        result[count - 1]++;
         return result;
     }
 
