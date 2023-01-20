@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month1.week4;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 /**
  * 给定一个数组 nums,数组中只包含非负整数
@@ -22,17 +21,24 @@ import java.util.Map;
 public class Z2NicePair {
 
     public int countNicePairs(int[] nums) {
-        Map<Integer, Integer> add = new HashMap<>();
-        long result = 0;
-        for (int num : nums) {
-            int rev = 0, before = num;
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i], rev = 0;
             while (num > 0) {
                 rev = 10 * rev + (num % 10);
                 num /= 10;
             }
-            int old = add.getOrDefault(rev -= before, 0);
-            result += old;
-            add.put(rev, old + 1);
+            nums[i] -= rev;
+        }
+        Arrays.sort(nums);
+        long result = 0;
+        int start = 0;
+        while (start < nums.length) {
+            int before = nums[start], end = start + 1;
+            while (end < nums.length && nums[end] == before) {
+                end++;
+            }
+            result += (long) (end - start) * (end - start - 1) / 2;
+            start = end;
         }
         return (int) (result % 1000000007);
     }
