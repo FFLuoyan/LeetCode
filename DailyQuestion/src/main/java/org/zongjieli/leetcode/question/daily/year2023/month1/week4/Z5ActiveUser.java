@@ -26,18 +26,16 @@ public class Z5ActiveUser {
 
     public int[] findingUsersActiveMinutes(int[][] logs, int k) {
         Arrays.sort(logs, (a, b) -> a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : Integer.compare(a[1], b[1]));
-        int[] result = new int[k];
-        int id = logs[0][0], count = 1, before = logs[0][1];
-        for (int i = 1; i < logs.length; i++) {
-            if (logs[i][0] != id) {
+        int[] result = new int[k], bl = logs[0];
+        int count = 1;
+        for (int[] log : logs) {
+            if (log[0] != bl[0]) {
                 result[count - 1]++;
-                id = logs[i][0];
-                before = logs[i][1];
                 count = 1;
-            } else if (logs[i][1] != before) {
+            } else if (bl[1] != log[1]) {
                 count++;
-                before = logs[i][1];
             }
+            bl = log;
         }
         result[count - 1]++;
         return result;
