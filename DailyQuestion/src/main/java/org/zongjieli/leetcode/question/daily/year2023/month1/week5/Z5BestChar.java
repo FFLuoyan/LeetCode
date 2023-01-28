@@ -16,14 +16,9 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week5;
 public class Z5BestChar {
 
     public String greatestLetter(String s) {
-        boolean[] exist = new boolean[128];
-        byte[] values = s.getBytes();
-        for (byte b : values) {
-            exist[b] = true;
-        }
-        for (char i = 'Z' ; i >= 'A' ; i--) {
-            if (exist[i] && exist[i - 'A' + 'a']) {
-                return String.valueOf(i);
+        for(char c = 'Z'; c >= 'A'; c--){
+            if(s.indexOf(c) > -1 && s.indexOf(c + 32) > -1){
+                return String.valueOf(c);
             }
         }
         return "";
