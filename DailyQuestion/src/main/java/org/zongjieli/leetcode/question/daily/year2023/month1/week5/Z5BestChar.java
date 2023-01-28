@@ -16,18 +16,14 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week5;
 public class Z5BestChar {
 
     public String greatestLetter(String s) {
-        boolean[] upper = new boolean[26];
-        boolean[] lower = new boolean[26];
-        for (byte b : s.getBytes()) {
-            if (b >= 'a') {
-                upper[b - 'a'] = true;
-            } else {
-                lower[b - 'A'] = true;
-            }
+        boolean[] exist = new boolean[128];
+        byte[] values = s.getBytes();
+        for (byte b : values) {
+            exist[b] = true;
         }
-        for (int i = 25 ; i >= 0 ; i--) {
-            if (upper[i] && lower[i]) {
-                return String.valueOf((char) ('A' + i));
+        for (char i = 'Z' ; i >= 'A' ; i--) {
+            if (exist[i] && exist[i - 'A' + 'a']) {
+                return String.valueOf(i);
             }
         }
         return "";
