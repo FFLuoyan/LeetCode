@@ -26,37 +26,22 @@ public class Z6CountBalanceArray {
         if (nums.length == 2) {
             return 0;
         }
-        int[] sum = new int[nums.length];
-        sum[0] = nums[0];
-        sum[1] = nums[1];
-        for (int i = 2; i < sum.length; i++) {
-            sum[i] = sum[i - 2] + nums[i];
+        int result = 0, oddSum = 0, evenSum = 0, before = 0;
+        for (int i = 0; i < nums.length; i += 2) {
+            evenSum += nums[i];
         }
-        int result = 0;
-        int oddSum, evenSum;
-        if (sum.length % 2 == 0) {
-            // 偶数长度最后一个下标是基数
-            oddSum = sum[sum.length - 1];
-            evenSum = sum[sum.length - 2];
-        } else {
-            // 奇数长度最后一个下标是偶数
-            evenSum = sum[sum.length - 1];
-            oddSum = sum[sum.length - 2];
+        for (int i = 1; i < nums.length; i += 2) {
+            oddSum += nums[i];
+        }
+        for (int num : nums) {
+            if ((evenSum = evenSum + before - (before = num)) == oddSum) {
+                result++;
+            }
+            int temp = evenSum;
+            evenSum = oddSum;
+            oddSum = temp;
         }
 
-        if (evenSum - nums[0] == oddSum) {
-            result = 1;
-        }
-        for (int i = 2 ; i < sum.length ; i += 2) {
-            if (sum[i] - nums[i] + oddSum - sum[i - 1] == sum[i - 1] + evenSum - sum[i]) {
-                result++;
-            }
-        }
-        for (int i = 1 ; i < sum.length ; i += 2) {
-            if (sum[i - 1] + oddSum - sum[i] == sum[i] - nums[i] + evenSum - sum[i - 1]) {
-                result++;
-            }
-        }
         return result;
     }
 
