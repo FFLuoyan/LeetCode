@@ -21,16 +21,16 @@ public class Z4FirstString {
 
     public String getSmallestString(int n, int k) {
         char[] result = new char[n];
-        k -= n;
-        while (k >= 25) {
-            result[--n] = 'z';
-            k -= 25;
+        int zCount = (k - n) / 25;
+        int index = n - 1;
+        while (--zCount >= 0) {
+            result[index--] = 'z';
         }
-        if (--n >= 0) {
-            result[n] = (char) ('a' + k);
+        if (index >= 0) {
+            result[index--] = (char) ('a' + (k - n) % 25);
         }
-        while (--n >= 0) {
-            result[n] = 'a';
+        while (index >= 0) {
+            result[index--] = 'a';
         }
         return new String(result);
     }
