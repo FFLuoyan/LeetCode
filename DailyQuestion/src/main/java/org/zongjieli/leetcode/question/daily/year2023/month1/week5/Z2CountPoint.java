@@ -25,15 +25,12 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week5;
 public class Z2CountPoint {
 
     public int[] countPoints(int[][] points, int[][] queries) {
-        for (int[] query : queries) {
-            query[2] *= query[2];
-        }
         int[] answer = new int[queries.length];
-        for (int[] point : points) {
-            for (int i = 0; i < queries.length; i++) {
-                int xv = point[0] - queries[i][0];
-                int yv = point[1] - queries[i][1];
-                if (xv * xv + yv * yv <= queries[i][2]) {
+        for (int i = 0; i < queries.length; i++) {
+            int[] query = queries[i];
+            int cx = query[0], cy = query[1], r = query[2], r2 = r * r, xv, yv;
+            for (int[] point : points) {
+                if ((xv = point[0] - cx) * xv + (yv = point[1] - cy) * yv <= r2) {
                     answer[i]++;
                 }
             }
