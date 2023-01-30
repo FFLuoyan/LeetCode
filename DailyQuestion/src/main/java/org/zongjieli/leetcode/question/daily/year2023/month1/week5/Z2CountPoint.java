@@ -28,12 +28,13 @@ public class Z2CountPoint {
         int[] answer = new int[queries.length];
         for (int i = 0; i < queries.length; i++) {
             int[] query = queries[i];
-            int cx = query[0], cy = query[1], r = query[2], r2 = r * r, xv, yv;
+            int cx = query[0], cy = query[1], r = query[2], r2 = r * r, xv, yv, count = 0;
             for (int[] point : points) {
                 if ((xv = point[0] - cx) * xv + (yv = point[1] - cy) * yv <= r2) {
-                    answer[i]++;
+                    count++;
                 }
             }
+            answer[i] = count;
         }
         return answer;
     }
