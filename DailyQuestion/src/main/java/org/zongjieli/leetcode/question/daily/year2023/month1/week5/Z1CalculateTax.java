@@ -31,14 +31,12 @@ public class Z1CalculateTax {
         if (income <= brackets[0][0]) {
             return 0.01d * income * brackets[0][1];
         }
-        double tax = 0.01d * brackets[0][0] * brackets[0][1];
-        int i = 1;
-        while (i < brackets.length && brackets[i][0] < income) {
-            tax += (0.01 * (brackets[i][0] - brackets[i - 1][0]) * brackets[i][1]);
-            i++;
+        int tax = brackets[0][0] * brackets[0][1], i = 0;
+        while (++i < brackets.length && brackets[i][0] < income) {
+            tax += ((brackets[i][0] - brackets[i - 1][0]) * brackets[i][1]);
         }
-        tax += 0.01 * (income - brackets[i - 1][0]) * brackets[i][1];
-        return tax;
+        tax += (income - brackets[i - 1][0]) * brackets[i][1];
+        return 0.01d * tax;
     }
 
     public static void main(String[] args) {
