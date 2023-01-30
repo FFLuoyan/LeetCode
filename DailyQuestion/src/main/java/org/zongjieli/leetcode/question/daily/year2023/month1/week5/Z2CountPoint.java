@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2023.month1.week5;
 
+import java.util.Arrays;
+
 /**
  * 给定一个数组 points,其中 points[i] = [xi, yi]
  * 表示第 i 个点在二维平面上的坐标,多个点可能会有相同的坐标
@@ -28,15 +30,19 @@ public class Z2CountPoint {
         int[] answer = new int[queries.length];
         for (int i = 0; i < queries.length; i++) {
             int[] query = queries[i];
-            int cx = query[0], cy = query[1], r = query[2], r2 = r * r, xv, yv, count = 0;
+            int cx = query[0], cy = query[1], r2 = query[2] * query[2], xv, yv, count = points.length;
             for (int[] point : points) {
-                if ((xv = point[0] - cx) * xv + (yv = point[1] - cy) * yv <= r2) {
-                    count++;
-                }
+                count -= ((r2 - (xv = point[0] - cx) * xv - (yv = point[1] - cy) * yv) >>> 31);
             }
             answer[i] = count;
         }
         return answer;
+    }
+
+    public static void main(String[] args) {
+        Z2CountPoint test = new Z2CountPoint();
+        // 3, 2, 2
+        System.out.println(Arrays.toString(test.countPoints(new int[][]{{1, 3}, {3, 3}, {5, 3}, {2, 2}}, new int[][]{{2, 3, 1}, {4, 3, 1}, {1, 1, 2}})));
     }
 
 }
