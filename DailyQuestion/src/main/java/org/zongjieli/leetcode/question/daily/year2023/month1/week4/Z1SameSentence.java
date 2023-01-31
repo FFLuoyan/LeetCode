@@ -25,24 +25,26 @@ public class Z1SameSentence {
         if (sentence1.length() < sentence2.length()) {
             return areSentencesSimilar(sentence2, sentence1);
         }
-        String[] s1s = sentence1.split(" ");
-        String[] s2s = sentence2.split(" ");
-        if (s1s.length < s2s.length) {
-            return false;
-        }
-        int matchIndex = 0;
-        while (matchIndex < s2s.length && s1s[matchIndex].equals(s2s[matchIndex])) {
+        byte[] values1 = sentence1.getBytes();
+        byte[] values2 = sentence2.getBytes();
+        int matchIndex = 0, blankIndex = -1;
+
+        while (matchIndex < values2.length && values1[matchIndex] == values2[matchIndex]) {
+            if (values1[matchIndex] == ' ') {
+                blankIndex = matchIndex;
+            }
             matchIndex++;
         }
-        if (matchIndex == s2s.length) {
+        if (matchIndex == values2.length && (matchIndex == values1.length || values1[matchIndex] == ' ')) {
             return true;
         }
-        for (int i = s1s.length - 1, j = s2s.length - 1; j >= matchIndex; i--, j--) {
-            if (!s1s[i].equals(s2s[j])) {
+        int i = values1.length - 1, j = values2.length - 1;
+        while (j > blankIndex) {
+            if (values1[i--] != values2[j--]) {
                 return false;
             }
         }
-        return true;
+        return i == -1 || values1[i] == ' ';
     }
 
 }
