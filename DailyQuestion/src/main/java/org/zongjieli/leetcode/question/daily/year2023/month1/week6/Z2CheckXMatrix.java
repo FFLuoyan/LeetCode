@@ -18,9 +18,11 @@ package org.zongjieli.leetcode.question.daily.year2023.month1.week6;
 public class Z2CheckXMatrix {
 
     public boolean checkXMatrix(int[][] grid) {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if ((i == j || grid.length - 1 - j == i) ^ grid[i][j] != 0) {
+        int length = grid.length;
+        for (int i = 0; i < length; i++) {
+            int[] row = grid[i];
+            for (int j = 0; j < length; j++) {
+                if ((i == j || length - 1 - j == i) ^ row[j] != 0) {
                     return false;
                 }
             }
