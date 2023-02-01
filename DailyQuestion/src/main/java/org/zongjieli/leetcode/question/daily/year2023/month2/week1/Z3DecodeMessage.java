@@ -24,7 +24,7 @@ package org.zongjieli.leetcode.question.daily.year2023.month2.week1;
 public class Z3DecodeMessage {
 
     public String decodeMessage(String key, String message) {
-        byte[] table = new byte[128], kvs = key.getBytes();
+        byte[] table = new byte[128], kvs = key.getBytes(), result = message.getBytes();
         table[' '] = ' ';
         byte add = 'a';
         for (int i = 0; i < kvs.length && add <= 'z'; i++) {
@@ -32,7 +32,6 @@ public class Z3DecodeMessage {
                 table[kvs[i]] = add++;
             }
         }
-        byte[] result = message.getBytes();
         for (int i = 0; i < result.length; i++) {
             result[i] = table[result[i]];
         }
