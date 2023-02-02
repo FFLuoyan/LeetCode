@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month11.week4;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 有 A 和 B 两种类型的汤,一开始每种类型的汤有 n 毫升,有四种分配操作:
  *  提供 100ml 的汤 A 和 0ml 的汤 B
@@ -26,45 +23,44 @@ import java.util.Map;
 public class Z1ShareSoup {
 
     public double soupServings(int n) {
-        if (n >= 5000) {
+        n = (n + 24) / 25;
+        if (n >= 179) {
             return 1;
         }
-        Map<Integer, Map<Integer, Double>> save = new HashMap<>();
+        double[][] save = new double[n + 1][n + 1];
         return countResult(n, n, save);
     }
 
-    public double countResult(int a, int b, Map<Integer, Map<Integer, Double>> save) {
-        Map<Integer, Double> probabilities = save.computeIfAbsent(a, k -> new HashMap<>());
-        if (probabilities.containsKey(b)) {
-            return probabilities.get(b);
-        }
+    public double countResult(int a, int b, double[][] save) {
         if (a <= 0) {
             if (b > 0) {
-                probabilities.put(b, 1d);
                 return 1d;
             }
-            probabilities.put(b, 0.5);
             return 0.5;
         }
         if (b <= 0) {
-            probabilities.put(b, 0d);
             return 0;
         }
+        if (save[a][b] != 0) {
+            return save[a][b];
+        }
+
         double result = 0d;
-        result += 0.25 * countResult(a - 100, b, save);
-        result += 0.25 * countResult(a - 75, b - 25, save);
-        result += 0.25 * countResult(a - 50, b - 50, save);
-        result += 0.25 * countResult(a - 25, b - 75, save);
-        probabilities.put(b, result);
-        return result;
+        result += 0.25 * countResult(a - 4, b, save);
+        result += 0.25 * countResult(a - 3, b - 1, save);
+        result += 0.25 * countResult(a - 2, b - 2, save);
+        result += 0.25 * countResult(a - 1, b - 3, save);
+        return save[a][b] = result;
     }
 
     public static void main(String[] args) {
         Z1ShareSoup test = new Z1ShareSoup();
         // 0.625
         System.out.println(test.soupServings(50));
-
-        System.out.println(test.soupServings(5000));
+        // 0.5
+        System.out.println(test.soupServings(0));
+        // 0.625
+        System.out.println(test.soupServings(1));
     }
 
 }
