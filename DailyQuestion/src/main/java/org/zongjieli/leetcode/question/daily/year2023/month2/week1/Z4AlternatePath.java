@@ -24,13 +24,13 @@ import java.util.*;
 public class Z4AlternatePath {
 
     public int[] shortestAlternatingPaths(int n, int[][] redEdges, int[][] blueEdges) {
-        Map<Integer, List<Integer>> redPath = new HashMap<>();
+        int[][] redPath = new int[n][n];
         for (int[] redEdge : redEdges) {
-            redPath.computeIfAbsent(redEdge[0], k -> new LinkedList<>()).add(redEdge[1]);
+            redPath[redEdge[0]][++redPath[redEdge[0]][0]] = redEdge[1];
         }
-        Map<Integer, List<Integer>> bluePath = new HashMap<>();
+        int[][] bluePath = new int[n][n];
         for (int[] blueEdge : blueEdges) {
-            bluePath.computeIfAbsent(blueEdge[0], k -> new LinkedList<>()).add(blueEdge[1]);
+            bluePath[blueEdge[0]][++bluePath[blueEdge[0]][0]] = blueEdge[1];
         }
         int[] resultRed = alternatePath(n, redPath, bluePath);
         int[] resultBlue = alternatePath(n, bluePath, redPath);
@@ -44,13 +44,16 @@ public class Z4AlternatePath {
         return resultRed;
     }
 
-    public int[] alternatePath(int n, Map<Integer, List<Integer>> current, Map<Integer, List<Integer>> next) {
+    public int[] alternatePath(int n, int[][] current, int[][] next) {
         int[] result = new int[n], type = new int[n];
         Arrays.fill(result, Integer.MAX_VALUE);
-        if (!current.containsKey(0)) {
+        if (current[0][0] == 0) {
             return result;
         }
-        LinkedList<Integer> nextKey = new LinkedList<>(current.get(0));
+        LinkedList<Integer> nextKey = new LinkedList<>();
+        for (int i = 1; i <= current[0][0]; i++) {
+            nextKey.add(current[0][i]);
+        }
         int currentCount = 1, currentType = 1;
         while (!nextKey.isEmpty()) {
             int size = nextKey.size();
@@ -65,13 +68,15 @@ public class Z4AlternatePath {
                     type[key] |= currentType;
                     isAdd = true;
                 }
-                if (isAdd && next.containsKey(key)) {
-                    nextKey.addAll(next.get(key));
+                if (isAdd && next[key][0] != 0) {
+                    for (int i = 1; i <= next[key][0]; i++) {
+                        nextKey.add(next[key][i]);
+                    }
                 }
             }
             currentCount++;
             currentType ^= 3;
-            Map<Integer, List<Integer>> temp = current;
+            int[][] temp = current;
             current = next;
             next = temp;
         }
@@ -81,7 +86,7 @@ public class Z4AlternatePath {
     public static void main(String[] args) {
         Z4AlternatePath test = new Z4AlternatePath();
         // 0, -1, -1
-//        System.out.println(Arrays.toString(test.shortestAlternatingPaths(3, new int[][]{{1, 2}}, new int[][]{{2, 1}})));
+        System.out.println(Arrays.toString(test.shortestAlternatingPaths(3, new int[][]{{1, 2}}, new int[][]{{2, 1}})));
         // 0, 1, 2, 3, 7
         System.out.println(Arrays.toString(test.shortestAlternatingPaths(5, new int[][]{{0, 1}, {1, 2}, {2, 3}, {3, 4}}, new int[][]{{1, 2}, {2, 3}, {3, 1}})));
     }
