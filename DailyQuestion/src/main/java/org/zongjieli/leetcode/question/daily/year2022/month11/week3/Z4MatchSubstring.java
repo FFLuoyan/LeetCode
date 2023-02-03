@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2022.month11.week3;
 
-import java.util.LinkedList;
-
 /**
  * 给定字符串 s 和字符串数组 words,返回 words[i] 中是 s 的子序列的单词个数
  * 字符串的子序列是从原始字符串中生成的新字符串
@@ -20,27 +18,27 @@ import java.util.LinkedList;
 public class Z4MatchSubstring {
 
     public int numMatchingSubseq(String s, String[] words) {
-        LinkedList<int[]>[] need = new LinkedList[26];
-        for (int i = 0; i < 26 ; i++) {
-            need[i] = new LinkedList<>();
-        }
+        int wl = words.length;
+        int[][] need = new int[26][wl + 1];
         for (int i = 0; i < words.length; i++) {
-            String word = words[i];
-            int index = word.charAt(0) - 'a';
-            need[index].add(new int[]{i, 0});
+            int[] charWords = need[words[i].charAt(0) - 'a'];
+            charWords[charWords[wl]] = i << 6;
+            charWords[wl]++;
         }
         int result = 0;
         for (byte b : s.getBytes()) {
             int index = b - 'a';
-            LinkedList<int[]> currentNeed = need[index];
-            int size = currentNeed.size();
-            while (--size >= 0) {
-                int[] wordIndex = currentNeed.pollFirst();
-                String currentWord = words[wordIndex[0]];
-                if (++wordIndex[1] == currentWord.length()) {
+            int[] currentNeed = need[index];
+            int size = currentNeed[wl];
+            currentNeed[wl] = 0;
+            for (int i = 0 ; i < size ; i++) {
+                int nextWordState = currentNeed[i] + 1, wordIndex = nextWordState >> 6, nextCharIndex = nextWordState & 63;
+                String word = words[wordIndex];
+                if (word.length() == nextCharIndex) {
                     result++;
                 } else {
-                    need[currentWord.charAt(wordIndex[1]) - 'a'].addLast(wordIndex);
+                    int[] nextNeed = need[word.charAt(nextCharIndex) - 'a'];
+                    nextNeed[nextNeed[wl]++] = nextWordState;
                 }
             }
         }
