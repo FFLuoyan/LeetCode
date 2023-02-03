@@ -24,19 +24,14 @@ package org.zongjieli.leetcode.question.daily.year2022.month11.week3;
 public class Z7ChampagneTower {
 
     public double champagneTower(int poured, int query_row, int query_glass) {
-        double[] lastRow = new double[]{poured};
-        for (int row = 1 ; row <= query_row ; row++) {
-            double[] currentRow = new double[lastRow.length + 1];
-            for (int i = 0; i < lastRow.length; i++) {
-                double lastRemain = (lastRow[i] - 1) * 0.5;
-                if (lastRemain > 0) {
-                    currentRow[i] += lastRemain;
-                    currentRow[i + 1] += lastRemain;
-                }
+        double[] row = new double[query_row + 2];
+        row[1] = poured;
+        for (int cr = 1 ; cr <= query_row ; cr++) {
+            for (int cc = cr + 1; cc >= 1 ; cc--) {
+                row[cc] = row[cc] + (row[cc - 1] = (Math.max(0, row[cc - 1] - 1) * 0.5));
             }
-            lastRow = currentRow;
         }
-        return Math.min(lastRow[query_glass], 1);
+        return Math.min(row[query_glass + 1], 1);
     }
 
     public static void main(String[] args) {
