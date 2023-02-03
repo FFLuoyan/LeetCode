@@ -24,22 +24,25 @@ package org.zongjieli.leetcode.question.daily.year2022.month11.week3;
 public class Z7ChampagneTower {
 
     public double champagneTower(int poured, int query_row, int query_glass) {
-        double[][] values = new double[query_row + 1][query_row + 1];
-        values[0][0] = poured;
-        for (int row = 1 ; row < values.length ; row++) {
-            if (values[row - 1][0] > 1) {
-                values[row][row] = values[row][0] = (values[row - 1][0] - 1) * 0.5;
-            }
-            for (int column = 1 ; column < row ; column++) {
-                if (values[row - 1][column - 1] > 1) {
-                    values[row][column] += (values[row - 1][column - 1] - 1) * 0.5;
-                }
-                if (values[row - 1][column] > 1) {
-                    values[row][column] += (values[row - 1][column] - 1) * 0.5;
+        double[] lastRow = new double[]{poured};
+        for (int row = 1 ; row <= query_row ; row++) {
+            double[] currentRow = new double[lastRow.length + 1];
+            for (int i = 0; i < lastRow.length; i++) {
+                double lastRemain = (lastRow[i] - 1) * 0.5;
+                if (lastRemain > 0) {
+                    currentRow[i] += lastRemain;
+                    currentRow[i + 1] += lastRemain;
                 }
             }
+            lastRow = currentRow;
         }
-        return Math.min(values[query_row][query_glass], 1);
+        return Math.min(lastRow[query_glass], 1);
+    }
+
+    public static void main(String[] args) {
+        Z7ChampagneTower test = new Z7ChampagneTower();
+        // 0.5
+        System.out.println(test.champagneTower(2, 1, 1));
     }
 
 }
