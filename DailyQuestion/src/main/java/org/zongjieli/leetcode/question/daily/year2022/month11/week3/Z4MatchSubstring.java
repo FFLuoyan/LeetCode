@@ -18,16 +18,26 @@ package org.zongjieli.leetcode.question.daily.year2022.month11.week3;
 public class Z4MatchSubstring {
 
     public int numMatchingSubseq(String s, String[] words) {
+        byte[] values = (" " + s).getBytes();
+        int[] lastValue = new int[26];
+        int[][] findNext = new int[values.length][26];
+        for (int i = 1; i < values.length; i++) {
+            int valueIndex = values[i] - 'a';
+            for (int j = lastValue[valueIndex] ; j < i ; j++) {
+                findNext[j][valueIndex] = i;
+            }
+            lastValue[valueIndex] = i;
+        }
+
         int result = 0;
         for (String word : words) {
             int findIndex = 0;
-            for (char c : word.toCharArray()) {
-                if ((findIndex = s.indexOf(c, findIndex)) == -1) {
+            for (byte c : word.getBytes()) {
+                if ((findIndex = findNext[findIndex][c - 'a']) == 0) {
                     break;
                 }
-                findIndex++;
             }
-            if (findIndex != -1) {
+            if (findIndex != 0) {
                 result++;
             }
         }
