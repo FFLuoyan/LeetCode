@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2022.month11.week3;
 
+import java.util.LinkedList;
+
 /**
  * 给定字符串 s 和字符串数组 words,返回 words[i] 中是 s 的子序列的单词个数
  * 字符串的子序列是从原始字符串中生成的新字符串
@@ -18,27 +20,28 @@ package org.zongjieli.leetcode.question.daily.year2022.month11.week3;
 public class Z4MatchSubstring {
 
     public int numMatchingSubseq(String s, String[] words) {
-        byte[] values = (" " + s).getBytes();
-        int[] lastValue = new int[26];
-        int[][] findNext = new int[values.length][26];
-        for (int i = 1; i < values.length; i++) {
-            int valueIndex = values[i] - 'a';
-            for (int j = lastValue[valueIndex] ; j < i ; j++) {
-                findNext[j][valueIndex] = i;
-            }
-            lastValue[valueIndex] = i;
+        LinkedList<int[]>[] need = new LinkedList[26];
+        for (int i = 0; i < 26 ; i++) {
+            need[i] = new LinkedList<>();
         }
-
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            int index = word.charAt(0) - 'a';
+            need[index].add(new int[]{i, 0});
+        }
         int result = 0;
-        for (String word : words) {
-            int findIndex = 0;
-            for (byte c : word.getBytes()) {
-                if ((findIndex = findNext[findIndex][c - 'a']) == 0) {
-                    break;
+        for (byte b : s.getBytes()) {
+            int index = b - 'a';
+            LinkedList<int[]> currentNeed = need[index];
+            int size = currentNeed.size();
+            while (--size >= 0) {
+                int[] wordIndex = currentNeed.pollFirst();
+                String currentWord = words[wordIndex[0]];
+                if (++wordIndex[1] == currentWord.length()) {
+                    result++;
+                } else {
+                    need[currentWord.charAt(wordIndex[1]) - 'a'].addLast(wordIndex);
                 }
-            }
-            if (findIndex != 0) {
-                result++;
             }
         }
         return result;
