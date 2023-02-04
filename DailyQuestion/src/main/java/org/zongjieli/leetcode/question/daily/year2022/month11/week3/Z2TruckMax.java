@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2022.month11.week3;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * 请将一些箱子装在一辆卡车上
@@ -25,16 +24,19 @@ import java.util.Comparator;
 public class Z2TruckMax {
 
     public int maximumUnits(int[][] boxTypes, int truckSize) {
-        Arrays.sort(boxTypes, Comparator.comparingInt(a -> a[1]));
+        int[] save = new int[boxTypes.length];
+        for (int i = 0; i < boxTypes.length; i++) {
+            save[i] = (boxTypes[i][1] << 10) + boxTypes[i][0];
+        }
+        Arrays.sort(save);
         int result = 0;
-        for (int i = boxTypes.length - 1; i >= 0; i--) {
-            if (truckSize > boxTypes[i][0]) {
-                truckSize -= boxTypes[i][0];
-                result += boxTypes[i][1] * boxTypes[i][0];
-            } else {
-                result += boxTypes[i][1] * truckSize;
-                return result;
+        for (int i = save.length - 1; i >= 0; i--) {
+            int count = save[i] & 1023, number = save[i] >> 10;
+            if (truckSize <= count) {
+                return truckSize * number + result;
             }
+            truckSize -= count;
+            result += number * count;
         }
         return result;
     }
