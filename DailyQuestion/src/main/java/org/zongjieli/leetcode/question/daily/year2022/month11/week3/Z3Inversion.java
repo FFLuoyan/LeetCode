@@ -23,14 +23,11 @@ package org.zongjieli.leetcode.question.daily.year2022.month11.week3;
 public class Z3Inversion {
 
     public boolean isIdealPermutation(int[] nums) {
-        int max = nums[0];
-        for (int i = 2 ; i < nums.length ; i++) {
-            if (nums[i] < max) {
-                return false;
-            }
-            max = Math.max(max, nums[i - 1]);
+        int i = 0, v, l = nums.length;
+        while (i < l && (v = (nums[i] - i)) <= 1 && v >= -1) {
+            i++;
         }
-        return true;
+        return i == l;
     }
 
 }
