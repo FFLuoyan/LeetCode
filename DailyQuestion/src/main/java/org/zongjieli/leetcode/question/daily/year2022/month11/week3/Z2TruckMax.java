@@ -24,19 +24,17 @@ import java.util.Arrays;
 public class Z2TruckMax {
 
     public int maximumUnits(int[][] boxTypes, int truckSize) {
-        int[] save = new int[boxTypes.length];
-        for (int i = 0; i < boxTypes.length; i++) {
-            save[i] = (boxTypes[i][1] << 10) + boxTypes[i][0];
+        int[] count = new int[1001];
+        for (int[] boxType : boxTypes) {
+            count[boxType[1]] += boxType[0];
         }
-        Arrays.sort(save);
         int result = 0;
-        for (int i = save.length - 1; i >= 0; i--) {
-            int count = save[i] & 1023, number = save[i] >> 10;
-            if (truckSize <= count) {
-                return truckSize * number + result;
+        for (int i = 1000 ; i > 0 ; i--) {
+            if (truckSize <= count[i]) {
+                return result + truckSize * i;
             }
-            truckSize -= count;
-            result += number * count;
+            truckSize -= count[i];
+            result += count[i] * i;
         }
         return result;
     }
