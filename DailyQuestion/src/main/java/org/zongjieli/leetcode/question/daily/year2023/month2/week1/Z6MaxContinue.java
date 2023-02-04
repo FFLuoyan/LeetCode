@@ -23,14 +23,14 @@ public class Z6MaxContinue {
 
     public int getMaximumConsecutive(int[] coins) {
         Arrays.sort(coins);
-        int max = 0;
+        int max = 1;
         for (int coin : coins) {
-            if (coin > max + 1) {
-                return max + 1;
+            if (coin > max) {
+                return max;
             }
             max += coin;
         }
-        return max + 1;
+        return max;
     }
 
 }
