@@ -18,10 +18,11 @@ public class Z5SimilarString {
 
     public boolean halvesAreAlike(String s) {
         int[] ls = new int[128], rs = new int[128];
+        byte[] values = s.getBytes();
         int lc = 0, rc = s.length() - 1;
         while (lc < rc) {
-            ls[s.charAt(lc++)]++;
-            rs[s.charAt(rc--)]++;
+            ls[values[lc++]]++;
+            rs[values[rc--]]++;
         }
         return ls['a'] + ls['A'] + ls['e']+ ls['E'] + ls['i'] + ls['I'] + ls['o'] + ls['O'] + ls['u'] + ls['U']
                 == rs['a'] + rs['A'] + rs['e'] + rs['E'] + rs['i'] + rs['I'] + rs['o'] + rs['O'] + rs['u'] + rs['U'];
