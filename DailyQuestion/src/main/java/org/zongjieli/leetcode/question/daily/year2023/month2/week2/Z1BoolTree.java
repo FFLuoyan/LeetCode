@@ -26,7 +26,7 @@ import org.zongjieli.leetcode.base.TreeNode;
 public class Z1BoolTree {
 
     public boolean evaluateTree(TreeNode root) {
-        if (root.left == null && root.right == null) {
+        if (root.left == null || root.right == null) {
             return root.val > 0;
         }
         boolean left = evaluateTree(root.left);
