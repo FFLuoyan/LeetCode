@@ -14,24 +14,18 @@ package org.zongjieli.leetcode.question.daily.year2022.month11.week2;
  */
 public class Z6DominoCount {
 
-    int[] result = new int[1001];
     int base = 1000000007;
 
     public int numTilings(int n) {
-        if (n < 0) {
-            return 0;
+        // Sn = 2 * S(n - 1) + S(n - 3)
+        int a = 0, b = 1, c = 1;
+        while (--n > 0) {
+            int temp = c;
+            c = ((2 * c) % base + a) % base;
+            a = b;
+            b = temp;
         }
-        if (n <= 1) {
-            return 1;
-        }
-        if (result[n] != 0) {
-            return result[n];
-        }
-        long cr = numTilings(n - 1) + numTilings(n - 2);
-        for (int i = 3 ; i <= n ; i++) {
-            cr += 2L * numTilings(n - i);
-        }
-        return result[n] = (int) (cr % base);
+        return c;
     }
 
     public static void main(String[] args) {
@@ -40,6 +34,8 @@ public class Z6DominoCount {
         System.out.println(test.numTilings(3));
         // 2
         System.out.println(test.numTilings(2));
+        // 11
+        System.out.println(test.numTilings(4));
     }
 
 }
