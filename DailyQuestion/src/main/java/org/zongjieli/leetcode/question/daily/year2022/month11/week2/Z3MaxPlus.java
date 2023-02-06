@@ -28,9 +28,8 @@ public class Z3MaxPlus {
             grid[mine[0]][mine[1]] = -1;
         }
         int[] rowCount = new int[n];
-        for (int i = 0; i < grid.length; i++) {
+        for (int[] row : grid) {
             int columnCount = 0;
-            int[] row = grid[i];
             for (int j = 0; j < row.length; j++) {
                 if (row[j] == -1) {
                     rowCount[j] = columnCount = 0;
