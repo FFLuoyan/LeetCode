@@ -22,14 +22,14 @@ public class Z2CountSameString {
         for (byte b : allowed.getBytes()) {
             exists[b] = true;
         }
-        int result = 0;
-        a: for (String word : words) {
-            for (byte b : word.getBytes()) {
-                if (!exists[b]) {
-                    continue a;
-                }
+        int result = 0, index, length;
+        for (String word : words) {
+            index = -1;
+            length = word.length();
+            while (++index < length && exists[word.charAt(index)]) {}
+            if (index == length) {
+                result++;
             }
-            result++;
         }
         return result;
     }
