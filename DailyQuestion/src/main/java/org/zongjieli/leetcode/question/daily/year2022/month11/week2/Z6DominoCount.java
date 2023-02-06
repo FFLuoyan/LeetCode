@@ -27,12 +27,11 @@ public class Z6DominoCount {
         if (result[n] != 0) {
             return result[n];
         }
-        int cr = numTilings(n - 1) % base;
-        cr = (cr + numTilings(n - 2)) % base;
+        long cr = numTilings(n - 1) + numTilings(n - 2);
         for (int i = 3 ; i <= n ; i++) {
-            cr = ((2 * numTilings(n - i)) % base + cr) % base;
+            cr += 2L * numTilings(n - i);
         }
-        return result[n] = cr;
+        return result[n] = (int) (cr % base);
     }
 
     public static void main(String[] args) {
