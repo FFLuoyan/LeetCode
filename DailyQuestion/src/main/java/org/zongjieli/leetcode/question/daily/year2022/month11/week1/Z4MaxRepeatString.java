@@ -19,10 +19,10 @@ public class Z4MaxRepeatString {
 
     public int maxRepeating(String sequence, String word) {
         int result = 0;
-        String search = word;
+        StringBuilder search = new StringBuilder(word);
         while (sequence.contains(search)) {
             result++;
-            search = search + word;
+            search.append(word);
         }
         return result;
     }
