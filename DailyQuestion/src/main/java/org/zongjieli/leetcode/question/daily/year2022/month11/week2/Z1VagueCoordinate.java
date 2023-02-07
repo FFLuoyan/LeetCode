@@ -25,44 +25,62 @@ public class Z1VagueCoordinate {
 
     public List<String> ambiguousCoordinates(String s) {
         List<String> result = new ArrayList<>();
-        for (int i = 2 ; i < s.length() - 1 ; i++) {
-            addResult(s.substring(1, i), s.substring(i, s.length() - 1), result);
+        char[] values = s.toCharArray();
+        char[] coordinates = new char[values.length + 4];
+        coordinates[0] = '(';
+        for (int i = 1 ; i < values.length - 2 ; i++) {
+            possibleNumber(values, i, coordinates, 1, result);
         }
         return result;
     }
 
-    public void addResult(String a, String b, List<String> result) {
-        for (String ap : possibleNumber(a)) {
-            for (String bp : possibleNumber(b)) {
-                result.add("(" + ap + ", " + bp + ")");
+    public void possibleNumber(char[] values, int vi, char[] coordinates, int ci, List<String> result) {
+        // ci 为 1 时表示为前半部分
+        boolean isFirst = ci == 1;
+        int startIndex = isFirst ? 1 : vi, endIndex = isFirst ? vi : values.length - 2;
+        if (startIndex == endIndex) {
+            coordinates[ci++] = values[endIndex++];
+            checkAndAdd(values, endIndex, coordinates, ci, result);
+        } else if (values[startIndex] == '0') {
+            // 首位为 0,则必须为 0.XXX 形式
+            if (values[endIndex] == '0') {
+                // 最后一个字符为 0,则不可能存在小数点,矛盾
+                return;
+            }
+            coordinates[ci++] = '0';
+            coordinates[ci++] = '.';
+            while (++startIndex <= endIndex) {
+                coordinates[ci++] = values[startIndex];
+            }
+            checkAndAdd(values, startIndex, coordinates, ci, result);
+        } else {
+            // 先放整数,再塞入小数点
+            int startCi = ci;
+            while (startIndex <= endIndex) {
+                coordinates[ci++] = values[startIndex++];
+            }
+            checkAndAdd(values, startIndex, coordinates, ci, result);
+            if (values[endIndex] != '0') {
+                // 最后一个字符不为 0,每个位置插入小数点
+                int nextCi = ci-- + 1;
+                while (ci > startCi) {
+                    coordinates[ci + 1] = coordinates[ci];
+                    coordinates[ci--] = '.';
+                    checkAndAdd(values, startIndex, coordinates, nextCi, result);
+                }
             }
         }
     }
 
-    public List<String> possibleNumber(String a) {
-        List<String> list = new ArrayList<>();
-        if (a.length() == 1) {
-            list.add(a);
-            return list;
+    public void checkAndAdd(char[] values, int vi, char[] coordinates, int ci, List<String> result) {
+        if (vi == values.length - 1) {
+            coordinates[ci++] = ')';
+            result.add(new String(coordinates, 0, ci));
+        } else {
+            coordinates[ci++] = ',';
+            coordinates[ci++] = ' ';
+            possibleNumber(values, vi, coordinates, ci, result);
         }
-        if (a.charAt(0) == '0') {
-            // 首位为 0,则必须为 0.XXX 形式
-            if (a.charAt(a.length() - 1) == '0') {
-                // 最后一个字符为 0,则不可能存在小数点
-                return list;
-            }
-            list.add("0." + a.substring(1));
-            return list;
-        }
-        list.add(a);
-        if (a.charAt(a.length() - 1) == '0') {
-            // 最后一个字符为 0,则不可能存在小数点
-            return list;
-        }
-        for (int i = 1 ; i < a.length() ; i++) {
-            list.add(a.substring(0, i) + "." + a.substring(i));
-        }
-        return list;
     }
 
     public static void main(String[] args) {
