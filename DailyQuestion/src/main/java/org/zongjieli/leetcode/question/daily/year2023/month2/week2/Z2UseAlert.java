@@ -1,9 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month2.week2;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 力扣公司的员工都使用员工卡来开办公室的门
@@ -33,19 +30,20 @@ public class Z2UseAlert {
         Map<String, List<Integer>> personTime = new HashMap<>();
         for (int i = 0; i < keyTime.length; i++) {
             String time = keyTime[i];
-            int timeInt = (time.charAt(0) - '0') * 1000 + (time.charAt(1) - '0') * 100 + (time.charAt(3) - '0') * 10 + time.charAt(4) - '0';
+            int timeInt = 1000 * time.charAt(0) + 100 * time.charAt(1) + 10 * time.charAt(3) + time.charAt(4) - 1111 * '0';
             personTime.computeIfAbsent(keyName[i], k -> new ArrayList<>()).add(timeInt);
         }
         List<String> result = new ArrayList<>();
-        personTime.forEach((k, v) -> {
-            v.sort(Integer::compareTo);
-            for (int i = 2 ; i < v.size() ; i++) {
-                if (v.get(i) - v.get(i - 2) <= 100) {
-                    result.add(k);
+        for (Map.Entry<String, List<Integer>> entry : personTime.entrySet()) {
+            List<Integer> times = entry.getValue();
+            times.sort(Integer::compareTo);
+            for (int i = 2 ; i < times.size() ; i++) {
+                if (times.get(i) - times.get(i - 2) <= 100) {
+                    result.add(entry.getKey());
                     break;
                 }
             }
-        });
+        }
         result.sort(String::compareTo);
         return result;
     }
