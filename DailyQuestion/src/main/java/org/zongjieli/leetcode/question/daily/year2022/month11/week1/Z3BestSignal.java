@@ -32,37 +32,39 @@ import java.util.Arrays;
 public class Z3BestSignal {
 
     public int[] bestCoordinate(int[][] towers, int radius) {
-        int[] result = new int[]{50, 50, -1};
-        int[][] grid = new int[150][150];
+        int rp = radius * radius, a = 0, b = 0, c = -1;
+        int[][] grid = new int[51][51];
         for (int[] tower : towers) {
-            int x = tower[0] + 50, y = tower[1] + 50;
+            int x = tower[0], y = tower[1];
             int maxD = Math.min(tower[2] - 1, radius);
-            int minX = x - maxD;
-            int maxX = x + maxD;
-            int minY = y - maxD;
-            int maxY = y + maxD;
+            int minX = Math.max(0, x - maxD);
+            int maxX = Math.min(50, x + maxD);
+            int minY = Math.max(0, y - maxD);
+            int maxY = Math.min(50, y + maxD);
             for (int i = minX ; i <= maxX ; i++) {
                 for (int j = minY ; j <= maxY ; j++) {
-                    double distance = Math.sqrt((i - x) * (i - x) + (j - y) * (j - y));
-                    if (distance <= radius) {
-                        int v = grid[i][j] += Math.floor(tower[2] / (1 + distance));
-                        if (v > result[2]) {
-                            result[0] = i;
-                            result[1] = j;
-                            result[2] = v;
-                        } else if (v == result[2]) {
-                            if (i < result[0]) {
-                                result[0] = i;
-                                result[1] = j;
-                            } else if (i == result[0] && j < result[1]) {
-                                result[1] = j;
-                            }
+                    double distance = (i - x) * (i - x) + (j - y) * (j - y);
+                    if (distance > rp) {
+                        continue;
+                    }
+                    distance = Math.sqrt(distance);
+                    int v = grid[i][j] += Math.floor(tower[2] / (1 + distance));
+                    if (v > c) {
+                        a = i;
+                        b = j;
+                        c = v;
+                    } else if (v == c) {
+                        if (i < a) {
+                            a = i;
+                            b = j;
+                        } else if (i == a && j < b) {
+                            b = j;
                         }
                     }
                 }
             }
         }
-        return new int[]{result[0] - 50, result[1] - 50};
+        return new int[]{a, b};
     }
 
     public static void main(String[] args) {
