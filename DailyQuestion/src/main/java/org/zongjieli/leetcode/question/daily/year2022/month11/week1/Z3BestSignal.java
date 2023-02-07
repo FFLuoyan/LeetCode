@@ -32,34 +32,46 @@ import java.util.Arrays;
 public class Z3BestSignal {
 
     public int[] bestCoordinate(int[][] towers, int radius) {
-        int rp = radius * radius, a = 0, b = 0, c = -1;
-        int[][] grid = new int[51][51];
+        int rp = radius * radius, minX = 50, maxX = 0, minY = 50, maxY = 0;
         for (int[] tower : towers) {
             int x = tower[0], y = tower[1];
-            int maxD = Math.min(tower[2] - 1, radius);
-            int minX = Math.max(0, x - maxD);
-            int maxX = Math.min(50, x + maxD);
-            int minY = Math.max(0, y - maxD);
-            int maxY = Math.min(50, y + maxD);
-            for (int i = minX ; i <= maxX ; i++) {
-                for (int j = minY ; j <= maxY ; j++) {
-                    double distance = (i - x) * (i - x) + (j - y) * (j - y);
-                    if (distance > rp) {
-                        continue;
+            minX = Math.min(x, minX);
+            maxX = Math.max(x, maxX);
+            minY = Math.min(y, minY);
+            maxY = Math.max(y, maxY);
+        }
+        int[][] grid = new int[51][51];
+        for (int[] tower : towers) {
+            int tx = tower[0], ty = tower[1];
+            int md = Math.min(tower[2] - 1, radius);
+            int tMinX = Math.max(minX, tx - md);
+            int tMaxX = Math.min(maxX, tx + md);
+            int tMinY = Math.max(minY, ty - md);
+            int tMaxY = Math.min(maxY, ty + md);
+            for (int x = tMinX ; x <= tMaxX ; x++) {
+                for (int y = tMinY ; y <= tMaxY ; y++) {
+                    int dx = tx - x, dy = ty - y;
+                    double distance = dx * dx + dy * dy;
+                    if (distance <= rp) {
+                        grid[x][y] += Math.floor(tower[2] / (1 + Math.sqrt(distance)));
                     }
-                    distance = Math.sqrt(distance);
-                    int v = grid[i][j] += Math.floor(tower[2] / (1 + distance));
-                    if (v > c) {
-                        a = i;
-                        b = j;
-                        c = v;
-                    } else if (v == c) {
-                        if (i < a) {
-                            a = i;
-                            b = j;
-                        } else if (i == a && j < b) {
-                            b = j;
-                        }
+
+                }
+            }
+        }
+        int a = 0, b = 0, c = 0;
+        for (int x = minX ; x <= maxX; x++) {
+            for (int y = minY ; y <= maxY ; y++) {
+                if (grid[x][y] > c) {
+                    a = x;
+                    b = y;
+                    c = grid[x][y];
+                } else if (grid[x][y] == c) {
+                    if (x < a) {
+                        a = x;
+                        b = y;
+                    } else if (x == a && y < b) {
+                        b = y;
                     }
                 }
             }
@@ -69,7 +81,11 @@ public class Z3BestSignal {
 
     public static void main(String[] args) {
         Z3BestSignal test = new Z3BestSignal();
-        // [0, 0]
+        // 23, 11
+        System.out.println(Arrays.toString(test.bestCoordinate(new int[][]{{23, 11, 21}}, 9)));
+        // 0, 0
         System.out.println(Arrays.toString(test.bestCoordinate(new int[][]{{42, 0, 0}}, 7)));
+        // 47, 27
+        System.out.println(Arrays.toString(test.bestCoordinate(new int[][]{{44, 31, 4}, {47, 27, 27}, {7, 13, 0}, {13, 21, 20}, {50, 34, 18}, {47, 44, 28}}, 13)));
     }
 }
