@@ -21,17 +21,45 @@ import java.util.*;
 public class Z3RemoveFolder {
 
     public List<String> removeSubfolders(String[] folder) {
-        Arrays.sort(folder);
-        List<String> result = new ArrayList<>();
-        String compare = folder[0];
-        result.add(compare);
-        for (int i = 1; i < folder.length; i++) {
-            if (!(folder[i].startsWith(compare) && folder[i].charAt(compare.length()) == '/')) {
-                result.add(folder[i]);
-                compare = folder[i];
+        Map<String, Object> save = new HashMap<>(), before = save;
+        a: for (String f : folder) {
+            Map<String, Object> current = save;
+            String[] subs = f.split("/");
+            for (int i = 1; i < subs.length; i++) {
+                String sub = subs[i];
+                Object next = current.get(sub);
+                if (next == null) {
+                    before = current;
+                    current = new HashMap<>();
+                    before.put(sub, current);
+                } else if (next instanceof String) {
+                    continue a;
+                } else {
+                    before = current;
+                    current = (Map<String, Object>) next;
+                }
             }
+            before.put(subs[subs.length - 1], f);
         }
+        List<String> result = new ArrayList<>();
+        addToResult(save, result);
         return result;
+    }
+
+    public void addToResult(Map<String, Object> save, List<String> result) {
+        save.forEach((k, v) -> {
+            if (v instanceof String) {
+                result.add((String) v);
+            } else {
+                addToResult((Map<String, Object>) v, result);
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        Z3RemoveFolder test = new Z3RemoveFolder();
+        // /a, /c/d, /c/f"
+        System.out.println(test.removeSubfolders(new String[]{"/a", "/a/b", "/c/d", "/c/d/e", "/c/f"}));
     }
 
 }
