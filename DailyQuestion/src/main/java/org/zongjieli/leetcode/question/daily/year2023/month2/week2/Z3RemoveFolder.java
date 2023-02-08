@@ -21,39 +21,49 @@ import java.util.*;
 public class Z3RemoveFolder {
 
     public List<String> removeSubfolders(String[] folder) {
-        Map<String, Object> save = new HashMap<>(), before = save;
-        a: for (String f : folder) {
-            Map<String, Object> current = save;
-            String[] subs = f.split("/");
-            for (int i = 1; i < subs.length; i++) {
-                String sub = subs[i];
-                Object next = current.get(sub);
-                if (next == null) {
-                    before = current;
-                    current = new HashMap<>();
-                    before.put(sub, current);
-                } else if (next instanceof String) {
-                    continue a;
+        Tree base = new Tree();
+        a: for (String name : folder) {
+            Tree current = base;
+            byte[] values = name.getBytes();
+            for (int i = 1; i < values.length; i++) {
+                byte b = values[i];
+                if (values[i] == '/') {
+                    if (current.value != null) {
+                        continue a;
+                    }
+                    b = 26;
                 } else {
-                    before = current;
-                    current = (Map<String, Object>) next;
+                    b -= 'a';
                 }
+                if (current.next[b] == null) {
+                    current.next[b] = new Tree();
+                }
+                current = current.next[b];
             }
-            before.put(subs[subs.length - 1], f);
+            current.value = name;
         }
         List<String> result = new ArrayList<>();
-        addToResult(save, result);
+        addToResult(base, result);
         return result;
     }
 
-    public void addToResult(Map<String, Object> save, List<String> result) {
-        save.forEach((k, v) -> {
-            if (v instanceof String) {
-                result.add((String) v);
-            } else {
-                addToResult((Map<String, Object>) v, result);
+    public void addToResult(Tree base, List<String> result) {
+        int loop = 26;
+        if (base.value != null) {
+            result.add(base.value);
+            loop--;
+        }
+        Tree[] next = base.next;
+        for (int i = 0 ; i <= loop ; i++) {
+            if (next[i] != null) {
+                addToResult(next[i], result);
             }
-        });
+        }
+    }
+
+    class Tree {
+        String value = null;
+        Tree[] next = new Tree[27];
     }
 
     public static void main(String[] args) {
