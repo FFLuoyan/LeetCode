@@ -22,47 +22,43 @@ public class Z3RemoveFolder {
 
     public List<String> removeSubfolders(String[] folder) {
         Tree base = new Tree();
-        a: for (String name : folder) {
-            Tree current = base;
-            byte[] values = name.getBytes();
-            for (int i = 1; i < values.length; i++) {
-                byte b = values[i];
-                if (values[i] == '/') {
-                    if (current.value != null) {
-                        continue a;
-                    }
-                    b = 26;
-                } else {
-                    b -= 'a';
-                }
-                if (current.next[b] == null) {
-                    current.next[b] = new Tree();
-                }
-                current = current.next[b];
+        byte[][] folderBytes = new byte[folder.length][];
+        for (int i = 0; i < folderBytes.length; i++) {
+            folderBytes[i] = folder[i].getBytes();
+            if (!existAndAdd(base, folderBytes[i])) {
+                folderBytes[i][0] = 0;
             }
-            current.value = name;
         }
         List<String> result = new ArrayList<>();
-        addToResult(base, result);
+        for (int i = 0; i < folder.length; i++) {
+            if (folderBytes[i][0] != 0 && existAndAdd(base, folderBytes[i])) {
+                result.add(folder[i]);
+            }
+        }
         return result;
     }
 
-    public void addToResult(Tree base, List<String> result) {
-        int loop = 26;
-        if (base.value != null) {
-            result.add(base.value);
-            loop--;
-        }
-        Tree[] next = base.next;
-        for (int i = 0 ; i <= loop ; i++) {
-            if (next[i] != null) {
-                addToResult(next[i], result);
+    public boolean existAndAdd(Tree current, byte[] values) {
+        for (byte b : values) {
+            if (b == '/') {
+                if (current.isExist) {
+                    return false;
+                }
+                b = 26;
+            } else {
+                b -= 'a';
             }
+            if (current.next[b] == null) {
+                current.next[b] = new Tree();
+            }
+            current = current.next[b];
         }
+        current.isExist = true;
+        return true;
     }
 
     class Tree {
-        String value = null;
+        boolean isExist = false;
         Tree[] next = new Tree[27];
     }
 
