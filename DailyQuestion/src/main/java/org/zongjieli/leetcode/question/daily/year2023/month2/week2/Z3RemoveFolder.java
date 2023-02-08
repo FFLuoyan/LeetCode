@@ -33,8 +33,9 @@ public class Z3RemoveFolder {
     }
 
     public boolean existAndAdd(Tree current, String value) {
-        byte[] values = value.getBytes();
-        for (byte b : values) {
+        int length = value.length();
+        for (int i = 1 ; i < length ; i++) {
+            char b = value.charAt(i);
             if (b == '/') {
                 if (current.isExist) {
                     return false;
@@ -48,8 +49,7 @@ public class Z3RemoveFolder {
             }
             current = current.next[b];
         }
-        current.isExist = true;
-        return true;
+        return current.isExist = true;
     }
 
     class Tree {
