@@ -22,23 +22,18 @@ public class Z3RemoveFolder {
 
     public List<String> removeSubfolders(String[] folder) {
         Tree base = new Tree();
-        byte[][] folderBytes = new byte[folder.length][];
-        for (int i = 0; i < folderBytes.length; i++) {
-            folderBytes[i] = folder[i].getBytes();
-            if (!existAndAdd(base, folderBytes[i])) {
-                folderBytes[i][0] = 0;
-            }
-        }
         List<String> result = new ArrayList<>();
-        for (int i = 0; i < folder.length; i++) {
-            if (folderBytes[i][0] != 0 && existAndAdd(base, folderBytes[i])) {
-                result.add(folder[i]);
+        Arrays.sort(folder, Comparator.comparingInt(String::length));
+        for (String value : folder) {
+            if (existAndAdd(base, value)) {
+                result.add(value);
             }
         }
         return result;
     }
 
-    public boolean existAndAdd(Tree current, byte[] values) {
+    public boolean existAndAdd(Tree current, String value) {
+        byte[] values = value.getBytes();
         for (byte b : values) {
             if (b == '/') {
                 if (current.isExist) {
