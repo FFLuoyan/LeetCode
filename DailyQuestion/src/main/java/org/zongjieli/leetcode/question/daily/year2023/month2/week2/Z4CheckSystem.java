@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month2.week2;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 需要设计一个包含验证码的验证系统
@@ -35,33 +34,100 @@ import java.util.Map;
  */
 public class Z4CheckSystem {
 
-    private final Map<String, Integer> save = new HashMap<>();
+    private final HashMap<String, Node> save = new HashMap<>();
     private final int live;
+
+    private final Node start;
+    private final Node end;
+
+    class Node {
+        int time;
+        String key;
+        Node pre;
+        Node next;
+
+        Node (String tokenId, int t, Node p, Node n){
+            key = tokenId;
+            time = t;
+            pre = p;
+            next = n;
+        }
+    }
 
     public Z4CheckSystem(int timeToLive) {
         this.live = timeToLive;
+        start = new Node("", 0, null, null);
+        end = new Node("", Integer.MAX_VALUE, start, null);
+        start.next = end;
     }
 
     public void generate(String tokenId, int currentTime) {
-        save.put(tokenId, currentTime);
+        Node current = new Node(tokenId, currentTime, end.pre, end);
+        current.pre.next = current;
+        end.pre = current;
+        save.put(tokenId, current);
     }
 
     public void renew(String tokenId, int currentTime) {
-        Integer exist = save.get(tokenId);
-        if (exist != null && exist + live > currentTime) {
-            save.put(tokenId, currentTime);
+        Node exist = save.get(tokenId);
+        if (exist != null && exist.time + live > currentTime) {
+            exist.time = currentTime;
+            Node next = exist.next;
+            next.pre = exist.pre;
+            exist.pre.next = next;
+            exist.pre = end.pre;
+            exist.next = end;
+            end.pre.next = exist;
+            end.pre = exist;
         }
     }
 
     public int countUnexpiredTokens(int currentTime) {
-        int count = 0;
         currentTime -= live;
-        for (Integer value : save.values()) {
-            if (value > currentTime) {
-                count++;
-            }
+        Node current = start.next;
+        while (current.time <= currentTime) {
+            start.next = current.next;
+            save.remove(current.key);
+            current = current.next;
         }
-        return count;
+        current.pre = start;
+        return save.size();
+    }
+
+    public static void main(String[] args) {
+        Z4CheckSystem test;
+        test = new Z4CheckSystem(5);
+        test.renew("aaa", 1);
+        test.generate("aaa", 2);
+        System.out.print(test.countUnexpiredTokens(6) + ", ");
+        test.generate("bbb", 7);
+        test.renew("aaa", 8);
+        test.renew("bbb", 10);
+        // 1, 0
+        System.out.println(test.countUnexpiredTokens(15));
+
+        test = new Z4CheckSystem(3);
+        System.out.print(test.countUnexpiredTokens(1) + ", ");
+        test.generate("mqjfa", 2);
+        test.generate("xg", 5);
+        test.generate("dvm", 8);
+        test.renew("euxli", 9);
+        System.out.print(test.countUnexpiredTokens(11) + ", ");
+        test.generate("oin", 13);
+        System.out.print(test.countUnexpiredTokens(18) + ", ");
+        test.generate("qst", 19);
+        test.renew("qy", 20);
+        System.out.print(test.countUnexpiredTokens(21) + ", ");
+        test.renew("f", 22);
+        test.renew("eqe", 23);
+        System.out.print(test.countUnexpiredTokens(25) + ", ");
+        System.out.print(test.countUnexpiredTokens(26) + ", ");
+        System.out.print(test.countUnexpiredTokens(27) + ", ");
+        System.out.print(test.countUnexpiredTokens(28) + ", ");
+        test.renew("oni", 29);
+        // 0, 0, 0, 1, 0, 0, 0, 0
+        System.out.println(test.countUnexpiredTokens(15));
+
     }
 
 }
