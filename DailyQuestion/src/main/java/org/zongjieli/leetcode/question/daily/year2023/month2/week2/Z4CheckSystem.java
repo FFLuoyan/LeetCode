@@ -48,20 +48,16 @@ public class Z4CheckSystem {
 
     public void renew(String tokenId, int currentTime) {
         Integer exist = save.get(tokenId);
-        if (exist == null) {
-            return;
-        }
-        if (exist + live > currentTime) {
+        if (exist != null && exist + live > currentTime) {
             save.put(tokenId, currentTime);
-        } else {
-            save.remove(tokenId);
         }
     }
 
     public int countUnexpiredTokens(int currentTime) {
         int count = 0;
+        currentTime -= live;
         for (Integer value : save.values()) {
-            if (value + live > currentTime) {
+            if (value > currentTime) {
                 count++;
             }
         }
