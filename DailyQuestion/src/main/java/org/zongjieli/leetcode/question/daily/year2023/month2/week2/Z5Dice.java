@@ -18,37 +18,41 @@ package org.zongjieli.leetcode.question.daily.year2023.month2.week2;
 public class Z5Dice {
 
     public int dieSimulator(int n, int[] rollMax) {
-        int[][] currentConsecutive = new int[6][16];
+        int[][] currentConsecutive = new int[6][17];
         for (int i = 0 ; i < 6 ; i++) {
-            currentConsecutive[i][0] = 1;
+            currentConsecutive[i][0] = currentConsecutive[i][rollMax[i]] = 1;
         }
         while (--n > 0) {
-            int[][] next = new int[6][16];
+            long[] temp = new long[6];
+            for (int i = 0 ; i < 6 ; i++) {
+                int currentSum = currentConsecutive[i][rollMax[i]];
+                for (int j = 0 ; j < 6 ; j++) {
+                    if (i != j) {
+                        temp[j] += currentSum;
+                    }
+                }
+                currentConsecutive[i][rollMax[i]] -= currentConsecutive[i][rollMax[i] - 1];
+            }
             for (int i = 0 ; i < 6 ; i++) {
                 int[] consecutive = currentConsecutive[i];
-                for (int j = 0 ; j < 6 ; j++) {
-                    if (j != i) {
-                        next[j][0] = (next[j][0] + consecutive[rollMax[i] - 1]) % 1000000007;
-                    }
+                for (int j = rollMax[i] - 1 ; j > 0 ; j--) {
+                    consecutive[j] = consecutive[j - 1];
                 }
-                for (int j = 0 ; j < rollMax[i] - 1 ; j++) {
-                    next[i][j + 1] = (consecutive[j] + next[i][j + 1]) % 1000000007;
-                    for (int k = 0 ; k < 6 ; k++) {
-                        if (k != i) {
-                            next[k][0] = (next[k][0] + consecutive[j]) % 1000000007;
-                        }
-                    }
-                }
-            }
-            currentConsecutive = next;
-        }
-        int result = 0;
-        for (int[] consecutive : currentConsecutive) {
-            for (int value : consecutive) {
-                result = (result + value) % 1000000007;
+                consecutive[rollMax[i]] = (int) ((consecutive[rollMax[i]] + temp[i] + 1000000007) % 1000000007);
+                consecutive[0] = (int) (temp[i] % 1000000007);
             }
         }
-        return result;
+        long result = 0;
+        for (int i = 0; i < currentConsecutive.length; i++) {
+            result += currentConsecutive[i][rollMax[i]];
+        }
+        return (int) (result % 1000000007);
+    }
+
+    public static void main(String[] args) {
+        Z5Dice test = new Z5Dice();
+        // 34
+        System.out.println(test.dieSimulator(2, new int[]{1, 1, 2, 2, 2, 3}));
     }
 
 }
