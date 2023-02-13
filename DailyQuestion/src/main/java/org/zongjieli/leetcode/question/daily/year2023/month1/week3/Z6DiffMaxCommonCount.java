@@ -30,25 +30,17 @@ public class Z6DiffMaxCommonCount {
                 result++;
             }
         }
-        int end = max / 3 + 1;
+        int end = max / 3 + 1, current, common;
         for (int i = 1 ; i <= end ; i++) {
-            if (exists[i]) {
-                continue;
-            }
-            int current = i, common;
-            while ((current += i) <= max && !exists[current]) {}
-            if (current > max) {
+            if (exists[i] || (current = next(exists, i << 1, i, max)) > max) {
                 continue;
             }
             common = current;
-            while (common != i && (current += i) <= max) {
-                if (exists[current]) {
-                    common = common(common, current);
+            while (common != i && (current = next(exists, current + i, i, max)) <= max) {
+                if (!exists[common = common(common, current)]) {
+                    exists[common] = true;
+                    result++;
                 }
-            }
-            if (!exists[common]) {
-                exists[common] = true;
-                result++;
             }
         }
         return result;
@@ -59,6 +51,13 @@ public class Z6DiffMaxCommonCount {
             return b;
         }
         return common(b, a % b);
+    }
+
+    public int next(boolean[] exist, int start, int add, int max) {
+        while (start <= max && !exist[start]) {
+            start += add;
+        }
+        return start;
     }
 
     public static void main(String[] args) {
