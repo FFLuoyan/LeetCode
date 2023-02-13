@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2023.month1.week3;
 
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 给定一个由正整数组成的数组 nums
@@ -26,35 +24,29 @@ public class Z6DiffMaxCommonCount {
             max = Math.max(max, num);
         }
         boolean[] exists = new boolean[max + 1];
-        boolean[] calculate = new boolean[max + 1];
         for (int num : nums) {
-            exists[num] = true;
+            if (!exists[num]) {
+                exists[num] = true;
+                result++;
+            }
         }
         for (int i = 1 ; i <= max ; i++) {
-            if (calculate[i]) {
-                continue;
-            }
             if (exists[i]) {
-                result++;
                 continue;
             }
-            int current = i;
-            int common = -1;
-            while ((current += i) <= max) {
-                if (!exists[current]) {
-                    continue;
-                }
-                if (common == -1) {
-                    common = current;
-                    continue;
-                }
-                common = common(common, current);
-                if (common == i) {
-                    break;
+            int current = i, common;
+            while ((current += i) <= max && !exists[current]) {}
+            if (current > max) {
+                continue;
+            }
+            common = current;
+            while (common != i && (current += i) <= max) {
+                if (exists[current]) {
+                    common = common(common, current);
                 }
             }
-            if (common != -1 && !calculate[common]) {
-                calculate[common] = true;
+            if (!exists[common]) {
+                exists[common] = true;
                 result++;
             }
         }
