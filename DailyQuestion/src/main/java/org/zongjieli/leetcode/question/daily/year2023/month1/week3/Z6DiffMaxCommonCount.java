@@ -30,7 +30,8 @@ public class Z6DiffMaxCommonCount {
                 result++;
             }
         }
-        for (int i = 1 ; i <= max ; i++) {
+        int end = max / 3 + 1;
+        for (int i = 1 ; i <= end ; i++) {
             if (exists[i]) {
                 continue;
             }
