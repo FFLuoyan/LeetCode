@@ -25,12 +25,13 @@ public class Z1BalanceString {
             count[value]++;
         }
         int result = values.length, start = 0, need = s.length() / 4, end = 0;
-        a: while (start < values.length) {
-            while ((count['Q'] > need || count['W'] > need || count['E'] > need || count['R'] > need)) {
-                if (end == values.length) {
-                    break a;
-                }
-                count[values[end++]]--;
+        if (count['Q'] <= need && count['W'] <= need && count['E'] <= need && count['R'] <= need) {
+            return 0;
+        }
+        while (end < values.length) {
+            while (end < values.length && --count[values[end++]] != need) {}
+            if (count['Q'] > need || count['W'] > need || count['E'] > need || count['R'] > need) {
+                continue;
             }
             while (start < values.length && ++count[values[start++]] <= need) {}
             result = Math.min(result, end - start + 1);
