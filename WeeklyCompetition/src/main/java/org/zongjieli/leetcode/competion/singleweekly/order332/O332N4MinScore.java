@@ -43,21 +43,20 @@ public class O332N4MinScore {
             }
             temp[current] = i + 1;
         }
-        int result = tValues.length, ni = 0;
-        for (int tds = 0 ; tds < tValues.length ; tds++) {
-            if (tds != 0 && (ni = next[ni][tValues[tds - 1] - 'a']) == 0) {
-                return result;
+        int bi = sValues.length + 1, di = tValues.length;
+        int[] bis = new int[tValues.length];
+        while (bi != 0 && --di >= 0) {
+            bis[di] = bi = before[bi][tValues[di] - 'a'];
+        }
+        if (bi != 0) {
+            return 0;
+        }
+        int result = di + 1, ni = 0;
+        for (int tds = 1 ; tds < tValues.length && (ni = next[ni][tValues[tds - 1] - 'a']) != 0 ; tds++) {
+            while (di < tValues.length && bis[di] <= ni) {
+                di++;
             }
-            int bi = sValues.length + 1, j = tValues.length - 1;
-            for (; j >= tds ; j--) {
-                if ((bi = before[bi][tValues[j] - 'a']) <= ni) {
-                    result = Math.min(result, j - tds + 1);
-                    break;
-                }
-            }
-            if (j == tds - 1) {
-                return 0;
-            }
+            result = Math.min(result, di - tds);
         }
         return result;
     }
@@ -66,5 +65,9 @@ public class O332N4MinScore {
         O332N4MinScore test = new O332N4MinScore();
         // 1
         System.out.println(test.minimumScore("abacaba", "bzaa"));
+        // 3
+        System.out.println(test.minimumScore("cde", "xyz"));
+        // 1
+        System.out.println(test.minimumScore("acdedcdbabecdbebda", "bbecddb"));
     }
 }
