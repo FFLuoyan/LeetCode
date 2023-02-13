@@ -15,6 +15,9 @@ package org.zongjieli.leetcode.competion.singleweekly.order332;
  *      然后删除这个元素
  * 返回执行完所有操作后 nums 的串联值
  *
+ * 1 <= nums.length <= 1000
+ * 1 <= nums[i] <= 10^4
+ *
  * @author Li.zongjie
  * @version 1.0
  * @date 2023/2/12
