@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2023.month2.week3;
 
-import java.util.Arrays;
-
 /**
  * 给定一份工作时间表 hours,上面记录着某一位员工每天的工作小时数
  * 当员工一天中的工作小时数大于 8 小时的时候,那么这一天就是劳累的一天
@@ -18,18 +16,18 @@ import java.util.Arrays;
 public class Z2NiceTimeRange {
 
     public int longestWPI(int[] hours) {
-        int hl = hours.length, count = 0, result;
-        int[] maxIndex = new int[2 * hl + 2];
-        for (int i = 0; i < hours.length; i++) {
-            maxIndex[(hours[i] > 8 ? ++count : --count) + hl] = i + 1;
-        }
-        if (count > 0) {
-            return hours.length;
-        }
-        count = 0;
-        result = maxIndex[hl + 1];
-        for (int i = 0; i < hours.length; i++) {
-            result = Math.max(result, maxIndex[(hours[i] > 8 ? ++count : --count) + hl + 1] - i - 1);
+        int hl = hours.length, count = hl + 1, result = 0;
+        int[] minIndex = new int[2 * count + 1];
+        for (int i = 0; i < hl; i++) {
+            count += (hours[i] > 8 ? 1 : -1);
+            if (minIndex[count] == 0) {
+                minIndex[count] = i + 1;
+            }
+            if (count > hl + 1) {
+                result = i + 1;
+            } else if (minIndex[count - 1] != 0) {
+                result = Math.max(result, i + 1 - minIndex[count - 1]);
+            }
         }
         return result;
     }
