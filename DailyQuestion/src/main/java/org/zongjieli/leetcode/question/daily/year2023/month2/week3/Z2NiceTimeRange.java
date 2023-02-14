@@ -19,15 +19,10 @@ public class Z2NiceTimeRange {
         int hl = hours.length, count = hl + 1, result = 0;
         int[] minIndex = new int[2 * count + 1];
         for (int i = 0; i < hl; i++) {
-            count += (hours[i] > 8 ? 1 : -1);
-            if (minIndex[count] == 0) {
+            if (minIndex[count += (hours[i] > 8 ? 1 : -1)] == 0) {
                 minIndex[count] = i + 1;
             }
-            if (count > hl + 1) {
-                result = i + 1;
-            } else if (minIndex[count - 1] != 0) {
-                result = Math.max(result, i + 1 - minIndex[count - 1]);
-            }
+            result = count > hl + 1 ? i + 1 : minIndex[count - 1] != 0 ? Math.max(result, i + 1 - minIndex[count - 1]) : result;
         }
         return result;
     }
