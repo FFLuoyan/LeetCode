@@ -16,15 +16,15 @@ package org.zongjieli.leetcode.question.daily.year2023.month2.week3;
 public class Z2NiceTimeRange {
 
     public int longestWPI(int[] hours) {
-        int count = 0, result = 0, hl = hours.length, min = 0, index;
-        int[] vis = new int[hl + 2];
+        int count = 0, result = 0, hl = hours.length, min = 0;
+        int[] vis = new int[hl + 1];
         for (int i = 0; i < hl; i++) {
             if ((count += (hours[i] > 8 ? -1 : 1)) > min) {
                 vis[++min] = i + 1;
             } else if (count < 0) {
                 result = i + 1;
-            } else if ((index = vis[count + 1]) != 0) {
-                result = Math.max(result, i + 1 - index);
+            } else if (count < min) {
+                result = Math.max(result, i + 1 - vis[count + 1]);
             }
         }
         return result;
