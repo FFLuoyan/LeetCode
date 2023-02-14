@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2023.month2.week3;
 
+import java.util.Arrays;
+
 /**
  * 给定一份工作时间表 hours,上面记录着某一位员工每天的工作小时数
  * 当员工一天中的工作小时数大于 8 小时的时候,那么这一天就是劳累的一天
@@ -16,14 +18,19 @@ package org.zongjieli.leetcode.question.daily.year2023.month2.week3;
 public class Z2NiceTimeRange {
 
     public int longestWPI(int[] hours) {
-        int result = 0;
-        for (int i = 0 ; i < hours.length ; i++) {
-            int count = 0;
-            for (int j = i ; j < hours.length ; j++) {
-                if ((hours[j] > 8 ? ++count : --count) > 0) {
-                    result = Math.max(result, j - i + 1);
-                }
-            }
+        int hl = hours.length, count = 0, result;
+        int[] maxIndex = new int[2 * hl + 2];
+        Arrays.fill(maxIndex, -1);
+        for (int i = 0; i < hours.length; i++) {
+            maxIndex[(hours[i] > 8 ? ++count : --count) + hl] = i;
+        }
+        if (count > 0) {
+            return hours.length;
+        }
+        count = 0;
+        result = maxIndex[hl + 1] + 1;
+        for (int i = 0; i < hours.length; i++) {
+            result = Math.max(result, maxIndex[(hours[i] > 8 ? ++count : --count) + hl + 1] - i);
         }
         return result;
     }
@@ -42,6 +49,8 @@ public class Z2NiceTimeRange {
         System.out.println(test.longestWPI(new int[]{9, 6, 9}));
         // 1
         System.out.println(test.longestWPI(new int[]{6, 6, 9}));
+        // 3
+        System.out.println(test.longestWPI(new int[]{9, 9, 9}));
     }
 
 }
