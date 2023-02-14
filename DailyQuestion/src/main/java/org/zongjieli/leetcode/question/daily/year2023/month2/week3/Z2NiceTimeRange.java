@@ -28,11 +28,8 @@ public class Z2NiceTimeRange {
         }
         count = hl;
         while (min >= 0 && --count >= 0) {
-            if (min > hours[count]) {
-                while (min >= 0 && min > hours[count]) {
-                    --min;
-                }
-                result = Math.max(result, count - vis[min + 1] + 1);
+            while (min >= 0 && min > hours[count]) {
+                result = Math.max(result, count - vis[min--] + 1);
             }
         }
         return result;
