@@ -20,17 +20,16 @@ public class Z2NiceTimeRange {
     public int longestWPI(int[] hours) {
         int hl = hours.length, count = 0, result;
         int[] maxIndex = new int[2 * hl + 2];
-        Arrays.fill(maxIndex, -1);
         for (int i = 0; i < hours.length; i++) {
-            maxIndex[(hours[i] > 8 ? ++count : --count) + hl] = i;
+            maxIndex[(hours[i] > 8 ? ++count : --count) + hl] = i + 1;
         }
         if (count > 0) {
             return hours.length;
         }
         count = 0;
-        result = maxIndex[hl + 1] + 1;
+        result = maxIndex[hl + 1];
         for (int i = 0; i < hours.length; i++) {
-            result = Math.max(result, maxIndex[(hours[i] > 8 ? ++count : --count) + hl + 1] - i);
+            result = Math.max(result, maxIndex[(hours[i] > 8 ? ++count : --count) + hl + 1] - i - 1);
         }
         return result;
     }
