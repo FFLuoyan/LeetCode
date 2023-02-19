@@ -12,7 +12,7 @@ package org.zongjieli.leetcode.competion.singleweekly.single333;
  * @version 1.0
  * @date 2023/2/19
  */
-public class O333N2 {
+public class O333N2MinOperation {
     public int minOperations(int n) {
         int count = 0;
         int result = 0;
@@ -36,7 +36,7 @@ public class O333N2 {
     }
 
     public static void main(String[] args) {
-        O333N2 test = new O333N2();
+        O333N2MinOperation test = new O333N2MinOperation();
         // 3
         System.out.println(test.minOperations(39));
     }
