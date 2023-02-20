@@ -1,6 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2023.month2.week3;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -28,21 +27,31 @@ public class Z7MaxAvg {
 
     public double maxAverageRatio(int[][] classes, int extraStudents) {
         PriorityQueue<double[]> values = new PriorityQueue<>(Comparator.comparingDouble(a -> a[2]));
+        double result = 0;
         for (int[] value : classes) {
-            values.add(new double[]{value[0], value[1], value[0] == value[1] ? 1 : (value[0] - value[1]) / ((double) value[1] * (value[1] + 1))});
+            if (value[0] == value[1]) {
+                result += 1;
+            } else {
+                result += (double) value[0] / value[1];
+                values.add(new double[]{value[0], value[1], (value[0] - value[1]) / ((double) value[1] * (value[1] + 1))});
+            }
+        }
+        if (values.size() == 0) {
+            return 1;
+        }
+        if (values.size() == 1) {
+            double[] v = values.poll();
+            return (v[0] + extraStudents) /  (v[1] + extraStudents);
         }
         while (--extraStudents >= 0) {
             double[] value = values.poll();
             value[0]++;
             value[1]++;
+            result -= value[2];
             value[2] = (value[0] - value[1]) / (value[1] * (value[1] + 1));
             values.add(value);
         }
-        double sum = 0;
-        for (double[] value : values) {
-            sum += value[0] / value[1];
-        }
-        return sum / values.size();
+        return result / classes.length;
     }
 
     public static void main(String[] args) {
