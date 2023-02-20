@@ -15,10 +15,10 @@ import java.util.PriorityQueue;
  * 请返回在安排这 extraStudents 个学生去对应班级后的最大平均通过率
  * 与标准答案误差范围在 10^-5 以内的结果都会视为正确结果
  *
- * 1 <= classes.length <= 105
+ * 1 <= classes.length <= 10^5
  * classes[i].length == 2
- * 1 <= passI <= totalI <= 105
- * 1 <= extraStudents <= 105
+ * 1 <= passI <= totalI <= 10^5
+ * 1 <= extraStudents <= 10^5
  *
  * @author Li.zongjie
  * @version 1.0
@@ -27,17 +27,20 @@ import java.util.PriorityQueue;
 public class Z7MaxAvg {
 
     public double maxAverageRatio(int[][] classes, int extraStudents) {
-        PriorityQueue<int[]> values = new PriorityQueue<>(Comparator.comparingDouble(a -> a[0] == a[1] ? 1 : (a[0] - a[1]) / ((double) a[1] * (a[1] + 1))));
-        values.addAll(Arrays.asList(classes));
+        PriorityQueue<double[]> values = new PriorityQueue<>(Comparator.comparingDouble(a -> a[2]));
+        for (int[] value : classes) {
+            values.add(new double[]{value[0], value[1], value[0] == value[1] ? 1 : (value[0] - value[1]) / ((double) value[1] * (value[1] + 1))});
+        }
         while (--extraStudents >= 0) {
-            int[] value = values.poll();
+            double[] value = values.poll();
             value[0]++;
             value[1]++;
+            value[2] = (value[0] - value[1]) / (value[1] * (value[1] + 1));
             values.add(value);
         }
         double sum = 0;
-        for (int[] value : values) {
-            sum += (double) value[0] / value[1];
+        for (double[] value : values) {
+            sum += value[0] / value[1];
         }
         return sum / values.size();
     }
