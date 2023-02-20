@@ -26,30 +26,31 @@ import java.util.PriorityQueue;
 public class Z7MaxAvg {
 
     public double maxAverageRatio(int[][] classes, int extraStudents) {
-        PriorityQueue<double[]> values = new PriorityQueue<>(Comparator.comparingDouble(a -> a[2]));
+        PriorityQueue<long[]> values = new PriorityQueue<>((a, b) -> Long.compare(a[2] * (b[1] - b[0]), b[2] * (a[1] - a[0])));
         double result = 0;
         for (int[] value : classes) {
             if (value[0] == value[1]) {
                 result += 1;
             } else {
-                result += (double) value[0] / value[1];
-                values.add(new double[]{value[0], value[1], (value[0] - value[1]) / ((double) value[1] * (value[1] + 1))});
+                values.add(new long[]{value[0], value[1], value[1] * (1L + value[1])});
             }
         }
         if (values.size() == 0) {
             return 1;
         }
         if (values.size() == 1) {
-            double[] v = values.poll();
-            return (v[0] + extraStudents) /  (v[1] + extraStudents);
+            long[] v = values.poll();
+            return (((double) v[0] + extraStudents) /  (v[1] + extraStudents) + result) / classes.length;
         }
         while (--extraStudents >= 0) {
-            double[] value = values.poll();
+            long[] value = values.poll();
             value[0]++;
             value[1]++;
-            result -= value[2];
-            value[2] = (value[0] - value[1]) / (value[1] * (value[1] + 1));
+            value[2] = value[1] * (value[1] + 1);
             values.add(value);
+        }
+        for (long[] value : values) {
+            result += (double) value[0] / value[1];
         }
         return result / classes.length;
     }
