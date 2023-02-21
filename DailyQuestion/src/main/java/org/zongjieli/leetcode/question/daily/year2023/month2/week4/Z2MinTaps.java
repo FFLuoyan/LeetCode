@@ -35,17 +35,16 @@ public class Z2MinTaps {
         if (end >= n) {
             return count;
         }
-        int ns = -1, ne = -1;
+        int ne = -1;
         for (int i = start ; i <= end ; i++) {
             if (save[i] > end && save[i] > ne) {
-                ns = i;
                 ne = save[i];
             }
         }
-        if (ns == -1) {
+        if (ne == -1) {
             return -1;
         }
-        return getMinTaps(ns, ne, save, n, count + 1);
+        return getMinTaps(end, ne, save, n, count + 1);
     }
 
     public static void main(String[] args) {
