@@ -28,23 +28,20 @@ public class Z2MinTaps {
             int position = i - ranges[i] + 100;
             save[position] = Math.max(i + ranges[i] + 100, save[position]);
         }
-        return getMinTaps(0, 100, save, n + 100, 0);
-    }
-
-    public int getMinTaps(int start, int end, int[] save, int n, int count) {
-        if (end >= n) {
-            return count;
-        }
-        int ne = -1;
-        for (int i = start ; i <= end ; i++) {
-            if (save[i] > end && save[i] > ne) {
-                ne = save[i];
+        int count = 0, end = 100, nextEnd = 0;
+        for (int i = 0 ; i < save.length ; i++) {
+            if (i > end) {
+                if (nextEnd == 0) {
+                    return -1;
+                }
+                end = nextEnd;
+                nextEnd = save[i];
+                count++;
+            } else {
+                nextEnd = Math.max(nextEnd, save[i]);
             }
         }
-        if (ne == -1) {
-            return -1;
-        }
-        return getMinTaps(end, ne, save, n, count + 1);
+        return count;
     }
 
     public static void main(String[] args) {
@@ -57,6 +54,8 @@ public class Z2MinTaps {
         System.out.println(test.minTaps(7, new int[]{1, 2, 1, 0, 2, 1, 0, 1}));
         // 10
         System.out.println(test.minTaps(70, new int[]{2, 4, 3, 1, 3, 0, 0, 0, 3, 0, 0, 4, 4, 4, 3, 5, 5, 1, 3, 4, 1, 2, 5, 2, 4, 4, 4, 1, 2, 1, 1, 1, 3, 1, 0, 4, 5, 5, 1, 4, 2, 3, 5, 4, 3, 0, 3, 1, 0, 5, 5, 4, 2, 4, 4, 2, 2, 1, 1, 5, 2, 4, 1, 5, 5, 2, 2, 4, 2, 4, 0}));
+        // 6
+        System.out.println(test.minTaps(35, new int[]{1, 0, 4, 0, 4, 1, 4, 3, 1, 1, 1, 2, 1, 4, 0, 3, 0, 3, 0, 3, 0, 5, 3, 0, 0, 1, 2, 1, 2, 4, 3, 0, 1, 0, 5, 2}));
     }
 
 }
