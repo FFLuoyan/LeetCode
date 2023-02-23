@@ -25,10 +25,11 @@ public class Z4LoopCode {
     }
 
     public void changePosition(int n, int[] current, List<Integer> result) {
-        if (n == 0) {
+        if (--n == 0) {
             result.add(current[0]);
+            result.add(current[0] ^= 1);
         } else {
-            changePosition(--n, current, result);
+            changePosition(n, current, result);
             current[0] ^= (1 << n);
             changePosition(n, current, result);
         }
