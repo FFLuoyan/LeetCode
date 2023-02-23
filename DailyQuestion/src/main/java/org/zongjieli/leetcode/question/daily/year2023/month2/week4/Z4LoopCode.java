@@ -20,21 +20,18 @@ public class Z4LoopCode {
 
     public List<Integer> circularPermutation(int n, int start) {
         List<Integer> result = new ArrayList<>(2 << n);
-        int[] changePosition = new int[1 << n];
-        changePosition[0] = 0;
-        int current = 1, index = 1;
-        while (current < n) {
-            int size = index;
-            changePosition[index++] = current++;
-            for (int i = 0 ; i < size ; i++) {
-                changePosition[index++] = changePosition[i];
-            }
-        }
-        result.add(start);
-        for (int i = 0 ; i < index ; i++) {
-            result.add(result.get(i) ^ (1 << changePosition[i]));
-        }
+        changePosition(n, new int[]{start}, result);
         return result;
+    }
+
+    public void changePosition(int n, int[] current, List<Integer> result) {
+        if (n == 0) {
+            result.add(current[0]);
+        } else {
+            changePosition(--n, current, result);
+            current[0] ^= (1 << n);
+            changePosition(n, current, result);
+        }
     }
 
     public static void main(String[] args) {
