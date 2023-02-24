@@ -38,6 +38,15 @@ public class GrayCode {
         }
     }
 
+    public List<Integer> grayCodeFormula(int n) {
+        n = 1 << n;
+        List<Integer> result = new ArrayList<>(n);
+        for (int i = 0 ; i < n ; i++) {
+            result.add(i ^ (i >> 1));
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         GrayCode test = new GrayCode();
         // 0, 1, 3, 2
