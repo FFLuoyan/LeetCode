@@ -12,6 +12,8 @@ import java.util.List;
  * 1 <= n <= 16
  * 0 <= start < 2^n
  *
+ * @see org.zongjieli.leetcode.origin.year2023.GrayCode
+ *
  * @author Li.zongjie
  * @version 1.0
  * @date 2023/2/23
@@ -19,18 +21,19 @@ import java.util.List;
 public class Z4LoopCode {
 
     public List<Integer> circularPermutation(int n, int start) {
-        List<Integer> result = new ArrayList<>(2 << n);
-        changePosition(n, start, result);
+        n = 1 << n;
+        List<Integer> result = new ArrayList<>(n);
+        changePosition(start, n >> 1, result);
         return result;
     }
 
-    public int changePosition(int n, int current, List<Integer> result) {
-        if (--n == 0) {
+    public int changePosition(int current, int n, List<Integer> result) {
+        if (n == 1) {
             result.add(current);
             result.add(current ^= 1);
             return current;
         } else {
-            return changePosition(n, changePosition(n, current, result) ^ (1 << n), result);
+            return changePosition( n ^ changePosition(current, n >>= 1, result), n, result);
         }
     }
 
