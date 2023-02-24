@@ -24,11 +24,11 @@ public class Z3StoneGame {
                 add[i][j] = add[i][j - 1] + piles[j];
             }
         }
-        int[][][] save = new int[2][piles.length][2 * piles.length];
-        return getMaxAlice(0, 1, add, save, 0);
+        int[][] save = new int[piles.length][2 * piles.length];
+        return getMaxAlice(0, 1, add, save);
     }
 
-    public int getMaxAlice(int index, int m, int[][] add, int[][][] save, int isAlice) {
+    public int getMaxAlice(int index, int m, int[][] add, int[][] save) {
         if (index >= add.length) {
             return 0;
         }
@@ -36,22 +36,22 @@ public class Z3StoneGame {
         if (mi >= add.length) {
             return add[index][add.length - 1];
         }
-        if (save[isAlice][index][m] != 0) {
-            return save[isAlice][index][m];
+        if (save[index][m] != 0) {
+            return save[index][m];
         }
         int min = Integer.MAX_VALUE, remain = add[index][add.length - 1];
         for (int i = index ; i <= mi ; i++) {
             int nm = Math.max(m, i - index + 1);
-            min = Math.min(getMaxAlice(i + 1, nm, add, save, isAlice ^ 1), min);
+            min = Math.min(getMaxAlice(i + 1, nm, add, save), min);
         }
-        return save[isAlice][index][m] = remain - min;
+        return save[index][m] = remain - min;
     }
 
     public static void main(String[] args) {
         Z3StoneGame test = new Z3StoneGame();
         // 10
         System.out.println(test.stoneGameII(new int[]{2, 7, 9, 4, 4}));
-        //
+        // 115357
         System.out.println(test.stoneGameII(new int[]{7468, 6245, 9261, 3958, 1986, 1074, 5677, 9386, 1408, 1384, 8811, 3885, 9678, 8470, 8893, 7514, 4941, 2148, 5217, 5425, 5307, 747, 1253, 3518, 5238, 5834, 9133, 8391, 6100, 3362, 7807, 2581, 6121, 7684, 8744, 9584, 4068, 7204, 4285, 8635}));
     }
 
