@@ -15,7 +15,7 @@ package org.zongjieli.leetcode.competion.singleweekly.order334;
  * @version 1.0
  * @date 2023/2/26
  */
-public class O334N2 {
+public class O334N2DivArray {
 
     public int[] divisibilityArray(String word, int m) {
         int[] result = new int[word.length()];
