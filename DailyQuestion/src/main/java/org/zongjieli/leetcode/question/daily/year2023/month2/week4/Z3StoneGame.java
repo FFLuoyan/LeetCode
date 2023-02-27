@@ -17,30 +17,28 @@ package org.zongjieli.leetcode.question.daily.year2023.month2.week4;
 public class Z3StoneGame {
 
     public int stoneGameII(int[] piles) {
-        int[] remain = new int[piles.length];
-        remain[piles.length - 1] = piles[piles.length - 1];
-        for (int i = piles.length - 2; i >= 0; i--) {
-            remain[i] = remain[i + 1] + piles[i];
+        int length = piles.length;
+        for (int i = length - 2 ; i >= 0 ; i--) {
+            piles[i] += piles[i + 1];
         }
-        int[][] save = new int[piles.length][2 * piles.length];
-        return getMaxAlice(0, 1, remain, save);
+        int[][] save = new int[length][length / 4 + 4];
+        return getMaxCount(0, 1, piles, save, --length);
     }
 
-    public int getMaxAlice(int index, int m, int[] remain, int[][] save) {
-        if (index >= remain.length) {
-            return 0;
-        }
+    public int getMaxCount(int index, int m, int[] remain, int[][] save, int ei) {
         int mi = index + 2 * m - 1;
-        if (mi >= remain.length) {
+        if (mi >= ei) {
             return remain[index];
         }
         if (save[index][m] != 0) {
             return save[index][m];
         }
         int min = Integer.MAX_VALUE;
-        for (int i = index ; i <= mi ; i++) {
-            int nm = Math.max(m, i - index + 1);
-            min = Math.min(getMaxAlice(i + 1, nm, remain, save), min);
+        for (int i = index ; i < index + m ; i++) {
+            min = Math.min(getMaxCount(i + 1, m, remain, save, ei), min);
+        }
+        for (int i = index + m ; i <= mi ; i++) {
+            min = Math.min(getMaxCount(i + 1, i - index + 1, remain, save, ei), min);
         }
         return save[index][m] = remain[index] - min;
     }
