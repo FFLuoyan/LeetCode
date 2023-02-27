@@ -26,39 +26,36 @@ package org.zongjieli.leetcode.question.daily.year2023.month2.week4;
  */
 public class Z7MaxScoreWord {
 
+    private final long BIT = 36170086419038336L;
+
     public int maxScoreWords(String[] words, char[] letters, int[] score) {
-        int[][] wordCount = new int[words.length][26];
+        long[][] wordCount = new long[words.length][4];
         int[] wordScore = new int[words.length];
         for (int i = 0; i < words.length; i++) {
             for (byte b : words[i].getBytes()) {
                 int index = b - 'a';
                 wordScore[i] += score[index];
-                wordCount[i][index]++;
+                wordCount[i][index / 7] += 1L << ((index % 7) << 3);
             }
         }
-        int[] remain = new int[26];
+        long[] remain = new long[]{BIT, BIT, BIT, BIT};
         for (char letter : letters) {
-            remain[letter - 'a']++;
+            int index = letter - 'a';
+            remain[index / 7] += 1L << ((index % 7) << 3);
         }
-        return getMaxScore(wordCount, 0, 0, wordScore, remain);
+        return getMaxScore(wordCount, 0, 0, wordScore, remain[0], remain[1], remain[2], remain[3]);
     }
 
-    public int getMaxScore(int[][] count, int currentIndex, int currentScore, int[] scores, int[] remain) {
+    public int getMaxScore(long[][] count, int currentIndex, int currentScore, int[] scores, long r0, long r1, long r2, long r3) {
         if (currentIndex == count.length) {
             return currentScore;
         }
-        int notContainCurrent = getMaxScore(count, currentIndex + 1, currentScore, scores, remain);
-        for (int i = 0; i < remain.length; i++) {
-            if (remain[i] < count[currentIndex][i]) {
-                return notContainCurrent;
-            }
+        int notContainCurrent = getMaxScore(count, currentIndex + 1, currentScore, scores, r0, r1, r2, r3);
+        long[] currentCount = count[currentIndex];
+        if (((r0 -= currentCount[0]) & BIT) != BIT || ((r1 -= currentCount[1]) & BIT) != BIT || ((r2 -= currentCount[2]) & BIT) != BIT  || ((r3 -= currentCount[3]) & BIT) != BIT) {
+            return notContainCurrent;
         }
-        int[] newRemain = new int[26];
-        for (int i = 0; i < newRemain.length; i++) {
-            newRemain[i] = remain[i] - count[currentIndex][i];
-        }
-        int containCurrent = getMaxScore(count, currentIndex + 1, currentScore + scores[currentIndex], scores, newRemain);
-        return Math.max(notContainCurrent, containCurrent);
+        return Math.max(notContainCurrent, getMaxScore(count, currentIndex + 1, currentScore + scores[currentIndex], scores, r0, r1, r2, r3));
     }
 
     public static void main(String[] args) {
