@@ -20,27 +20,15 @@ package org.zongjieli.leetcode.question.daily.year2023.month2.week4;
 public class Z6ChangeEqual {
 
     public int minimumSwap(String s1, String s2) {
-        int diffX = 0, diffY = 0;
-        for (int i = 0 ; i < s1.length() ; i++) {
-            char c = s1.charAt(i);
-            if (c != s2.charAt(i)) {
-                if (c == 'x') {
-                    diffX++;
-                } else {
-                    diffY++;
-                }
+        int[] diff = new int[2];
+        byte[] v1 = s1.getBytes(), v2 = s2.getBytes();
+        for (int i = 0 ; i < v1.length ; i++) {
+            if (v1[i] != v2[i]) {
+                diff[v1[i] - 'x']++;
             }
         }
-        int result = diffX / 2 + diffY / 2;
-        if (diffX % 2 != 0) {
-            if (diffY % 2 == 0) {
-                return -1;
-            }
-            return result + 2;
-        } else if (diffY % 2 == 0) {
-            return result;
-        }
-        return -1;
+        int result = diff[0] / 2 + diff[1] / 2, remain = (diff[0] & 1) + (diff[1] & 1);
+        return remain == 1 ? -1 : result + remain;
     }
 
 }
