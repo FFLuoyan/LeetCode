@@ -44,8 +44,7 @@ public class Z7MaxScoreWord {
         }
         cc = new long[]{BIT, BIT, BIT, BIT};
         for (char letter : letters) {
-            int index = letter - 'a';
-            cc[index / 7] += 1L << ((index % 7) << 3);
+            cc[(letter -= 'a') / 7] += 1L << ((letter % 7) << 3);
         }
         return getMaxScore(wordCount, 0, 0, wordScore, cc[0], cc[1], cc[2], cc[3]);
     }
