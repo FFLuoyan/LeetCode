@@ -29,21 +29,25 @@ public class Z7MaxScoreWord {
     private final long BIT = 36170086419038336L;
 
     public int maxScoreWords(String[] words, char[] letters, int[] score) {
-        long[][] wordCount = new long[words.length][4];
-        int[] wordScore = new int[words.length];
-        for (int i = 0; i < words.length; i++) {
+        int length = words.length, cs;
+        long[][] wordCount = new long[length][4];
+        int[] wordScore = new int[length];
+        long[] cc;
+        for (int i = 0; i < length; i++) {
+            cs = 0;
+            cc = wordCount[i];
             for (byte b : words[i].getBytes()) {
-                int index = b - 'a';
-                wordScore[i] += score[index];
-                wordCount[i][index / 7] += 1L << ((index % 7) << 3);
+                cs += score[b -= 'a'];
+                cc[b / 7] += 1L << ((b % 7) << 3);
             }
+            wordScore[i] = cs;
         }
-        long[] remain = new long[]{BIT, BIT, BIT, BIT};
+        cc = new long[]{BIT, BIT, BIT, BIT};
         for (char letter : letters) {
             int index = letter - 'a';
-            remain[index / 7] += 1L << ((index % 7) << 3);
+            cc[index / 7] += 1L << ((index % 7) << 3);
         }
-        return getMaxScore(wordCount, 0, 0, wordScore, remain[0], remain[1], remain[2], remain[3]);
+        return getMaxScore(wordCount, 0, 0, wordScore, cc[0], cc[1], cc[2], cc[3]);
     }
 
     public int getMaxScore(long[][] count, int currentIndex, int currentScore, int[] scores, long r0, long r1, long r2, long r3) {
