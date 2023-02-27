@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.competion.singleweekly.single333;
+package org.zongjieli.leetcode.competion.singleweekly.order333;
 
 /**
  * 给定一个正整数 n,可以执行下述操作任意次:

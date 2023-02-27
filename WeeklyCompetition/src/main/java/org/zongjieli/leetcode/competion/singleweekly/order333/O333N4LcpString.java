@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.competion.singleweekly.single333;
+package org.zongjieli.leetcode.competion.singleweekly.order333;
 
 /**
  * 对任一由 n 个小写英文字母组成的字符串 word,定义一个 n x n 的矩阵,并满足:

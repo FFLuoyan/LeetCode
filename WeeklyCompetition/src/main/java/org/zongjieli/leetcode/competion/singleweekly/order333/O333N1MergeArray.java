@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.competion.singleweekly.single333;
+package org.zongjieli.leetcode.competion.singleweekly.order333;
 
 import java.util.Arrays;
 import java.util.Comparator;
