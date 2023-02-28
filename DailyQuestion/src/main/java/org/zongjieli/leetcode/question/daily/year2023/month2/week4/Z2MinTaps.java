@@ -20,25 +20,25 @@ package org.zongjieli.leetcode.question.daily.year2023.month2.week4;
 public class Z2MinTaps {
 
     public int minTaps(int n, int[] ranges) {
-        int[] save = new int[n + 101];
+        int[] save = new int[n + 1];
         for (int i = 0; i < ranges.length; i++) {
-            if (ranges[i] == 0) {
-                continue;
+            int range = ranges[i];
+            if (range >= i) {
+                save[0] = Math.max(i + range, save[0]);
+            } else {
+                save[i - range] = i + range;
             }
-            int position = i - ranges[i] + 100;
-            save[position] = Math.max(i + ranges[i] + 100, save[position]);
         }
-        int count = 0, end = 100, nextEnd = 0;
+        int count = 0, end = 0, nextEnd = 0;
         for (int i = 0 ; i < save.length ; i++) {
-            if (i > end) {
-                if (nextEnd == 0) {
-                    return -1;
-                }
+            if (i <= end) {
+                nextEnd = Math.max(nextEnd, save[i]);
+            } else if (nextEnd < i){
+                return -1;
+            } else {
                 end = nextEnd;
                 nextEnd = save[i];
                 count++;
-            } else {
-                nextEnd = Math.max(nextEnd, save[i]);
             }
         }
         return count;
@@ -50,6 +50,8 @@ public class Z2MinTaps {
         System.out.println(test.minTaps(5, new int[]{3, 4, 1, 1, 0, 0}));
         // -1
         System.out.println(test.minTaps(4, new int[]{0, 0, 0, 0}));
+        // -1
+        System.out.println(test.minTaps(5, new int[]{3, 0, 1, 1, 0, 0}));
         // 3
         System.out.println(test.minTaps(7, new int[]{1, 2, 1, 0, 2, 1, 0, 1}));
         // 10
