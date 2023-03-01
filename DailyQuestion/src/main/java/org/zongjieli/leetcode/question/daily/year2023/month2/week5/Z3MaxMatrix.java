@@ -21,23 +21,16 @@ public class Z3MaxMatrix {
 
     public int[][] largestLocal(int[][] grid) {
         int n = grid.length;
-        int[][] temp = new int[n][n - 2];
-        for (int i = 0; i < grid.length; i++) {
-            int[] row = grid[i];
-            int t = Math.max(row[0], row[1]);
-            for (int j = 2; j < row.length; j++) {
-                int c = row[j];
-                temp[i][j - 2] = Math.max(t, c);
-                t = Math.max(row[j - 1], c);
-            }
-        }
         int[][] result = new int[n - 2][n - 2];
-        for (int j = 0 ; j < result.length ; j++) {
-            int t = Math.max(temp[0][j], temp[1][j]);
-            for (int i = 2 ; i < n ; i++) {
-                int c = temp[i][j];
-                result[i - 2][j] = Math.max(t, c);
-                t = Math.max(temp[i - 1][j], c);
+        for (int i = 0 ; i < result.length ; i++) {
+            for (int j = 0 ; j < result.length ; j++) {
+                int max = 0;
+                for (int c = i ; c <= i + 2 ; c++) {
+                    for (int d = j ; d <= j + 2 ; d++) {
+                        max = Math.max(max, grid[c][d]);
+                    }
+                }
+                result[i][j] = max;
             }
         }
         return result;
