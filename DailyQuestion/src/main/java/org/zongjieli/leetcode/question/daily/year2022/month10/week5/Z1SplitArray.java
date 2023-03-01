@@ -19,13 +19,14 @@ package org.zongjieli.leetcode.question.daily.year2022.month10.week5;
 public class Z1SplitArray {
 
     public int partitionDisjoint(int[] nums) {
-        int max = nums[0], leftMax = max, result = 1;
+        int max = nums[0], leftMax = max, result = 1, num;
         for (int i = 1; i < nums.length; i++) {
-            if (nums[i] < leftMax) {
+            num = nums[i];
+            if (num < leftMax) {
                 result = i + 1;
                 leftMax = max;
-            } else {
-                max = Math.max(max, nums[i]);
+            } else if (num > max){
+                max = num;
             }
         }
         return result;
