@@ -16,18 +16,12 @@ import java.util.Arrays;
 public class Z4DoubleBin {
 
     public String printBin(double num) {
-        char[] result = new char[32];
-        result[0] = '0';
-        result[1] = '.';
+        char[] result = new char[]{'0', '.', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'};
         int ri = 2;
         while (ri < 32 && num != 0) {
-            num *= 2;
-            if (num >= 1) {
-                result[ri++] = '1';
-                num -= 1;
-            } else {
-                result[ri++] = '0';
-            }
+            int v = (int) (num *= 2);
+            result[ri++] += v;
+            num -= v;
         }
         return ri == 32 ? "ERROR" : new String(result, 0, ri);
     }
