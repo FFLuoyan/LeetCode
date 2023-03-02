@@ -16,23 +16,20 @@ import java.util.Arrays;
 public class Z4DoubleBin {
 
     public String printBin(double num) {
-        double v = num * 1073741824;
-        int vi = (int) v;
-        if (v - vi > 0.0001 && (vi + 1) - v > 0.0001) {
-            return "ERROR";
-        }
-        String binaryString = Integer.toBinaryString(vi);
         char[] result = new char[32];
-        Arrays.fill(result, '0');
+        result[0] = '0';
         result[1] = '.';
-        for (int i = binaryString.length() - 1 ; i >= 0 ; i--) {
-            result[32 + i - binaryString.length()] = binaryString.charAt(i);
+        int ri = 2;
+        while (ri < 32 && num != 0) {
+            num *= 2;
+            if (num >= 1) {
+                result[ri++] = '1';
+                num -= 1;
+            } else {
+                result[ri++] = '0';
+            }
         }
-        int ei = 31;
-        while (result[ei] == '0') {
-            ei--;
-        }
-        return new String(result, 0, ei + 1);
+        return ri == 32 ? "ERROR" : new String(result, 0, ri);
     }
 
     public static void main(String[] args) {
