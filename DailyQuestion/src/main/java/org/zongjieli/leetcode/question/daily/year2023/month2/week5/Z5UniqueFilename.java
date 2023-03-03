@@ -25,21 +25,25 @@ import java.util.Map;
 public class Z5UniqueFilename {
 
     public String[] getFolderNames(String[] names) {
-        Map<String, Integer> count = new HashMap<>();
+        Map<String, Integer> count = new HashMap<>(names.length);
         for (int i = 0; i < names.length; i++) {
             String name = names[i];
             Integer number = count.get(name);
             if (number == null) {
                 count.put(name, 0);
             } else {
-                String nextName;
-                while (count.containsKey(nextName = name + '(' + ++number + ')')) {}
-                count.put(nextName, 0);
-                count.put(name, number);
-                names[i] = nextName;
+                names[i] = getNextName(name, count, number);
             }
         }
         return names;
+    }
+
+    private String getNextName(String name, Map<String, Integer> count, int number) {
+        String nextName;
+        while (count.containsKey(nextName = name + "(" + ++number + ")")) {}
+        count.put(nextName, 0);
+        count.put(name, number);
+        return nextName;
     }
 
 }
