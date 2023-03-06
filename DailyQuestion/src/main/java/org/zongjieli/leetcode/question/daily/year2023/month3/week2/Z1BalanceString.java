@@ -32,20 +32,24 @@ public class Z1BalanceString {
         if (end < start) {
             return 0;
         }
-        int aCount = 0, bCount = 1, deleteStart = start;
-        while (++deleteStart < end) {
-            if (values[deleteStart] == 'b') {
-                bCount++;
+        int[] count = new int[end - start + 1];
+        int index = 0;
+        count[0] = 1;
+        while (++start <= end) {
+            if (values[start] != values[start - 1]) {
+                index++;
             }
+            count[index]++;
+        }
+        int aCount = 0, bCount = 0;
+        for (int i = 0 ; i < index ; i += 2) {
+            bCount += count[i];
         }
         int result = bCount;
-        while (end >= start) {
-            if (values[end--] == 'a') {
-                aCount++;
-            } else {
-                bCount--;
-                result = Math.min(result, aCount + bCount);
-            }
+        for (int i = index ; i >= 0 ; i -= 2) {
+            aCount += count[i];
+            bCount -= count[i - 1];
+            result = Math.min(result, aCount + bCount);
         }
         return result;
     }
