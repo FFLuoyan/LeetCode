@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2023.month2.week5;
+package org.zongjieli.leetcode.question.daily.year2023.month3.week1;
 
 /**
  * 正在经营一座摩天轮,该摩天轮共有 4 个座舱,每个座舱最多可以容纳 4 位游客

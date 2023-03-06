@@ -1,6 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2023.month2.week5;
-
-import java.util.Arrays;
+package org.zongjieli.leetcode.question.daily.year2023.month3.week1;
 
 /**
  * 给定一个介于 0 和 1 之间的实数(如: 0.72),类型为 double
