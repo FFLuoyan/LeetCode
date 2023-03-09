@@ -24,18 +24,10 @@ public class Z3MaxGift {
     }
 
     public int maxValue(int[][] grid, int[][] max, int i, int j) {
-        if (max[i][j] != 0) {
-            return max[i][j];
-        }
-        if (i == 0) {
-            if (j == 0) {
-                return grid[0][0];
-            }
-            return max[i][j] = maxValue(grid, max, i, j - 1) + grid[i][j];
-        } else if (j == 0) {
-            return max[i][j] = maxValue(grid, max, i - 1, j) + grid[i][j];
-        } else {
-            return max[i][j] = Math.max(maxValue(grid, max, i - 1, j), maxValue(grid, max, i, j - 1)) + grid[i][j];
-        }
+        return i < 0 || j < 0
+                ? 0
+                : max[i][j] > 0
+                    ? max[i][j]
+                    : (max[i][j] = Math.max(maxValue(grid, max, i - 1, j), maxValue(grid, max, i, j - 1)) + grid[i][j]);
     }
 }
