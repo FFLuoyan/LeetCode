@@ -21,23 +21,17 @@ public class Z4BlackBlock {
 
     public int minimumRecolors(String blocks, int k) {
         byte[] values = blocks.getBytes();
-        int result = 0, wCount = 0;
+        int result, wCount = 0;
         for (int i = 0 ; i < k ; i++) {
             if (values[i] == 'W') {
                 wCount++;
             }
         }
-        result = wCount;
+        result = (wCount *= 21);
         for (int i = k ; i < values.length ; i++) {
-            if (values[i] != values[i - k]) {
-                if (values[i] == 'W') {
-                    wCount++;
-                } else {
-                    result = Math.min(--wCount, result);
-                }
-            }
+            result = Math.min(wCount += (values[i] - values[i - k]), result);
         }
-        return result;
+        return result / 21;
     }
 
 }
