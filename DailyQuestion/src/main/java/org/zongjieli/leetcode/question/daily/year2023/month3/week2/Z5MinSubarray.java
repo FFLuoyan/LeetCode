@@ -1,6 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2023.month3.week2;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 给定一个正整数数组 nums,请移除最短子数组(可以为空)
@@ -19,29 +20,29 @@ import java.util.*;
 public class Z5MinSubarray {
 
     public int minSubarray(int[] nums, int p) {
-        Map<Integer, TreeSet<Integer>> remainIndex = new HashMap<>();
-        long sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            remainIndex.computeIfAbsent((int) ((sum += nums[i]) % p), k -> new TreeSet<>()).add(i);
+        long sum = 0, sub = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum % p == 0) {
+            return 0;
         }
         int result = nums.length;
+        Map<Integer, Integer> indexes = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            int currentRemain = (int) ((sum -= nums[i]) % p);
-            if (currentRemain == 0) {
-                result = Math.min(i + 1, result);
+            indexes.put((int) ((sub += nums[i]) % p), i);
+            int remain = (int) ((sum -= nums[i]) % p);
+            if (remain == 0) {
+                result = Math.min(result, i + 1);
             } else {
-                currentRemain = p - currentRemain;
+                remain = p - remain;
             }
-            if (!remainIndex.containsKey(currentRemain)) {
-                continue;
-            }
-            TreeSet<Integer> tree = remainIndex.get(currentRemain);
-            Integer index = tree.floor(i);
+            Integer index = indexes.get(remain);
             if (index != null) {
                 result = Math.min(result, i - index);
             }
         }
-        return result == nums.length ? - 1 : result;
+        return result == nums.length ? -1 : result;
     }
 
     public static void main(String[] args) {
