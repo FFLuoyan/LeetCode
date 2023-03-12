@@ -15,7 +15,7 @@ package org.zongjieli.leetcode.competion.singleweekly.order336;
  * @version 1.0
  * @date 2023/3/12
  */
-public class O335N1VowelString {
+public class O336N1VowelString {
 
     public int vowelStrings(String[] words, int left, int right) {
         boolean[] exists = new boolean[128];
