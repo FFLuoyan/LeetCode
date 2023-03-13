@@ -21,14 +21,10 @@ public class Z1MinTime {
 
     public int minNumberOfHours(int initialEnergy, int initialExperience, int[] energy, int[] experience) {
         int result = 0;
-        for (int i : energy) {
-            if (initialEnergy > i) {
-                initialEnergy -= i;
-            } else {
-                result += (i - initialEnergy + 1);
-                initialEnergy = 1;
-            }
+        for (int e : energy) {
+            result += e;
         }
+        result = initialEnergy > result ? 0 : result - initialEnergy + 1;
         for (int i : experience) {
             if (initialExperience <= i) {
                 result += (i - initialExperience + 1);
