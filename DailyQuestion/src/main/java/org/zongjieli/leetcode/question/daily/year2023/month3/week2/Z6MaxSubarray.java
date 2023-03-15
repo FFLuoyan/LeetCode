@@ -1,8 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month3.week2;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 给定一个放有字母和数字的数组
@@ -19,30 +17,37 @@ import java.util.Map;
 public class Z6MaxSubarray {
 
     public String[] findLongestSubarray(String[] array) {
-        Map<Integer, Integer> count = new HashMap<>();
-        count.put(0, 0);
-        int current = 0, result = 0, resultStartIndex = 0;
+        int length = array.length, currentCount = length, resultLength = 0, resultStartIndex = 0;
+        int[] countFirstIndex = new int[2 * length + 1];
+        Arrays.fill(countFirstIndex, -1);
+        countFirstIndex[currentCount] = 0;
         for (int i = 0; i < array.length; i++) {
             if (array[i].charAt(0) <= '9') {
-                current++;
+                currentCount--;
             } else {
-                current--;
+                currentCount++;
             }
-            count.putIfAbsent(current, i + 1);
-            Integer index = count.get(current);
-            if (index != null && i - index + 1 > result) {
-                result = i - index + 1;
-                resultStartIndex = index;
+            if (countFirstIndex[currentCount] == -1) {
+                countFirstIndex[currentCount] = i + 1;
+            } else {
+                int currentLength = i - countFirstIndex[currentCount] + 1;
+                if (currentLength > resultLength) {
+                    resultLength = currentLength;
+                    resultStartIndex = countFirstIndex[currentCount];
+                }
             }
         }
-        String[] values = new String[result];
-        System.arraycopy(array, resultStartIndex, values, 0, result);
-        return values;
+        String[] result = new String[resultLength];
+        System.arraycopy(array, resultStartIndex, result, 0, resultLength);
+        return result;
     }
 
     public static void main(String[] args) {
         Z6MaxSubarray test = new Z6MaxSubarray();
+        // A, 1, B, C, D, 2, 3, 4, E, 5, F, G, 6, 7
         System.out.println(Arrays.toString(test.findLongestSubarray(new String[]{"A", "1", "B", "C", "D", "2", "3", "4", "E", "5", "F", "G", "6", "7", "H", "I", "J", "K", "L", "M"})));
+        // A, 1
+        System.out.println(Arrays.toString(test.findLongestSubarray(new String[]{"A", "1"})));
     }
 
 }
