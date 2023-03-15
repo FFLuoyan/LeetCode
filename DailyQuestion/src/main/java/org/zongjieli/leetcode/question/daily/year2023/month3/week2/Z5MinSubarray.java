@@ -20,25 +20,26 @@ import java.util.Map;
 public class Z5MinSubarray {
 
     public int minSubarray(int[] nums, int p) {
-        long sum = 0, sub = 0;
-        for (int num : nums) {
-            sum += num;
+        int length = nums.length;
+        nums[0] %= p;
+        for (int i = 1; i < length; i++) {
+            nums[i] = (nums[i] + nums[i - 1]) % p;
         }
-        if (sum % p == 0) {
+        int remain = nums[length - 1];
+        if (remain == 0) {
             return 0;
         }
-        int result = nums.length;
+        int result = length;
         Map<Integer, Integer> indexes = new HashMap<>();
         indexes.put(0, -1);
-        for (int i = 0; i < nums.length; i++) {
-            indexes.put((int) ((sub += nums[i]) % p), i);
-            int remain = (p - (int) ((sum -= nums[i]) % p)) % p;
-            Integer index = indexes.get(remain);
+        for (int i = 0; i < length; i++) {
+            indexes.put(nums[i], i);
+            Integer index = indexes.get((nums[i] - remain + p) % p);
             if (index != null) {
                 result = Math.min(result, i - index);
             }
         }
-        return result == nums.length ? -1 : result;
+        return result == length ? -1 : result;
     }
 
     public static void main(String[] args) {
