@@ -29,14 +29,10 @@ public class Z5MinSubarray {
         }
         int result = nums.length;
         Map<Integer, Integer> indexes = new HashMap<>();
+        indexes.put(0, -1);
         for (int i = 0; i < nums.length; i++) {
             indexes.put((int) ((sub += nums[i]) % p), i);
-            int remain = (int) ((sum -= nums[i]) % p);
-            if (remain == 0) {
-                result = Math.min(result, i + 1);
-            } else {
-                remain = p - remain;
-            }
+            int remain = (p - (int) ((sum -= nums[i]) % p)) % p;
             Integer index = indexes.get(remain);
             if (index != null) {
                 result = Math.min(result, i - index);
