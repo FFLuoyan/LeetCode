@@ -23,17 +23,17 @@ public class Z3MaxNetRank {
 
     public int maximalNetworkRank(int n, int[][] roads) {
         int[] count = new int[n];
-        boolean[][] connects = new boolean[n][n];
+        int[][] connects = new int[n][n];
         for (int[] road : roads) {
             int a = road[0], b = road[1];
-            connects[a][b] = connects[b][a] = true;
+            connects[a][b] = connects[b][a] = 1;
             count[a]++;
             count[b]++;
         }
         int result = 0;
         for (int i = 0; i < count.length; i++) {
             for (int j = i + 1; j < count.length; j++) {
-                result = Math.max(result, connects[i][j] ? count[i] + count[j] - 1 : count[i] + count[j]);
+                result = Math.max(result, count[i] + count[j] - connects[i][j]);
             }
         }
         return result;
