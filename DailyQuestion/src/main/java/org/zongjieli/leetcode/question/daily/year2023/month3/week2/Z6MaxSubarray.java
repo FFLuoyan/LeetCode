@@ -17,27 +17,22 @@ import java.util.Arrays;
 public class Z6MaxSubarray {
 
     public String[] findLongestSubarray(String[] array) {
-        int length = array.length, currentCount = length, resultLength = 0, resultStartIndex = 0;
+        int length = array.length, currentCount = length, resultLength = -2, resultStartIndex = 0;
         int[] countFirstIndex = new int[2 * length + 1];
-        Arrays.fill(countFirstIndex, -1);
-        countFirstIndex[currentCount] = 0;
+        countFirstIndex[currentCount] = 1;
         for (int i = 0; i < array.length; i++) {
-            if (array[i].charAt(0) <= '9') {
-                currentCount--;
+            int index = countFirstIndex[currentCount += ((array[i].charAt(0) >> 6) * 2 - 1)];
+            if (index == 0) {
+                countFirstIndex[currentCount] = i + 2;
             } else {
-                currentCount++;
-            }
-            if (countFirstIndex[currentCount] == -1) {
-                countFirstIndex[currentCount] = i + 1;
-            } else {
-                int currentLength = i - countFirstIndex[currentCount] + 1;
+                int currentLength = i - index;
                 if (currentLength > resultLength) {
                     resultLength = currentLength;
-                    resultStartIndex = countFirstIndex[currentCount];
+                    resultStartIndex = index - 1;
                 }
             }
         }
-        String[] result = new String[resultLength];
+        String[] result = new String[resultLength += 2];
         System.arraycopy(array, resultStartIndex, result, 0, resultLength);
         return result;
     }
