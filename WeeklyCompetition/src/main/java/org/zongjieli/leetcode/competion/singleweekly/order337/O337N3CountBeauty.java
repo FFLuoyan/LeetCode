@@ -1,8 +1,6 @@
 package org.zongjieli.leetcode.competion.singleweekly.order337;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 给定一个由正整数组成的数组 nums 和一个正整数 k
@@ -22,16 +20,15 @@ import java.util.List;
 public class O337N3CountBeauty {
     public int beautifulSubsets(int[] nums, int k) {
         List<Integer> sames = new ArrayList<>();
-        int[] exists = new int[1001];
-        Arrays.fill(exists, -1);
+        Map<Integer, List<Integer>> exists = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
             int num = nums[i];
-            exists[num] = i;
-            if (num - k >= 0 && exists[num - k] != -1) {
-                sames.add((1 << i) + (1 << exists[num - k]));
+            exists.computeIfAbsent(num, t -> new ArrayList<>()).add(i);
+            for (Integer index : exists.getOrDefault(num - k, Collections.emptyList())) {
+                sames.add((1 << i) + (1 << index));
             }
-            if (num + k <= 1000 && exists[num + k] != -1) {
-                sames.add((1 << i) + (1 << exists[num + k]));
+            for (Integer index : exists.getOrDefault(num + k, Collections.emptyList())) {
+                sames.add((1 << i) + (1 << index));
             }
         }
         int result = 0, max = (1 << nums.length) - 1;
