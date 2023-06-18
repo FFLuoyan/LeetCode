@@ -19,28 +19,23 @@ public class Z7IslandCount {
         int result = 0;
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j] == 0) {
-                    int[] judge = new int[]{1};
-                    removeLand(i, j, grid, judge);
-                    result += judge[0];
+                if (grid[i][j] == 0 && isValid(i, j, grid)) {
+                    result++;
                 }
             }
         }
         return result;
     }
 
-    public void removeLand(int i, int j, int[][] grid, int[] judge) {
+    public boolean isValid(int i, int j, int[][] grid) {
         if (i < 0 || i >= grid.length || j < 0 || j >= grid[i].length) {
-            judge[0] = 0;
-            return;
+            return false;
         }
         if (grid[i][j] == 0) {
             grid[i][j] = -1;
-            removeLand(i + 1, j, grid, judge);
-            removeLand(i - 1, j, grid, judge);
-            removeLand(i, j - 1, grid, judge);
-            removeLand(i, j + 1, grid, judge);
+            return isValid(i + 1, j, grid) & isValid(i - 1, j, grid) & isValid(i, j - 1, grid) & isValid(i, j + 1, grid);
         }
+        return true;
     }
 
     public static void main(String[] args) {
