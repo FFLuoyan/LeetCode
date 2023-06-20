@@ -13,34 +13,20 @@ package org.zongjieli.leetcode.question.daily.year2023.month6.week4;
 public class Z1MaxSum {
 
     public int maxSumDivThree(int[] nums) {
-        int[] minOne = new int[]{66667, 66667};
-        int[] minTwo = new int[]{66668, 66668};
+        int[][] min = new int[][]{{0, 0}, {66667, 66667}, {66668, 66668}};
         int sum = 0;
         for (int num : nums) {
             sum += num;
-            if (num % 3 == 1) {
-                if (num <= minOne[0]) {
-                    minOne[1] = minOne[0];
-                    minOne[0] = num;
-                } else if (num <= minOne[1]) {
-                    minOne[1] = num;
-                }
-            } else if (num % 3 == 2) {
-                if (num <= minTwo[0]) {
-                    minTwo[1] = minTwo[0];
-                    minTwo[0] = num;
-                } else if (num <= minTwo[1]) {
-                    minTwo[1] = num;
-                }
+            int[] compare = min[num % 3];
+            int c0 = compare[0], c1 = compare[1];
+            if (num <= c0) {
+                compare[1] = c0;
+                compare[0] = num;
+            } else if (num < c1) {
+                compare[1] = num;
             }
         }
-        if (sum % 3 == 0) {
-            return sum;
-        } else if (sum % 3 == 1) {
-            return sum - Math.min(minOne[0], minTwo[0] + minTwo[1]);
-        } else {
-            return sum - Math.min(minOne[0] + minOne[1], minTwo[0]);
-        }
+        return sum % 3 == 0 ? sum : sum % 3 == 1 ? sum - Math.min(min[1][0], min[2][0] + min[2][1]) : sum - Math.min(min[2][0], min[1][0] + min[1][1]);
     }
 
 }
