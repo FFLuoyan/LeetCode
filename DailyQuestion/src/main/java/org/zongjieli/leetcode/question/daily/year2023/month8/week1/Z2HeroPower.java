@@ -21,17 +21,11 @@ public class Z2HeroPower {
 
     public int sumOfPower(int[] nums) {
         Arrays.sort(nums);
-        long result = 0;
-        long[] maxes = new long[nums.length];
-        for (int i = 0 ; i < nums.length ; i++) {
-            long max = nums[i];
-            maxes[i] = (max * max) % 1000000007;
-        }
-        long before = 0, current, sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            current = nums[i];
+        long result = 0, before = 0, current, sum = 0;
+        for (int num : nums) {
+            current = num;
             sum = (sum * 2 - before + current) % 1000000007;
-            result = (result + sum * maxes[i]) % 1000000007;
+            result = (result + sum * (current * current % 1000000007)) % 1000000007;
             before = current;
         }
         return (int) (result % 1000000007);
