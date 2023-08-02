@@ -21,21 +21,22 @@ public class Z3FlipCard {
 
     public int flipGame(int[] fronts, int[] backs) {
         boolean[] invalid = new boolean[2001];
-        boolean[] number = new boolean[2001];
         for (int i = 0; i < fronts.length; i++) {
             if (fronts[i] == backs[i]) {
                 invalid[fronts[i]] = true;
-            } else {
-                number[fronts[i]] = true;
-                number[backs[i]] = true;
             }
         }
-        for (int i = 1 ; i <= 2000 ; i++) {
-            if (number[i] && !invalid[i]) {
-                return i;
+        int result = Integer.MAX_VALUE;
+        for (int i = 0; i < fronts.length; i++) {
+            int f = fronts[i], b = backs[i];
+            if (!invalid[f] && result > f) {
+                result = f;
+            }
+            if (!invalid[b] && result > b) {
+                result = b;
             }
         }
-        return 0;
+        return result == Integer.MAX_VALUE ? 0 : result;
     }
 
 }
