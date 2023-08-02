@@ -21,12 +21,10 @@ public class Z2HeroPower {
 
     public int sumOfPower(int[] nums) {
         Arrays.sort(nums);
-        long result = 0, before = 0, current, sum = 0;
-        for (int num : nums) {
-            current = num;
-            sum = (sum * 2 - before + current) % 1000000007;
-            result = (result + sum * (current * current % 1000000007)) % 1000000007;
-            before = current;
+        long result = 0, sum = 0;
+        for (long num : nums) {
+            result += (sum + num) * (num * num % 1000000007) % 1000000007;
+            sum = (sum * 2 + num) % 1000000007;
         }
         return (int) (result % 1000000007);
     }
