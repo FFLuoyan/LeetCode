@@ -15,12 +15,12 @@ package org.zongjieli.leetcode.question.daily.year2023.month8.week2;
 public class Z5DiagonalSum {
 
     public int diagonalSum(int[][] mat) {
-        int n = mat.length, last = n - 1, result = 0;
-        for (int i = 0 ; i < n ; i++) {
+        int length = mat.length, n = length - 1, result = 0, mid = length / 2;
+        for (int i = 0 ; i <= n ; i++) {
             result += mat[i][i];
-            result += mat[i][last - i];
+            result += mat[i][n - i];
         }
-        return n % 2 == 0 ? result : result - mat[n / 2][n / 2];
+        return result - mat[mid][mid] * (length & 1);
     }
 
 }
