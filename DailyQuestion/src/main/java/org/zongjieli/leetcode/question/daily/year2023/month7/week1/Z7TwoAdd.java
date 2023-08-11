@@ -19,33 +19,22 @@ import org.zongjieli.leetcode.base.ListNode;
 public class Z7TwoAdd {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode returnNext = new ListNode(0, l1), l1Pre = returnNext;
+        ListNode returnNext = new ListNode(0), pre = returnNext;
         int temp = 0;
-        while (l1!= null && l2 != null) {
-            l1.val += l2.val + temp;
-            temp = 0;
-            if (l1.val > 9) {
-                temp = 1;
-                l1.val -= 10;
-            }
-            l1Pre = l1;
-            l1 = l1.next;
-            l2 = l2.next;
-        }
-        if (l1 == null) {
-            l1 = l1Pre.next = l2;
-        }
-        if (temp != 0) {
-            while (l1 != null && l1.val == 9) {
-                l1.val = 0;
-                l1Pre = l1;
+        while (l1 != null || l2 != null || temp > 0) {
+            int cv = temp;
+            if (l1 != null) {
+                cv += l1.val;
                 l1 = l1.next;
             }
-            if (l1 == null) {
-                l1Pre.next = new ListNode(1);
-            } else {
-                l1.val++;
+            if (l2 != null) {
+                cv += l2.val;
+                l2 = l2.next;
             }
+            temp = cv > 9 ? 1 : 0;
+            cv %= 10;
+            pre.next = new ListNode(cv);
+            pre = pre.next;
         }
         return returnNext.next;
     }
