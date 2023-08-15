@@ -22,17 +22,17 @@ package org.zongjieli.leetcode.question.daily.year2023.month8.week3;
 public class Z3GameLose {
 
     public int[] circularGameLosers(int n, int k) {
-        boolean[] get = new boolean[n + 1];
-        int current = 1, number = 1;
+        boolean[] get = new boolean[n];
+        int current = 0, number = 0;
         while (!get[current]) {
             get[current] = true;
-            current = (current + k * number++ - 1) % n + 1;
+            current = (current + (number += k)) % n;
         }
-        number = n - number + 1;
+        number = n - number / k;
         int[] result = new int[number];
-        for (int j = get.length - 1; j >= 1; j--) {
+        for (int j = get.length - 1; j >= 0; j--) {
             if (!get[j]) {
-                result[--number] = j;
+                result[--number] = j + 1;
             }
         }
         return result;
