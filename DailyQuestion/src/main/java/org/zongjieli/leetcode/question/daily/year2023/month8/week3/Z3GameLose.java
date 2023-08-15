@@ -28,11 +28,11 @@ public class Z3GameLose {
             get[current] = true;
             current = (current + k * number++ - 1) % n + 1;
         }
-        int[] result = new int[n - number + 1];
-        int i = 0;
-        for (int j = 1; j < get.length; j++) {
+        number = n - number + 1;
+        int[] result = new int[number];
+        for (int j = get.length - 1; j >= 1; j--) {
             if (!get[j]) {
-                result[i++] = j;
+                result[--number] = j;
             }
         }
         return result;
