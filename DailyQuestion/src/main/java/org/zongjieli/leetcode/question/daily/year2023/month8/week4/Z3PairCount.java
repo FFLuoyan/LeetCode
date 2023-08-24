@@ -26,39 +26,44 @@ import java.util.*;
 public class Z3PairCount {
 
     public int[] countPairs(int n, int[][] edges, int[] queries) {
-        int[] pointCount = new int[n];
+        int[] pointCount = new int[n + 1], pcc, resultCount, result = new int[queries.length];
         Map<Integer, Integer> existCount = new HashMap<>();
-        int a, b;
+        int a, b, max = 0;
         for (int[] edge : edges) {
-            pointCount[a = (edge[0] - 1)]++;
-            pointCount[b = (edge[1] - 1)]++;
+            max = Math.max(max, Math.max(++pointCount[a = edge[0]], ++pointCount[b = edge[1]]));
             existCount.merge((Math.min(a, b) << 15) + Math.max(a, b), 1, Integer::sum);
         }
 
-        int[] origin = new int[pointCount.length];
-        System.arraycopy(pointCount, 0, origin, 0, pointCount.length);
-        Arrays.sort(pointCount);
+        pcc = new int[max + 1];
+        for (int i = 1; i < pointCount.length; i++) {
+            max = Math.max(max, ++pcc[pointCount[i]]);
+        }
 
-        int[] result = new int[queries.length];
+        resultCount = new int[(max *= 2) + 1];
+        for (int i = 0; i < pcc.length; i++) {
+            if ((a = pcc[i]) == 0) {
+                continue;
+            }
+            resultCount[i << 1] += a * (a - 1) / 2;
+            for (int j = i + 1 ; j < pcc.length ; j++) {
+                resultCount[i + j] += a * pcc[j];
+            }
+        }
+
+        existCount.forEach((k, v) -> {
+            int sum = pointCount[k >> 15] + pointCount[k & 32767];
+            resultCount[sum]--;
+            resultCount[sum - v]++;
+        });
+
+        for (int i = resultCount.length - 2; i >= 0; i--) {
+            resultCount[i] += resultCount[i + 1];
+        }
         for (int i = 0; i < queries.length; i++) {
-            int query = queries[i], left = 0, right = n - 1, need;
-            while (left < right) {
-                need = query - pointCount[right];
-                while (left < right && pointCount[left] <= need) {
-                    left++;
-                }
-                result[i] += (right - left);
-                right--;
-            }
-            for (Map.Entry<Integer, Integer> entry : existCount.entrySet()) {
-                int k = entry.getKey(), min = k >> 15, max = k & 32767, pMin = origin[min], pMax = origin[max];
-                if (pMin + pMax > query && pMin + pMax - entry.getValue() <= query) {
-                    result[i]--;
-                }
-            }
-
+            result[i] = queries[i] >= max ? 0 : resultCount[queries[i] + 1];
         }
         return result;
+
     }
 
     public static void main(String[] args) {
@@ -67,6 +72,10 @@ public class Z3PairCount {
         System.out.println(Arrays.toString(test.countPairs(4, new int[][]{{1, 2}, {2, 4}, {1, 3}, {2, 3}, {2, 1}}, new int[]{2, 3})));
         // [10, 10, 9, 8, 6]
         System.out.println(Arrays.toString(test.countPairs(5, new int[][]{{1, 5}, {1, 5}, {3, 4}, {2, 5}, {1, 3}, {5, 1}, {2, 3}, {2, 5}}, new int[]{1, 2, 3, 4, 5})));
+        // [15, 13, 15, 15, 15, 15, 15, 15, 15, 15, 13, 15, 15, 15, 15, 13, 15, 0, 14, 13]
+        System.out.println(Arrays.toString(test.countPairs(6, new int[][]{{5, 2}, {3, 5}, {4, 5}, {1, 5}, {1, 4}, {3, 5}, {2, 6}, {6, 4}, {5, 6}, {4, 6}, {6, 2}, {2, 6}, {5, 4}, {6, 1}, {6, 1}, {2, 5}, {1, 3}, {1, 3}, {4, 5}}, new int[]{6, 9, 2, 1, 2, 3, 6, 6, 6, 5, 9, 7, 0, 4, 5, 9, 1, 18, 8, 9})));
+        // [10, 8, 10, 10, 8, 8, 10, 10, 10, 10, 8, 10, 10, 8, 10, 8, 8, 3]
+        System.out.println(Arrays.toString(test.countPairs(5, new int[][]{{4, 5}, {1, 3}, {1, 4}}, new int[]{0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 2})));
     }
 
 }
