@@ -19,29 +19,26 @@ package org.zongjieli.leetcode.question.daily.year2023.month8.week4;
 public class Z4CountServer {
 
     public int countServers(int[][] grid) {
-        int all = 0, single = 0;
-        int[] columnSingle = new int[grid[0].length];
+        int[] columnCount = new int[grid[0].length];
         for (int[] row : grid) {
             int rc = 0, li = -1;
             for (int i = 0; i < row.length; i++) {
                 if (row[i] == 1) {
                     rc++;
-                    li = i;
-                    if (columnSingle[i] == -1) {
-                        columnSingle[i] = 2;
-                        single--;
-                    } else {
-                        columnSingle[i]++;
-                    }
+                    columnCount[li = i]++;
                 }
             }
-            if (rc == 1 && columnSingle[li] == 1) {
-                columnSingle[li] = -1;
-                single++;
+            if (rc == 1) {
+                columnCount[li] += 256;
             }
-            all += rc;
         }
-        return all - single;
+        int result = 0;
+        for (int i : columnCount) {
+            if (i != 257) {
+                result += (i & 255);
+            }
+        }
+        return result;
     }
 
 }
