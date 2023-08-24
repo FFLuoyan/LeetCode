@@ -20,26 +20,26 @@ public class Z4CountServer {
 
     public int countServers(int[][] grid) {
         int all = 0, single = 0;
-        int[] rowCount = new int[grid.length];
-        for (int i = 0; i < grid.length; i++) {
-            for (int j : grid[i]) {
-                if (j == 1) {
-                    rowCount[i]++;
-                    all++;
+        int[] columnSingle = new int[grid[0].length];
+        for (int[] row : grid) {
+            int rc = 0, li = -1;
+            for (int i = 0; i < row.length; i++) {
+                if (row[i] == 1) {
+                    rc++;
+                    li = i;
+                    if (columnSingle[i] == -1) {
+                        columnSingle[i] = 2;
+                        single--;
+                    } else {
+                        columnSingle[i]++;
+                    }
                 }
             }
-        }
-        for (int i = 0 ; i < grid[0].length ; i++) {
-            int columnCount = 0, lastIndex = -1;
-            for (int j = 0 ; j < grid.length ; j++) {
-                if (grid[j][i] == 1) {
-                    columnCount++;
-                    lastIndex = j;
-                }
-            }
-            if (columnCount == 1 && rowCount[lastIndex] == 1) {
+            if (rc == 1 && columnSingle[li] == 1) {
+                columnSingle[li] = -1;
                 single++;
             }
+            all += rc;
         }
         return all - single;
     }
