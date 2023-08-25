@@ -21,42 +21,34 @@ public class Z5Pizza3n {
 
     public int maxSizeSlices(int[] slices) {
         int length = slices.length, n = length / 3, result;
-        // beforeMax[a][b] 表示前 a + 1 个数中选 b + 1 个的最大值
-        int[][] beforeMax = new int[length][];
-        beforeMax[0] = new int[]{slices[0]};
-        beforeMax[1] = new int[]{Math.max(slices[0], slices[1])};
-        beforeMax[2] = new int[]{Math.max(slices[2], beforeMax[1][0]), slices[0] + slices[2]};
+        int[][] max = new int[6][n];
+        max[0][0] = slices[0];
+        max[1][0] = Math.max(slices[0], slices[1]);
+        max[2][0] = Math.max(max[1][0], slices[2]);
         if (n == 1) {
-            return beforeMax[2][0];
+            return max[2][0];
         }
+        max[2][1] = slices[0] + slices[2];
+        max[3][0] = slices[1];
+        max[4][0] = Math.max(slices[1], slices[2]);
+        max[5][0] = Math.max(max[4][0], slices[3]);
+        max[5][1] = slices[1] + slices[3];
         for (int i = 3; i < slices.length - 1; i++) {
-            int slice = slices[i];
-            int[] max2 = beforeMax[i - 2], max1 = beforeMax[i - 1], max = (beforeMax[i] = new int[i / 2 + 1]);
-            max[0] = Math.max(slice, max1[0]);
-            for (int j = 1 ; j < max.length ; j++) {
-                max[j] = max2[j - 1] + slice;
-                if (max1.length > j) {
-                    max[j] = Math.max(max[j], max1[j]);
+            for (int add = 0 ; add <= 3 ; add += 3) {
+                int[] tem = max[add];
+                max[add] = max[add + 1];
+                max[add + 1] = max[add + 2];
+                max[add + 2] = tem;
+                int slice = slices[i + add / 3];
+                max[add + 2][0] = Math.max(slice, max[add + 1][0]);
+                int loopSize = Math.min(i / 2 + 1, n);
+                for (int j = 1 ; j < loopSize ; j++) {
+                    max[add + 2][j] = Math.max(max[add + 1][j], max[add][j - 1] + slice);
                 }
             }
+
         }
-        result = beforeMax[slices.length - 2][n - 1];
-        beforeMax[0][0] = slices[1];
-        beforeMax[1][0] = Math.max(slices[1], slices[2]);
-        beforeMax[2][0] = Math.max(beforeMax[1][0], slices[3]);
-        beforeMax[2][1] = slices[1] + slices[3];
-        for (int i = 4; i < slices.length; i++) {
-            int slice = slices[i];
-            int[] max2 = beforeMax[i - 3], max1 = beforeMax[i - 2], max = beforeMax[i - 1];
-            max[0] = Math.max(slice, max1[0]);
-            for (int j = 1 ; j < max.length ; j++) {
-                max[j] = max2[j - 1] + slice;
-                if (max1.length > j) {
-                    max[j] = Math.max(max[j], max1[j]);
-                }
-            }
-        }
-        return Math.max(result, beforeMax[slices.length - 2][n - 1]);
+        return Math.max(max[2][n - 1], max[5][n - 1]);
     }
 
     public static void main(String[] args) {
