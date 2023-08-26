@@ -1,5 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month8.week4;
 
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +26,18 @@ public class Z6RangeList {
 
     public List<String> summaryRanges(int[] nums) {
         List<String> result = new ArrayList<>(nums.length);
-        if (nums.length == 0) {
-            return result;
-        }
         int start = 0, end = start;
-        while (++end < nums.length) {
-            if (nums[end] - nums[end - 1] != 1) {
-                String first = String.valueOf(nums[start]);
-                result.add(end - 1 == start ? first : first + "->" + nums[end - 1]);
-                start = end;
+        while (start < nums.length) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(nums[start]);
+            while (++end < nums.length && nums[end] - nums[end - 1] == 1) {}
+            if (--end != start) {
+                sb.append("->");
+                sb.append(nums[end]);
             }
+            result.add(sb.toString());
+            start = ++end;
         }
-        String first = String.valueOf(nums[start]);
-        result.add(--end == start ? first : first + "->" + nums[end]);
         return result;
     }
 }
