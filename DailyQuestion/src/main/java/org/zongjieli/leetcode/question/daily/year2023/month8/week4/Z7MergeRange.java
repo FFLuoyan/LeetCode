@@ -23,12 +23,13 @@ public class Z7MergeRange {
     public int[][] merge(int[][] intervals) {
         int[] range = new int[10002];
         Arrays.fill(range, -1);
+        int max = 0;
         for (int[] interval : intervals) {
-            range[interval[0]] = Math.max(interval[1], range[interval[0]]);
+            max = Math.max(max, range[interval[0]] = Math.max(interval[1], range[interval[0]]));
         }
         List<int[]> result = new ArrayList<>();
         int index = 0, start, end;
-        while (index <= 10000) {
+        while (index <= max) {
             if ((end = range[index]) >= 0) {
                 start = index;
                 while (++index <= end) {
