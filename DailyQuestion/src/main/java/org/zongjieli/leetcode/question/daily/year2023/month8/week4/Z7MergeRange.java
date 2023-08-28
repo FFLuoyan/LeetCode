@@ -23,29 +23,26 @@ public class Z7MergeRange {
     public int[][] merge(int[][] intervals) {
         int[] range = new int[10002];
         Arrays.fill(range, -1);
-        int max = 0;
+        int max = 0, index = 0, start, end, ci = 0;
         for (int[] interval : intervals) {
             max = Math.max(max, range[interval[0]] = Math.max(interval[1], range[interval[0]]));
         }
-        List<int[]> result = new ArrayList<>();
-        int index = 0, start, end;
         while (index <= max) {
             if ((end = range[index]) >= 0) {
                 start = index;
                 while (++index <= end) {
                     end = Math.max(end, range[index]);
                 }
-                result.add(new int[]{start, end});
+                intervals[ci][0] = start;
+                intervals[ci++][1] = end;
             } else {
                 ++index;
             }
         }
 
-        int[][] r = new int[result.size()][];
-        for (int i = 0; i < result.size(); i++) {
-            r[i] = result.get(i);
-        }
-        return r;
+        int[][] result = new int[ci][];
+        System.arraycopy(intervals, 0, result, 0, ci);
+        return result;
     }
 
     public static void main(String[] args) {
