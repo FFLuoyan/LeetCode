@@ -20,40 +20,44 @@ import java.util.Arrays;
 public class Z1InsertRange {
 
     public int[][] insert(int[][] intervals, int[] newInterval) {
-        int length = intervals.length, index = 0, ri = 0, a = newInterval[0], b = newInterval[1];
+        int length = intervals.length, index = 0, a = newInterval[0], b = newInterval[1];
         if (length == 0) {
-            return new int[][]{{a, b}};
+            return new int[][]{newInterval};
         }
-        int[][] result = new int[length + 1][2];
         while (index < length) {
             int[] interval = intervals[index];
             if (interval[1] < a) {
-                result[ri++] = interval;
                 index++;
             } else if (interval[0] > b) {
-                result[ri++] = newInterval;
-                while (index < length) {
-                    result[ri++] = intervals[index++];
-                }
+                int[][] result = new int[length + 1][];
+                result[index] = newInterval;
+                System.arraycopy(intervals, 0, result, 0, index);
+                System.arraycopy(intervals, index, result, index + 1, length - index);
                 return result;
             } else if (interval[1] >= b) {
                 interval[0] = Math.min(interval[0], a);
                 return intervals;
             } else {
-                result[ri][0] = Math.min(interval[0], a);
-                result[ri][1] = b;
+                int startIndex = index;
+                int[] startInterval = interval;
+                startInterval[0] = Math.min(interval[0], a);
                 while (++index < length && (interval = (intervals[index]))[0] <= b) {
-                    result[ri][1] = Math.max(b, interval[1]);
+                    b = Math.max(b, interval[1]);
                 }
-                while (index < length) {
-                    result[++ri] = intervals[index++];
+                startInterval[1] = b;
+                if (index - startIndex == 1) {
+                    return intervals;
                 }
-                int[][] rr = new int[ri + 1][];
-                System.arraycopy(result, 0, rr, 0, ri + 1);
-                return rr;
+                int[][] result = new int[length - index + startIndex + 1][];
+                System.arraycopy(intervals, 0, result, 0, startIndex);
+                result[startIndex] = startInterval;
+                System.arraycopy(intervals, index, result, startIndex + 1, length - index);
+                return result;
             }
         }
-        result[ri] = newInterval;
+        int[][] result = new int[length + 1][];
+        System.arraycopy(intervals, 0, result, 0, length);
+        result[length] = newInterval;
         return result;
     }
 
