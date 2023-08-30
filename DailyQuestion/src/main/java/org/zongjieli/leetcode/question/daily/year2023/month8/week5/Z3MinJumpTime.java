@@ -31,10 +31,6 @@ public class Z3MinJumpTime {
         if (x == 0) {
             return 0;
         }
-        int common = a >= b ? common(a, b) : common(b, a);
-        if (x % common != 0) {
-            return -1;
-        }
 
         this.a = a;
         this.b = b;
@@ -47,28 +43,26 @@ public class Z3MinJumpTime {
         }
         max += a + b;
 
-        jump(0, 1, false);
-        return position[x] == 0 ? -1 : position[x];
+        return jump(0, 1, false);
     }
 
-    public void jump(int current, int time, boolean isBack) {
-        int next = current - b, pn;
-        if (!isBack && next > 0 && (pn  = position[next]) != -1 && (pn == 0 || pn > time)) {
+    public int jump(int current, int time, boolean isBack) {
+        if (current == x) {
+            return time - 1;
+        }
+        int next = current + a, pn, jump;
+        if (next <= max && (pn  = position[next]) != -1 && (pn == 0 || pn > time)) {
             position[next] = time;
-            jump(next, time + 1, true);
+            if ((jump = jump(next, time + 1, false)) != -1) {
+                return jump;
+            }
         }
-        if ((next = (current + a)) <= max && (pn  = position[next]) != -1 && (pn == 0 || pn > time)) {
-            position[next] = time;
-            jump(next, time + 1, false);
+        if (!isBack && (next = current - b) > 0 && (pn  = position[next]) != -1 && (pn == 0 || pn > time)) {
+            if ((jump = jump(next, time + 1, true)) != -1) {
+                return jump;
+            }
         }
-    }
-
-    public int common(int a, int b) {
-        a = a % b;
-        if (a == 0) {
-            return b;
-        }
-        return common(b, a);
+        return -1;
     }
 
     public static void main(String[] args) {
