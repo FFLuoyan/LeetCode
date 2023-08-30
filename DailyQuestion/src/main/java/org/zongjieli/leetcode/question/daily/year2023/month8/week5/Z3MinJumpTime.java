@@ -28,27 +28,29 @@ public class Z3MinJumpTime {
         if (x == 0) {
             return 0;
         }
-        int common = a >= b ? common(a, b) : common(b, a);
+        int common = a >= b ? common(a, b) : common(b, a), max = 0;
         if (x % common != 0) {
             return -1;
         }
-        int[] position = new int[2000 + a + b];
+        int[] position = new int[6001];
         for (int i : forbidden) {
             position[i] = -1;
+            max = Math.max(max, i);
         }
-        jump(a, b, 0, 1, false, position);
+        max = Math.max(max, x) + a + b;
+        jump(a, b, 0, 1, max, false, position);
         return position[x] == 0 ? -1 : position[x];
     }
 
-    public void jump(int a, int b, int current, int time, boolean isBack, int[] position) {
+    public void jump(int a, int b, int current, int time, int max, boolean isBack, int[] position) {
         int next = current - b, pn;
         if (!isBack && next > 0 && (pn  = position[next]) != -1 && (pn == 0 || pn > time)) {
             position[next] = time;
-            jump(a, b, next, time + 1, true, position);
+            jump(a, b, next, time + 1, max, true, position);
         }
-        if ((next = (current + a)) < position.length && (pn  = position[next]) != -1 && (pn == 0 || pn > time)) {
+        if ((next = (current + a)) <= max && (pn  = position[next]) != -1 && (pn == 0 || pn > time)) {
             position[next] = time;
-            jump(a, b, next, time + 1, false, position);
+            jump(a, b, next, time + 1, max, false, position);
         }
     }
 
