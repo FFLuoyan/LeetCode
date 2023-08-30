@@ -24,33 +24,42 @@ package org.zongjieli.leetcode.question.daily.year2023.month8.week5;
  */
 public class Z3MinJumpTime {
 
+    int a, b, x, max;
+    int[] position;
+
     public int minimumJumps(int[] forbidden, int a, int b, int x) {
         if (x == 0) {
             return 0;
         }
-        int common = a >= b ? common(a, b) : common(b, a), max = 0;
+        int common = a >= b ? common(a, b) : common(b, a);
         if (x % common != 0) {
             return -1;
         }
-        int[] position = new int[6001];
+
+        this.a = a;
+        this.b = b;
+        this.x = max = x;
+        position = new int[6001];
+
         for (int i : forbidden) {
             position[i] = -1;
             max = Math.max(max, i);
         }
-        max = Math.max(max, x) + a + b;
-        jump(a, b, 0, 1, max, false, position);
+        max += a + b;
+
+        jump(0, 1, false);
         return position[x] == 0 ? -1 : position[x];
     }
 
-    public void jump(int a, int b, int current, int time, int max, boolean isBack, int[] position) {
+    public void jump(int current, int time, boolean isBack) {
         int next = current - b, pn;
         if (!isBack && next > 0 && (pn  = position[next]) != -1 && (pn == 0 || pn > time)) {
             position[next] = time;
-            jump(a, b, next, time + 1, max, true, position);
+            jump(next, time + 1, true);
         }
         if ((next = (current + a)) <= max && (pn  = position[next]) != -1 && (pn == 0 || pn > time)) {
             position[next] = time;
-            jump(a, b, next, time + 1, max, false, position);
+            jump(next, time + 1, false);
         }
     }
 
@@ -68,5 +77,7 @@ public class Z3MinJumpTime {
         System.out.println(test.minimumJumps(new int[]{162, 118, 178, 152, 167, 100, 40, 74, 199, 186, 26, 73, 200, 127, 30, 124, 193, 84, 184, 36, 103, 149, 153, 9, 54, 154, 133, 95, 45, 198, 79, 157, 64, 122, 59, 71, 48, 177, 82, 35, 14, 176, 16, 108, 111, 6, 168, 31, 134, 164, 136, 72, 98}, 29, 98, 80));
         // 3998
         System.out.println(test.minimumJumps(new int[]{1998}, 1999, 2000, 2000));
+        // 20
+        System.out.println(test.minimumJumps(new int[]{3}, 14, 5, 90));
     }
 }
