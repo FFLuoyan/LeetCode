@@ -1,8 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month8.week4;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * 以数组 intervals 表示若干个区间的集合
@@ -23,10 +21,12 @@ public class Z7MergeRange {
     public int[][] merge(int[][] intervals) {
         int[] range = new int[10002];
         Arrays.fill(range, -1);
-        int max = 0, index = 0, start, end, ci = 0;
+        int max = 0, min = Integer.MAX_VALUE, index, start, end, ci = 0;
         for (int[] interval : intervals) {
-            max = Math.max(max, range[interval[0]] = Math.max(interval[1], range[interval[0]]));
+            min = Math.min(min, start = interval[0]);
+            max = Math.max(max, range[start] = Math.max(interval[1], range[start]));
         }
+        index = min;
         while (index <= max) {
             if ((end = range[index]) >= 0) {
                 start = index;
