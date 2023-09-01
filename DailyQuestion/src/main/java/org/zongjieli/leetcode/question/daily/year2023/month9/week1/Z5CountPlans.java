@@ -15,6 +15,9 @@ package org.zongjieli.leetcode.question.daily.year2023.month9.week1;
 public class Z5CountPlans {
 
     public long waysToBuyPensPencils(int total, int cost1, int cost2) {
+        if (cost1 < cost2) {
+            return waysToBuyPensPencils(total, cost2, cost1);
+        }
         long result = 0;
         for ( ; total >= 0 ; total -= cost1) {
             result += total / cost2 + 1;
