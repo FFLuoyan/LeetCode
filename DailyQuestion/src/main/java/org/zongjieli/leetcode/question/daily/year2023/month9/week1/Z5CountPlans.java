@@ -16,8 +16,8 @@ public class Z5CountPlans {
 
     public long waysToBuyPensPencils(int total, int cost1, int cost2) {
         long result = 0;
-        for (int i = 0 ; i <= total ; i += cost1) {
-            result += (total - i) / cost2 + 1;
+        for ( ; total >= 0 ; total -= cost1) {
+            result += total / cost2 + 1;
         }
         return result;
     }
