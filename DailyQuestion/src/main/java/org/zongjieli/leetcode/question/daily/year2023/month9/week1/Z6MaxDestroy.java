@@ -23,16 +23,15 @@ package org.zongjieli.leetcode.question.daily.year2023.month9.week1;
 public class Z6MaxDestroy {
 
     public int captureForts(int[] forts) {
-        int start = 0, result = 0, temp = 0;
-        for (int fort : forts) {
+        int start = 0, si = 0, result = 0, fort;
+        for (int i = 0; i < forts.length; i++) {
+            fort = forts[i];
             if (fort != 0) {
                 if (start + fort == 0) {
-                    result = Math.max(result, temp);
+                    result = Math.max(result, i - si - 1);
                 }
-                temp = 0;
                 start = fort;
-            } else if (start != 0) {
-                temp++;
+                si = i;
             }
         }
         return result;
