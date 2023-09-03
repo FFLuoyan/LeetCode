@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2023.month9.week1;
 
-import java.util.Arrays;
-
 /**
  * 一款电子游戏,在游戏中需要保护城市免受怪物侵袭
  * 给定一个下标从 0 开始且长度为 n 的整数数组 dist
@@ -26,16 +24,17 @@ import java.util.Arrays;
 public class Z7MaxEliminate {
 
     public int eliminateMaximum(int[] dist, int[] speed) {
+        int[] time = new int[100001];
         for (int i = 0; i < dist.length; i++) {
-            dist[i] = (dist[i] - 1) / speed[i];
+            time[(dist[i] - 1) / speed[i]]++;
         }
-        Arrays.sort(dist);
-        for (int i = 0; i < dist.length; i++) {
-            if (dist[i] < i) {
-                return i;
+        int sum = 0;
+        for (int i = 0; i < time.length && sum < dist.length; i++) {
+            if ((sum += time[i]) > i + 1) {
+                return i + 1;
             }
         }
-        return dist.length;
+        return sum;
     }
 
 }
