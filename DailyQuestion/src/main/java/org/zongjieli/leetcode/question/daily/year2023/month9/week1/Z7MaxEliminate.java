@@ -24,17 +24,18 @@ package org.zongjieli.leetcode.question.daily.year2023.month9.week1;
 public class Z7MaxEliminate {
 
     public int eliminateMaximum(int[] dist, int[] speed) {
-        int[] time = new int[100001];
-        for (int i = 0; i < dist.length; i++) {
-            time[(dist[i] - 1) / speed[i]]++;
+        int length = dist.length;
+        int[] time = new int[100002];
+        for (int i = 0; i < length; i++) {
+            time[(dist[i] - 1) / speed[i] + 1]++;
         }
         int sum = 0;
-        for (int i = 0; i < time.length && sum < dist.length; i++) {
-            if ((sum += time[i]) > i + 1) {
-                return i + 1;
+        for (int i = 1; i < length ; i++) {
+            if ((sum += time[i]) > i) {
+                return i;
             }
         }
-        return sum;
+        return length;
     }
 
 }
