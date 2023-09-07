@@ -40,11 +40,11 @@ public class Z4FixMinTime {
     public boolean canFix(long time, int[] count, int cars) {
         long fixCount = 0;
         for (int i = 1 ; i <= 100 ; i++) {
-            if (count[i] != 0) {
-                fixCount += (long) Math.sqrt(time / i) * count[i];
+            if (count[i] != 0 && (fixCount += (long) Math.sqrt(time / i) * count[i]) >= cars) {
+                return true;
             }
         }
-        return fixCount >= cars;
+        return false;
     }
 
 }
