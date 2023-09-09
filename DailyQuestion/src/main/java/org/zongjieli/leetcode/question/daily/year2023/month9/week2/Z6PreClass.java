@@ -1,8 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month9.week2;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * 这个学期必须选修 numCourses 门课程,记为 0 到 numCourses - 1
@@ -24,12 +22,12 @@ import java.util.List;
 public class Z6PreClass {
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        int length = prerequisites.length, a, b;
+        int length = prerequisites.length, a;
         int[] fatherIndex = new int[numCourses], indexBefore = new int[length];
         Boolean[] canFinish = new Boolean[numCourses];
         Arrays.fill(fatherIndex, -1);
         Arrays.fill(indexBefore, -1);
-        for (int i = 0; i < prerequisites.length; i++) {
+        for (int i = 0; i < length; i++) {
             a = prerequisites[i][0];
             indexBefore[i] = fatherIndex[a];
             fatherIndex[a] = i;
