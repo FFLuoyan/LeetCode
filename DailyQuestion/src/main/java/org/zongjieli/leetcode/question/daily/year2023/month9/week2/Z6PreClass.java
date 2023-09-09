@@ -1,6 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2023.month9.week2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,34 +24,35 @@ import java.util.List;
 public class Z6PreClass {
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<Integer>[] fathers = new List[numCourses];
-        for (int[] prerequisite : prerequisites) {
-            if (fathers[prerequisite[0]] == null) {
-                fathers[prerequisite[0]] = new ArrayList<>();
-            }
-            fathers[prerequisite[0]].add(prerequisite[1]);
-        }
+        int length = prerequisites.length, a, b;
+        int[] fatherIndex = new int[numCourses], indexBefore = new int[length];
         Boolean[] canFinish = new Boolean[numCourses];
+        Arrays.fill(fatherIndex, -1);
+        Arrays.fill(indexBefore, -1);
+        for (int i = 0; i < prerequisites.length; i++) {
+            a = prerequisites[i][0];
+            indexBefore[i] = fatherIndex[a];
+            fatherIndex[a] = i;
+        }
         for (int i = 0 ; i < numCourses ; i++) {
-            if (!canFinish(i, canFinish, fathers)) {
+            if (!canFinish(i, fatherIndex, indexBefore, canFinish, prerequisites)) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean canFinish(int course, Boolean[] canFinish, List<Integer>[] fathers) {
+    private boolean canFinish(int course, int[] fatherIndex, int[] indexBefore, Boolean[] canFinish, int[][] prerequisites) {
         if (canFinish[course] != null) {
             return canFinish[course];
         }
-        if (fathers[course] == null) {
-            return canFinish[course] = Boolean.TRUE;
-        }
-        canFinish[course] = false;
-        for (Integer father : fathers[course]) {
-            if (!canFinish(father, canFinish, fathers)) {
+        int index = fatherIndex[course];
+        while (index != -1) {
+            canFinish[course] = Boolean.FALSE;
+            if (!canFinish(prerequisites[index][1], fatherIndex, indexBefore, canFinish, prerequisites)) {
                 return false;
             }
+            index = indexBefore[index];
         }
         return canFinish[course] = Boolean.TRUE;
     }
