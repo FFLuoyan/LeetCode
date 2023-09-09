@@ -30,7 +30,7 @@ public class Z6PreClass {
             }
             fathers[prerequisite[0]].add(prerequisite[1]);
         }
-        int[] canFinish = new int[numCourses];
+        Boolean[] canFinish = new Boolean[numCourses];
         for (int i = 0 ; i < numCourses ; i++) {
             if (!canFinish(i, canFinish, fathers)) {
                 return false;
@@ -39,25 +39,20 @@ public class Z6PreClass {
         return true;
     }
 
-    private boolean canFinish(int course, int[] canFinish, List<Integer>[] fathers) {
-        if (canFinish[course] == 1) {
-            return true;
-        }
-        if (canFinish[course] == 2) {
-            return false;
+    private boolean canFinish(int course, Boolean[] canFinish, List<Integer>[] fathers) {
+        if (canFinish[course] != null) {
+            return canFinish[course];
         }
         if (fathers[course] == null) {
-            canFinish[course] = 1;
-            return true;
+            return canFinish[course] = Boolean.TRUE;
         }
-        canFinish[course] = 2;
+        canFinish[course] = false;
         for (Integer father : fathers[course]) {
             if (!canFinish(father, canFinish, fathers)) {
                 return false;
             }
         }
-        canFinish[course] = 1;
-        return true;
+        return canFinish[course] = Boolean.TRUE;
     }
 
     public static void main(String[] args) {
