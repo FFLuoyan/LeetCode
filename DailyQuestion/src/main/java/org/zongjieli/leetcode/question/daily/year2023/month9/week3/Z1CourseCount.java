@@ -1,6 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2023.month9.week3;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -21,20 +22,16 @@ public class Z1CourseCount {
 
     public int scheduleCourse(int[][] courses) {
         PriorityQueue<Integer> learned = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
-        Arrays.sort(courses, (a, b) -> a[1] == b[1] ? Integer.compare(a[0], b[0]) : a[1] > b[1] ? 1 : -1);
-        int sum = 0;
+        Arrays.sort(courses, Comparator.comparingInt(a -> a[1]));
+        int sum = 0, max;
         for (int[] course : courses) {
             if (course[0] + sum <= course[1]) {
                 learned.add(course[0]);
                 sum += course[0];
-            } else if (!learned.isEmpty()) {
-                int max = learned.poll();
-                if (max < course[0]) {
-                    learned.add(max);
-                } else {
-                    learned.add(course[0]);
-                    sum = sum - max + course[0];
-                }
+            } else if (!learned.isEmpty() && (max = learned.peek()) > course[0]) {
+                learned.poll();
+                learned.add(course[0]);
+                sum = sum - max + course[0];
             }
         }
         return learned.size();
