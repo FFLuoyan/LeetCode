@@ -27,40 +27,48 @@ import java.util.*;
  */
 public class Z2CourseBefore {
 
-    Set<Integer>[] fathers;
+    int[] lastIndex, beforeIndex;
+    int[][] pre;
 
-    boolean[] visited;
+    long[][] fathers;
 
     public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
-        fathers = new Set[numCourses];
-        visited = new boolean[numCourses];
-        for (int i = 0; i < fathers.length; i++) {
-            fathers[i] = new HashSet<>();
+        pre = prerequisites;
+        lastIndex = new int[numCourses];
+        beforeIndex = new int[pre.length];
+        Arrays.fill(lastIndex, -1);
+        Arrays.fill(beforeIndex, -1);
+        fathers = new long[numCourses][];
+        for (int i = 0; i < pre.length; i++) {
+            int son = pre[i][1];
+            beforeIndex[i] = lastIndex[son];
+            lastIndex[son] = i;
         }
-        for (int[] prerequisite : prerequisites) {
-            fathers[prerequisite[1]].add(prerequisite[0]);
-        }
-        for (int i = 0 ; i < numCourses ; i++) {
+        for (int i = 0; i < numCourses; i++) {
             addFather(i);
         }
-        List<Boolean> result = new ArrayList<>();
+        List<Boolean> result = new ArrayList<>(queries.length);
         for (int[] query : queries) {
-            result.add(fathers[query[1]].contains(query[0]));
+            int a = query[0], b = query[1];
+            result.add((fathers[b][a / 50] & (1L << (a % 50))) > 0);
         }
         return result;
     }
 
-    public void addFather(int course) {
-        if (visited[course]) {
-            return;
+    public long[] addFather(int course) {
+        if (fathers[course] != null) {
+            return fathers[course];
         }
-        Set<Integer> newFather = new HashSet<>(fathers[course]);
-        for (Integer father : fathers[course]) {
-            addFather(father);
-            newFather.addAll(fathers[father]);
+        fathers[course] = new long[2];
+        int index = lastIndex[course];
+        while (index != -1) {
+            long[] father = addFather(pre[index][0]);
+            fathers[course][0] |= father[0];
+            fathers[course][1] |= father[1];
+            fathers[course][pre[index][0] / 50] |= (1L << (pre[index][0] % 50));
+            index = beforeIndex[index];
         }
-        fathers[course] = newFather;
-        visited[course] = true;
+        return fathers[course];
     }
 
     public static void main(String[] args) {
@@ -69,6 +77,8 @@ public class Z2CourseBefore {
         System.out.println(test.checkIfPrerequisite(2, new int[][]{}, new int[][]{{1, 0}, {0, 1}}));
         // [true, true]
         System.out.println(test.checkIfPrerequisite(3, new int[][]{{1, 2}, {1, 0}, {2, 0}}, new int[][]{{1, 0}, {1, 2}}));
+        // [true, false, true, false]
+        System.out.println(test.checkIfPrerequisite(5, new int[][]{{0, 1}, {1, 2}, {2, 3}, {3, 4}}, new int[][]{{0, 4}, {4, 0}, {1, 3}, {3, 0}}));
     }
 
 }
