@@ -49,22 +49,19 @@ public class Z6TreeOperate {
 
     int[] lock;
 
-    int[][] sons;
+    int[] beforeSon;
 
+    int[] lastSon;
 
     public Z6TreeOperate(int[] parent) {
         int n = parent.length;
         parents = parent;
         lock = new int[n];
-        sons = new int[n][];
-        for (int i = 1; i < n; i++) {
-            lock[parent[i]]++;
-        }
-        for (int i = 0; i < n; i++) {
-            sons[i] = new int[lock[i]];
-        }
-        for (int i = 1; i < n; i++) {
-            sons[parent[i]][--lock[parent[i]]] = i;
+        beforeSon = new int[n];
+        lastSon = new int[n];
+        for (int i = 1; i < parent.length; i++) {
+            beforeSon[i] = lastSon[parent[i]];
+            lastSon[parent[i]] = i;
         }
     }
 
@@ -104,12 +101,14 @@ public class Z6TreeOperate {
 
     public boolean unlockSons(int num) {
         boolean isUnlock = false;
-        for (int son : sons[num]) {
+        int son = lastSon[num];
+        while (son != 0) {
             if (lock[son] != 0) {
                 lock[son] = 0;
                 isUnlock = true;
             }
             isUnlock |= unlockSons(son);
+            son = beforeSon[son];
         }
         return isUnlock;
     }
