@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2023.month9.week4;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 给定一棵 n 个节点的树,编号从 0 到 n - 1,以父节点数组 parent 的形式给出
  * 其中 parent[i] 是第 i 个节点的父节点
@@ -52,18 +49,22 @@ public class Z6TreeOperate {
 
     int[] lock;
 
-    List<Integer>[] sons;
+    int[][] sons;
 
 
     public Z6TreeOperate(int[] parent) {
+        int n = parent.length;
         parents = parent;
-        lock = new int[parent.length];
-        sons = new List[parent.length];
-        for (int i = 0; i < sons.length; i++) {
-            sons[i] = new ArrayList<>();
+        lock = new int[n];
+        sons = new int[n][];
+        for (int i = 1; i < n; i++) {
+            lock[parent[i]]++;
         }
-        for (int i = 1; i < parent.length; i++) {
-            sons[parent[i]].add(i);
+        for (int i = 0; i < n; i++) {
+            sons[i] = new int[lock[i]];
+        }
+        for (int i = 1; i < n; i++) {
+            sons[parent[i]][--lock[parent[i]]] = i;
         }
     }
 
@@ -103,7 +104,7 @@ public class Z6TreeOperate {
 
     public boolean unlockSons(int num) {
         boolean isUnlock = false;
-        for (Integer son : sons[num]) {
+        for (int son : sons[num]) {
             if (lock[son] != 0) {
                 lock[son] = 0;
                 isUnlock = true;
