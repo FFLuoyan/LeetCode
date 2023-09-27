@@ -33,13 +33,13 @@ public class Z3RestaurantFilter {
     public List<Integer> filterRestaurants(int[][] restaurants, int veganFriendly, int maxPrice, int maxDistance) {
         int index = 0;
         for (int[] restaurant : restaurants) {
-            if ((restaurant[2] == 1 || veganFriendly == 0) && restaurant[3] <= maxPrice && restaurant[4] <= maxDistance) {
+            if (restaurant[2] >= veganFriendly && restaurant[3] <= maxPrice && restaurant[4] <= maxDistance) {
                 restaurants[index++] = restaurant;
             }
         }
-        Arrays.sort(restaurants, 0, index, (a, b) -> a[1] == b[1] ? -Integer.compare(a[0], b[0]) : -Integer.compare(a[1], b[1]));
+        Arrays.sort(restaurants, 0, index, (a, b) -> a[1] == b[1] ? Integer.compare(a[0], b[0]) : Integer.compare(a[1], b[1]));
         List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < index; i++) {
+        for (int i = index - 1; i >= 0; i--) {
             result.add(restaurants[i][0]);
         }
         return result;
