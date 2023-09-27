@@ -1,8 +1,9 @@
 package org.zongjieli.leetcode.question.daily.year2023.month9.week5;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * 给定一个餐馆信息数组 restaurants
@@ -30,12 +31,23 @@ import java.util.stream.Collectors;
 public class Z3RestaurantFilter {
 
     public List<Integer> filterRestaurants(int[][] restaurants, int veganFriendly, int maxPrice, int maxDistance) {
-        return Arrays
-                .stream(restaurants)
-                .filter(a -> (veganFriendly != 1 || a[2] == 1) && a[3] <= maxPrice && a[4] <= maxDistance)
-                .sorted((a, b) -> a[1] == b[1] ? -Integer.compare(a[0], b[0]) : -Integer.compare(a[1], b[1]))
-                .map(a -> a[0])
-                .collect(Collectors.toList());
+        int index = 0;
+        for (int[] restaurant : restaurants) {
+            if ((restaurant[2] == 1 || veganFriendly == 0) && restaurant[3] <= maxPrice && restaurant[4] <= maxDistance) {
+                restaurants[index++] = restaurant;
+            }
+        }
+        Arrays.sort(restaurants, 0, index, (a, b) -> a[1] == b[1] ? -Integer.compare(a[0], b[0]) : -Integer.compare(a[1], b[1]));
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < index; i++) {
+            result.add(restaurants[i][0]);
+        }
+        return result;
     }
 
+    public static void main(String[] args) {
+        Z3RestaurantFilter test = new Z3RestaurantFilter();
+        // [57395, 28391, 77484]
+        System.out.println(test.filterRestaurants(new int[][]{{77484, 13400, 1, 4010, 2926}, {3336, 85138, 0, 49966, 89979}, {28391, 55328, 0, 69158, 29058}, {57395, 64988, 0, 45312, 30261}}, 0, 99739, 60242));
+    }
 }
