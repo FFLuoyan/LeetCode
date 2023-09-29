@@ -20,17 +20,17 @@ package org.zongjieli.leetcode.question.daily.year2023.month9.week5;
 public class Z5MaxFlower {
 
     public boolean canPlaceFlowers(int[] flowerbed, int n) {
-        int result = 0, currentCount = 1;
-        for (int i : flowerbed) {
-            if (i == 0) {
-                currentCount++;
-            } else if ((result += (currentCount - 1) / 2) >= n){
-                return true;
-            } else {
-                currentCount = 0;
+        int result = 0, lastIndex = -2, currentIndex = 0, length = flowerbed.length;
+        while (currentIndex < length) {
+            if (flowerbed[currentIndex] == 1) {
+                if ((result += (currentIndex - lastIndex - 2) / 2) >= n) {
+                    return true;
+                }
+                lastIndex = currentIndex;
             }
+            currentIndex++;
         }
-        return result + currentCount / 2 >= n;
+        return result + (currentIndex - lastIndex - 1) / 2 >= n;
     }
 
 }
