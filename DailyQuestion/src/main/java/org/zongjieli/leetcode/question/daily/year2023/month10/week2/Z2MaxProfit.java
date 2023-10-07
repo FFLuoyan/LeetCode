@@ -12,38 +12,28 @@ package org.zongjieli.leetcode.question.daily.year2023.month10.week2;
  * @version 1.0
  * @date 2023/10/3
  */
-public class Z2BestTime {
+public class Z2MaxProfit {
 
     public int maxProfit(int[] prices) {
-        int[] onceBefore = new int[prices.length];
-        int min = prices[0];
+        int[] profit = new int[prices.length];
+        int min = prices[0], max = prices[prices.length - 1], maxProfit = 0, result;
         for (int i = 1; i < prices.length; i++) {
-            if (prices[i] <= min) {
-                onceBefore[i] = onceBefore[i - 1];
-                min = prices[i];
-            } else {
-                onceBefore[i] = Math.max(onceBefore[i - 1], prices[i] - min);
-            }
+            profit[i] = maxProfit = Math.max(maxProfit, prices[i] - min);
+            min = Math.min(prices[i], min);
         }
-        int max = prices[prices.length - 1];
-        int[] onceAfter = new int[prices.length];
+
+        maxProfit = 0;
+        result = profit[prices.length - 1];
         for (int i = prices.length - 2; i >= 0; i--) {
-            if (prices[i] >= max) {
-                onceAfter[i] = onceAfter[i + 1];
-                max = prices[i];
-            } else {
-                onceAfter[i] = Math.max(onceAfter[i + 1], max - prices[i]);
-            }
-        }
-        int result = Math.max(onceBefore[prices.length - 1], onceAfter[0]);
-        for (int i = 1; i < prices.length; i++) {
-            result = Math.max(result, onceBefore[i - 1] + onceAfter[i]);
+            result = Math.max(result, profit[i] + maxProfit);
+            maxProfit = Math.max(maxProfit, max - prices[i]);
+            max = Math.max(prices[i], max);
         }
         return result;
     }
 
     public static void main(String[] args) {
-        Z2BestTime test = new Z2BestTime();
+        Z2MaxProfit test = new Z2MaxProfit();
         // 6
         System.out.println(test.maxProfit(new int[]{3, 3, 5, 0, 0, 3, 1, 4}));
         // 4
