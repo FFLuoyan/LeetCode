@@ -19,23 +19,22 @@ package org.zongjieli.leetcode.question.daily.year2023.month10.week2;
  */
 public class Z6StockSpan {
 
-    int[] prices = new int[10000];
-    int[] spans = new int[10000];
+    int[] prices = new int[10001];
+    int[] spans = new int[10001];
 
     int index = 0;
 
     public Z6StockSpan() {
-
+        prices[0] = Integer.MAX_VALUE;
     }
 
     public int next(int price) {
-        prices[index] = price;
-        int last = index - 1;
-        while (last >= 0 && price >= prices[last]) {
-            last = last - spans[last];
+        int result = 1;
+        while (price >= prices[index]) {
+            result += spans[index--];
         }
-        last = index - last;
-        return spans[index++] = last;
+        prices[++index] = price;
+        return spans[index] = result;
     }
 
     public static void main(String[] args) {
