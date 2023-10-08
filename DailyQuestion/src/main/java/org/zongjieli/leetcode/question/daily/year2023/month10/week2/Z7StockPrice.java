@@ -1,5 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2023.month10.week2;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -34,9 +36,11 @@ import java.util.TreeMap;
  */
 public class Z7StockPrice {
 
-    TreeMap<Integer, Integer> timeValue = new TreeMap<>();
+    Map<Integer, Integer> timeValue = new HashMap<>();
 
     TreeMap<Integer, Integer> valueCount = new TreeMap<>();
+
+    int maxTime = 0, value = 0;
 
     public Z7StockPrice() {
 
@@ -49,10 +53,14 @@ public class Z7StockPrice {
             valueCount.merge(before, 1, (o, n) -> o == 1 ? null : o - 1);
         }
         valueCount.merge(price, 1, Integer::sum);
+        if (timestamp >= maxTime) {
+            maxTime = timestamp;
+            value = price;
+        }
     }
 
     public int current() {
-        return timeValue.lastEntry().getValue();
+        return value;
     }
 
     public int maximum() {
