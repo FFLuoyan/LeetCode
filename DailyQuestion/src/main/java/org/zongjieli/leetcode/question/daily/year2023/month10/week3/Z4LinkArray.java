@@ -7,7 +7,7 @@ import org.zongjieli.leetcode.origin.year2022.month2.LinkArray;
  *
  * @author Li.zongjie
  * @version 1.0
- * @date 2023/10/11
+ * @date 2023/10/12
  */
 public class Z4LinkArray {
 
