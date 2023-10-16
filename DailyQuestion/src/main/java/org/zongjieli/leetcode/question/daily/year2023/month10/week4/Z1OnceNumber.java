@@ -1,8 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2023.month10.week4;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * 给定一个整数数组 nums,其中恰好有两个元素只出现一次,其余所有元素均出现两次
  * 找出只出现一次的那两个元素,可以按任意顺序返回答案
@@ -18,20 +15,18 @@ import java.util.Set;
 public class Z1OnceNumber {
 
     public int[] singleNumber(int[] nums) {
-        Set<Integer> values = new HashSet<>();
+        int xor = 0, firstDiffBit = -1, first = 0;
         for (int num : nums) {
-            if (values.contains(num)) {
-                values.remove(num);
-            } else {
-                values.add(num);
+            xor ^= num;
+        }
+        while ((xor & (1 << ++firstDiffBit)) == 0) {}
+        firstDiffBit = (1 << firstDiffBit);
+        for (int num : nums) {
+            if ((num & firstDiffBit) > 0) {
+                first ^= num;
             }
         }
-        int[] result = new int[2];
-        int index = 0;
-        for (Integer value : values) {
-            result[index++] = value;
-        }
-        return result;
+        return new int[]{first, xor ^ first};
     }
 
 }
