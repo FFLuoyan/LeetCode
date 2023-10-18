@@ -20,8 +20,12 @@ import java.util.Arrays;
 public class Z3MaxScore {
 
     public long maxKelements(int[] nums, int k) {
-        int min = 1, max = 1000000002;
-        long[] values = new long[2];
+        int min = 1, max = 0;
+        for (int num : nums) {
+            max = Math.max(max, num);
+        }
+        max += 2;
+        long[] values;
         while (min < max) {
             int middle = (min + max) / 2;
             values = getValues(nums, middle);
@@ -33,6 +37,7 @@ public class Z3MaxScore {
                 max = middle;
             }
         }
+        values = getValues(nums, max);
         return values[2] + (k - values[0]) * values[1];
     }
 
@@ -51,9 +56,11 @@ public class Z3MaxScore {
     }
 
     public static void main(String[] args) {
+        Z3MaxScore test = new Z3MaxScore();
+        // 17
+        System.out.println(test.maxKelements(new int[]{1, 10, 3, 3, 3}, 3));
         int[] values = new int[10000];
         Arrays.fill(values, 1000000000);
-        Z3MaxScore test = new Z3MaxScore();
         // 70000000000
         System.out.println(test.maxKelements(values, 70));
     }
