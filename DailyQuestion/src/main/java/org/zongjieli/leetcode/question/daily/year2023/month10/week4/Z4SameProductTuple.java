@@ -19,22 +19,12 @@ import java.util.Map;
 public class Z4SameProductTuple {
 
     public int tupleSameProduct(int[] nums) {
-        boolean[] exists = new boolean[10001];
-        for (int num : nums) {
-            exists[num] = true;
-        }
-        int[] values = new int[1001];
-        int result = 0, first, pair, size = 0;
-        for (int i = 0; i < exists.length; i++) {
-            if (exists[i]) {
-                values[size++] = i;
-            }
-        }
+        int result = 0, first, pair, length = nums.length;
         Map<Integer, Integer> pairValues = new HashMap<>();
-        for (int i = 0; i < size; i++) {
-            first = values[i];
-            for (int j = i + 1; j < size; j++) {
-                pair = first * values[j];
+        for (int i = 0; i < length; i++) {
+            first = nums[i];
+            for (int j = i + 1; j < length; j++) {
+                pair = first * nums[j];
                 result += (pairValues.merge(pair, 1, Integer::sum) - 1);
             }
         }
