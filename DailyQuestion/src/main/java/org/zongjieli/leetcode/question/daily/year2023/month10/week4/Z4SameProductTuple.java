@@ -1,10 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2023.month10.week4;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 给定一个由不同正整数组成的数组 nums
@@ -22,13 +19,22 @@ import java.util.stream.Collectors;
 public class Z4SameProductTuple {
 
     public int tupleSameProduct(int[] nums) {
-        List<Integer> values = Arrays.stream(nums).distinct().sorted().boxed().collect(Collectors.toList());
+        boolean[] exists = new boolean[10001];
+        for (int num : nums) {
+            exists[num] = true;
+        }
+        int[] values = new int[1001];
+        int result = 0, first, pair, size = 0;
+        for (int i = 0; i < exists.length; i++) {
+            if (exists[i]) {
+                values[size++] = i;
+            }
+        }
         Map<Integer, Integer> pairValues = new HashMap<>();
-        int result = 0, first, pair;
-        for (int i = 0; i < values.size(); i++) {
-            first = values.get(i);
-            for (int j = i + 1; j < values.size(); j++) {
-                pair = first * values.get(j);
+        for (int i = 0; i < size; i++) {
+            first = values[i];
+            for (int j = i + 1; j < size; j++) {
+                pair = first * values[j];
                 result += (pairValues.merge(pair, 1, Integer::sum) - 1);
             }
         }
