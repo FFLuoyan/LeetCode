@@ -16,16 +16,15 @@ package org.zongjieli.leetcode.question.daily.year2023.month10.week5;
 public class Z2TargetSum {
 
     public int numRollsToTarget(int n, int k, int target) {
-        int max = n * k;
-        if (max < target) {
+        if (n * k < target) {
             return 0;
         }
-        int[] values = new int[max + 1];
+        int[] values = new int[target + 1];
         values[0] = 1;
         while (n-- > 0) {
-            int[] next = new int[max + 1];
+            int[] next = new int[target + 1];
             for (int i = 1; i <= k; i++) {
-                for (int j = max - k ; j >= 0 ; j--) {
+                for (int j = target - i ; j >= 0 ; j--) {
                     next[i + j] = (next[i + j] + values[j]) % 1000000007;
                 }
             }
