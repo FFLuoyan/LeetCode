@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2023.month10.week5;
 
-import java.util.PriorityQueue;
-
 /**
  * 给定一个整数数组 gifts,表示各堆礼物的数量,每一秒需要执行以下操作:
  *  选择礼物数量最多的那一堆
@@ -20,24 +18,49 @@ import java.util.PriorityQueue;
 public class Z6RemainGift {
 
     public long pickGifts(int[] gifts, int k) {
-        PriorityQueue<Integer> save = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
-        long remain = 0;
+        int min = 1, max = 0, middle;
         for (int gift : gifts) {
-            remain += gift;
-            save.add(gift);
+            max = Math.max(gift, max);
         }
-        while (k-- > 0) {
-            int max = save.poll(), next = (int) Math.sqrt(max);
-            remain -= (max - next);
-            save.add(next);
+        long[] result = getResult(gifts, 1);
+        if (result[1] <= k) {
+            return result[0];
         }
-        return remain;
+        while (min < max) {
+            middle = (min + max) / 2;
+            result = getResult(gifts, middle);
+            if (result[1] == k) {
+                return result[0];
+            } else if (result[1] > k) {
+                min = middle + 1;
+            } else {
+                max = Math.min(middle, (int) result[2] + 1);
+            }
+        }
+        result = getResult(gifts, max);
+        return result[0] - (k - result[1]) * ((result[2] - (long) Math.sqrt(result[2])));
+    }
+
+    public long[] getResult(int[] gifts, int remainMax) {
+        // result, count, max
+        long[] result = new long[3];
+        for (int gift : gifts) {
+            while (gift > remainMax) {
+                gift = (int) Math.sqrt(gift);
+                result[1]++;
+            }
+            result[0] += gift;
+            result[2] = Math.max(gift, result[2]);
+        }
+        return result;
     }
 
     public static void main(String[] args) {
         Z6RemainGift test = new Z6RemainGift();
         // 4
         System.out.println(test.pickGifts(new int[]{1, 2, 3}, 1));
+        // 32
+        System.out.println(test.pickGifts(new int[]{56, 41, 27, 71, 62, 57, 67, 34, 8, 71, 2, 12, 52, 1, 64, 43, 32, 42, 9, 25, 73, 29, 31}, 52));
     }
 
 }
