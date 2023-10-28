@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month10.week5;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.PriorityQueue;
 
 /**
  * 给定一个整数数组 gifts,表示各堆礼物的数量,每一秒需要执行以下操作:
@@ -21,23 +20,24 @@ import java.util.TreeMap;
 public class Z6RemainGift {
 
     public long pickGifts(int[] gifts, int k) {
-        TreeMap<Integer, Integer> count = new TreeMap<>();
+        PriorityQueue<Integer> save = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
+        long remain = 0;
         for (int gift : gifts) {
-            count.merge(gift, 1, Integer::sum);
+            remain += gift;
+            save.add(gift);
         }
         while (k-- > 0) {
-            Map.Entry<Integer, Integer> exist = count.pollLastEntry();
-            int key = exist.getKey(), value = exist.getValue();
-            if (value > 1) {
-                count.put(key, value - 1);
-            }
-            count.merge((int) Math.sqrt(key), 1, Integer::sum);
+            int max = save.poll(), next = (int) Math.sqrt(max);
+            remain -= (max - next);
+            save.add(next);
         }
-        long result = 0;
-        for (Map.Entry<Integer, Integer> entry : count.entrySet()) {
-            result += (long) entry.getKey() * entry.getValue();
-        }
-        return result;
+        return remain;
+    }
+
+    public static void main(String[] args) {
+        Z6RemainGift test = new Z6RemainGift();
+        // 4
+        System.out.println(test.pickGifts(new int[]{1, 2, 3}, 1));
     }
 
 }
