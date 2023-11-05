@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2023.month10.week6;
+package org.zongjieli.leetcode.question.daily.year2023.month11.week1;
 
 /**
  * 给定一个整数数组 nums,返回 nums[i] XOR nums[j] 的最大运算结果

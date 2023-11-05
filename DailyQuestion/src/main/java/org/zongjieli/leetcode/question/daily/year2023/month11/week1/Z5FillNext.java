@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2023.month10.week6;
+package org.zongjieli.leetcode.question.daily.year2023.month11.week1;
 
 import org.zongjieli.leetcode.base.TreeNext;
 
