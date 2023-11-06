@@ -1,9 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month11.week1;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * DNA 序列由一系列核苷酸组成,缩写为 'A', 'C', 'G' 和 'T'
@@ -22,27 +19,23 @@ import java.util.Map;
  */
 public class Z7DuplicateDna {
 
+    private static final byte[] MAP = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
     public List<String> findRepeatedDnaSequences(String s) {
-        List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<>(s.length());
         if (s.length() <= 10) {
             return result;
         }
-        Map<Integer, Integer> exists = new HashMap<>();
-        int current = 0, all = (1 << 20) - 1, value;
+        int[] exists = new int[1048576];
+        int current = 0, all = (1 << 20) - 1;
         byte[] values = s.getBytes();
         for (int i = 0; i < 9; i++) {
-            value = values[i] == 'A' ? 0 : values[i] == 'C' ? 1 : values[i] == 'G' ? 2 : 3;
-            current = (current << 2) + value;
+            current = (current << 2) + MAP[values[i]];
         }
         for (int i = 9; i < values.length; i++) {
-            value = values[i] == 'A' ? 0 : values[i] == 'C' ? 1 : values[i] == 'G' ? 2 : 3;
-            current = ((current << 2) + value) & all;
-            Integer exist = exists.get(current);
-            if (exist == null) {
-                exists.put(current, 1);
-            } else if (exist == 1) {
+            current = ((current << 2) + MAP[values[i]]) & all;
+            if (exists[current]++ == 1) {
                 result.add(new String(values, i - 9, 10));
-                exists.put(current, 2);
             }
         }
         return result;
