@@ -51,13 +51,8 @@ public class Z5MaxSum {
             }
             yMap = new TreeMap<>(yMap);
             sum = x + y;
-            while (!yMap.isEmpty()) {
-                yEntry = yMap.lastEntry();
-                if (yEntry.getValue() <= sum) {
-                    yMap.pollLastEntry();
-                } else {
-                    break;
-                }
+            while (!yMap.isEmpty() && yMap.lastEntry().getValue() <= sum) {
+                yMap.pollLastEntry();
             }
             yMap.put(y, sum);
             xMap.put(x, yMap);
@@ -72,9 +67,9 @@ public class Z5MaxSum {
     public static void main(String[] args) {
         Z5MaxSum test = new Z5MaxSum();
         // [-1]
-//        System.out.println(Arrays.toString(test.maximumSumQueries(new int[]{2, 1}, new int[]{2, 3}, new int[][]{{3, 3}})));
-//        // [6, 10, 7]
-//        System.out.println(Arrays.toString(test.maximumSumQueries(new int[]{4, 3, 1, 2}, new int[]{2, 4, 9, 5}, new int[][]{{4, 1}, {1, 3}, {2, 5}})));
+        System.out.println(Arrays.toString(test.maximumSumQueries(new int[]{2, 1}, new int[]{2, 3}, new int[][]{{3, 3}})));
+        // [6, 10, 7]
+        System.out.println(Arrays.toString(test.maximumSumQueries(new int[]{4, 3, 1, 2}, new int[]{2, 4, 9, 5}, new int[][]{{4, 1}, {1, 3}, {2, 5}})));
         int[] nums1 = new int[100000];
         int[] nums2 = new int[100000];
         int[][] queries = new int[100000][2];
@@ -85,7 +80,7 @@ public class Z5MaxSum {
             queries[i][1] = 2;
         }
         nums2[0] = 2;
-        // [-1]
+        // [-1, -1, ....., -1]
         System.out.println(Arrays.toString(test.maximumSumQueries(nums1, nums2, queries)));
     }
 }
