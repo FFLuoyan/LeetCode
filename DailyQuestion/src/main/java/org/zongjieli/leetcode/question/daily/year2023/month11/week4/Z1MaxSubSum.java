@@ -14,16 +14,9 @@ package org.zongjieli.leetcode.question.daily.year2023.month11.week4;
 public class Z1MaxSubSum {
 
     public int maxSubArray(int[] nums) {
-        int max = nums[0], before = 0, result = 0;
+        int current = -10000, result = current;
         for (int num : nums) {
-            max = Math.max(max, num);
-        }
-        if (max <= 0) {
-            return max;
-        }
-        for (int num : nums) {
-            before = Math.max(0, before + num);
-            result = Math.max(before, result);
+            result = Math.max(result, current = current < 0 ? num : current + num);
         }
         return result;
     }
