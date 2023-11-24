@@ -1,5 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2023.month11.week4;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,16 +17,26 @@ import java.util.List;
 public class Z5CountPair {
 
     public int countPairs(List<Integer> nums, int target) {
-        int result = 0;
+        int[] values = new int[nums.size()];
         for (int i = 0; i < nums.size(); i++) {
-            int need = target - nums.get(i);
-            for (int j = i + 1; j < nums.size(); j++) {
-                if (nums.get(j) < need) {
-                    result++;
-                }
+            values[i] = nums.get(i);
+        }
+        int result = 0, start = 0, end = values.length - 1, sv;
+        Arrays.sort(values);
+        while (start < end) {
+            sv = values[start];
+            while (end > start && sv + values[end] >= target) {
+                end--;
             }
+            result += end - start++;
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Z5CountPair test = new Z5CountPair();
+        // 3
+        System.out.println(test.countPairs(Arrays.asList(-1, 1, 2, 3, 1), 2));
     }
 
 }
