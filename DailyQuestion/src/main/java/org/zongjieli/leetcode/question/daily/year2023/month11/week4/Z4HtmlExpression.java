@@ -22,12 +22,48 @@ package org.zongjieli.leetcode.question.daily.year2023.month11.week4;
 public class Z4HtmlExpression {
 
     public String entityParser(String text) {
-        return text.replaceAll("&quot;", "\"")
-                .replaceAll("&apos;", "'")
-                .replaceAll("&gt;", ">")
-                .replaceAll("&lt;", "<")
-                .replaceAll("&frasl;", "/")
-                .replaceAll("&amp;", "&");
+        byte[] values = text.getBytes();
+        int replaceIndex = 0;
+        long currentSign = -1;
+        for (int i = 0; i < values.length; i++) {
+            values[replaceIndex++] = values[i];
+            if (values[i] == ';') {
+                if (currentSign == 1903521652) {
+                    // " 双引号
+                    values[replaceIndex -= 6] = 34;
+                } else if (currentSign == 1634758515) {
+                    // ' 单引号
+                    values[replaceIndex -= 6] = 39;
+                } else if (currentSign == 6385008) {
+                    // &
+                    replaceIndex -= 5;
+                } else if (currentSign == 26484) {
+                    // >
+                    values[replaceIndex -= 4] = 62;
+                } else if (currentSign == 27764) {
+                    // <
+                    values[replaceIndex -= 4] = 60;
+                } else if (currentSign == 440005653356L) {
+                    // /
+                    values[replaceIndex -= 7] = 47;
+                } else {
+                    replaceIndex--;
+                }
+                replaceIndex++;
+                currentSign = -1;
+            } else if (values[i] == '&') {
+                currentSign = 0;
+            } else if (currentSign != -1 && (currentSign = (currentSign << 8) + values[i]) > 440005653356L) {
+                currentSign = -1;
+            }
+        }
+        return new String(values, 0, replaceIndex);
+    }
+
+    public static void main(String[] args) {
+        Z4HtmlExpression test = new Z4HtmlExpression();
+        // and I quote: "..."
+        System.out.println(test.entityParser("and I quote: &quot;...&quot;"));
     }
 
 }
