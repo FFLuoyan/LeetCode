@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2023.month11.week4;
+package org.zongjieli.leetcode.question.daily.year2022.month9.week2;
 
 import org.zongjieli.leetcode.origin.year2023.CountUniqueChars;
 
@@ -9,7 +9,7 @@ import org.zongjieli.leetcode.origin.year2023.CountUniqueChars;
  * @version 1.0
  * @date 2023/11/26
  */
-public class Z7CountUniqueChars {
+public class Z2CountUniqueChars {
 
     public int uniqueLetterString(String s) {
         return new CountUniqueChars().uniqueLetterString(s);
