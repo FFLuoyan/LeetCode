@@ -19,20 +19,20 @@ package org.zongjieli.leetcode.question.daily.year2023.month11.week4;
 public class Z7CountUniqueChars {
 
     public int uniqueLetterString(String s) {
-        char find = 'A';
-        int result = 0;
-        while (find <= 'Z') {
-            int first = -1, second = s.indexOf(find), third;
-            while (second < s.length()) {
-                third = s.indexOf(find, second + 1);
-                if (third == -1) {
-                    third = s.length();
-                }
-                result += (second - first) * (third - second);
-                first = second;
-                second = third;
-            }
-            find++;
+        int[][] indexes = new int[26][2];
+        for (int[] index : indexes) {
+            index[0] = index[1] = -1;
+        }
+        byte[] values = s.getBytes();
+        int result = 0, length = values.length;
+        for (int i = 0; i < length; i++) {
+            int[] index = indexes[values[i] - 'A'];
+            result += (index[1] - index[0]) * (i - index[1]);
+            index[0] = index[1];
+            index[1] = i;
+        }
+        for (int[] index : indexes) {
+            result += (index[1] - index[0]) * (length - index[1]);
         }
         return result;
     }
