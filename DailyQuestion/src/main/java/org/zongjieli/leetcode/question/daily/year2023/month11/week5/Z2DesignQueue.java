@@ -2,8 +2,8 @@ package org.zongjieli.leetcode.question.daily.year2023.month11.week5;
 
 /**
  * 请设计一个队列,支持在前,中,后三个位置的 push 和 pop 操作
- * 请完成 FrontMiddleBack 类:
- *  FrontMiddleBack() 初始化队列
+ * 请完成 Z2DesignQueue 类:
+ *  Z2DesignQueue() 初始化队列
  *  void pushFront(int val) 将 val 添加到队列的最前面
  *  void pushMiddle(int val) 将 val 添加到队列的正中间
  *  void pushBack(int val) 将 val 添加到队里的最后面
