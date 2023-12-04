@@ -10,7 +10,7 @@ package org.zongjieli.leetcode.question.daily.year2023.month12.week1;
  * 1 <= trips.length <= 1000
  * trips[i].length == 3
  * 1 <= numPassengersI <= 100
- * 0 <= fromI < tIi <= 1000
+ * 0 <= fromI < toI <= 1000
  * 1 <= capacity <= 10^5
  *
  * @author Li.zongjie
