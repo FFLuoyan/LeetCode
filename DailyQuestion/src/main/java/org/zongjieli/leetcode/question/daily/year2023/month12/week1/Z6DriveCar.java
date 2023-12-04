@@ -21,13 +21,15 @@ public class Z6DriveCar {
 
     public boolean carPooling(int[][] trips, int capacity) {
         int[] remains = new int[1001];
+        int farthest = 0, closest = 1000, a, b, c, max = 0;
         for (int[] trip : trips) {
-            remains[trip[1]] += trip[0];
-            remains[trip[2]] -= trip[0];
+            remains[b = trip[1]] += (a = trip[0]);
+            remains[c = trip[2]] -= a;
+            closest = Math.min(b, closest);
+            farthest = Math.max(c, farthest);
         }
-        int max = 0;
-        for (int remain : remains) {
-            if ((max += remain) > capacity) {
+        for (int i = closest; i < farthest; i++) {
+            if ((max += remains[i]) > capacity) {
                 return false;
             }
         }
