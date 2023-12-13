@@ -21,11 +21,14 @@ public class Z3MinPalindrome {
 
     public String makeSmallestPalindrome(String s) {
         byte[] values = s.getBytes();
-        int start = 0, end = values.length - 1;
-        while (start < end) {
-            byte min = (byte) Math.min(values[start], values[end]);
-            values[start++] = min;
-            values[end--] = min;
+        int start = -1, end = values.length;
+        byte a, b;
+        while (++start < --end) {
+            if ((a = values[start]) < (b = values[end])) {
+                values[end] = a;
+            } else if (a > b) {
+                values[start] = b;
+            }
         }
         return new String(values);
     }
