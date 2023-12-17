@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2023.month12.week3;
 
-import java.util.LinkedList;
-
 /**
  * 参加一场远足活动,给定一个二维 rows x columns 的地图 heights
  * 其中 heights[row][col] 表示格子 (row, col) 的高度
@@ -25,12 +23,14 @@ public class Z1MinPath {
 
     private int m, n, length;
 
-    public int[] values;
+    public int[] values, indexes;
 
     public int minimumEffortPath(int[][] heights) {
         m = heights.length;
         n = heights[0].length;
         values = new int[length = m * n];
+        indexes = new int[length];
+        indexes[0] = 0;
         for (int i = 0; i < m; i++) {
             System.arraycopy(heights[i], 0, values, i * n, n);
         }
@@ -49,29 +49,29 @@ public class Z1MinPath {
     public boolean canReach(int minCost) {
         boolean[] reaches = new boolean[values.length];
         reaches[0] = true;
-        LinkedList<Integer> indexes = new LinkedList<>();
-        indexes.add(0);
-        while (!indexes.isEmpty()) {
-            int i = indexes.pollFirst(), cv = values[i], ni;
-            if (i < length - n && !reaches[ni = i + n] && Math.abs(cv - values[ni]) <= minCost) {
+        int left = 0, right = 1, ci, cv, ni;
+        while (left < right) {
+            ci = indexes[left++];
+            cv = values[ci];
+            if (ci < length - n && !reaches[ni = ci + n] && Math.abs(cv - values[ni]) <= minCost) {
                 // 下
                 reaches[ni] = true;
-                indexes.add(ni);
+                indexes[right++] = ni;
             }
-            if ((i % n) < (n - 1) && !reaches[ni = i + 1] && Math.abs(cv - values[ni]) <= minCost) {
+            if ((ci % n) < (n - 1) && !reaches[ni = ci + 1] && Math.abs(cv - values[ni]) <= minCost) {
                 // 右
                 reaches[ni] = true;
-                indexes.add(ni);
+                indexes[right++] = ni;
             }
-            if (i >= n && !reaches[ni = i - n] && Math.abs(cv - values[ni]) <= minCost) {
+            if (ci >= n && !reaches[ni = ci - n] && Math.abs(cv - values[ni]) <= minCost) {
                 // 上
                 reaches[ni] = true;
-                indexes.add(ni);
+                indexes[right++] = ni;
             }
-            if ((i % n) > 0 && !reaches[ni = i - 1] && Math.abs(cv - values[ni]) <= minCost) {
+            if ((ci % n) > 0 && !reaches[ni = ci - 1] && Math.abs(cv - values[ni]) <= minCost) {
                 // 左
                 reaches[ni] = true;
-                indexes.add(ni);
+                indexes[right++] = ni;
             }
         }
         return reaches[length - 1];
