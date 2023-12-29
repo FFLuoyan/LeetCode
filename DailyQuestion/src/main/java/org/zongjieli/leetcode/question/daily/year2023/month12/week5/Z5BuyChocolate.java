@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2023.month12.week5;
 
-import java.util.Arrays;
-
 /**
  * 给定一个整数数组 prices,它表示一个商店里若干巧克力的价格
  * 同时给定一个整数 money,表示一开始拥有的钱数
@@ -21,8 +19,16 @@ import java.util.Arrays;
 public class Z5BuyChocolate {
 
     public int buyChoco(int[] prices, int money) {
-        Arrays.sort(prices);
-        int remain = money - prices[0] - prices[1];
+        int min1 = 100, min2 = 100, remain;
+        for (int price : prices) {
+            if (price < min1) {
+                min2 = min1;
+                min1 = price;
+            } else if (price < min2) {
+                min2 = price;
+            }
+        }
+        remain = money - min1 - min2;
         return remain >= 0 ? remain : money;
     }
 
