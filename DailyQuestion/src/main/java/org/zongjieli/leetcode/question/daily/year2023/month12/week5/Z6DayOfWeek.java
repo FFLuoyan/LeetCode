@@ -14,16 +14,10 @@ public class Z6DayOfWeek {
     private final String[] days = new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     private final int[] monthDayCount = new int[]{0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
+
     public String dayOfTheWeek(int day, int month, int year) {
         int yearCount = year - 1971;
-        int dayCountYear = ((yearCount + 2) / 4) * 366 + (yearCount - (yearCount + 2) / 4) *  365;
-        int dayCountMonth = monthDayCount[month - 1] + (month > 2 && isLeapYear(year) ? 1 : 0);
-        int dayCountDay = day - 1;
-        return days[(dayCountYear + dayCountMonth + dayCountDay + 5) % 7];
-    }
-
-    public boolean isLeapYear(int year) {
-        return year % 100 == 0 ? year % 400 == 0 : year % 4 == 0;
+        return days[(((yearCount + 2) / 4) * 366 + (yearCount - (yearCount + 2) / 4) *  365 + monthDayCount[month - 1] + (month > 2 && (year % 100 == 0 ? year % 400 == 0 : year % 4 == 0) ? 1 : 0) + day + 4) % 7];
     }
 
     public static void main(String[] args) {
