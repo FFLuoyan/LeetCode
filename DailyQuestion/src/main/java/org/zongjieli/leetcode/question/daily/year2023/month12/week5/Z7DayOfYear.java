@@ -16,16 +16,10 @@ public class Z7DayOfYear {
     private final int[] monthDayCount = new int[]{0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
 
     public int dayOfYear(String date) {
-        int year = 0;
-        for (int i = 0 ; i < 4 ; i++) {
-            year = year * 10 + date.charAt(i) - '0';
-        }
+        int year = 1000 * (date.charAt(0) - '0') + 100 * (date.charAt(1) - '0') + 10 * (date.charAt(2) - '0') + date.charAt(3) - '0';
         int month = 10 * (date.charAt(5) - '0') + date.charAt(6) - '0';
         int day = 10 * (date.charAt(8) - '0') + date.charAt(9) - '0';
-        if (month <= 2) {
-            return monthDayCount[month - 1] + day;
-        }
-        return monthDayCount[month - 1] + day + ((year % 100 == 0 ? year % 400 == 0 : year % 4 == 0) ? 1 : 0);
+        return monthDayCount[month - 1] + day + (month > 2 && (year % 100 == 0 ? year % 400 == 0 : year % 4 == 0) ? 1 : 0);
     }
 
 }
