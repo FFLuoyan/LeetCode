@@ -23,40 +23,37 @@ import java.util.Arrays;
 public class Z5SeeCount {
 
     public int[] canSeePersonsCount(int[] heights) {
-        int length = heights.length, index = length - 1, start = index;
+        int length = heights.length, start = length - 1, index = start;
         int[] sorted = new int[length], result = new int[length];
         sorted[start] = heights[start];
         while (--index >= 0) {
-            int minBigger = findMinBigger(start, length - 1, sorted, heights[index]);
-            if (minBigger == length) {
+            int left = start, right = length - 1, value = heights[index];
+            if (sorted[right] < value) {
                 result[index] = length - start;
-            } else {
-                result[index] = minBigger - start + 1;
+                sorted[start = right] = value;
+                continue;
             }
-            sorted[start = minBigger - 1] = heights[index];
+            while (left < right) {
+                int middle = (left + right) / 2;
+                if (sorted[middle] < value) {
+                    left = middle + 1;
+                } else {
+                    right = middle;
+                }
+            }
+            result[index] = left - start + 1;
+            sorted[start = left - 1] = value;
         }
         return result;
     }
 
-    public int findMinBigger(int start, int end, int[] sorted, int value) {
-        if (sorted[end] < value) {
-            return end + 1;
-        }
-        while (start < end) {
-            int middle = (start + end) / 2;
-            if (sorted[middle] < value) {
-                start = middle + 1;
-            } else {
-                end = middle;
-            }
-        }
-        return start;
-    }
 
     public static void main(String[] args) {
         Z5SeeCount test = new Z5SeeCount();
         // [3, 1, 2, 1, 1, 0]
         System.out.println(Arrays.toString(test.canSeePersonsCount(new int[]{10, 6, 8, 5, 11, 9})));
+        // [1, 3, 1, 1, 0]
+        System.out.println(Arrays.toString(test.canSeePersonsCount(new int[]{2, 10, 3, 4, 8})));
     }
 
 }
