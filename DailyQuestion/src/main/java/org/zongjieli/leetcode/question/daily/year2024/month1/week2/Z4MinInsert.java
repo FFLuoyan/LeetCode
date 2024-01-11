@@ -15,16 +15,14 @@ package org.zongjieli.leetcode.question.daily.year2024.month1.week2;
 public class Z4MinInsert {
 
     public int addMinimum(String word) {
-        byte before = 'c';
-        int result = 0;
+        int groupCount = 1;
         byte[] values = word.getBytes();
-        int[] subCount = new int[]{0, 1, 2, 0, 1};
-        for (byte value : values) {
-            result += subCount[value - before + 2];
-            before = value;
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] <= values[i - 1]) {
+                groupCount++;
+            }
         }
-        result += ('c' - before);
-        return result;
+        return 3 * groupCount - values.length;
     }
 
 }
