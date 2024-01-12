@@ -18,16 +18,16 @@ import java.util.Map;
 public class Z5CountOnce {
 
     public int countWords(String[] words1, String[] words2) {
-        Map<String, Integer> count1 = new HashMap<>(), count2 = new HashMap<>();
+        Map<String, Integer> count = new HashMap<>();
         for (String s : words1) {
-            count1.merge(s, 1, Integer::sum);
+            count.merge(s, 10000, Integer::sum);
         }
         for (String s : words2) {
-            count2.merge(s, 1, Integer::sum);
+            count.merge(s, 1, Integer::sum);
         }
         int result = 0;
-        for (Map.Entry<String, Integer> entry : count2.entrySet()) {
-            if (entry.getValue() == 1 && count1.getOrDefault(entry.getKey(), 0) == 1) {
+        for (Integer value : count.values()) {
+            if (value == 10001) {
                 result++;
             }
         }
