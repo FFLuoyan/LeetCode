@@ -23,13 +23,10 @@ public class Z7DeleteDuplicate {
         }
         ListNode pre = head, next = head.next;
         while (next != null) {
-            while (next != null && next.val == pre.val) {
-                next = next.next;
-            }
-            if (next == null) {
-                pre.next = null;
+            if (next.val == pre.val) {
+                pre.next = next = next.next;
             } else {
-                pre = pre.next = next;
+                pre = pre.next;
                 next = next.next;
             }
         }
