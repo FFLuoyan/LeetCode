@@ -42,7 +42,7 @@ public class Z1DeleteDuplicate {
 
     public static void main(String[] args) {
         Z1DeleteDuplicate test = new Z1DeleteDuplicate();
-        // [1, 2, 3, 4, 5]
+        // [1, 2, 5]
         System.out.println(test.deleteDuplicates(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(3, new ListNode(4, new ListNode(4, new ListNode(5)))))))));
     }
 }
