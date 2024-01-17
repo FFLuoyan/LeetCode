@@ -20,14 +20,14 @@ package org.zongjieli.leetcode.question.daily.year2024.month1.week3;
 public class Z3ReverseCount {
 
     public int maximumNumberOfStringPairs(String[] words) {
-        boolean[] exists = new boolean[16384];
+        boolean[][] exists = new boolean[26][26];
         int result = 0;
         for (String word : words) {
-            int a = word.charAt(0), b = word.charAt(1);
-            if (exists[((a << 7) + b)]) {
+            int a = word.charAt(0) - 'a', b = word.charAt(1) - 'a';
+            if (exists[b][a]) {
                 result++;
             } else {
-                exists[(b << 7) + a] = true;
+                exists[a][b] = true;
             }
         }
         return result;
