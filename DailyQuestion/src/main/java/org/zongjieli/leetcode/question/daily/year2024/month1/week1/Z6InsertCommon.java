@@ -18,22 +18,17 @@ import org.zongjieli.leetcode.base.ListNode;
 public class Z6InsertCommon {
 
     public ListNode insertGreatestCommonDivisors(ListNode head) {
-        ListNode pre = head, next = pre.next;
-        while (next != null) {
-            int common = common(pre.val, next.val);
-            pre.next = new ListNode(common, next);
-            pre = next;
-            next = next.next;
+        ListNode pre = head;
+        while (pre.next != null) {
+            pre.next = new ListNode(common(pre.val, pre.next.val), pre.next);
+            pre = pre.next.next;
         }
         return head;
     }
 
     public int common(int a, int b) {
-        if (b > a) {
-            return common(b, a);
-        }
-        if (a % b == 0) {
-            return b;
+        if (b == 0) {
+            return a;
         }
         return common(b, a % b);
     }
