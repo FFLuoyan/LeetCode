@@ -1,7 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2024.month1.week3;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Arrays;
 
 /**
  * 给定一个正整数数组 beans,其中每个整数表示一个袋子里装的魔法豆的数目
@@ -20,17 +19,17 @@ import java.util.TreeMap;
 public class Z4PickBeans {
 
     public long minimumRemoval(int[] beans) {
-        // 取得最少,剩的最多
-        long sum = 0, result = Long.MAX_VALUE, remainCount = beans.length;
-        TreeMap<Integer, Integer> count = new TreeMap<>();
+        Arrays.sort(beans);
+        long sum = 0, result;
         for (int bean : beans) {
             sum += bean;
-            count.merge(bean, 1, Integer::sum);
         }
-        while (!count.isEmpty()) {
-            Map.Entry<Integer, Integer> entry = count.pollFirstEntry();
-            result = Math.min(result, sum - entry.getKey() * remainCount);
-            remainCount -= entry.getValue();
+        result = sum - (long) beans[0] * beans.length;
+        for (int i = 1; i < beans.length; i++) {
+            if (beans[i] == beans[i - 1]) {
+                continue;
+            }
+            result = Math.min(result, sum - (long) beans[i] * (beans.length - i));
         }
         return result;
     }
