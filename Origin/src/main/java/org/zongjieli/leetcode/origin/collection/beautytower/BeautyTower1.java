@@ -24,52 +24,35 @@ import java.util.List;
 public class BeautyTower1 {
 
     public long maximumSumOfHeights(List<Integer> maxHeights) {
-        long[] leftSums = new long[maxHeights.size()];
-        long[] cache = new long[leftSums.length * 2];
-        long currentSum = cache[0] = leftSums[0] = maxHeights.get(0), currentCount, result;
-        cache[1] = 1;
-        int cacheIndex = 0, current;
-        for (int i = 1; i < maxHeights.size(); i++) {
+        int cacheIndex = 0, current, length = maxHeights.size();
+        long[] leftSums = new long[length], cache = new long[length * 2];
+        long currentSum = 0, currentCount, result = 0;
+        cache[0] = Long.MAX_VALUE;
+        for (int i = 0; i < length; i++) {
             currentSum += (current = maxHeights.get(i));
-            if (current > cache[cacheIndex]) {
-                cache[cacheIndex += 2] = current;
-                cache[cacheIndex + 1] = 1;
-            } else if (current == cache[cacheIndex]) {
-                cache[cacheIndex + 1]++;
-            } else {
-                currentCount = 1;
-                while (cacheIndex >= 0 && cache[cacheIndex] >= current) {
-                    currentSum -= (cache[cacheIndex] - current) * cache[cacheIndex + 1];
-                    currentCount += cache[cacheIndex + 1];
-                    cacheIndex -= 2;
-                }
-                cache[cacheIndex += 2] = current;
-                cache[cacheIndex + 1] = currentCount;
+            currentCount = 1;
+            while (cacheIndex >= 0 && cache[cacheIndex] >= current) {
+                currentSum -= (cache[cacheIndex] - current) * cache[cacheIndex + 1];
+                currentCount += cache[cacheIndex + 1];
+                cacheIndex -= 2;
             }
+            cache[cacheIndex += 2] = current;
+            cache[cacheIndex + 1] = currentCount;
             leftSums[i] = currentSum;
         }
-        currentSum = cache[0] = maxHeights.get(leftSums.length - 1);
-        cache[1] = 1;
-        cacheIndex = 0;
-        result = leftSums[leftSums.length - 1];
-        for (int i = maxHeights.size() - 2; i >= 0; i--) {
+        currentSum = cache[1] = cacheIndex = 0;
+        cache[0] = Long.MAX_VALUE;
+        for (int i = length - 1; i >= 0; i--) {
             result = Math.max(result, leftSums[i] + currentSum);
             current = maxHeights.get(i);
-            if (current > cache[cacheIndex]) {
-                cache[cacheIndex += 2] = current;
-                cache[cacheIndex + 1] = 1;
-            } else if (current == cache[cacheIndex]) {
-                cache[cacheIndex + 1]++;
-            } else {
-                currentCount = 1;
-                while (cacheIndex >= 0 && cache[cacheIndex] >= current) {
-                    currentSum -= (cache[cacheIndex] - current) * cache[cacheIndex + 1];
-                    currentCount += cache[cacheIndex + 1];
-                    cacheIndex -= 2;
-                }
-                cache[cacheIndex += 2] = current;
-                cache[cacheIndex + 1] = currentCount;
+            currentCount = 1;
+            while (cacheIndex >= 0 && cache[cacheIndex] >= current) {
+                currentSum -= (cache[cacheIndex] - current) * cache[cacheIndex + 1];
+                currentCount += cache[cacheIndex + 1];
+                cacheIndex -= 2;
             }
+            cache[cacheIndex += 2] = current;
+            cache[cacheIndex + 1] = currentCount;
             currentSum += current;
         }
         return Math.max(result, currentSum);
