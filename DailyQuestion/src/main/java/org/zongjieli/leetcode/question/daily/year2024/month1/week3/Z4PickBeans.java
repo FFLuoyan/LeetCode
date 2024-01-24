@@ -1,7 +1,5 @@
 package org.zongjieli.leetcode.question.daily.year2024.month1.week3;
 
-import java.util.Arrays;
-
 /**
  * 给定一个正整数数组 beans,其中每个整数表示一个袋子里装的魔法豆的数目
  * 请从每个袋子中拿出一些豆子(也可以不拿出)
@@ -19,17 +17,18 @@ import java.util.Arrays;
 public class Z4PickBeans {
 
     public long minimumRemoval(int[] beans) {
-        Arrays.sort(beans);
-        long sum = 0, result;
+        long sum = 0, result, remainCount = beans.length;
+        int[] count = new int[100001];
         for (int bean : beans) {
             sum += bean;
+            count[bean]++;
         }
-        result = sum - (long) beans[0] * beans.length;
-        for (int i = 1; i < beans.length; i++) {
-            if (beans[i] == beans[i - 1]) {
-                continue;
+        result = sum;
+        for (int i = 1 ; i <= 100000 ; i++) {
+            if (count[i] > 0) {
+                result = Math.min(result, sum - i * remainCount);
+                remainCount -= count[i];
             }
-            result = Math.min(result, sum - (long) beans[i] * (beans.length - i));
         }
         return result;
     }
