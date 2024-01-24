@@ -24,7 +24,7 @@ public class Z4PickBeans {
             count[bean]++;
         }
         result = sum;
-        for (int i = 1 ; i <= 100000 ; i++) {
+        for (int i = 1 ; remainCount > 0; i++) {
             if (count[i] > 0) {
                 result = Math.min(result, sum - i * remainCount);
                 remainCount -= count[i];
