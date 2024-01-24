@@ -25,11 +25,22 @@ public class Z6SplitString {
 
     public List<String> splitWordsBySeparator(List<String> words, char separator) {
         List<String> result = new ArrayList<>(words.size());
+        char[] values = new char[20];
+        int index = 0;
         for (String word : words) {
-            for (String add : word.split("\\" + separator)) {
-                if (!add.isEmpty()) {
-                    result.add(add);
+            for (char currentChar : word.toCharArray()) {
+                if (currentChar == separator) {
+                    if (index > 0) {
+                        result.add(new String(values, 0, index));
+                        index = 0;
+                    }
+                } else {
+                    values[index++] = currentChar;
                 }
+            }
+            if (index > 0) {
+                result.add(new String(values, 0, index));
+                index = 0;
             }
         }
         return result;
