@@ -64,6 +64,8 @@ public class BeautyTower1 {
         System.out.println(test.maximumSumOfHeights(Arrays.asList(1, 100000000)));
         // 33
         System.out.println(test.maximumSumOfHeights(Arrays.asList(1, 5, 2, 5, 6, 4, 6, 3, 4, 5)));
+        // 13
+        System.out.println(test.maximumSumOfHeights(Arrays.asList(5, 3, 4, 1, 1)));
     }
 
 }
