@@ -18,39 +18,48 @@ package org.zongjieli.leetcode.question.daily.year2023.month12.week4;
  */
 public class Z5MountainArray {
 
+    int remainMax;
+
     public int minimumMountainRemovals(int[] nums) {
         int[] leftCount = new int[nums.length];
         int[] leftCache = new int[nums.length + 1];
         int[] rightCache = new int[nums.length + 1];
-        int remainMax = 0, rmi, num, result = Integer.MAX_VALUE;
+        remainMax = 0;
+        int num, result, ri = nums.length;
         for (int i = 0; i < nums.length; i++) {
-            if ((num = nums[i]) > leftCache[remainMax]) {
-                leftCache[++remainMax] = num;
-            } else {
-                rmi = remainMax;
-                while (rmi >= 0 && leftCache[rmi] >= num) {
-                    rmi--;
-                }
-                leftCache[rmi + 1] = Math.min(num, leftCache[rmi + 1]);
-            }
+            leftCache[findMaxSmallerIndex(leftCache, 0, remainMax, num = nums[i]) + 1] = num;
             leftCount[i] = remainMax;
         }
         remainMax = 0;
-        for (int i = nums.length - 1; i >= 0; i--) {
-            if ((num = nums[i]) > rightCache[remainMax]) {
-                rightCache[++remainMax] = num;
-            } else {
-                rmi = remainMax;
-                while (rmi >= 0 && rightCache[rmi] >= num) {
-                    rmi--;
-                }
-                rightCache[rmi + 1] = Math.min(num, rightCache[rmi + 1]);
-            }
-            if (remainMax >= 2 && leftCount[i] >= 2) {
-                result = Math.min(result, nums.length - remainMax - leftCount[i] + 1);
-            }
+        while (remainMax < 2) {
+            rightCache[findMaxSmallerIndex(rightCache, 0, remainMax, num = nums[--ri]) + 1] = num;
+        }
+        result = nums.length - remainMax - leftCount[ri] + 1;
+        while (leftCount[ri] >= 2) {
+            rightCache[findMaxSmallerIndex(rightCache, 0, remainMax, num = nums[--ri]) + 1] = num;
+            result = Math.min(result, nums.length - remainMax - leftCount[ri] + 1);
         }
         return result;
     }
 
+    public int findMaxSmallerIndex(int[] values, int start, int end, int target) {
+        if (values[end] < target) {
+            return remainMax++;
+        }
+        while (start < end) {
+            int middle = (start + end + 1) / 2;
+            if (values[middle] >= target) {
+                end = middle - 1;
+            } else {
+                start = middle;
+            }
+        }
+        return start;
+    }
+
+    public static void main(String[] args) {
+        Z5MountainArray test = new Z5MountainArray();
+        // 0
+        System.out.println(test.minimumMountainRemovals(new int[]{1, 3, 1}));
+    }
 }
