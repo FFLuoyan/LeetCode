@@ -1,9 +1,6 @@
 package org.zongjieli.leetcode.question.daily.year2024.month1.week5;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 给定一个下标从 0 开始长度为 n 的数组 nums
@@ -23,19 +20,31 @@ import java.util.Map;
 public class Z2SameNeed {
 
     public int minimumSeconds(List<Integer> nums) {
-        Map<Integer, List<Integer>> numberIndexes = new HashMap<>();
-        for (int i = 0; i < nums.size(); i++) {
-            numberIndexes.computeIfAbsent(nums.get(i), k -> new ArrayList<>()).add(i);
+        Map<Integer, int[]> numberParams = new HashMap<>();
+        int length = nums.size(), num;
+        // first, last, max(not contain last to first)
+        int[] values;
+        for (int i = 0; i < length; i++) {
+            num = nums.get(i);
+            values = numberParams.get(num);
+            if (values == null) {
+                numberParams.put(num, new int[]{i, i, 0});
+            } else {
+                values[2] = Math.max(values[2], i - values[1]);
+                values[1] = i;
+            }
         }
         int result = Integer.MAX_VALUE;
-        for (List<Integer> indexes : numberIndexes.values()) {
-            int max = indexes.get(0) + nums.size() - indexes.get(indexes.size() - 1);
-            for (int i = 1; i < indexes.size(); i++) {
-                max = Math.max(max, indexes.get(i) - indexes.get(i - 1));
-            }
-            result = Math.min(result, max / 2);
+        for (int[] value : numberParams.values()) {
+            result = Math.min(result, Math.max(value[2], value[0] + length - value[1]) / 2);
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Z2SameNeed test = new Z2SameNeed();
+        // 2
+        System.out.println(test.minimumSeconds(Arrays.asList(1, 2, 3, 4, 5)));
     }
 
 }
