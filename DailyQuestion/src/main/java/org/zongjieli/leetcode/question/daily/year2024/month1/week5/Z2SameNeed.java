@@ -1,6 +1,9 @@
 package org.zongjieli.leetcode.question.daily.year2024.month1.week5;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 给定一个下标从 0 开始长度为 n 的数组 nums
@@ -36,9 +39,9 @@ public class Z2SameNeed {
         }
         int result = Integer.MAX_VALUE;
         for (int[] value : numberParams.values()) {
-            result = Math.min(result, Math.max(value[2], value[0] + length - value[1]) / 2);
+            result = Math.min(result, Math.max(value[2], value[0] + length - value[1]));
         }
-        return result;
+        return result / 2;
     }
 
     public static void main(String[] args) {
