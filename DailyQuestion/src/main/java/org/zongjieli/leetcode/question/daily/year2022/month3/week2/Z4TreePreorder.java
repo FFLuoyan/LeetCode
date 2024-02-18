@@ -1,17 +1,12 @@
 package org.zongjieli.leetcode.question.daily.year2022.month3.week2;
 
 import org.zongjieli.leetcode.base.Tree;
+import org.zongjieli.leetcode.origin.year2024.NTreePreorder;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 给定一个 n 叉树的根节点 root,返回其节点值的前序遍历
- * n 叉树在输入中按层序遍历进行序列化表示
- *
- * 节点总数在范围 [0, 10^4]内
- * 0 <= Node.val <= 10^4
- * n 叉树的高度小于或等于 1000
+ * @see NTreePreorder
  *
  * @author   Li.zongjie
  * @date     2022/3/10
@@ -20,21 +15,7 @@ import java.util.List;
 public class Z4TreePreorder {
 
     public List<Integer> preorder(Tree root) {
-        LinkedList<Integer> result = new LinkedList<>();
-        if (root == null) {
-            return result;
-        }
-        add(root, result);
-        return result;
-    }
-
-    public void add(Tree root, LinkedList<Integer> result) {
-        result.addLast(root.val);
-        if (root.children != null) {
-            for (Tree child : root.children) {
-                add(child, result);
-            }
-        }
+        return new NTreePreorder().preorder(root);
     }
 
 }
