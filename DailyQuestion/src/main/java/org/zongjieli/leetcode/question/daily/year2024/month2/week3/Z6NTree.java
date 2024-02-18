@@ -4,7 +4,6 @@ import org.zongjieli.leetcode.base.Tree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,26 +19,30 @@ import java.util.List;
  */
 public class Z6NTree {
 
+    List<List<Integer>> result;
+
     public List<List<Integer>> levelOrder(Tree root) {
-        List<List<Integer>> result = new ArrayList<>();
+        result = new ArrayList<>();
         if (root == null) {
             return result;
         }
-        LinkedList<Tree> row = new LinkedList<>();
-        row.add(root);
-        int size;
-        while ((size = row.size()) > 0) {
-            List<Integer> rowValues = new ArrayList<>();
-            while (--size >= 0) {
-                Tree current = row.pollFirst();
-                rowValues.add(current.val);
-                if (current.children != null) {
-                    row.addAll(current.children);
-                }
-            }
-            result.add(rowValues);
-        }
+        add(root, 0);
         return result;
+    }
+
+    public void add(Tree root, int index) {
+        List<Integer> row;
+        if (index >= result.size()) {
+            result.add(row = new ArrayList<>());
+        } else {
+            row = result.get(index);
+        }
+        row.add(root.val);
+        if (root.children != null) {
+            for (Tree child : root.children) {
+                add(child, index + 1);
+            }
+        }
     }
 
     public static void main(String[] args) {
