@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.origin.year2024;
+package org.zongjieli.leetcode.origin.collection.ntree;
 
 import org.zongjieli.leetcode.base.Tree;
 
