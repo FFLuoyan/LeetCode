@@ -18,16 +18,15 @@ import org.zongjieli.leetcode.base.TreeNode;
 public class Z7ClosestAncestor {
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (p.val > q.val) {
-            TreeNode temp = p;
-            p = q;
-            q = temp;
-        }
-        return root.val < p.val
-                ? lowestCommonAncestor(root.right, p, q)
-                : root.val <= q.val
-                    ? root
-                    : lowestCommonAncestor(root.left, p, q);
+        return p.val > q.val ? find(root, q, p) : find(root, p, q);
+    }
+
+    public TreeNode find(TreeNode root, TreeNode left, TreeNode right) {
+        return root.val < left.val
+                ? lowestCommonAncestor(root.right, left, right)
+                : root.val <= right.val
+                ? root
+                : lowestCommonAncestor(root.left, left, right);
     }
 
 }
