@@ -19,11 +19,7 @@ public class Z4FindMax {
     public long maxArrayValue(int[] nums) {
         long result = nums[nums.length - 1];
         for (int i = nums.length - 2; i >= 0; i--) {
-            if (nums[i] <= result) {
-                result += nums[i];
-            } else {
-                result = nums[i];
-            }
+            result = nums[i] <= result ? result + nums[i] : nums[i];
         }
         return result;
     }
