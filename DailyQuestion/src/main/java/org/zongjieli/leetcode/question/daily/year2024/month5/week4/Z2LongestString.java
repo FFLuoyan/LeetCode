@@ -18,25 +18,22 @@ public class Z2LongestString {
     public int longestAwesome(String s) {
         byte[] values = s.getBytes();
         int[] currentSize = new int[1024];
-        boolean[] isValid = new boolean[1024];
-        for (int i = 1 ; i < 1024 ; i = (i << 1)) {
-            isValid[i] = true;
-        }
-        isValid[0] = true;
+        int[] validValues = new int[]{0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512};
         int result = 1;
         for (byte value : values) {
             int currentValue = (1 << (value - '0'));
             int[] nextSize = new int[1024];
-            nextSize[currentValue]++;
             for (int i = 0; i < currentSize.length; i++) {
                 if (currentSize[i] == 0) {
                     continue;
                 }
-                int nextValue = i ^ currentValue;
-                nextSize[nextValue] = Math.max(nextSize[nextValue], currentSize[i] + 1);
-                if (isValid[nextValue]) {
-                    result = Math.max(result, nextSize[nextValue]);
-                }
+                nextSize[i ^ currentValue] = currentSize[i] + 1;
+            }
+            if (nextSize[currentValue] == 0) {
+                nextSize[currentValue] = 1;
+            }
+            for (int validValue : validValues) {
+                result = Math.max(result, nextSize[validValue]);
             }
             currentSize = nextSize;
         }
