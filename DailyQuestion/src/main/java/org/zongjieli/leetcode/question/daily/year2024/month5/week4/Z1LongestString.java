@@ -13,7 +13,7 @@ package org.zongjieli.leetcode.question.daily.year2024.month5.week4;
  * @version 1.0
  * @date 2024/5/21
  */
-public class Z2LongestString {
+public class Z1LongestString {
 
     public int longestAwesome(String s) {
         byte[] values = s.getBytes();
@@ -41,7 +41,7 @@ public class Z2LongestString {
     }
 
     public static void main(String[] args) {
-        Z2LongestString test = new Z2LongestString();
+        Z1LongestString test = new Z1LongestString();
         // 5
         System.out.println(test.longestAwesome("3242415"));
     }
