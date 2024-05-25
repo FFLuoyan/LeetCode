@@ -19,17 +19,13 @@ package org.zongjieli.leetcode.question.daily.year2024.month5.week3;
 public class Z7FindWinNumber {
 
     public int getWinner(int[] arr, int k) {
-        if (k == 1) {
-            return Math.max(arr[0], arr[1]);
-        }
-        int max = arr[0], currentK = k;
-        for (int i = 1; i < arr.length; i++) {
+        int max = arr[0], currentK = 0;
+        for (int i = 1; i < arr.length && currentK < k; i++) {
             if (max < arr[i]) {
                 max = arr[i];
-                currentK = k - 1;
-            } else if (--currentK == 0) {
-                return max;
+                currentK = 0;
             }
+            currentK++;
         }
         return max;
     }
