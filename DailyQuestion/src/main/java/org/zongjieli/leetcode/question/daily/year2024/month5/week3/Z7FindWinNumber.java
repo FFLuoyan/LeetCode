@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2024.month5.week4;
+package org.zongjieli.leetcode.question.daily.year2024.month5.week3;
 
 /**
  * 给定一个由不同整数组成的整数数组 arr 和一个整数 k
