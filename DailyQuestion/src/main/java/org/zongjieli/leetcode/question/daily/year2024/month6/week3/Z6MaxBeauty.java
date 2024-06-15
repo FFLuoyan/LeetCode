@@ -24,16 +24,24 @@ import java.util.Arrays;
 public class Z6MaxBeauty {
 
     public int maximumBeauty(int[] nums, int k) {
-        Arrays.sort(nums);
-        int left = 0, right = 0, result = 0, maxRight;
-        while (right < nums.length) {
-            maxRight = nums[left] + 2 * k;
-            while (right < nums.length && nums[right] <= maxRight) {
-                right++;
-            }
-            result = Math.max(result, right - left++);
+        int[] values = new int[100005 + (k <<= 1)];
+        int min = 10000, max = 0, current = 0, result = 0;
+        for (int num : nums) {
+            min = Math.min(min, num);
+            max = Math.max(max, num);
+            values[num]++;
+            values[num + k + 1]--;
+        }
+        for (int i = min ; i <= max ; i++) {
+            result = Math.max(result, current += values[i]);
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        Z6MaxBeauty test = new Z6MaxBeauty();
+        // 3
+        System.out.println(test.maximumBeauty(new int[]{4, 6, 1, 2}, 2));
     }
 
 }
