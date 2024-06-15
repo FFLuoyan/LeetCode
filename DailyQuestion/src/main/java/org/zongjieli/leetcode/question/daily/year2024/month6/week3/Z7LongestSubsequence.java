@@ -9,6 +9,9 @@ package org.zongjieli.leetcode.question.daily.year2024.month6.week3;
  *  "abc" 是 "aebdc" 的子序列,因为删除 "aebdc" 中的 e, b 可以得到 "abc"
  *  "aebdc" 的子序列还包括 "aebdc"、"aeb" 和 "" (空字符串)
  *
+ * 1 <= a.length, b.length <= 100
+ * a 和 b 由小写英文字母组成
+ *
  * @author Li.zongjie
  * @version 1.0
  * @date 2024/6/16
