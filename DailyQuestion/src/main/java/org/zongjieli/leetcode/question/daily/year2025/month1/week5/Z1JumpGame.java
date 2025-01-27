@@ -18,22 +18,17 @@ package org.zongjieli.leetcode.question.daily.year2025.month1.week5;
  */
 public class Z1JumpGame {
 
-    private int[] count;
-
     public int jump(int[] nums) {
-        count = new int[nums.length];
-        jump(nums, 0);
-        return count[nums.length - 1];
-    }
-
-    public void jump(int[] nums, int index) {
-        for (int i = nums[index] ; i > 0 ; i--) {
-            // 跳转至 index + i 处,计算此处的最小跳跃次数,如果等于 0 或者小于原本的跳跃次数,则触发一次递归
-            if (index + i < nums.length && (count[index + i] == 0 || count[index] + 1 < count[index + i])) {
-                count[index + i] = count[index] + 1;
-                jump(nums, index + i);
+        int next, length = nums.length;
+        int[] count = new int[length];
+        for (int i = 0; i < length; i++) {
+            for (int j = nums[i] ; j > 0 ; j--) {
+                if ((next = i + j) < length && (count[next] == 0 || count[next] > count[i] + 1)) {
+                    count[next] = count[i] + 1;
+                }
             }
         }
+        return count[length - 1];
     }
 
 }
