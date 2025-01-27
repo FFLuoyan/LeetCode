@@ -19,16 +19,22 @@ package org.zongjieli.leetcode.question.daily.year2025.month1.week5;
 public class Z1JumpGame {
 
     public int jump(int[] nums) {
-        int next, length = nums.length;
-        int[] count = new int[length];
-        for (int i = 0; i < length; i++) {
-            for (int j = nums[i] ; j > 0 ; j--) {
-                if ((next = i + j) < length && (count[next] == 0 || count[next] > count[i] + 1)) {
-                    count[next] = count[i] + 1;
-                }
+        boolean[] checked = new boolean[nums.length];
+        int step = 0, max = 0;
+        while (max < nums.length - 1) {
+            step++;
+            for (int j = max ; j >= 0 && !checked[j]; j--) {
+                checked[j] = true;
+                max = Math.max(max, j + nums[j]);
             }
         }
-        return count[length - 1];
+        return step;
+    }
+
+    public static void main(String[] args) {
+        Z1JumpGame test = new Z1JumpGame();
+        // 4
+        System.out.println(test.jump(new int[]{2, 3, 1, 1, 4}));
     }
 
 }
