@@ -112,12 +112,18 @@ public class Z4TextEditor {
     public static void main(String[] args) {
         Z4TextEditor editor = new Z4TextEditor();
         editor.addText("leetcode");
+        // 4
         System.out.println(editor.deleteText(4));
         editor.addText("practice");
+        // etpractice
         System.out.println(editor.cursorRight(3));
+        // leet
         System.out.println(editor.cursorLeft(8));
+        // 4
         System.out.println(editor.deleteText(10));
+        // ''
         System.out.println(editor.cursorLeft(2));
+        // practi
         System.out.println(editor.cursorRight(6));
     }
 }
