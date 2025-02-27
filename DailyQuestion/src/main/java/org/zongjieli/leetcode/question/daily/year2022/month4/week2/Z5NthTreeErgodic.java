@@ -1,7 +1,7 @@
 package org.zongjieli.leetcode.question.daily.year2022.month4.week2;
 
 import org.zongjieli.leetcode.base.Tree;
-import org.zongjieli.leetcode.origin.year2024.NTreeLevelOrder;
+import org.zongjieli.leetcode.origin.collection.ntree.NTreeLevelOrder;
 
 import java.util.List;
 
