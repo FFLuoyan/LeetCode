@@ -1,4 +1,4 @@
-package org.zongjieli.leetcode.question.daily.year2025.week4;
+package org.zongjieli.leetcode.question.daily.year2025.month2.week4;
 
 import java.util.List;
 
