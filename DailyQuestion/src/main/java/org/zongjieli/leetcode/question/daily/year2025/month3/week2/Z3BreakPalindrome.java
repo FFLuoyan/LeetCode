@@ -23,11 +23,8 @@ public class Z3BreakPalindrome {
             return "";
         }
         byte[] values = palindrome.getBytes();
-        for (int i = 0; i < values.length; i++) {
+        for (int i = 0; i < values.length / 2; i++) {
             if (values[i] != 'a') {
-                if (values.length % 2 == 1 && values.length / 2 == i) {
-                    continue;
-                }
                 values[i] = 'a';
                 return new String(values);
             }
